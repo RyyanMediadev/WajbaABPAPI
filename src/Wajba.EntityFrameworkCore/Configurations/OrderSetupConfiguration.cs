@@ -11,7 +11,7 @@ namespace Wajba.Configurations
     {
         public void Configure(EntityTypeBuilder<OrderSetup> builder)
         {
-            builder.ToTable("OrderSetups"); // Specify the table name
+            builder.ToTable("OrderSetups"); 
             builder.Property(x => x.FoodPreparationTime).IsRequired();
             builder.Property(x => x.ScheduleOrderSlotDuration).IsRequired();
             builder.Property(x => x.FreeDeliveryKilometer).IsRequired();

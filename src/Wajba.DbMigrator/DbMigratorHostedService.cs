@@ -31,12 +31,12 @@ public class DbMigratorHostedService : IHostedService
            options.AddDataMigrationEnvironment();
         }))
         {
-            //await application.InitializeAsync();
+            await application.InitializeAsync();
 
-            //await application
-            //    .ServiceProvider
-            //    .GetRequiredService<WajbaDbMigrationService>()
-            //    .MigrateAsync();
+            await application
+                .ServiceProvider
+                .GetRequiredService<WajbaDbMigrationService>()
+                .MigrateAsync();
 
             await application.ShutdownAsync();
 

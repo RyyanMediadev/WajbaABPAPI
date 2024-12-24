@@ -36,6 +36,26 @@ public class Program
                 .UseSerilog();
             await builder.AddApplicationAsync<WajbaHttpApiHostModule>();
 
+            // configure cors origin
+            builder.Services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder.WithOrigins("http://localhost:4200") // Add the Angular app's URL
+                           .AllowAnyHeader()
+                           .AllowAnyMethod()
+                           .AllowCredentials();
+                });
+
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder.WithOrigins("https://wajbaapi-08765bdfe115.herokuapp.com") // Add the Angular app's URL
+                           .AllowAnyHeader()
+                           .AllowAnyMethod()
+                           .AllowCredentials();
+                });
+            });
+
             var app = builder.Build();
             await app.InitializeApplicationAsync();
             app.UseAuthentication();

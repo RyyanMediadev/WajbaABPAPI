@@ -262,4 +262,4 @@ src/Wajba.Blazor.Server/Logs/*
 src/Wajba.Blazor.Server.Tiered/Logs/*
 
 # Use abp install-libs to restore.
-**/wwwroot/libs/*
+# **/wwwroot/libs/*

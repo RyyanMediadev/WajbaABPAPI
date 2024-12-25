@@ -45,10 +45,7 @@ public class Program
                            .AllowAnyHeader()
                            .AllowAnyMethod()
                            .AllowCredentials();
-                    builder.WithOrigins("https://wajbaapi-08765bdfe115.herokuapp.com") // Add the Angular app's URL
-                         .AllowAnyHeader()
-                         .AllowAnyMethod()
-                         .AllowCredentials();
+                
                 });
 
                 //options.AddDefaultPolicy(builder =>

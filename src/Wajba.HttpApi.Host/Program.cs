@@ -45,7 +45,16 @@ public class Program
                            .AllowAnyHeader()
                            .AllowAnyMethod()
                            .AllowCredentials();
-                
+                    builder.WithOrigins("https://wajbaportal-27a2714a84ae.herokuapp.com") // Add the Angular app's URL
+                           .AllowAnyHeader()
+                           .AllowAnyMethod()
+                           .AllowCredentials();
+
+                    builder.WithOrigins("https://abpngtest-079dcadea84b.herokuapp.com/") // Add the Angular app's URL
+                          .AllowAnyHeader()
+                          .AllowAnyMethod()
+                          .AllowCredentials();
+
                 });
 
                 //options.AddDefaultPolicy(builder =>

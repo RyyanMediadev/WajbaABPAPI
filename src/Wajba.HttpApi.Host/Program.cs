@@ -50,7 +50,7 @@ public class Program
                            .AllowAnyMethod()
                            .AllowCredentials();
 
-                    builder.WithOrigins("https://abpngtest-079dcadea84b.herokuapp.com/") // Add the Angular app's URL
+                    builder.WithOrigins("https://abpngtest-079dcadea84b.herokuapp.com") // Add the Angular app's URL
                           .AllowAnyHeader()
                           .AllowAnyMethod()
                           .AllowCredentials();

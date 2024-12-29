@@ -86,6 +86,5 @@ public class Program
         {
             Log.CloseAndFlush();
         }
-        Console.WriteLine("odfds");
     }
 }

@@ -1,5 +1,5 @@
 ﻿global using Wajba.Dtos.BranchContract;
-using Wajba.BranchService;
+global using Wajba.BranchService;
 
 namespace Wajba.Controllers;
 [IgnoreAntiforgeryToken]

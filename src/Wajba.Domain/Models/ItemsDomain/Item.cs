@@ -21,7 +21,7 @@ public class Item : FullAuditedEntity<int>
     public int CategoryId { get; set; }
     public virtual Category Category { get; set; }
     // Navigation properties
-    //public virtual ICollection<ItemBranch> ItemBranches { get; set; } = new List<ItemBranch>();
+    public virtual ICollection<ItemBranch> ItemBranches { get; set; } = new List<ItemBranch>();
     public virtual ICollection<ItemAddon> ItemAddons { get; set; } = new List<ItemAddon>();
     public ICollection<ItemExtra> ItemExtras { get; set; } = new List<ItemExtra>();
     public ICollection<ItemVariation> ItemVariations { get; set; } = new List<ItemVariation>();

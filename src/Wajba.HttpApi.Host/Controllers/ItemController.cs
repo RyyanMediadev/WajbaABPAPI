@@ -16,12 +16,12 @@ public class ItemController : WajbaController
     {
         try
         {
-            await _itemAppServices.CreateAsync(input);
+            ItemDto itemDto = await _itemAppServices.CreateAsync(input);
             return Ok(new ApiResponse<object>
             {
                 Success = true,
                 Message = "Item created successfully.",
-                Data = null
+                Data = itemDto
             });
         }
         catch (Exception ex)

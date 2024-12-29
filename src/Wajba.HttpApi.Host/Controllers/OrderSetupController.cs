@@ -1,8 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using Wajba.Dtos.OrderSetupContract;
-using Wajba.OrderSetupService;
+﻿global using Wajba.Dtos.OrderSetupContract;
+global using Wajba.OrderSetupService;
 
 namespace Wajba.Controllers
 {

@@ -6,9 +6,9 @@ global using Volo.Abp;
 global using Volo.Abp.Application.Dtos;
 global using Volo.Abp.Application.Services;
 global using Volo.Abp.Domain.Repositories;
+global using Wajba.Dtos.Categories;
 global using Wajba.Models.CategoriesDomain;
 global using Wajba.Services.ImageService;
-global using Wajba.Dtos.Categories;
 
 namespace Wajba.Categories;
 

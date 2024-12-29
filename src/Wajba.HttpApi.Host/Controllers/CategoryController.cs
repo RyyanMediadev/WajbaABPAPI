@@ -118,7 +118,7 @@ namespace Wajba.Controllers;
                 return Ok(new ApiResponse<PagedResultDto<CategoryDto>>
                 {
                     Success = true,
-                    Message = "Categories retrieved successfullyDone.",
+                    Message = "Categories retrieved successfully.",
                     Data = categories
                 });
             }

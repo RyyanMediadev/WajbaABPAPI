@@ -64,7 +64,7 @@ public class ItemAppServices : ApplicationService
             return null;
         string? imageUrl = null;
         if (input.ImageUrl != null)
-            imageUrl = await _imageService.UploadAsync(input.ImageUrl);
+            item.ImageUrl = await _imageService.UploadAsync(input.ImageUrl);
         Category category = await _repository1.FindAsync(input.CategoryId);
         if (category == null)
             return null;
@@ -78,7 +78,6 @@ public class ItemAppServices : ApplicationService
         }
         item.Name = input.Name;
         item.Description = input.Description;
-        item.ImageUrl = imageUrl;
         item.CategoryId = input.CategoryId;
         item.IsFeatured = input.IsFeatured;
         item.TaxValue = input.TaxValue;
@@ -103,7 +102,7 @@ public class ItemAppServices : ApplicationService
             !string.IsNullOrWhiteSpace(input.Filter),
             c => c.Name.Contains(input.Filter) || c.Description.Contains(input.Filter)
         ).WhereIf(input.ItemType.HasValue, c => c.ItemType == (ItemType)input.ItemType.Value)
-        .WhereIf(global::Wajba.Enums.Status.Active == (Status)input.Status, c => c.Status == global::Wajba.Enums.Status.Active);
+        .WhereIf(input.Status.HasValue, c => c.Status == (Status)input.Status);
         int totalCount = await AsyncExecuter.CountAsync(queryable);
         List<Item> items = await AsyncExecuter.ToListAsync(queryable
             .OrderBy(input.Sorting ?? nameof(Item.Name))

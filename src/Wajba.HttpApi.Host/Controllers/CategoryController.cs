@@ -126,7 +126,7 @@ namespace Wajba.Controllers;
                 return BadRequest(new ApiResponse<object>
                 {
                     Success = false,
-                    Message = $"Error retrieving categoriesoop: {ex.Message}",
+                    Message = $"Error retrieving categories: {ex.Message}",
                     Data = null
                 });
             }

@@ -1,40 +1,139 @@
 ﻿global using Wajba.Dtos.BranchContract;
+using Wajba.BranchService;
 
 namespace Wajba.Controllers;
-
+[IgnoreAntiforgeryToken]
 public class BranchController : WajbaController
 {
-    private readonly IBranchAppService _branchAppService;
+    private readonly BranchAppService _branchAppService;
 
-    public BranchController(IBranchAppService branchAppService)
+    public BranchController(BranchAppService branchAppService)
     {
         _branchAppService = branchAppService;
     }
 
-    [HttpGet("{id}")]
-    public async Task<BranchDto> GetAsync(int id)
+    [HttpPost]
+    public async Task<IActionResult> CreateAsync([FromForm] CreateUpdateBranchDto input)
     {
-        return await _branchAppService.GetAsync(id);
+        try
+        {
+            await _branchAppService.CreateAsync(input);
+
+            return Ok(new ApiResponse<object>
+            {
+                Success = true,
+                Message = "Branch created successfully.",
+                Data = null
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ApiResponse<object>
+            {
+                Success = false,
+                Message = $"Error creating branch: {ex.Message}",
+                Data = null
+            });
+        }
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateAsync(int id, [FromForm] CreateUpdateBranchDto input)
+    {
+        try
+        {
+            var updatedBranch = await _branchAppService.UpdateAsync(id, input);
+
+            return Ok(new ApiResponse<BranchDto>
+            {
+                Success = true,
+                Message = "Branch updated successfully.",
+                Data = updatedBranch
+            });
+        }
+        catch (EntityNotFoundException)
+        {
+            return NotFound(new ApiResponse<object>
+            {
+                Success = false,
+                Message = "Branch not found.",
+                Data = null
+            });
+        }
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetByIdAsync(int id)
+    {
+        try
+        {
+            var branch = await _branchAppService.GetByIdAsync(id);
+
+            return Ok(new ApiResponse<BranchDto>
+            {
+                Success = true,
+                Message = "Branch retrieved successfully.",
+                Data = branch
+            });
+        }
+        catch (EntityNotFoundException)
+        {
+            return NotFound(new ApiResponse<object>
+            {
+                Success = false,
+                Message = "Branch not found.",
+                Data = null
+            });
+        }
     }
 
     [HttpGet]
-    public async Task<PagedResultDto<BranchDto>> GetListAsync([FromQuery] PagedAndSortedResultRequestDto input)
+    public async Task<IActionResult> GetListAsync([FromQuery] GetBranchInput input)
     {
-        return await _branchAppService.GetListAsync(input);
+        try
+        {
+            var branches = await _branchAppService.GetListAsync(input);
+
+            return Ok(new ApiResponse<PagedResultDto<BranchDto>>
+            {
+                Success = true,
+                Message = "Branches retrieved successfully.",
+                Data = branches
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ApiResponse<object>
+            {
+                Success = false,
+                Message = $"Error retrieving branches: {ex.Message}",
+                Data = null
+            });
+        }
     }
-    [HttpPost]
-    public async Task<BranchDto> CreateAsync(CreateUpdateBranchDto input)
-    {
-        return await _branchAppService.CreateAsync(input);
-    }
-    [HttpPut("{id}")]
-    public async Task<BranchDto> UpdateAsync(int id, CreateUpdateBranchDto input)
-    {
-        return await _branchAppService.UpdateAsync(id, input);
-    }
+
     [HttpDelete("{id}")]
-    public async Task DeleteAsync(int id)
+    public async Task<IActionResult> DeleteAsync(int id)
     {
-        await _branchAppService.DeleteAsync(id);
+        try
+        {
+            await _branchAppService.DeleteAsync(id);
+
+            return Ok(new ApiResponse<object>
+            {
+                Success = true,
+                Message = "Branch deleted successfully.",
+                Data = null
+            });
+        }
+        catch (EntityNotFoundException)
+        {
+            return NotFound(new ApiResponse<object>
+            {
+                Success = false,
+                Message = "Branch not found.",
+                Data = null
+            });
+        }
     }
 }

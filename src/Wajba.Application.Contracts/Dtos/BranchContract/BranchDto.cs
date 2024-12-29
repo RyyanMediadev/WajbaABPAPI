@@ -20,3 +20,7 @@ public class BranchDto : EntityDto<int>
      
     }
 }
+public class GetBranchInput : PagedAndSortedResultRequestDto
+{
+    public string? Filter { get; set; }
+}

@@ -80,6 +80,7 @@ public class ItemController : WajbaController
             });
         }
     }
+
     [HttpGet("{id}")]
     public async Task<IActionResult> GetAsync(int id)
     {

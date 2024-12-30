@@ -38,6 +38,7 @@ public class WajbaDbContext :
     #region entities
     public DbSet<Item> Items { get; set; }
     public DbSet<ItemVariation> ItemVariations { get; set; }
+  
     public DbSet<ItemAddon> ItemAddons { get; set; }
     public DbSet<ItemExtra> ItemExtras { get; set; }
     public DbSet<ItemAttribute> ItemAttributes { get; set; }

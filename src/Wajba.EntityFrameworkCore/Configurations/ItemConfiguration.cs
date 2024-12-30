@@ -26,7 +26,10 @@ namespace Wajba.Configurations
             builder.HasMany(e => e.ItemAddons) 
              .WithOne(ia => ia.Item);
 
-
+            builder.HasMany(i => i.ItemBranches)
+                 .WithOne(ib => ib.Item)
+                 .HasForeignKey(ib => ib.ItemId);
+            
             // An Item has many ItemExtras
             builder.HasMany(e => e.ItemExtras) 
             .WithOne(ia => ia.Item);

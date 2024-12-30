@@ -58,12 +58,6 @@ public class BranchAppService : ApplicationService
     public async Task<PagedResultDto<BranchDto>> GetListAsync(GetBranchInput input)
     {
         var queryable = await _branchRepository.GetQueryableAsync();
-
-        queryable = queryable.WhereIf(
-            !string.IsNullOrWhiteSpace(input.Filter),
-            b => b.Name.Contains(input.Filter) || b.City.Contains(input.Filter)
-        );
-
         var totalCount = await AsyncExecuter.CountAsync(queryable);
         var items = await AsyncExecuter.ToListAsync(queryable
             .OrderBy(input.Sorting ?? nameof(Branch.Name))

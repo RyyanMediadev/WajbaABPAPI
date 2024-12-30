@@ -1,6 +1,5 @@
-﻿global using Wajba.Models.CurrenciesDomain;
-global using Wajba.Dtos.CurrenciesContract;
-using Volo.Abp.Domain.Entities;
+﻿global using Wajba.Dtos.CurrenciesContract;
+global using Wajba.Models.CurrenciesDomain;
 
 namespace Wajba.CurrenciesService
 {

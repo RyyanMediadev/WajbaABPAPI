@@ -7,17 +7,16 @@ namespace Wajba.CompanyService;
 public class CompanyAppService : ApplicationService
 {
     private readonly IRepository<Company, int> _repository;
-    private readonly IImageService _imageService;
+   
 
-    public CompanyAppService(IRepository<Company, int> repository, IImageService imageService)
+    public CompanyAppService(IRepository<Company, int> repository)
     {
         _repository = repository;
-        _imageService = imageService;
+       
     }
-    public async Task<CompanyDto> CreateAsync(CreateComanyDto input)
+    public async Task<CompanyDto> CreateAsync(CreateUpdateComanyDto input)
     {
-        if (input.LogoUrl == null)
-            throw new Exception("Image is null");
+       
         Company company = new Company()
         {
             Address = input.Address,
@@ -30,19 +29,11 @@ public class CompanyAppService : ApplicationService
             ZipCode = input.ZipCode,
             WebsiteURL = input.WebsiteURL,
         };
-        try
-        {
-            string img = await _imageService.UploadAsync(input.LogoUrl);
-            company.LogoUrl = img;
-        }
-        catch (Exception ex)
-        {
-            throw new Exception("cannot upload image");
-        }
+      
         Company company1 = await _repository.InsertAsync(company, true);
         return ObjectMapper.Map<Company, CompanyDto>(company1);
     }
-    public async Task<CompanyDto> UpdateAsync(int id, CreateComanyDto input)
+    public async Task<CompanyDto> UpdateAsync(int id, CreateUpdateComanyDto input)
     {
         Company company = await _repository.FindAsync(id);
         if (company == null)
@@ -56,8 +47,7 @@ public class CompanyAppService : ApplicationService
         company.State = input.State;
         company.ZipCode = input.ZipCode;
         company.WebsiteURL = input.WebsiteURL;
-        if (input.LogoUrl != null)
-            company.LogoUrl = await _imageService.UploadAsync(input.LogoUrl);
+      
         company.LastModificationTime = DateTime.UtcNow;
         Company company1 = await _repository.UpdateAsync(company, true);
         return ObjectMapper.Map<Company, CompanyDto>(company1);
@@ -70,13 +60,27 @@ public class CompanyAppService : ApplicationService
     public async Task<PagedResultDto<CompanyDto>> GetListAsync(GetComanyInput input)
     {
         var queryable = await _repository.GetQueryableAsync();
+
+        // Apply filtering
+        queryable = queryable.WhereIf(
+            !string.IsNullOrWhiteSpace(input.Filter),
+            c => c.Name.Contains(input.Filter) || c.Email.Contains(input.Filter)
+        );
+
+        // Get total count before applying pagination
         var totalCount = await AsyncExecuter.CountAsync(queryable);
-        var companies = await AsyncExecuter.ToListAsync(queryable
-             .PageBy(input.SkipCount, input.MaxResultCount));
+
+        // Apply sorting and pagination
+        var items = await AsyncExecuter.ToListAsync(
+            queryable
+                .OrderBy(input.Sorting ?? nameof(Company.Name))
+                .PageBy(input.SkipCount, input.MaxResultCount)
+        );
+
         return new PagedResultDto<CompanyDto>(
-      totalCount,
-      ObjectMapper.Map<List<Company>, List<CompanyDto>>(companies)
-  );
+            totalCount,
+            ObjectMapper.Map<List<Company>, List<CompanyDto>>(items)
+        );
 
     }
     public async Task DeleteAsync(int id)

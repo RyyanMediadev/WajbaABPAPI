@@ -20,6 +20,6 @@ public class CreateUpdateCouponDto
     public int LimitPerUser { get; set; }
     public string? Description { get; set; }
     [Required]
-    public int BranchId { get; set; }
+  //  public int BranchId { get; set; }
     public IFormFile? Image { get; set; }
 }

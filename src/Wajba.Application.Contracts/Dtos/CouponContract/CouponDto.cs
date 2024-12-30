@@ -16,6 +16,6 @@ public class CouponDto : EntityDto<int>
     public int CountOfUsers { get; set; }
     public string? ImageUrl { get; set; }
     public string Description { get; set; }
-    public int BranchId { get; set; }
+  //  public int BranchId { get; set; }
     public bool IsExpired { get; set; }
 }

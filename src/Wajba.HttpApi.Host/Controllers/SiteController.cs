@@ -4,7 +4,7 @@ global using Wajba.SiteService;
 namespace Wajba.Controllers;
 
 
-public class SiteController :AbpController
+public class SiteController :WajbaController
 {
     private readonly SitesAppservice _sitesAppservice;
     public SiteController(SitesAppservice sitesAppservice)

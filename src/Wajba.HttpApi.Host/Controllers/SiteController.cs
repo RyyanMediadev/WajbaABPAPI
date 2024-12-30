@@ -3,7 +3,6 @@ global using Wajba.SiteService;
 
 namespace Wajba.Controllers;
 
-[IgnoreAntiforgeryToken]
 
 public class SiteController :AbpController
 {
@@ -90,7 +89,7 @@ public class SiteController :AbpController
             });
         }
     }
-
+    /*
     [HttpGet]
     public async Task<IActionResult> GetListAsync([FromQuery] GetSiteInput input)
     {
@@ -114,6 +113,7 @@ public class SiteController :AbpController
             });
         }
     }
+    */
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteAsync(int id)
     {

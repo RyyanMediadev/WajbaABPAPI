@@ -61,8 +61,8 @@ public class CompanyController : WajbaController
             });
         }
     }
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetByIdAsync(int id)
+    [HttpGet()]
+    public async Task<IActionResult> GetByIdAsync()
     {
         try
         {
@@ -95,7 +95,7 @@ public class CompanyController : WajbaController
         }
     }
 
-    [HttpGet]
+ /*   [HttpGet]
     public async Task<IActionResult> GetListAsync([FromQuery] GetComanyInput input)
     {
         try
@@ -118,6 +118,7 @@ public class CompanyController : WajbaController
             });
         }
     }
+ */
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteAsync(int id)
     {

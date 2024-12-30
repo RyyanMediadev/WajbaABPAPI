@@ -118,6 +118,9 @@ public class ItemAppServices : ApplicationService
     }
     public async Task DeleteAsync(int id)
     {
+        Item item = await _repository.GetAsync(id);
+        if (item == null)
+            throw new Exception("Not found");
         await _repository.DeleteAsync(id);
     }
 }

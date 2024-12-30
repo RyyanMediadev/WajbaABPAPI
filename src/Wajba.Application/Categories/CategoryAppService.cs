@@ -13,7 +13,7 @@ global using Wajba.Services.ImageService;
 namespace Wajba.Categories;
 
 [RemoteService(false)]
-public class CategoryAppService:ApplicationService
+public class CategoryAppService : ApplicationService
 {
     private readonly IRepository<Category, int> _categoryRepository;
     private readonly IImageService _imageService;
@@ -49,7 +49,7 @@ public class CategoryAppService:ApplicationService
         category.Description = input.Description;
         category.Status = input.status;
         category.LastModificationTime = DateTime.UtcNow;
-        Category updatedcategory=await _categoryRepository.UpdateAsync(category);
+        Category updatedcategory = await _categoryRepository.UpdateAsync(category);
         return ObjectMapper.Map<Category, CategoryDto>(updatedcategory);
     }
 
@@ -77,6 +77,9 @@ public class CategoryAppService:ApplicationService
     }
     public async Task DeleteAsync(int id)
     {
+        Category category = await _categoryRepository.GetAsync(id);
+        if (category == null)
+            throw new Exception("Not found");
         await _categoryRepository.DeleteAsync(id);
     }
 }

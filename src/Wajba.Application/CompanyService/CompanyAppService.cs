@@ -7,16 +7,12 @@ namespace Wajba.CompanyService;
 public class CompanyAppService : ApplicationService
 {
     private readonly IRepository<Company, int> _repository;
-   
-
     public CompanyAppService(IRepository<Company, int> repository)
     {
         _repository = repository;
-       
     }
     public async Task<CompanyDto> CreateAsync(CreateUpdateComanyDto input)
     {
-       
         Company company = new Company()
         {
             Address = input.Address,
@@ -29,11 +25,10 @@ public class CompanyAppService : ApplicationService
             ZipCode = input.ZipCode,
             WebsiteURL = input.WebsiteURL,
         };
-      
         Company company1 = await _repository.InsertAsync(company, true);
         return ObjectMapper.Map<Company, CompanyDto>(company1);
     }
-    public async Task<CompanyDto> UpdateAsync( CreateUpdateComanyDto input)
+    public async Task<CompanyDto> UpdateAsync(CreateUpdateComanyDto input)
     {
         Company company = await _repository.FirstOrDefaultAsync();
         if (company == null)
@@ -47,7 +42,6 @@ public class CompanyAppService : ApplicationService
         company.State = input.State;
         company.ZipCode = input.ZipCode;
         company.WebsiteURL = input.WebsiteURL;
-      
         company.LastModificationTime = DateTime.UtcNow;
         Company company1 = await _repository.UpdateAsync(company, true);
         return ObjectMapper.Map<Company, CompanyDto>(company1);
@@ -59,25 +53,22 @@ public class CompanyAppService : ApplicationService
             throw new Exception("Not Found");
         return ObjectMapper.Map<Company, CompanyDto>(company);
     }
+    /*
     public async Task<PagedResultDto<CompanyDto>> GetListAsync(GetComanyInput input)
     {
         var queryable = await _repository.GetQueryableAsync();
-        // Get total count before applying pagination
         var totalCount = await AsyncExecuter.CountAsync(queryable);
-
-        // Apply sorting and pagination
         var items = await AsyncExecuter.ToListAsync(
             queryable
                 .OrderBy(input.Sorting ?? nameof(Company.Name))
                 .PageBy(input.SkipCount, input.MaxResultCount)
         );
-
         return new PagedResultDto<CompanyDto>(
             totalCount,
             ObjectMapper.Map<List<Company>, List<CompanyDto>>(items)
         );
 
-    }
+    }*/
     public async Task DeleteAsync(int id)
     {
         if (await _repository.FindAsync(id) == null)

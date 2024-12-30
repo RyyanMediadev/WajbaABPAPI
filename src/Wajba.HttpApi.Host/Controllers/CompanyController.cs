@@ -61,7 +61,7 @@ public class CompanyController : WajbaController
             });
         }
     }
-    [HttpGet()]
+    [HttpGet]
     public async Task<IActionResult> GetByIdAsync()
     {
         try

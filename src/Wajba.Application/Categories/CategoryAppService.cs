@@ -67,10 +67,9 @@ public class CategoryAppService:ApplicationService
             c => c.Name.Contains(input.Filter) || c.Description.Contains(input.Filter)
         );
         int totalCount = await AsyncExecuter.CountAsync(queryable);
-        List<Category> items = await AsyncExecuter.ToListAsync(queryable);
-        Console.WriteLine("gdfsdsfdfs");
-            //.OrderBy(input.Sorting ?? nameof(Category.Name))
-            //.PageBy(input.SkipCount, input.MaxResultCount));
+        List<Category> items = await AsyncExecuter.ToListAsync(queryable
+            .OrderBy(input.Sorting ?? nameof(Category.Name))
+            .PageBy(input.SkipCount, input.MaxResultCount));
         return new PagedResultDto<CategoryDto>(
             totalCount,
             ObjectMapper.Map<List<Category>, List<CategoryDto>>(items)

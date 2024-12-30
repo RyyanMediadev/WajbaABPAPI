@@ -18,7 +18,12 @@ public class Coupon : FullAuditedEntity<int>
     public int CountOfUsers { get; set; } = 0;
     public string ImageUrl { get; set; }
     public string Description { get; set; }
-    public int BranchId { get; set; }
+  //  public int BranchId { get; set; }
     public bool IsExpired { get; set; } = false;
-    public virtual Branch Branch { get; set; }
+    // public virtual Branch Branch { get; set; }
+
+    public Coupon()
+    {
+        
+    }
 }

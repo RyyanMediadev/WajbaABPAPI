@@ -47,6 +47,7 @@ public class WajbaDbContext :
     public DbSet<Category> Categories { get; set; }
     public DbSet<Language> Languages { get; set; }
     public DbSet<Currencies> Currencies { get; set; }
+    public DbSet<Coupon> Coupons { get; set; }
     public DbSet<ItemTax> ItemTaxes { get; set; }
     public DbSet<ItemBranch> itemBranches { get; set; }
     public DbSet<Branch> Branches { get; set; }

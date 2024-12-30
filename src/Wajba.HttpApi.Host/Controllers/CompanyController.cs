@@ -2,7 +2,7 @@
 global using Wajba.Dtos.CompanyContact;
 
 namespace Wajba.Controllers;
-
+[IgnoreAntiforgeryToken]
 public class CompanyController : WajbaController
 {
     private readonly CompanyAppService _companyAppService;
@@ -12,7 +12,7 @@ public class CompanyController : WajbaController
         _companyAppService = companyAppService;
     }
     [HttpPost]
-    public async Task<IActionResult> CreateAsync([FromForm] CreateComanyDto input)
+    public async Task<IActionResult> CreateAsync([FromForm] CreateUpdateComanyDto input)
     {
         if (!ModelState.IsValid)
             return BadRequest("Data is not valid");
@@ -37,7 +37,7 @@ public class CompanyController : WajbaController
         }
     }
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateAsync(int id, [FromForm] CreateComanyDto input)
+    public async Task<IActionResult> UpdateAsync(int id, [FromForm] CreateUpdateComanyDto input)
     {
         if (!ModelState.IsValid)
             return BadRequest("Data is not valid");

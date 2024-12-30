@@ -5,7 +5,8 @@ namespace Wajba.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class CouponController : AbpController
+
+public class CouponController : WajbaController
 {
     private readonly CouponAppService _couponAppService;
 
@@ -14,33 +15,129 @@ public class CouponController : AbpController
         _couponAppService = couponAppService;
     }
 
+    // Create Coupon
     [HttpPost]
-    public async Task<CouponDto> CreateAsync([FromForm] CreateUpdateCouponDto input)
+    public async Task<IActionResult> CreateAsync([FromForm] CreateUpdateCouponDto input)
     {
-        return await _couponAppService.CreateAsync(input);
+        try
+        {
+            var coupon = await _couponAppService.CreateAsync(input);
+            return Ok(new ApiResponse<CouponDto>
+            {
+                Success = true,
+                Message = "Coupon created successfully.",
+                Data = coupon
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ApiResponse<object>
+            {
+                Success = false,
+                Message = $"Error creating coupon: {ex.Message}",
+                Data = null
+            });
+        }
     }
 
-    [HttpPut("{id}")]
-    public async Task<CouponDto> UpdateAsync(int id, [FromForm] CreateUpdateCouponDto input)
-    {
-        return await _couponAppService.UpdateAsync(id, input);
-    }
-
-    [HttpDelete("{id}")]
-    public async Task DeleteAsync(int id)
-    {
-        await _couponAppService.DeleteAsync(id);
-    }
-
+    // Get Coupon by ID
     [HttpGet("{id}")]
-    public async Task<CouponDto> GetAsync(int id)
+    public async Task<IActionResult> GetByIdAsync(int id)
     {
-        return await _couponAppService.GetAsync(id);
+        try
+        {
+            var coupon = await _couponAppService.GetAsync(id);
+            return Ok(new ApiResponse<CouponDto>
+            {
+                Success = true,
+                Message = "Coupon retrieved successfully.",
+                Data = coupon
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ApiResponse<object>
+            {
+                Success = false,
+                Message = $"Error retrieving coupon: {ex.Message}",
+                Data = null
+            });
+        }
     }
 
+    // Get List of Coupons
     [HttpGet]
-    public async Task<PagedResultDto<CouponDto>> GetListAsync([FromQuery] PagedAndSortedResultRequestDto input)
+    public async Task<IActionResult> GetListAsync([FromQuery] GetCouponsInput input)
     {
-        return await _couponAppService.GetListAsync(input);
+        try
+        {
+            var coupons = await _couponAppService.GetListAsync(input);
+            return Ok(new ApiResponse<PagedResultDto<CouponDto>>
+            {
+                Success = true,
+                Message = "Coupons retrieved successfully.",
+                Data = coupons
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ApiResponse<object>
+            {
+                Success = false,
+                Message = $"Error retrieving coupons: {ex.Message}",
+                Data = null
+            });
+        }
+    }
+
+    // Update Coupon
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateAsync(int id, [FromForm] CreateUpdateCouponDto input)
+    {
+        try
+        {
+            var updatedCoupon = await _couponAppService.UpdateAsync(id, input);
+            return Ok(new ApiResponse<CouponDto>
+            {
+                Success = true,
+                Message = "Coupon updated successfully.",
+                Data = updatedCoupon
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ApiResponse<object>
+            {
+                Success = false,
+                Message = $"Error updating coupon: {ex.Message}",
+                Data = null
+            });
+        }
+    }
+
+    // Delete Coupon
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteAsync(int id)
+    {
+        try
+        {
+            await _couponAppService.DeleteAsync(id);
+            return Ok(new ApiResponse<object>
+            {
+                Success = true,
+                Message = "Coupon deleted successfully.",
+                Data = null
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ApiResponse<object>
+            {
+                Success = false,
+                Message = $"Error deleting coupon: {ex.Message}",
+                Data = null
+            });
+        }
     }
 }
+

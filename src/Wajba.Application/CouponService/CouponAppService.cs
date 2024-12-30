@@ -15,6 +15,7 @@ public class CouponAppService : ApplicationService
         _imageService = imageService;
     }
 
+    // Create Coupon
     public async Task<CouponDto> CreateAsync(CreateUpdateCouponDto input)
     {
         var imageUrl = input.Image != null
@@ -27,55 +28,64 @@ public class CouponAppService : ApplicationService
         await _couponRepository.InsertAsync(coupon);
         return ObjectMapper.Map<Coupon, CouponDto>(coupon);
     }
-    // Read (Get by ID)
+
+    // Get Coupon by ID
     public async Task<CouponDto> GetAsync(int id)
     {
         var coupon = await _couponRepository.GetAsync(id);
         return ObjectMapper.Map<Coupon, CouponDto>(coupon);
     }
 
-    // Read (Get List)
-    public async Task<PagedResultDto<CouponDto>> GetListAsync(PagedAndSortedResultRequestDto input)
+    // Get List of Coupons with Pagination
+    public async Task<PagedResultDto<CouponDto>> GetListAsync(GetCouponsInput input)
     {
-        var query = await _couponRepository.GetPagedListAsync(
-            input.SkipCount,
-            input.MaxResultCount,
-            input.Sorting
+        var queryable = await _couponRepository.GetQueryableAsync();
+
+        // Apply filter
+        queryable = queryable.WhereIf(
+            !string.IsNullOrWhiteSpace(input.Filter),
+            c => c.Name.Contains(input.Filter) || c.Description.Contains(input.Filter)
         );
 
-        var totalCount = await _couponRepository.CountAsync();
+        var totalCount = await AsyncExecuter.CountAsync(queryable);
+
+        var items = await AsyncExecuter.ToListAsync(
+            queryable
+                .OrderBy(input.Sorting ?? nameof(Coupon.Name))
+                .PageBy(input.SkipCount, input.MaxResultCount)
+        );
+
         return new PagedResultDto<CouponDto>(
             totalCount,
-            ObjectMapper.Map<List<Coupon>, List<CouponDto>>(query)
+            ObjectMapper.Map<List<Coupon>, List<CouponDto>>(items)
         );
     }
+
+    // Update Coupon
     public async Task<CouponDto> UpdateAsync(int id, CreateUpdateCouponDto input)
     {
         var coupon = await _couponRepository.GetAsync(id);
 
         if (input.Image != null)
         {
-            //if (!string.IsNullOrEmpty(coupon.ImageUrl))
-            //{
-            //    await _imageService.DeleteImageAsync(coupon.ImageUrl);
-            //}
-
             coupon.ImageUrl = await _imageService.UploadAsync(input.Image);
         }
 
         ObjectMapper.Map(input, coupon);
-
         await _couponRepository.UpdateAsync(coupon);
+
         return ObjectMapper.Map<Coupon, CouponDto>(coupon);
     }
 
+    // Delete Coupon
     public async Task DeleteAsync(int id)
     {
         //var coupon = await _couponRepository.GetAsync(id);
 
+        //// Optionally delete the image if needed
         //if (!string.IsNullOrEmpty(coupon.ImageUrl))
         //{
-        //    await _imageService.DeleteImageAsync(coupon.ImageUrl);
+        //    await _imageService.de(coupon.ImageUrl);
         //}
 
         await _couponRepository.DeleteAsync(id);

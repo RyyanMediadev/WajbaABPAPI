@@ -11,8 +11,8 @@ public class Company:FullAuditedEntity<int>
     public string CountryCode { get; set; }
     public string ZipCode { get; set; }
     public string Address { get; set; }
-    public string? LogoUrl { get; set; }
-    public ICollection<Branch> Branches { get; set; } = new List<Branch>();
+  
+   // public ICollection<Branch> Branches { get; set; } = new List<Branch>();
 
     public Company()
     {

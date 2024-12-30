@@ -2,7 +2,7 @@
 
 namespace Wajba.Dtos.CompanyContact;
 
-public class CreateComanyDto
+public class CreateUpdateComanyDto
 {
     [Required]
     public string Name { get; set; }
@@ -22,9 +22,9 @@ public class CreateComanyDto
     public string ZipCode { get; set; }
     [Required]
     public string Address { get; set; }
-    [Required]
-    public IFormFile? LogoUrl { get; set; }
-    public CreateComanyDto()
+    
+   
+    public CreateUpdateComanyDto()
     {
         
     }

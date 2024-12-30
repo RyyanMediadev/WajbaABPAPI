@@ -1787,9 +1787,6 @@ namespace Wajba.Migrations
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("CompanyId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("datetime2")
                         .HasColumnName("CreationTime");
@@ -1845,8 +1842,6 @@ namespace Wajba.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CompanyId");
 
                     b.ToTable("Branches");
                 });
@@ -2201,9 +2196,6 @@ namespace Wajba.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("LastModifierId");
 
-                    b.Property<string>("LogoUrl")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -2232,7 +2224,7 @@ namespace Wajba.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("BranchId")
+                    b.Property<int?>("BranchId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Code")
@@ -3481,13 +3473,6 @@ namespace Wajba.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Wajba.Models.BranchDomain.Branch", b =>
-                {
-                    b.HasOne("Wajba.Models.CompanyDomain.Company", null)
-                        .WithMany("Branches")
-                        .HasForeignKey("CompanyId");
-                });
-
             modelBuilder.Entity("Wajba.Models.BranchDomain.DineInTable", b =>
                 {
                     b.HasOne("Wajba.Models.BranchDomain.Branch", "Branch")
@@ -3562,13 +3547,9 @@ namespace Wajba.Migrations
 
             modelBuilder.Entity("Wajba.Models.CouponsDomain.Coupon", b =>
                 {
-                    b.HasOne("Wajba.Models.BranchDomain.Branch", "Branch")
+                    b.HasOne("Wajba.Models.BranchDomain.Branch", null)
                         .WithMany("Coupons")
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Branch");
+                        .HasForeignKey("BranchId");
                 });
 
             modelBuilder.Entity("Wajba.Models.ItemAddonDomain.ItemAddon", b =>
@@ -3788,11 +3769,6 @@ namespace Wajba.Migrations
                     b.Navigation("Items");
 
                     b.Navigation("OfferCategories");
-                });
-
-            modelBuilder.Entity("Wajba.Models.CompanyDomain.Company", b =>
-                {
-                    b.Navigation("Branches");
                 });
 
             modelBuilder.Entity("Wajba.Models.ItemAttributeDomain.ItemAttribute", b =>

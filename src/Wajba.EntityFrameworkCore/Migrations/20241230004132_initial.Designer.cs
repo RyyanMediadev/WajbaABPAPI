@@ -13,8 +13,8 @@ using Wajba.EntityFrameworkCore;
 namespace Wajba.Migrations
 {
     [DbContext(typeof(WajbaDbContext))]
-    [Migration("20241215154600_creatthemes")]
-    partial class creatthemes
+    [Migration("20241230004132_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -792,6 +792,11 @@ namespace Wajba.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("DeletionTime");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(13)
+                        .HasColumnType("nvarchar(13)");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(256)
@@ -922,6 +927,10 @@ namespace Wajba.Migrations
                     b.HasIndex("UserName");
 
                     b.ToTable("AbpUsers", (string)null);
+
+                    b.HasDiscriminator().HasValue("IdentityUser");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Volo.Abp.Identity.IdentityUserClaim", b =>
@@ -1840,6 +1849,251 @@ namespace Wajba.Migrations
                     b.ToTable("Branches");
                 });
 
+            modelBuilder.Entity("Wajba.Models.BranchDomain.DineInTable", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BranchId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreationTime");
+
+                    b.Property<Guid?>("CreatorId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("CreatorId");
+
+                    b.Property<Guid?>("DeleterId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("DeleterId");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("DeletionTime");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false)
+                        .HasColumnName("IsDeleted");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("LastModificationTime");
+
+                    b.Property<Guid?>("LastModifierId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("LastModifierId");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("QrCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Size")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BranchId");
+
+                    b.ToTable("DineInTables", (string)null);
+                });
+
+            modelBuilder.Entity("Wajba.Models.Carts.Cart", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreationTime");
+
+                    b.Property<Guid?>("CreatorId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("CreatorId");
+
+                    b.Property<string>("CustomerId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("CustomerId1")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("DeleterId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("DeleterId");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("DeletionTime");
+
+                    b.Property<decimal?>("DeliveryFee")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<decimal?>("DiscountAmount")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false)
+                        .HasColumnName("IsDeleted");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("LastModificationTime");
+
+                    b.Property<Guid?>("LastModifierId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("LastModifierId");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("ServiceFee")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<decimal?>("SubTotal")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<decimal?>("TotalAmount")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<decimal?>("voucherCode")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId1");
+
+                    b.ToTable("Cart", (string)null);
+                });
+
+            modelBuilder.Entity("Wajba.Models.Carts.CartItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CartId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ImgUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ItemId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ItemName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("price")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CartId");
+
+                    b.HasIndex("ItemId");
+
+                    b.ToTable("CartItems", (string)null);
+                });
+
+            modelBuilder.Entity("Wajba.Models.CartsDomain.CartItemAddon", b =>
+                {
+                    b.Property<int>("AddonId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AddonId"));
+
+                    b.Property<decimal>("AdditionalPrice")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<string>("AddonName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CartItemId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AddonId");
+
+                    b.HasIndex("CartItemId");
+
+                    b.ToTable("CartItemAddon", (string)null);
+                });
+
+            modelBuilder.Entity("Wajba.Models.CartsDomain.CartItemExtra", b =>
+                {
+                    b.Property<int>("ExtraId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ExtraId"));
+
+                    b.Property<decimal>("AdditionalPrice")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<int>("CartItemId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ExtraName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ExtraId");
+
+                    b.HasIndex("CartItemId");
+
+                    b.ToTable("CartItemExtra", (string)null);
+                });
+
+            modelBuilder.Entity("Wajba.Models.CartsDomain.CartItemVariation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("AdditionalPrice")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<string>("Attributename")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CartItemId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("VariationName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CartItemId");
+
+                    b.ToTable("CartItemVariations", (string)null);
+                });
+
             modelBuilder.Entity("Wajba.Models.CategoriesDomain.Category", b =>
                 {
                     b.Property<int>("Id")
@@ -1887,12 +2141,82 @@ namespace Wajba.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<byte>("Status")
-                        .HasColumnType("tinyint");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.ToTable("categories", (string)null);
+                });
+
+            modelBuilder.Entity("Wajba.Models.CompanyDomain.Company", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CountryCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreationTime");
+
+                    b.Property<Guid?>("CreatorId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("CreatorId");
+
+                    b.Property<Guid?>("DeleterId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("DeleterId");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("DeletionTime");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false)
+                        .HasColumnName("IsDeleted");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("LastModificationTime");
+
+                    b.Property<Guid?>("LastModifierId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("LastModifierId");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("State")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WebsiteURL")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ZipCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Companies");
                 });
 
             modelBuilder.Entity("Wajba.Models.CouponsDomain.Coupon", b =>
@@ -1903,7 +2227,7 @@ namespace Wajba.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("BranchId")
+                    b.Property<int?>("BranchId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Code")
@@ -2040,6 +2364,55 @@ namespace Wajba.Migrations
                     b.ToTable("Currencies");
                 });
 
+            modelBuilder.Entity("Wajba.Models.FaqsDomain.FAQs", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Answer")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreationTime");
+
+                    b.Property<Guid?>("CreatorId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("CreatorId");
+
+                    b.Property<Guid?>("DeleterId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("DeleterId");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("DeletionTime");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false)
+                        .HasColumnName("IsDeleted");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("LastModificationTime");
+
+                    b.Property<Guid?>("LastModifierId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("LastModifierId");
+
+                    b.Property<string>("Question")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FAQs");
+                });
+
             modelBuilder.Entity("Wajba.Models.ItemAddonDomain.ItemAddon", b =>
                 {
                     b.Property<int>("Id")
@@ -2135,8 +2508,8 @@ namespace Wajba.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<byte>("Status")
-                        .HasColumnType("tinyint");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -2190,8 +2563,8 @@ namespace Wajba.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<byte>("Status")
-                        .HasColumnType("tinyint");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -2244,8 +2617,8 @@ namespace Wajba.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<byte>("Status")
-                        .HasColumnType("tinyint");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<int>("TaxRate")
                         .HasColumnType("int");
@@ -2311,8 +2684,8 @@ namespace Wajba.Migrations
                     b.Property<string>("Note")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<byte>("Status")
-                        .HasColumnType("tinyint");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -2387,8 +2760,8 @@ namespace Wajba.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18, 2)");
 
-                    b.Property<byte>("Status")
-                        .HasColumnType("tinyint");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<decimal?>("TaxValue")
                         .HasColumnType("decimal(18, 2)");
@@ -2470,12 +2843,64 @@ namespace Wajba.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<byte>("Status")
-                        .HasColumnType("tinyint");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.ToTable("Languages");
+                });
+
+            modelBuilder.Entity("Wajba.Models.OTPDomain.OTP", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreationTime");
+
+                    b.Property<Guid?>("CreatorId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("CreatorId");
+
+                    b.Property<Guid?>("DeleterId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("DeleterId");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("DeletionTime");
+
+                    b.Property<int>("DigitLimit")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ExpiryTimeInMinutes")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false)
+                        .HasColumnName("IsDeleted");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("LastModificationTime");
+
+                    b.Property<Guid?>("LastModifierId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("LastModifierId");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OTPs", (string)null);
                 });
 
             modelBuilder.Entity("Wajba.Models.OfferDomain.Offer", b =>
@@ -2540,8 +2965,8 @@ namespace Wajba.Migrations
                     b.Property<byte>("discountType")
                         .HasColumnType("tinyint");
 
-                    b.Property<byte>("status")
-                        .HasColumnType("tinyint");
+                    b.Property<int>("status")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -2646,6 +3071,158 @@ namespace Wajba.Migrations
                     b.ToTable("OfferItems", (string)null);
                 });
 
+            modelBuilder.Entity("Wajba.Models.OrderSetup.OrderSetup", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("BasicDeliveryCharge")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("ChargePerKilo")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreationTime");
+
+                    b.Property<Guid?>("CreatorId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("CreatorId");
+
+                    b.Property<Guid?>("DeleterId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("DeleterId");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("DeletionTime");
+
+                    b.Property<int>("FoodPreparationTime")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FreeDeliveryKilometer")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false)
+                        .HasColumnName("IsDeleted");
+
+                    b.Property<bool>("IsDeliveryEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsTakeawayEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("LastModificationTime");
+
+                    b.Property<Guid?>("LastModifierId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("LastModifierId");
+
+                    b.Property<int>("ScheduleOrderSlotDuration")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OrderSetups", (string)null);
+                });
+
+            modelBuilder.Entity("Wajba.Models.SiteDomain.Site", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AndroidAPPLink")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("BranchId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Copyrights")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreationTime");
+
+                    b.Property<Guid?>("CreatorId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("CreatorId");
+
+                    b.Property<int?>("CurrenciesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CurrencyId")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("DeleterId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("DeleterId");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("DeletionTime");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GoogleMapKey")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IOSAPPLink")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false)
+                        .HasColumnName("IsDeleted");
+
+                    b.Property<int>("LanguageId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("LastModificationTime");
+
+                    b.Property<Guid?>("LastModifierId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("LastModifierId");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("currencyPosition")
+                        .HasColumnType("int");
+
+                    b.Property<int>("languageSwitch")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BranchId");
+
+                    b.HasIndex("CurrenciesId");
+
+                    b.HasIndex("LanguageId");
+
+                    b.ToTable("Sites");
+                });
+
             modelBuilder.Entity("Wajba.Models.ThemesDomain.Theme", b =>
                 {
                     b.Property<int>("Id")
@@ -2696,6 +3273,65 @@ namespace Wajba.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Themes");
+                });
+
+            modelBuilder.Entity("Wajba.Models.TimeSlotsDomain.TimeSlot", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<TimeSpan>("ClosingTime")
+                        .HasColumnType("time");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreationTime");
+
+                    b.Property<Guid?>("CreatorId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("CreatorId");
+
+                    b.Property<Guid?>("DeleterId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("DeleterId");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("DeletionTime");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false)
+                        .HasColumnName("IsDeleted");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("LastModificationTime");
+
+                    b.Property<Guid?>("LastModifierId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("LastModifierId");
+
+                    b.Property<TimeSpan>("OpeningTime")
+                        .HasColumnType("time");
+
+                    b.Property<int>("WeekDay")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TimeSlots");
+                });
+
+            modelBuilder.Entity("Wajba.Models.UsersDomain.AppUser", b =>
+                {
+                    b.HasBaseType("Volo.Abp.Identity.IdentityUser");
+
+                    b.HasDiscriminator().HasValue("AppUser");
                 });
 
             modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLogAction", b =>
@@ -2840,15 +3476,83 @@ namespace Wajba.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Wajba.Models.CouponsDomain.Coupon", b =>
+            modelBuilder.Entity("Wajba.Models.BranchDomain.DineInTable", b =>
                 {
                     b.HasOne("Wajba.Models.BranchDomain.Branch", "Branch")
-                        .WithMany("Coupons")
+                        .WithMany()
                         .HasForeignKey("BranchId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Branch");
+                });
+
+            modelBuilder.Entity("Wajba.Models.Carts.Cart", b =>
+                {
+                    b.HasOne("Wajba.Models.UsersDomain.AppUser", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId1");
+
+                    b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("Wajba.Models.Carts.CartItem", b =>
+                {
+                    b.HasOne("Wajba.Models.Carts.Cart", "cart")
+                        .WithMany("CartItems")
+                        .HasForeignKey("CartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Wajba.Models.Items.Item", "Item")
+                        .WithMany()
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Item");
+
+                    b.Navigation("cart");
+                });
+
+            modelBuilder.Entity("Wajba.Models.CartsDomain.CartItemAddon", b =>
+                {
+                    b.HasOne("Wajba.Models.Carts.CartItem", "CartItem")
+                        .WithMany("SelectedAddons")
+                        .HasForeignKey("CartItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CartItem");
+                });
+
+            modelBuilder.Entity("Wajba.Models.CartsDomain.CartItemExtra", b =>
+                {
+                    b.HasOne("Wajba.Models.Carts.CartItem", "CartItem")
+                        .WithMany("SelectedExtras")
+                        .HasForeignKey("CartItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CartItem");
+                });
+
+            modelBuilder.Entity("Wajba.Models.CartsDomain.CartItemVariation", b =>
+                {
+                    b.HasOne("Wajba.Models.Carts.CartItem", "CartItem")
+                        .WithMany("SelectedVariations")
+                        .HasForeignKey("CartItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CartItem");
+                });
+
+            modelBuilder.Entity("Wajba.Models.CouponsDomain.Coupon", b =>
+                {
+                    b.HasOne("Wajba.Models.BranchDomain.Branch", null)
+                        .WithMany("Coupons")
+                        .HasForeignKey("BranchId");
                 });
 
             modelBuilder.Entity("Wajba.Models.ItemAddonDomain.ItemAddon", b =>
@@ -2916,7 +3620,7 @@ namespace Wajba.Migrations
                         .IsRequired();
 
                     b.HasOne("Wajba.Models.Items.Item", "Item")
-                        .WithMany()
+                        .WithMany("ItemBranches")
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -2975,6 +3679,31 @@ namespace Wajba.Migrations
                     b.Navigation("Offer");
                 });
 
+            modelBuilder.Entity("Wajba.Models.SiteDomain.Site", b =>
+                {
+                    b.HasOne("Wajba.Models.BranchDomain.Branch", "Branch")
+                        .WithMany()
+                        .HasForeignKey("BranchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Wajba.Models.CurrenciesDomain.Currencies", "Currencies")
+                        .WithMany()
+                        .HasForeignKey("CurrenciesId");
+
+                    b.HasOne("Wajba.Models.LanguageDomain.Language", "Language")
+                        .WithMany()
+                        .HasForeignKey("LanguageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Branch");
+
+                    b.Navigation("Currencies");
+
+                    b.Navigation("Language");
+                });
+
             modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLog", b =>
                 {
                     b.Navigation("Actions");
@@ -3024,6 +3753,20 @@ namespace Wajba.Migrations
                     b.Navigation("Offers");
                 });
 
+            modelBuilder.Entity("Wajba.Models.Carts.Cart", b =>
+                {
+                    b.Navigation("CartItems");
+                });
+
+            modelBuilder.Entity("Wajba.Models.Carts.CartItem", b =>
+                {
+                    b.Navigation("SelectedAddons");
+
+                    b.Navigation("SelectedExtras");
+
+                    b.Navigation("SelectedVariations");
+                });
+
             modelBuilder.Entity("Wajba.Models.CategoriesDomain.Category", b =>
                 {
                     b.Navigation("Items");
@@ -3039,6 +3782,8 @@ namespace Wajba.Migrations
             modelBuilder.Entity("Wajba.Models.Items.Item", b =>
                 {
                     b.Navigation("ItemAddons");
+
+                    b.Navigation("ItemBranches");
 
                     b.Navigation("ItemExtras");
 

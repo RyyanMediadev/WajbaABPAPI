@@ -1,6 +1,6 @@
 ﻿namespace Wajba.Enums;
 
-public enum OrderType:byte
+public enum OrderType
 {
     Delivery = 1,
     DriveThru = 2,

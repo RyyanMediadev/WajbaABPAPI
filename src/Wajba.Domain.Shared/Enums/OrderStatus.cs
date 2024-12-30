@@ -1,5 +1,5 @@
 ﻿namespace Wajba.Enums;
-public enum OrderStatus:byte
+public enum OrderStatus
 {
     Pending = 0,
     processing = 1,

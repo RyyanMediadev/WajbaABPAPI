@@ -10,7 +10,7 @@ public enum Status
     [Display(Description = "Active")]
     Active = 2 
 }
-public enum ItemType : byte
+public enum ItemType
 {
     [Description("NonVeg")]
     NonVeg = 0,

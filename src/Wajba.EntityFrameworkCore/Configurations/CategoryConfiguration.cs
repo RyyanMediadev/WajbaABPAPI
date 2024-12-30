@@ -10,7 +10,7 @@ public class CategoryConfiguration : IEntityTypeConfiguration<Category>
     public void Configure(EntityTypeBuilder<Category> builder)
     {
         builder.ConfigureByConvention();
-       //builder.Property(c => c.Status).HasConversion<int>();
+       builder.Property(c => c.Status).HasConversion<int>();
         builder.ToTable("categories");
     }
 }

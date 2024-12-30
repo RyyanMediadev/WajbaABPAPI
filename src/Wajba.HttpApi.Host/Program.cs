@@ -86,5 +86,5 @@ public class Program
         {
             Log.CloseAndFlush();
         }
-    }
+  }
 }

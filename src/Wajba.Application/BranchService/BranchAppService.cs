@@ -73,6 +73,6 @@ public class BranchAppService : ApplicationService
         Branch branch = await _branchRepository.GetAsync(id);
         if (branch == null)
             throw new Exception("No found");
-        await _branchRepository.DeleteAsync(id);
+        await _branchRepository.DeleteAsync(id,true);
     }
 }

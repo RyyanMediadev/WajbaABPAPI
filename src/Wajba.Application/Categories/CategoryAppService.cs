@@ -80,6 +80,6 @@ public class CategoryAppService : ApplicationService
         Category category = await _categoryRepository.GetAsync(id);
         if (category == null)
             throw new Exception("Not found");
-        await _categoryRepository.DeleteAsync(id);
+        await _categoryRepository.DeleteAsync(id,true);
     }
 }

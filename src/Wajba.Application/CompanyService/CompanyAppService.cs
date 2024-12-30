@@ -33,9 +33,9 @@ public class CompanyAppService : ApplicationService
         Company company1 = await _repository.InsertAsync(company, true);
         return ObjectMapper.Map<Company, CompanyDto>(company1);
     }
-    public async Task<CompanyDto> UpdateAsync(int id, CreateUpdateComanyDto input)
+    public async Task<CompanyDto> UpdateAsync( CreateUpdateComanyDto input)
     {
-        Company company = await _repository.FindAsync(id);
+        Company company = await _repository.FirstOrDefaultAsync();
         if (company == null)
             throw new Exception("Not Found");
         company.Address = input.Address;
@@ -52,21 +52,16 @@ public class CompanyAppService : ApplicationService
         Company company1 = await _repository.UpdateAsync(company, true);
         return ObjectMapper.Map<Company, CompanyDto>(company1);
     }
-    public async Task<CompanyDto> GetByIdAsync(int id)
+    public async Task<CompanyDto> GetByIdAsync()
     {
-        Company company = await _repository.GetAsync(id);
+        Company company = await _repository.FirstOrDefaultAsync();
+        if (company == null)
+            throw new Exception("Not Found");
         return ObjectMapper.Map<Company, CompanyDto>(company);
     }
     public async Task<PagedResultDto<CompanyDto>> GetListAsync(GetComanyInput input)
     {
         var queryable = await _repository.GetQueryableAsync();
-
-        // Apply filtering
-        queryable = queryable.WhereIf(
-            !string.IsNullOrWhiteSpace(input.Filter),
-            c => c.Name.Contains(input.Filter) || c.Email.Contains(input.Filter)
-        );
-
         // Get total count before applying pagination
         var totalCount = await AsyncExecuter.CountAsync(queryable);
 

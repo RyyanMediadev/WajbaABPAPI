@@ -35,12 +35,12 @@ public class SiteController :AbpController
             });
         }
     }
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateAsync(int id, [FromForm] CreateSiteDto input)
+    [HttpPut]
+    public async Task<IActionResult> UpdateAsync( [FromForm] CreateSiteDto input)
     {
         try
         {
-            var updatedsite = await _sitesAppservice.UpdateAsync(id, input);
+            var updatedsite = await _sitesAppservice.UpdateAsync(input);
             return Ok(new ApiResponse<object>
             {
                 Success = true,
@@ -58,12 +58,12 @@ public class SiteController :AbpController
             });
         }
     }
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetByIdAsync(int id)
+    [HttpGet]
+    public async Task<IActionResult> GetByIdAsync()
     {
         try
         {
-            SiteDto site = await _sitesAppservice.GetByIdAsync(id);
+            SiteDto site = await _sitesAppservice.GetByIdAsync();
             return Ok(new ApiResponse<object>
             {
                 Success = true,

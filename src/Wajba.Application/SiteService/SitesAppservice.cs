@@ -59,9 +59,9 @@ public class SitesAppservice : ApplicationService
   ObjectMapper.Map<List<Site>, List<SiteDto>>(sites)
 );
     }
-    public async Task<SiteDto> UpdateAsync(int id, CreateSiteDto input)
+    public async Task<SiteDto> UpdateAsync( CreateSiteDto input)
     {
-        Site site = await _repository.GetAsync(id);
+        Site site = await _repository.FirstOrDefaultAsync();
         if (site == null)
             throw new Exception("Site Not Found");
         Branch branch = await _repository1.FindAsync(input.BranchId);
@@ -87,9 +87,11 @@ public class SitesAppservice : ApplicationService
         Site site1 = await _repository.UpdateAsync(site, true);
         return ObjectMapper.Map<Site, SiteDto>(site1);
     }
-    public async Task<SiteDto> GetByIdAsync(int id)
+    public async Task<SiteDto> GetByIdAsync()
     {
-        Site site = await _repository.GetAsync(id);
+        Site site = await _repository.FirstOrDefaultAsync();
+        if (site == null)
+            throw new Exception("Not Found");
         return ObjectMapper.Map<Site, SiteDto>(site);
     }
     public async Task DeleteAsync(int id)

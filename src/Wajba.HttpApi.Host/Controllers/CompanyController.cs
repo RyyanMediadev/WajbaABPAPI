@@ -36,14 +36,14 @@ public class CompanyController : WajbaController
             });
         }
     }
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateAsync(int id, [FromForm] CreateUpdateComanyDto input)
+    [HttpPut]
+    public async Task<IActionResult> UpdateAsync( [FromForm] CreateUpdateComanyDto input)
     {
         if (!ModelState.IsValid)
             return BadRequest("Data is not valid");
         try
         {
-            CompanyDto companyDto = await _companyAppService.UpdateAsync(id, input);
+            CompanyDto companyDto = await _companyAppService.UpdateAsync(input);
             return Ok(new ApiResponse<object>
             {
                 Success = true,
@@ -66,7 +66,7 @@ public class CompanyController : WajbaController
     {
         try
         {
-            CompanyDto companyDto = await _companyAppService.GetByIdAsync(id);
+            CompanyDto companyDto = await _companyAppService.GetByIdAsync();
 
             return Ok(new ApiResponse<object>
             {

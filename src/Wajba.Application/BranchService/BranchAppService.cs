@@ -62,7 +62,6 @@ public class BranchAppService : ApplicationService
         var items = await AsyncExecuter.ToListAsync(queryable
             .OrderBy(input.Sorting ?? nameof(Branch.Name))
             .PageBy(input.SkipCount, input.MaxResultCount));
-
         return new PagedResultDto<BranchDto>(
             totalCount,
             ObjectMapper.Map<List<Branch>, List<BranchDto>>(items)
@@ -71,6 +70,9 @@ public class BranchAppService : ApplicationService
 
     public async Task DeleteAsync(int id)
     {
+        Branch branch = await _branchRepository.GetAsync(id);
+        if (branch == null)
+            throw new Exception("No found");
         await _branchRepository.DeleteAsync(id);
     }
 }

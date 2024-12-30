@@ -1,9 +1,5 @@
-﻿global using Wajba.Models.BranchDomain;
-global using Wajba.Dtos.BranchContract;
-using Volo.Abp;
-using Volo.Abp.Application.Services;
-using Volo.Abp.Application.Dtos;
-using Volo.Abp.Domain.Repositories;
+﻿global using Wajba.Dtos.BranchContract;
+global using Wajba.Models.BranchDomain;
 
 namespace Wajba.BranchService;
 
@@ -11,19 +7,13 @@ namespace Wajba.BranchService;
 public class BranchAppService : ApplicationService
 {
     private readonly IRepository<Branch, int> _branchRepository;
-    
-
     public BranchAppService(IRepository<Branch, int> branchRepository)
     {
         _branchRepository = branchRepository;
-       
     }
-
     public async Task<BranchDto> CreateAsync(CreateUpdateBranchDto input)
     {
-      
-
-        var branch = new Branch
+        Branch branch = new Branch
         {
             Name = input.Name,
             Longitude = input.Longitude,
@@ -36,15 +26,13 @@ public class BranchAppService : ApplicationService
             Address = input.Address,
             Status = input.Status
         };
-
-        var insertedBranch = await _branchRepository.InsertAsync(branch);
+        var insertedBranch = await _branchRepository.InsertAsync(branch, true);
         return ObjectMapper.Map<Branch, BranchDto>(insertedBranch);
     }
 
     public async Task<BranchDto> UpdateAsync(int id, CreateUpdateBranchDto input)
     {
         var branch = await _branchRepository.GetAsync(id);
-      
         branch.Name = input.Name;
         branch.Longitude = input.Longitude;
         branch.Latitude = input.Latitude;

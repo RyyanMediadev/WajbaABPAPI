@@ -46,7 +46,7 @@ public class LanguageAppService : ApplicationService
         return ObjectMapper.Map<Language, LanguageDto>(language);
     }
 
-    public async Task<LanguageDto> UpdateAsync(int id, CreateUpdateLanguageDto input)
+    public async Task<LanguageDto> UpdateAsync(int id, UpdateLanguagedto input)
     {
         var language = await _languageRepository.GetAsync(id);
         if (input.Image != null)

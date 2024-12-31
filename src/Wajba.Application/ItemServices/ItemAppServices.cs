@@ -99,21 +99,61 @@ public class ItemAppServices : ApplicationService
     public async Task<PagedResultDto<ItemDto>> GetListAsync(GetItemInput input)
     {
         IQueryable<Item> queryable = await _repository.GetQueryableAsync();
-        int totalCountt = await AsyncExecuter.CountAsync(queryable);
-        queryable = queryable.WhereIf(!string.IsNullOrWhiteSpace(input.Filter),
+        IQueryable<Category> categoryQueryable = await _repository1.GetQueryableAsync();
+
+        // Join query to include category name
+        var query = from item in queryable
+                    join category in categoryQueryable
+                    on item.CategoryId equals category.Id into categoryGroup
+                    from category in categoryGroup.DefaultIfEmpty()
+                    select new
+                    {
+                        item.Id,
+                        item.Name,
+                        item.Description,
+                        item.Price,
+                        item.ItemType,
+                        item.Status,
+                        item.IsFeatured,
+                        item.CategoryId,
+                        CategoryName = category != null ? category.Name : null
+                    };
+
+        // Apply filters
+        query = query.WhereIf(!string.IsNullOrWhiteSpace(input.Filter),
             c => c.Name.ToLower() == input.Filter.ToLower())
         .WhereIf(input.ItemType.HasValue, c => c.ItemType == (ItemType)input.ItemType.Value)
         .WhereIf(input.Status.HasValue, c => c.Status == (Status)input.Status)
-        .WhereIf(input.CategoryId.HasValue, p => p.CategoryId == input.CategoryId)
-        .WhereIf(input.MaxPrice.HasValue, p => p.Price <= input.MaxPrice.Value)
-        .WhereIf(input.IsFeatured.HasValue, p => p.IsFeatured == input.IsFeatured.Value);
-        int totalCount = await AsyncExecuter.CountAsync(queryable);
-        List<Item> items = await AsyncExecuter.ToListAsync(queryable
-            .OrderBy(input.Sorting ?? nameof(Item.Name))
-            .PageBy(input.SkipCount, input.MaxResultCount));
+        .WhereIf(input.CategoryId.HasValue, c => c.CategoryId == input.CategoryId)
+        .WhereIf(input.MaxPrice.HasValue, c => c.Price <= input.MaxPrice.Value)
+        .WhereIf(input.IsFeatured.HasValue, c => c.IsFeatured == input.IsFeatured.Value);
+
+        // Count total items after filtering
+        var totalCount = await AsyncExecuter.CountAsync(query);
+
+        // Fetch the filtered and paginated items
+        var itemsWithCategory = await AsyncExecuter.ToListAsync(
+            query.OrderBy(input.Sorting ?? nameof(Item.Name))
+                 .PageBy(input.SkipCount, input.MaxResultCount)
+        );
+
+        // Map to ItemDto
+        var itemDtos = itemsWithCategory.Select(x => new ItemDto
+        {
+            Id = x.Id,
+            Name = x.Name,
+            Description = x.Description,
+            Price = x.Price,
+            ItemType = x.ItemType.ToString(),
+            status = x.Status.ToString(),
+            IsFeatured = x.IsFeatured,
+            CategoryId = x.CategoryId,
+            CategoryName = x.CategoryName
+        }).ToList();
+
         return new PagedResultDto<ItemDto>(
             totalCount,
-            ObjectMapper.Map<List<Item>, List<ItemDto>>(items)
+            itemDtos
         );
     }
     public async Task DeleteAsync(int id)

@@ -2,7 +2,7 @@
 global using Wajba.BranchService;
 
 namespace Wajba.Controllers;
-[IgnoreAntiforgeryToken]
+
 public class BranchController : WajbaController
 {
     private readonly BranchAppService _branchAppService;
@@ -13,7 +13,7 @@ public class BranchController : WajbaController
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateAsync([FromForm] CreateUpdateBranchDto input)
+    public async Task<IActionResult> CreateAsync([FromForm] CreateBranchDto input)
     {
         try
         {
@@ -37,12 +37,12 @@ public class BranchController : WajbaController
         }
     }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateAsync(int id, [FromForm] CreateUpdateBranchDto input)
+    [HttpPut]
+    public async Task<IActionResult> UpdateAsync(  UpdateBranchDto input)
     {
         try
         {
-            var updatedBranch = await _branchAppService.UpdateAsync(id, input);
+            var updatedBranch = await _branchAppService.UpdateAsync(input.Id, input);
 
             return Ok(new ApiResponse<BranchDto>
             {

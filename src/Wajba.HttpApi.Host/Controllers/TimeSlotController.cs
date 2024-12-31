@@ -5,103 +5,24 @@ namespace Wajba.Controllers;
 
 public class TimeSlotController : WajbaController
 {
-    private readonly TimeSlotsAppservice _timeSlotsServices;
+    private readonly ITimeSlotAppService _timeSlotAppService;
 
-    public TimeSlotController(TimeSlotsAppservice timeSlotsServices)
+    public TimeSlotController(ITimeSlotAppService timeSlotAppService)
     {
-      _timeSlotsServices = timeSlotsServices;
-    }
-    [HttpPost]
-    public async Task<IActionResult> CreateAsync([FromForm] CreateTimeSlotDot input)
-    {
-        try
-        {
-            await _timeSlotsServices.CreateAsync(input);
-            return Ok(new ApiResponse<object>
-            {
-                Success = true,
-                Message = "TimeSlot created successfully.",
-                Data = input
-            });
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(new ApiResponse<object>
-            {
-                Success = false,
-                Message = $"Error creating timeslot: {ex.Message}",
-                Data = null
-            });
-        }
-    }
-
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateAsync(int id, [FromForm] CreateTimeSlotDot input)
-    {
-        try
-        {
-            TimeSlotDto timeSlotDto= await _timeSlotsServices.UpdateAsync(id, input);
-            return Ok(new ApiResponse<object>
-            {
-                Success = true,
-                Message = "timeslot updated successfully.",
-                Data = timeSlotDto
-            });
-        }
-        catch (EntityNotFoundException)
-        {
-            return NotFound(new ApiResponse<object>
-            {
-                Success = false,
-                Message = "timeslot not found.",
-                Data = null
-            });
-        }
-    }
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetByIdAsync(int id)
-    {
-        try
-        {
-            TimeSlotDto timeSlot = await _timeSlotsServices.GetByIdAsync(id);
-            return Ok(new ApiResponse<object>
-            {
-                Success = true,
-                Message = "timeslot retrieved successfully.",
-                Data = timeSlot
-            });
-        }
-        catch (EntityNotFoundException)
-        {
-            return NotFound(new ApiResponse<object>
-            {
-                Success = false,
-                Message = "timeslot not found.",
-                Data = null
-            });
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(new ApiResponse<object>
-            {
-                Success = false,
-                Message = $"Error retrieving timeslot: {ex.Message}",
-                Data = null
-            });
-        }
+        _timeSlotAppService = timeSlotAppService;
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetListAsync([FromQuery] GetTimeSlotInput input)
+    public async Task<IActionResult> GetAll()
     {
         try
         {
-            var pagedResultDto = await _timeSlotsServices.GetListAsync(input);
-            return Ok(new ApiResponse<PagedResultDto<TimeSlotDto>>
+            var timeSlots = await _timeSlotAppService.GetAllTimeSlotsAsync();
+            return Ok(new ApiResponse<List<TimeSlotDto>>
             {
                 Success = true,
-                Message = "timeslots retrieved successfully.",
-                Data = pagedResultDto
+                Message = "TimeSlots retrieved successfully.",
+                Data = timeSlots
             });
         }
         catch (Exception ex)
@@ -109,42 +30,35 @@ public class TimeSlotController : WajbaController
             return BadRequest(new ApiResponse<object>
             {
                 Success = false,
-                Message = $"Error retrieving timeslot: {ex.Message}",
-                Data = null
-            });
-        }
-    }
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteAsync(int id)
-    {
-        try
-        {
-            await _timeSlotsServices.DeleteAsync(id);
-            return Ok(new ApiResponse<object>
-            {
-                Success = true,
-                Message = "timeslot deleted successfully.",
-                Data = null
-            });
-        }
-        catch (EntityNotFoundException)
-        {
-            return NotFound(new ApiResponse<object>
-            {
-                Success = false,
-                Message = "timeslot not found.",
-                Data = null
-            });
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(new ApiResponse<object>
-            {
-                Success = false,
-                Message = $"Error deleting timeslot: {ex.Message}",
+                Message = $"Error retrieving timeslots: {ex.Message}",
                 Data = null
             });
         }
     }
 
+    [HttpPut]
+    public async Task<IActionResult> Update([FromBody] List<UpdateTimeSlotDto> updateTimeSlotDtos)
+    {
+        try
+        {
+            await _timeSlotAppService.UpdateTimeSlotsAsync(updateTimeSlotDtos);
+            return Ok(new ApiResponse<object>
+            {
+                Success = true,
+                Message = "TimeSlots updated successfully.",
+                Data = null
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ApiResponse<object>
+            {
+                Success = false,
+                Message = $"Error updating timeslots: {ex.Message}",
+                Data = null
+            });
+        }
+    }
 }
+
+

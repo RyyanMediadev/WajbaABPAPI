@@ -7,7 +7,7 @@ global using Wajba.Dtos.Categories;
 
 namespace Wajba.Controllers;
 
-[IgnoreAntiforgeryToken]
+
     public class CategoryController : WajbaController
     {
         private readonly CategoryAppService _categoryAppService;

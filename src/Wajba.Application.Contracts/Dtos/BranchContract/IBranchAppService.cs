@@ -6,6 +6,6 @@ public interface IBranchAppService : ICrudAppService<
 BranchDto,
 int,
 PagedAndSortedResultRequestDto,
-CreateUpdateBranchDto>
+CreateBranchDto>
 {
 }

@@ -11,7 +11,7 @@ public class BranchAppService : ApplicationService
     {
         _branchRepository = branchRepository;
     }
-    public async Task<BranchDto> CreateAsync(CreateUpdateBranchDto input)
+    public async Task<BranchDto> CreateAsync(CreateBranchDto input)
     {
         Branch branch = new Branch
         {
@@ -30,7 +30,7 @@ public class BranchAppService : ApplicationService
         return ObjectMapper.Map<Branch, BranchDto>(insertedBranch);
     }
 
-    public async Task<BranchDto> UpdateAsync(int id, CreateUpdateBranchDto input)
+    public async Task<BranchDto> UpdateAsync(int id, UpdateBranchDto input)
     {
         var branch = await _branchRepository.GetAsync(id);
         branch.Name = input.Name;
@@ -58,10 +58,17 @@ public class BranchAppService : ApplicationService
     public async Task<PagedResultDto<BranchDto>> GetListAsync(GetBranchInput input)
     {
         var queryable = await _branchRepository.GetQueryableAsync();
+
+        queryable = queryable.WhereIf(
+            !string.IsNullOrWhiteSpace(input.Filter),
+            b => b.Name.Contains(input.Filter) || b.City.Contains(input.Filter)
+        );
+
         var totalCount = await AsyncExecuter.CountAsync(queryable);
         var items = await AsyncExecuter.ToListAsync(queryable
             .OrderBy(input.Sorting ?? nameof(Branch.Name))
             .PageBy(input.SkipCount, input.MaxResultCount));
+
         return new PagedResultDto<BranchDto>(
             totalCount,
             ObjectMapper.Map<List<Branch>, List<BranchDto>>(items)
@@ -70,9 +77,6 @@ public class BranchAppService : ApplicationService
 
     public async Task DeleteAsync(int id)
     {
-        Branch branch = await _branchRepository.GetAsync(id);
-        if (branch == null)
-            throw new Exception("No found");
-        await _branchRepository.DeleteAsync(id,true);
+        await _branchRepository.DeleteAsync(id);
     }
 }

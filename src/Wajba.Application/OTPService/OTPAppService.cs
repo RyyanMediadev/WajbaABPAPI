@@ -23,7 +23,7 @@ namespace Wajba.OTPService
             var insertedOTP = await _repository.InsertAsync(otp, true);
             return ObjectMapper.Map<OTP, OTPDto>(insertedOTP);
         }
-        public async Task<OTPDto> UpdateAsync(int id, CreateUpdateOTPDto input)
+        public async Task<OTPDto> UpdateAsync(int id, UpdateOtpDto input)
         {
             OTP otp = await _repository.GetAsync(id);
             if (otp == null)

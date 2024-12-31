@@ -83,12 +83,12 @@ public class OTPController : AbpController
             });
         }
     }
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateAsync(int id, [FromBody] CreateUpdateOTPDto input)
+    [HttpPut]
+    public async Task<IActionResult> UpdateAsync( UpdateOtpDto input)
     {
         try
         {
-            var updatedOTP = await _oTPAppService.UpdateAsync(id, input);
+            var updatedOTP = await _oTPAppService.UpdateAsync(input.Id, input);
             return Ok(new ApiResponse<OTPDto>
             {
                 Success = true,

@@ -131,8 +131,29 @@ namespace Wajba.Controllers;
                 });
             }
         }
-
-
+    [HttpGet("getcategoryItems")]
+    public async Task<IActionResult> GetCategoryItemsdto(int branchid)
+    {
+        try
+        {
+            var categories = await _categoryAppService.GetCategoryItemsDtosAsync(branchid);
+            return Ok(new ApiResponse<PagedResultDto<CategoryItemsDto>>
+            {
+                Success = true,
+                Message = "Categories retrieved successfully.",
+                Data = categories
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ApiResponse<object>
+            {
+                Success = false,
+                Message = $"Error retrieving categories: {ex.Message}",
+                Data = null
+            });
+        }
+    }
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAsync(int id)
         {

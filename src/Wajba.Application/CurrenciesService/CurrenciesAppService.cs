@@ -24,7 +24,7 @@ namespace Wajba.CurrenciesService
             var insertedCurrencies = await _repository.InsertAsync(currencies,true);
             return ObjectMapper.Map<Currencies, CurrenciesDto>(insertedCurrencies);
         }
-        public async Task<CurrenciesDto> UpdateAsync(int id, CreateUpdateCurrenciesDto input)
+        public async Task<CurrenciesDto> UpdateAsync(int id, UpadteCurrency input)
         {
             Currencies currencies = await _repository.GetAsync(id);
             if (input == null)

@@ -9,6 +9,7 @@ global using Volo.Abp.Domain.Repositories;
 global using Wajba.Dtos.Categories;
 global using Wajba.Models.CategoriesDomain;
 global using Wajba.Services.ImageService;
+using Wajba.Models.BranchDomain;
 
 namespace Wajba.Categories;
 
@@ -66,26 +67,72 @@ public class CategoryAppService : ApplicationService
     public async Task<PagedResultDto<CategoryDto>> GetListAsync(GetCategoryInput input)
     {
         //IQueryable<Category> queryable = await _categoryRepository.GetQueryableAsync();
-        IQueryable<Category> queryable = await _categoryRepository.WithDetailsAsync();
-
-        queryable = queryable.WhereIf(
+        IQueryable<Category> queryable = await _categoryRepository.WithDetailsAsync(p=>p.Items);
+         queryable = queryable.WhereIf(
             !string.IsNullOrWhiteSpace(input.Name),
             c => c.Name.ToLower() == input.Name.ToLower()
         );
+        List<CategoryDto> categoryItemsDtos = ObjectMapper.Map<List<Category>, List<CategoryDto>>(await AsyncExecuter.ToListAsync(queryable
+            .OrderBy(input.Sorting ?? nameof(Category.Name))
+            .PageBy(input.SkipCount, input.MaxResultCount)));
+        if (input.BranchId.HasValue)
+        {
+            categoryItemsDtos = new List<CategoryDto>();
+            foreach (var category in queryable)
+            {
+                if (category.Items.Any(p => p.ItemBranches.Any(l => l.BranchId == input.BranchId.Value)))
+                {
+                    var categoryItemsDto = new CategoryDto
+                    {
+                        Id = category.Id,
+                        name = category.Name,
+                        Description = category.Description,
+                        status = category.Status,
+                        ImageUrl = category.ImageUrl,
+                        IsFilled = true,
+                        TotalItems = category.Items.Count
+                    };
+                    foreach (var item in category.Items)
+                    {
+                        categoryItemsDto.Items.Add(ObjectMapper.Map<Item, ItemDto>(item));
+                    }
+                    if (categoryItemsDto.Items.Count > 0)
+                    {
+                        categoryItemsDtos.Add(categoryItemsDto);
+                    }
+                }
+                else
+                {
+                    var categoryItemsDto = new CategoryDto
+                    {
+                        Id = category.Id,
+                        name = category.Name,
+                        Description = category.Description,
+                        status = category.Status,
+                        ImageUrl = category.ImageUrl,
+                        IsFilled = false,
+                        TotalItems = 0
+                    };
+                    //categoryItemsDtos.Add(categoryItemsDto);
+                }
+            }
+        }
         int totalCount = await AsyncExecuter.CountAsync(queryable);
-
         List<Category> items = await AsyncExecuter.ToListAsync(queryable
             .OrderBy(input.Sorting ?? nameof(Category.Name))
             .PageBy(input.SkipCount, input.MaxResultCount));
         return new PagedResultDto<CategoryDto>(
             totalCount,
-            ObjectMapper.Map<List<Category>, List<CategoryDto>>(items)
-        );
+            categoryItemsDtos);
+        //return new PagedResultDto<CategoryDto>(
+        //    totalCount,
+        //    ObjectMapper.Map<List<Category>, List<CategoryDto>>(items)
+        //);
     }
    public async Task<PagedResultDto<CategoryItemsDto>> GetCategoryItemsDtosAsync(int branchid)
     {
         var queryable = await _categoryRepository.WithDetailsAsync(x => x.Items);
-        IList<CategoryItemsDto> categoryItemsDtos=new List<CategoryItemsDto>();
+        List<CategoryItemsDto> categoryItemsDtos = new List<CategoryItemsDto>();
         foreach (var category in queryable)
         {
             if (category.Items.Any(p => p.ItemBranches.Any(l => l.BranchId == branchid)))
@@ -106,7 +153,9 @@ public class CategoryAppService : ApplicationService
                     }
                 }
                 if (categoryItemsDto.Items.Count > 0)
-                    categoryItemsDtos.Add(categoryItemsDto);
+                { categoryItemsDtos.Add(categoryItemsDto);
+                    categoryItemsDto.IsFilled = true;
+                }
             }
         }
         int totalCount = categoryItemsDtos.Count;

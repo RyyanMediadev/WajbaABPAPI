@@ -26,36 +26,40 @@ public class CategoryAppService : ApplicationService
 
     public async Task<CategoryDto> CreateAsync(CreateUpdateCategoryDto input)
     {
-        string? imageUrl = null;
-        if (input.Image != null)
-            imageUrl = await _imageService.UploadAsync(input.Image);
+        if (input.Image == null)
+            throw new Exception("Image is required");
         var category = new Category
         {
             Name = input.name,
             Description = input.Description,
-            ImageUrl = imageUrl,
             Status = input.status
         };
-        var insertedCategory = await _categoryRepository.InsertAsync(category);
+        category.ImageUrl = await _imageService.UploadAsync(input.Image);
+        var insertedCategory = await _categoryRepository.InsertAsync(category, true);
         return ObjectMapper.Map<Category, CategoryDto>(insertedCategory);
     }
 
     public async Task<CategoryDto> UpdateAsync(int id, CreateUpdateCategoryDto input)
     {
         Category category = await _categoryRepository.GetAsync(id);
-        if (input.Image != null)
-            category.ImageUrl = await _imageService.UploadAsync(input.Image);
+        if (category == null)
+            throw new Exception("Not found");
+        if (input.Image == null)
+            throw new Exception("Image is required");
+        category.ImageUrl = await _imageService.UploadAsync(input.Image);
         category.Name = input.name;
         category.Description = input.Description;
         category.Status = input.status;
         category.LastModificationTime = DateTime.UtcNow;
-        Category updatedcategory = await _categoryRepository.UpdateAsync(category);
+        Category updatedcategory = await _categoryRepository.UpdateAsync(category, true);
         return ObjectMapper.Map<Category, CategoryDto>(updatedcategory);
     }
 
     public async Task<CategoryDto> GetByIdAsync(int id)
     {
         Category category = await _categoryRepository.GetAsync(id);
+        if (category == null)
+            throw new Exception("Not found");
         return ObjectMapper.Map<Category, CategoryDto>(category);
     }
 
@@ -64,7 +68,7 @@ public class CategoryAppService : ApplicationService
         IQueryable<Category> queryable = await _categoryRepository.GetQueryableAsync();
         queryable = queryable.WhereIf(
             !string.IsNullOrWhiteSpace(input.Filter),
-            c => c.Name.Contains(input.Filter) || c.Description.Contains(input.Filter)
+            c => c.Name.Contains(input.Filter)
         );
         int totalCount = await AsyncExecuter.CountAsync(queryable);
         List<Category> items = await AsyncExecuter.ToListAsync(queryable

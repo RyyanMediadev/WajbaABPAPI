@@ -51,6 +51,7 @@ namespace Wajba.OfferService
                 throw new Exception("Image is required");
             if (await _branchrepo.GetAsync(input.BranchId) == null)
                 throw new Exception("Branch not found");
+
             ObjectMapper.Map(input, offer);
             offer.ImageUrl = await _fileUploadService.UploadAsync(input.Image);
             var updatedOffer = await _offerRepository.UpdateAsync(offer);

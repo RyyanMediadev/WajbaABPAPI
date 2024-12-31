@@ -38,7 +38,7 @@ public class OTPController : AbpController
         }
     }
     [HttpGet]
-    public async Task<IActionResult> GetAll(PagedAndSortedResultRequestDto dto)
+    public async Task<IActionResult> GetAll( PagedAndSortedResultRequestDto dto)
     {
         try
         {

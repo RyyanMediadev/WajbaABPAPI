@@ -5,7 +5,7 @@ namespace Wajba.Models.Carts;
 public class Cart: FullAuditedEntity<int>
 {
     public string? CustomerId { get; set; }
-    public virtual AppUser Customer { get; set; }
+    public virtual User Customer { get; set; }
     public ICollection<CartItem> CartItems { get; set; } = new List<CartItem>();
     public decimal? TotalAmount { get; set; }
     public decimal? SubTotal { get; set; }

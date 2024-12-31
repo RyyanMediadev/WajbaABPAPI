@@ -98,7 +98,7 @@ public class SitesAppservice : ApplicationService
     {
         if (await _repository.FindAsync(id) == null)
             throw new Exception("Not Found");
-        await _repository.DeleteAsync(id);
+        await _repository.DeleteAsync(id, true);
 
     }
 }

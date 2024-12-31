@@ -1,5 +1,4 @@
 ﻿global using Wajba.Dtos.TimeSlotsContract;
-global using Wajba.TimeSlotsServices;
 
 namespace Wajba.Controllers;
 

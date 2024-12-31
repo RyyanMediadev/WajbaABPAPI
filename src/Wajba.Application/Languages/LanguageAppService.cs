@@ -1,5 +1,6 @@
 ﻿global using Wajba.Models.LanguageDomain;
 global using Wajba.Dtos.Languages;
+using Volo.Abp.ObjectMapping;
 
 namespace Wajba.Languages;
 
@@ -18,12 +19,14 @@ public class LanguageAppService : ApplicationService
 
     public async Task<PagedResultDto<LanguageDto>> GetListAsync(PagedAndSortedResultRequestDto input)
     {
-        var query = await _languageRepository.GetPagedListAsync(input.SkipCount, input.MaxResultCount, input.Sorting);
-        var totalCount = await _languageRepository.GetCountAsync();
-
+        var query = await _languageRepository.GetQueryableAsync();
+        var items = await AsyncExecuter.ToListAsync(query
+            .OrderBy(input.Sorting ?? nameof(Language.Name))
+            .PageBy(input.SkipCount, input.MaxResultCount));
+        var totalCount = await AsyncExecuter.CountAsync(query);
         return new PagedResultDto<LanguageDto>(
             totalCount,
-            ObjectMapper.Map<List<Language>, List<LanguageDto>>(query)
+            ObjectMapper.Map<List<Language>, List<LanguageDto>>(items)
         );
     }
 

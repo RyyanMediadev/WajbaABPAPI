@@ -6,12 +6,36 @@ namespace Wajba.Controllers;
 public class TimeSlotController : WajbaController
 {
     private readonly ITimeSlotAppService _timeSlotAppService;
-
+    
     public TimeSlotController(ITimeSlotAppService timeSlotAppService)
     {
         _timeSlotAppService = timeSlotAppService;
+     
     }
-
+    [HttpPost("seed")]
+    [IgnoreAntiforgeryToken]
+    public async Task<IActionResult> SeedData()
+    {
+        try
+        {
+            await _timeSlotAppService.SeedTimeSlotsAsync();
+            return Ok(new ApiResponse<object>
+            {
+                Success = true,
+                Message = "TimeSlots seeded successfully.",
+                Data = null
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ApiResponse<object>
+            {
+                Success = false,
+                Message = $"Error seeding timeslots: {ex.Message}",
+                Data = null
+            });
+        }
+    }
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {

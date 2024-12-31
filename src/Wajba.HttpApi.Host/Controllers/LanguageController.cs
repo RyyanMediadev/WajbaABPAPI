@@ -1,6 +1,5 @@
 ﻿global using Wajba.Languages;
-using Wajba.APIResponse;
-using Wajba.Dtos.Languages;
+global using Wajba.Dtos.Languages;
 
 namespace Wajba.Controllers;
 
@@ -15,7 +14,7 @@ public class LanguageController : AbpController
         _languageAppService = languageAppService;
     }
     [HttpGet]
-    public async Task<IActionResult> GetAll(PagedAndSortedResultRequestDto dto)
+    public async Task<IActionResult> GetAll([FromForm] PagedAndSortedResultRequestDto dto)
     {
         try
         {

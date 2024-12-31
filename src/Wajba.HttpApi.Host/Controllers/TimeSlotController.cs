@@ -1,14 +1,15 @@
 ﻿global using Wajba.Dtos.TimeSlotsContract;
+global using Wajba.TimeSlotsServices;
 
 namespace Wajba.Controllers;
 
 public class TimeSlotController : WajbaController
 {
-    private readonly ITimeSlotAppService _timeSlotAppService;
+    private readonly TimeSlotsAppservice _timeSlotsAppservice;
 
-    public TimeSlotController(ITimeSlotAppService timeSlotAppService)
+    public TimeSlotController(TimeSlotsAppservice timeSlotsAppservice)
     {
-        _timeSlotAppService = timeSlotAppService;
+        _timeSlotsAppservice = timeSlotsAppservice;
     }
 
     [HttpGet]
@@ -16,7 +17,7 @@ public class TimeSlotController : WajbaController
     {
         try
         {
-            var timeSlots = await _timeSlotAppService.GetAllTimeSlotsAsync();
+            var timeSlots = await _timeSlotsAppservice.GetAllTimeSlotsAsync();
             return Ok(new ApiResponse<List<TimeSlotDto>>
             {
                 Success = true,
@@ -40,7 +41,7 @@ public class TimeSlotController : WajbaController
     {
         try
         {
-            await _timeSlotAppService.UpdateTimeSlotsAsync(updateTimeSlotDtos);
+            await _timeSlotsAppservice.UpdateTimeSlotsAsync(updateTimeSlotDtos);
             return Ok(new ApiResponse<object>
             {
                 Success = true,

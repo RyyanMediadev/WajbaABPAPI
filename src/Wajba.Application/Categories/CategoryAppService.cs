@@ -110,7 +110,6 @@ public class CategoryAppService : ApplicationService
             totalCount,
             (IReadOnlyList<CategoryItemsDto>)categoryItemsDtos
         );
-        //return (List<CategoryItemsDto>)/*categoryItemsDtos*/;
     }
     public async Task DeleteAsync(int id)
     {

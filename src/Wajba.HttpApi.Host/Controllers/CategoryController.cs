@@ -43,13 +43,12 @@ namespace Wajba.Controllers;
             }
         }
 
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAsync(int id, [FromForm] CreateUpdateCategoryDto input)
+        [HttpPut]
+        public async Task<IActionResult> UpdateAsync(UpdateCategory input)
         {
             try
             {
-               var updatedcategory= await _categoryAppService.UpdateAsync(id, input);
+               var updatedcategory= await _categoryAppService.UpdateAsync(input.Id, input);
                 return Ok(new ApiResponse<CategoryDto>
                 {
                     Success = true,

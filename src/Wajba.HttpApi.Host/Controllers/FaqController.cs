@@ -36,12 +36,12 @@ public class FaqController : WajbaController
         }
     }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateAsync(int id, [FromForm] CreateFaqs input)
+    [HttpPut]
+    public async Task<IActionResult> UpdateAsync( UpadtefaqDto input)
     {
         try
         {
-            FaqDto faqDto = await _faqAppService.UpdateAsync(id, input);
+            FaqDto faqDto = await _faqAppService.UpdateAsync(input.Id, input);
             return Ok(new ApiResponse<object>
             {
                 Success = true,

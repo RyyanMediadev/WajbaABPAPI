@@ -39,7 +39,7 @@ public class CategoryAppService : ApplicationService
         return ObjectMapper.Map<Category, CategoryDto>(insertedCategory);
     }
 
-    public async Task<CategoryDto> UpdateAsync(int id, CreateUpdateCategoryDto input)
+    public async Task<CategoryDto> UpdateAsync(int id, UpdateCategory input)
     {
         Category category = await _categoryRepository.GetAsync(id);
         if (category == null)

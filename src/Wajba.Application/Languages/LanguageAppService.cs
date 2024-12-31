@@ -1,6 +1,5 @@
-﻿global using Wajba.Models.LanguageDomain;
-global using Wajba.Dtos.Languages;
-using Volo.Abp.ObjectMapping;
+﻿global using Wajba.Dtos.Languages;
+global using Wajba.Models.LanguageDomain;
 
 namespace Wajba.Languages;
 
@@ -32,37 +31,48 @@ public class LanguageAppService : ApplicationService
 
     public async Task<LanguageDto> GetAsync(int id)
     {
-        var language = await _languageRepository.GetAsync(id);
+        Language language = await _languageRepository.GetAsync(id);
+        if (language == null)
+            throw new Exception("Not found");
         return ObjectMapper.Map<Language, LanguageDto>(language);
     }
 
     public async Task<LanguageDto> CreateAsync(CreateUpdateLanguageDto input)
     {
-        string imageUrl = await _imageUploadService.UploadAsync(input.Image); // Upload image
-        var language = ObjectMapper.Map<CreateUpdateLanguageDto, Language>(input);
-        language.ImageUrl = imageUrl;
-
-        await _languageRepository.InsertAsync(language);
+        if(input.Image == null)
+            throw new Exception("Image is required");
+        Language language = new Language()
+        {
+            Code = input.Code,
+            Name = input.Name,
+            Status = input.Status
+        };
+       language.ImageUrl = await _imageUploadService.UploadAsync(input.Image); // Upload image
+        await _languageRepository.InsertAsync(language, true);
         return ObjectMapper.Map<Language, LanguageDto>(language);
     }
 
     public async Task<LanguageDto> UpdateAsync(int id, UpdateLanguagedto input)
     {
-        var language = await _languageRepository.GetAsync(id);
-        if (input.Image != null)
-        {
-            string imageUrl = await _imageUploadService.UploadAsync(input.Image);
-            language.ImageUrl = imageUrl;
-        }
-
-        ObjectMapper.Map(input, language); // Map other properties
-
-        await _languageRepository.UpdateAsync(language);
+        Language language = await _languageRepository.GetAsync(id);
+        if (language == null)
+            throw new Exception("Not found");
+        if (input.Image == null)
+            throw new Exception("Image is required");
+        language.ImageUrl = await _imageUploadService.UploadAsync(input.Image);
+        language.Status = input.Status;
+        language.Code = input.Code;
+        language.Name = input.Name;
+        language.LastModificationTime = DateTime.UtcNow;
+        await _languageRepository.UpdateAsync(language, true);
         return ObjectMapper.Map<Language, LanguageDto>(language);
     }
 
     public async Task DeleteAsync(int id)
     {
+        Language language = await _languageRepository.GetAsync(id);
+        if (language == null)
+            throw new Exception("Not found");
         await _languageRepository.DeleteAsync(id);
     }
 }

@@ -1,26 +1,60 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Wajba.Dtos.OTPContract;
-using Wajba.Models.OTPDomain;
+﻿global using Wajba.Dtos.OTPContract;
+global using Wajba.Models.OTPDomain;
 
 namespace Wajba.OTPService
 {
     [RemoteService(false)]
-    public class OTPAppService : CrudAppService<
-    OTP, // The entity
-    OTPDto, // DTO for retrieving data
-    int, // Primary key type
-    PagedAndSortedResultRequestDto, // Paging and sorting
-    CreateUpdateOTPDto, // DTO for creating and updating
-    CreateUpdateOTPDto>, // DTO for updating
-    IOTPAppService // Interface
+    public class OTPAppService : ApplicationService
     {
+        private readonly IRepository<OTP, int> _repository;
+
         public OTPAppService(IRepository<OTP, int> repository)
-            : base(repository)
         {
+            _repository = repository;
+        }
+        public async Task<OTPDto> CreateAsync(CreateUpdateOTPDto input)
+        {
+            OTP otp = new OTP
+            {
+                DigitLimit = input.DigitLimit,
+                ExpiryTimeInMinutes = input.ExpiryTimeInMinutes,
+            };
+            var insertedOTP = await _repository.InsertAsync(otp, true);
+            return ObjectMapper.Map<OTP, OTPDto>(insertedOTP);
+        }
+        public async Task<OTPDto> UpdateAsync(int id, CreateUpdateOTPDto input)
+        {
+            OTP otp = await _repository.GetAsync(id);
+            if (otp == null)
+                throw new Exception("Not found");
+            otp.DigitLimit = input.DigitLimit;
+            otp.ExpiryTimeInMinutes = input.ExpiryTimeInMinutes;
+            otp.LastModificationTime = DateTime.UtcNow;
+            OTP updatedOTP = await _repository.UpdateAsync(otp, true);
+            return ObjectMapper.Map<OTP, OTPDto>(updatedOTP);
+        }
+        public async Task<OTPDto> GetByIdAsync(int id)
+        {
+            OTP otp = await _repository.GetAsync(id);
+            if (otp == null)
+                throw new Exception("Not found");
+            return ObjectMapper.Map<OTP, OTPDto>(otp);
+        }
+        public async Task<PagedResultDto<OTPDto>> GetAllAsync(PagedAndSortedResultRequestDto input)
+        {
+            var otps = await _repository.GetListAsync();
+            return new PagedResultDto<OTPDto>
+            {
+                TotalCount = otps.Count,
+                Items = ObjectMapper.Map<List<OTP>, List<OTPDto>>(otps)
+            };
+        }
+        public async Task DeleteAsync(int id)
+        {
+            OTP otp = await _repository.GetAsync(id);
+            if (otp == null)
+                throw new Exception("Not found");
+            await _repository.DeleteAsync(otp);
         }
     }
 }

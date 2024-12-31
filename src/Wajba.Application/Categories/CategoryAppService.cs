@@ -79,6 +79,39 @@ public class CategoryAppService : ApplicationService
             ObjectMapper.Map<List<Category>, List<CategoryDto>>(items)
         );
     }
+   public async Task<PagedResultDto<CategoryItemsDto>> GetCategoryItemsDtosAsync(int branchid)
+    {
+        var queryable = await _categoryRepository.WithDetailsAsync(x => x.Items);
+        IList<CategoryItemsDto> categoryItemsDtos=new List<CategoryItemsDto>();
+        foreach (var category in queryable)
+        {
+            if (category.Items.Any(p => p.ItemBranches.Any(l => l.BranchId == branchid)))
+            {
+                var categoryItemsDto = new CategoryItemsDto
+                {
+                    Id = category.Id,
+                    Name = category.Name,
+                    Description = category.Description,
+                    Status = category.Status,
+                    ImageUrl = category.ImageUrl,
+                };
+                foreach (var item in category.Items)
+                {
+                    if (item.ItemBranches.Any(p => p.BranchId == branchid))
+                    {
+                        categoryItemsDto.Items.Add(ObjectMapper.Map<Item, ItemDto>(item));
+                    }
+                }
+                categoryItemsDtos.Add(categoryItemsDto);
+            }
+        }
+        int totalCount = categoryItemsDtos.Count;
+        return new PagedResultDto<CategoryItemsDto>(
+            totalCount,
+            (IReadOnlyList<CategoryItemsDto>)categoryItemsDtos
+        );
+        //return (List<CategoryItemsDto>)/*categoryItemsDtos*/;
+    }
     public async Task DeleteAsync(int id)
     {
         Category category = await _categoryRepository.GetAsync(id);

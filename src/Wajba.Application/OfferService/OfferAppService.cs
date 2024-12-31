@@ -60,6 +60,8 @@ namespace Wajba.OfferService
         public async Task<OfferDto> GetAsync(int id)
         {
             var offer = await _offerRepository.GetAsync(id);
+            if (offer == null)
+                throw new Exception("Not found");
             return ObjectMapper.Map<Offer, OfferDto>(offer);
         }
 
@@ -76,6 +78,9 @@ namespace Wajba.OfferService
 
         public async Task DeleteAsync(int id)
         {
+            var offer = await _offerRepository.GetAsync(id);
+            if (offer == null)
+                throw new Exception("Not found");
             await _offerRepository.DeleteAsync(id);
         }
     }

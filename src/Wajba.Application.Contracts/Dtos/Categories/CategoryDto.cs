@@ -9,6 +9,7 @@ public class CategoryDto : EntityDto<int>
     public string? ImageUrl { get; set; }
     public Status status { get; set; }
     public string Description { get; set; }
+    public bool IsFilled { get; set; }
 }
 public class GetCategoryInput : PagedAndSortedResultRequestDto
 {

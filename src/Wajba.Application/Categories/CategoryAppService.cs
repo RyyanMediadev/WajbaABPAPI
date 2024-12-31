@@ -132,7 +132,7 @@ public class CategoryAppService : ApplicationService
    public async Task<PagedResultDto<CategoryItemsDto>> GetCategoryItemsDtosAsync(int branchid)
     {
         var queryable = await _categoryRepository.WithDetailsAsync(x => x.Items);
-        IList<CategoryItemsDto> categoryItemsDtos=new List<CategoryItemsDto>();
+        List<CategoryItemsDto> categoryItemsDtos = new List<CategoryItemsDto>();
         foreach (var category in queryable)
         {
             if (category.Items.Any(p => p.ItemBranches.Any(l => l.BranchId == branchid)))

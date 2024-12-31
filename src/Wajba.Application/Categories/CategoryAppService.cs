@@ -67,8 +67,8 @@ public class CategoryAppService : ApplicationService
     {
         IQueryable<Category> queryable = await _categoryRepository.GetQueryableAsync();
         queryable = queryable.WhereIf(
-            !string.IsNullOrWhiteSpace(input.Filter),
-            c => c.Name.Contains(input.Filter)
+            !string.IsNullOrWhiteSpace(input.Name),
+            c => c.Name.ToLower() == input.Name.ToLower()
         );
         int totalCount = await AsyncExecuter.CountAsync(queryable);
         List<Category> items = await AsyncExecuter.ToListAsync(queryable

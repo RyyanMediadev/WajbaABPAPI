@@ -12,5 +12,5 @@ public class CategoryDto : EntityDto<int>
 }
 public class GetCategoryInput : PagedAndSortedResultRequestDto
 {
-    public string? Filter { get; set; }
+    public string? Name { get; set; }
 }

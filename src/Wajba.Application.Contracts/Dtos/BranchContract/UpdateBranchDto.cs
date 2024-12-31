@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Wajba.Dtos.BranchContract
+﻿namespace Wajba.Dtos.BranchContract
 {
     public class UpdateBranchDto
     {
@@ -12,7 +6,9 @@ namespace Wajba.Dtos.BranchContract
         public string Name { get; set; }
         public double Longitude { get; set; }
         public double Latitude { get; set; }
+        [Required,EmailAddress]
         public string Email { get; set; }
+        [Phone]
         public string Phone { get; set; }
         public string City { get; set; }
         public string State { get; set; }

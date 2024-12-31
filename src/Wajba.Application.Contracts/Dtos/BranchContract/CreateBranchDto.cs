@@ -5,7 +5,9 @@ public class CreateBranchDto
     public string Name { get; set; }
     public double Longitude { get; set; }
     public double Latitude { get; set; }
+    [Required,EmailAddress]
     public string Email { get; set; }
+    [Required,Phone]
     public string Phone { get; set; }
     public string City { get; set; }
     public string State { get; set; }

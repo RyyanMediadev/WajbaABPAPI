@@ -1,5 +1,6 @@
 ﻿global using Wajba.Dtos.OTPContract;
 global using Wajba.Models.OTPDomain;
+global using Volo.Abp.Domain.Entities;
 
 namespace Wajba.OTPService
 {
@@ -37,7 +38,7 @@ namespace Wajba.OTPService
         {
             OTP otp = await _repository.GetAsync(id);
             if (otp == null)
-                throw new Exception("Not found");
+                throw new EntityNotFoundException(typeof(OTP), id);
             return ObjectMapper.Map<OTP, OTPDto>(otp);
         }
         public async Task<PagedResultDto<OTPDto>> GetAllAsync(PagedAndSortedResultRequestDto input)
@@ -53,7 +54,7 @@ namespace Wajba.OTPService
         {
             OTP otp = await _repository.GetAsync(id);
             if (otp == null)
-                throw new Exception("Not found");
+                throw new EntityNotFoundException(typeof(OTP), id);
             await _repository.DeleteAsync(otp);
         }
     }

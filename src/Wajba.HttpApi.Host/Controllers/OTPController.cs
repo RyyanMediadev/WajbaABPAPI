@@ -60,7 +60,7 @@ public class OTPController : AbpController
             });
         }
     }
-        [HttpGet("{id}")]
+    [HttpGet("{id}")]
     public async Task<IActionResult> GetAsync(int id)
     {
         try
@@ -73,18 +73,9 @@ public class OTPController : AbpController
                 Data = oTPDto
             });
         }
-        catch (EntityNotFoundException)
+        catch (EntityNotFoundException ex)
         {
             return NotFound(new ApiResponse<object>
-            {
-                Success = false,
-                Message = "OTP not found.",
-                Data = null
-            });
-        }
-        catch(Exception ex)
-        {
-            return BadRequest(new ApiResponse<object>
             {
                 Success = false,
                 Message = $"Error retrieving OTP: {ex.Message}",
@@ -105,18 +96,9 @@ public class OTPController : AbpController
                 Data = updatedOTP
             });
         }
-        catch (EntityNotFoundException)
+        catch (EntityNotFoundException ex)
         {
             return NotFound(new ApiResponse<object>
-            {
-                Success = false,
-                Message = "OTP not found.",
-                Data = null
-            });
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(new ApiResponse<object>
             {
                 Success = false,
                 Message = $"Error updating OTP: {ex.Message}",
@@ -137,18 +119,9 @@ public class OTPController : AbpController
                 Data = null
             });
         }
-        catch (EntityNotFoundException)
+        catch (EntityNotFoundException ex)
         {
             return NotFound(new ApiResponse<object>
-            {
-                Success = false,
-                Message = "OTP not found.",
-                Data = null
-            });
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(new ApiResponse<object>
             {
                 Success = false,
                 Message = $"Error deleting OTP: {ex.Message}",

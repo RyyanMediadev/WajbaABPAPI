@@ -1,13 +1,5 @@
-﻿global using Microsoft.AspNetCore.Mvc;
-global using Volo.Abp.Application.Dtos;
-global using Volo.Abp.Domain.Entities;
-global using Wajba.APIResponse;
-global using Wajba.Categories;
-global using Wajba.Dtos.Categories;
-using System.Net;
-using Wajba.Dtos.UserDTO;
+﻿using Wajba.Dtos.UserDTO;
 using Wajba.UserAppService;
-using Wajba.Users;
 
 namespace Wajba.Controllers;
 

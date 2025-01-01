@@ -5,6 +5,7 @@ global using Wajba.Models.LanguageDomain;
 global using Wajba.Models.SiteDomain;
 global using Wajba.Models.ThemesDomain;
 global using Wajba.Models.TimeSlotsDomain;
+using System.Reflection;
 using Wajba.Models.OrderSetup;
 
 namespace Wajba.EntityFrameworkCore;
@@ -83,6 +84,6 @@ public class WajbaDbContext :
 
         /* Configure your own tables/entities inside here */
 
-        builder.ApplyConfigurationsFromAssembly(typeof(WajbaDbContext).Assembly);
+        builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 }

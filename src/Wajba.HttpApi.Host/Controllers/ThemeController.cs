@@ -1,5 +1,6 @@
 ﻿global using Wajba.ThemesService;
 global using Wajba.Dtos.ThemesContract;
+using Microsoft.AspNetCore.Http;
 
 namespace Wajba.Controllers;
 
@@ -13,8 +14,14 @@ public class ThemeController : WajbaController
        _themesAppservice = themesAppservice;
     }
     [HttpPost]
-    public async Task<IActionResult> CreateAsync([FromForm] CreateThemesDto input)
+    public async Task<IActionResult> CreateAsync( IFormFile BrowserTabIconUrl, IFormFile FooterLogoUrl, IFormFile LogoUrl)
     {
+        CreateThemesDto input = new CreateThemesDto()
+        {
+            BrowserTabIconUrl = BrowserTabIconUrl,
+            FooterLogoUrl = FooterLogoUrl,
+            LogoUrl = LogoUrl
+        };
         try
         {
             // Call the service to create the theme
@@ -39,8 +46,14 @@ public class ThemeController : WajbaController
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateAsync(int id, [FromForm] CreateThemesDto input)
+    public async Task<IActionResult> UpdateAsync(int id, IFormFile BrowserTabIconUrl, IFormFile FooterLogoUrl, IFormFile LogoUrl)
     {
+        CreateThemesDto input = new CreateThemesDto()
+        {
+            BrowserTabIconUrl = BrowserTabIconUrl,
+            FooterLogoUrl = FooterLogoUrl,
+            LogoUrl = LogoUrl
+        };
         try
         {
             var updatedcategory = await _themesAppservice.UpdateAsync(id, input);

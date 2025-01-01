@@ -2756,6 +2756,9 @@ namespace Wajba.Migrations
                     b.Property<decimal?>("TaxValue")
                         .HasColumnType("decimal(18, 2)");
 
+                    b.Property<int>("oop")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");

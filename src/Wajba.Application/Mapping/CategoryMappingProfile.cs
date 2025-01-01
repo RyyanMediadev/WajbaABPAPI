@@ -1,6 +1,4 @@
 ﻿global using AutoMapper;
-using Nelibur.ObjectMapper;
-using System;
 
 namespace Wajba.Mapping;
 

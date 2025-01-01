@@ -13,7 +13,6 @@ public class Program
 {
     public async static Task<int> Main(string[] args)
     {
-        Console.WriteLine("dskj");
         Log.Logger = new LoggerConfiguration()
 #if DEBUG
             .MinimumLevel.Debug()

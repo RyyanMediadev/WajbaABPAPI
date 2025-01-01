@@ -9,6 +9,7 @@ global using Volo.Abp.Domain.Repositories;
 global using Wajba.Dtos.Categories;
 global using Wajba.Models.CategoriesDomain;
 global using Wajba.Services.ImageService;
+using Volo.Abp.Uow;
 
 namespace Wajba.Categories;
 
@@ -17,11 +18,14 @@ public class CategoryAppService : ApplicationService
 {
     private readonly IRepository<Category, int> _categoryRepository;
     private readonly IImageService _imageService;
+    private readonly IUnitOfWorkManager _unitOfWorkManager;
 
-    public CategoryAppService(IRepository<Category, int> categoryRepository, IImageService imageService)
+    public CategoryAppService(IRepository<Category, int> categoryRepository, IImageService imageService,
+        IUnitOfWorkManager unitOfWorkManager)
     {
         _categoryRepository = categoryRepository;
         _imageService = imageService;
+    _unitOfWorkManager = unitOfWorkManager;
     }
 
     public async Task<CategoryDto> CreateAsync(CreateUpdateCategoryDto input)

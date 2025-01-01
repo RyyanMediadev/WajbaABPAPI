@@ -1,4 +1,4 @@
-﻿using Wajba.Dtos.PopularItemstoday;
+﻿global using Wajba.Dtos.PopularItemstoday;
 
 namespace Wajba.Mapping;
 
@@ -13,6 +13,5 @@ public class PopularItemmapping:Profile
             .ForMember(dest => dest.PrePrice, opt => opt.MapFrom(src => src.PrePrice))
             .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.ImageUrl))
             .ReverseMap();
-
     }
 }

@@ -1,16 +1,12 @@
-﻿using System;
-using System.IO;
-using System.Security.Cryptography;
-using System.Text;
+﻿global using System.IO;
+global using System.Security.Cryptography;
+global using System.Text;
 
 namespace BLayer.Security
 {
     public static class EncryptANDDecrypt
     {
         private static readonly string encryptionPassword = "123";
-       
-
-       
 
         private static readonly byte[] salt = Encoding.ASCII.GetBytes("123");
 

@@ -1,17 +1,5 @@
-﻿using AutoMapper.Internal.Mappers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Volo.Abp.Application.Dtos;
-using Volo.Abp.Application.Services;
-using Volo.Abp.Domain.Repositories;
-
-using Wajba.Models.OfferDomain;
-
-using Wajba.OffersContract;
-using Wajba.Services.ImageService;
+﻿global using Wajba.Models.OfferDomain;
+global using Wajba.OffersContract;
 
 namespace Wajba.OfferService
 {
@@ -20,41 +8,52 @@ namespace Wajba.OfferService
     {
         private readonly IRepository<Offer, int> _offerRepository;
         private readonly IImageService _fileUploadService;
-       
-      
+        private readonly IRepository<Branch, int> _branchrepo;
 
-        public OfferAppService( IRepository<Offer, int> offerRepository, IImageService imageService)
+        public OfferAppService(IRepository<Offer, int> offerRepository,
+            IImageService imageService,
+            IRepository<Branch, int> branchrepo)
         {
             _offerRepository = offerRepository;
             _fileUploadService = imageService;
+            _branchrepo = branchrepo;
         }
 
         public async Task<OfferDto> CreateAsync(CreateUpdateOfferDto input)
         {
-            var offer = ObjectMapper.Map<CreateUpdateOfferDto, Offer>(input);
-
-            // Upload image
-            if (input.Image != null)
+            Branch branch = await _branchrepo.GetAsync(input.BranchId);
+            if (branch == null)
+                throw new Exception("Branch not found");
+            if (input.Image == null)
+                throw new Exception("Image is required");
+            Offer offer = new Offer()
             {
-                offer.ImageUrl = await _fileUploadService.UploadAsync(input.Image);
-            }
-
-            var createdOffer = await _offerRepository.InsertAsync(offer);
+                Name = input.Name,
+                Description = input.Description,
+                DiscountPercentage = input.DiscountPercentage,
+                StartDate = input.StartDate,
+                EndDate = input.EndDate,
+                BranchId = input.BranchId,
+            };
+            offer.discountType = (Enums.DiscountType)input.DiscountType;
+            offer.status = (Enums.Status)input.Status;
+            offer.ImageUrl = await _fileUploadService.UploadAsync(input.Image);
+            var createdOffer = await _offerRepository.InsertAsync(offer, true);
             return ObjectMapper.Map<Offer, OfferDto>(createdOffer);
         }
 
         public async Task<OfferDto> UpdateAsync(int id, CreateUpdateOfferDto input)
         {
             var offer = await _offerRepository.GetAsync(id);
+            if (offer == null)
+                throw new Exception("Not found");
+            if (input.Image == null)
+                throw new Exception("Image is required");
+            if (await _branchrepo.GetAsync(input.BranchId) == null)
+                throw new Exception("Branch not found");
 
             ObjectMapper.Map(input, offer);
-
-            // Handle image update
-            if (input.Image != null)
-            {
-                offer.ImageUrl = await _fileUploadService.UploadAsync(input.Image);
-            }
-
+            offer.ImageUrl = await _fileUploadService.UploadAsync(input.Image);
             var updatedOffer = await _offerRepository.UpdateAsync(offer);
             return ObjectMapper.Map<Offer, OfferDto>(updatedOffer);
         }
@@ -62,6 +61,8 @@ namespace Wajba.OfferService
         public async Task<OfferDto> GetAsync(int id)
         {
             var offer = await _offerRepository.GetAsync(id);
+            if (offer == null)
+                throw new Exception("Not found");
             return ObjectMapper.Map<Offer, OfferDto>(offer);
         }
 
@@ -78,6 +79,9 @@ namespace Wajba.OfferService
 
         public async Task DeleteAsync(int id)
         {
+            var offer = await _offerRepository.GetAsync(id);
+            if (offer == null)
+                throw new Exception("Not found");
             await _offerRepository.DeleteAsync(id);
         }
     }

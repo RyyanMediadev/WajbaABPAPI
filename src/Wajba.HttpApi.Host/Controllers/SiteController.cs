@@ -13,6 +13,8 @@ public class SiteController :WajbaController
     [HttpPost]
     public async Task<IActionResult> CreateAsync([FromForm] CreateSiteDto input)
     {
+        if(!ModelState.IsValid)
+            return BadRequest("Data is not valid");
         try
         {
             await _sitesAppservice.CreateAsync(input);
@@ -34,8 +36,10 @@ public class SiteController :WajbaController
         }
     }
     [HttpPut]
-    public async Task<IActionResult> UpdateAsync( [FromForm] CreateSiteDto input)
+    public async Task<IActionResult> UpdateAsync(  CreateSiteDto input)
     {
+        if (!ModelState.IsValid)
+            return BadRequest("Data is not valid");
         try
         {
             var updatedsite = await _sitesAppservice.UpdateAsync(input);

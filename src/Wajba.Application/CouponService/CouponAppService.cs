@@ -62,7 +62,7 @@ public class CouponAppService : ApplicationService
     }
 
     // Update Coupon
-    public async Task<CouponDto> UpdateAsync(int id, CreateUpdateCouponDto input)
+    public async Task<CouponDto> UpdateAsync(int id, UpdateCoupondto input)
     {
         var coupon = await _couponRepository.GetAsync(id);
 

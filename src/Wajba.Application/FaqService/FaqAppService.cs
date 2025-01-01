@@ -22,7 +22,7 @@ public class FaqAppService : ApplicationService
         FAQs fAQs1 = await _repository.InsertAsync(fAQs, true);
         return ObjectMapper.Map<FAQs, FaqDto>(fAQs1);
     }
-    public async Task<FaqDto> UpdateAsync(int id, CreateFaqs input)
+    public async Task<FaqDto> UpdateAsync(int id, UpadtefaqDto input)
     {
         FAQs fAQs = await _repository.FindAsync(id);
         if (fAQs == null)

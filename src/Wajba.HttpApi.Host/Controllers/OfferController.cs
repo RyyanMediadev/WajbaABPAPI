@@ -1,6 +1,5 @@
 ﻿global using Wajba.OffersContract;
 global using Wajba.OfferService;
-using Wajba.APIResponse;
 
 namespace Wajba.Controllers
 {

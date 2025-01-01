@@ -4,11 +4,11 @@ public class CreateSiteDto
 {
     [Required]
     public string Name { get; set; }
-    [Required]
+    [Required,EmailAddress]
     public string Email { get; set; }
-    [Required]
+    [Required,Url]
     public string IOSAPPLink { get; set; }
-    [Required]
+    [Required,Url]
     public string AndroidAPPLink { get; set; }
     [Required]
     public string Copyrights { get; set; }

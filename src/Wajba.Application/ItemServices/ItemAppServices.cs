@@ -64,8 +64,8 @@ public class ItemAppServices : ApplicationService
         Item item = await _repository.FindAsync(id);
         if (item == null)
             throw new Exception("Item not found");
-        if (input.ImageUrl != null)
-            item.ImageUrl = await _imageService.UploadAsync(input.ImageUrl);
+        if (input.ImageUrl == null)
+            throw new Exception("Image is required");
         Category category = await _repository1.FindAsync(input.CategoryId);
         if (category == null)
             throw new Exception("Category not found");
@@ -77,6 +77,7 @@ public class ItemAppServices : ApplicationService
                 throw new Exception("Branch not found");
             itemBranches.Add(new ItemBranch() { BranchId = branchId, Branch = branch });
         }
+        item.ImageUrl = await _imageService.UploadAsync(input.ImageUrl);
         item.Name = input.Name;
         item.Description = input.Description;
         item.CategoryId = input.CategoryId;
@@ -94,6 +95,7 @@ public class ItemAppServices : ApplicationService
     public async Task<ItemDto> GetByIdAsync(int id)
     {
         Item item = await _repository.GetAsync(id);
+        if (item == null) throw new Exception("Not found");
         return ObjectMapper.Map<Item, ItemDto>(item);
     }
     public async Task<PagedResultDto<ItemDto>> GetListAsync(GetItemInput input)

@@ -13,34 +13,119 @@ public class LanguageController : AbpController
     {
         _languageAppService = languageAppService;
     }
-
     [HttpGet]
-    public async Task<PagedResultDto<LanguageDto>> GetListAsync([FromQuery] PagedAndSortedResultRequestDto input)
+    public async Task<IActionResult> GetAll([FromForm] PagedAndSortedResultRequestDto dto)
     {
-        return await _languageAppService.GetListAsync(input);
+        try
+        {
+            var languages = await _languageAppService.GetListAsync(dto);
+            return Ok(new ApiResponse<PagedResultDto<LanguageDto>>
+            {
+                Data = languages,
+                Message = "Languages retrieved successfully.",
+                Success = true
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ApiResponse<object>
+            {
+                Success = false,
+                Data = null,
+                Message = $"Error retrieving languages: {ex.Message}",
+            });
+        }
     }
-
     [HttpGet("{id}")]
-    public async Task<LanguageDto> GetAsync(int id)
+    public async Task<IActionResult> GetByIdAsync(int id)
     {
-        return await _languageAppService.GetAsync(id);
+        try
+        {
+            LanguageDto languageDto = await _languageAppService.GetAsync(id);
+            return Ok(new ApiResponse<object>
+            {
+                Data = languageDto,
+                Success = true,
+                Message = "Language retrieved successfully.",
+            });
+        }
+        catch (EntityNotFoundException)
+        {
+            return NotFound(new ApiResponse<object>
+            {
+                Success = false,
+                Message = "Language not found.",
+                Data = null
+            });
+        }
     }
-
     [HttpPost]
-    public async Task<LanguageDto> CreateAsync([FromForm] CreateUpdateLanguageDto input)
+    public async Task<IActionResult> Createasync(CreateUpdateLanguageDto languageDto)
     {
-        return await _languageAppService.CreateAsync(input);
+        try
+        {
+            await _languageAppService.CreateAsync(languageDto);
+            return Ok(new ApiResponse<object>
+            {
+                Data = languageDto,
+                Success = true,
+                Message = "Language created successfully.",
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ApiResponse<object>
+            {
+                Success = false,
+                Message = $"Error creating language: {ex.Message}",
+                Data = null
+            });
+        }
     }
-
-    [HttpPut("{id}")]
-    public async Task<LanguageDto> UpdateAsync(int id, [FromForm] CreateUpdateLanguageDto input)
+    [HttpPut]
+    public async Task<IActionResult> Upadte(UpdateLanguagedto update)
     {
-        return await _languageAppService.UpdateAsync(id, input);
+        try
+        {
+            LanguageDto languageDto = await _languageAppService.UpdateAsync(update.Id, update);
+            return Ok(new ApiResponse<object>
+            {
+                Data = languageDto,
+                Success = true,
+                Message = "language updated successfully.",
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ApiResponse<object>()
+            {
+                Message = "language not found.",
+                Success = false,
+                Data = null
+            });
+        }
     }
-
     [HttpDelete("{id}")]
-    public async Task DeleteAsync(int id)
+    public async Task<IActionResult> DeleteAsync(int id)
     {
-        await _languageAppService.DeleteAsync(id);
+        try
+        {
+            await _languageAppService.DeleteAsync(id);
+            return Ok(new ApiResponse<object>
+            {
+                Success = true,
+                Message = "Language deleted successfully.",
+                Data = null
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ApiResponse<object>
+            {
+                Success = false,
+                Message = $"Error deleting language: {ex.Message}",
+                Data = null
+            });
+        }
     }
 }

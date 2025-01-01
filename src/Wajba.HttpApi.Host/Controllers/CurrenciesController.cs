@@ -37,12 +37,12 @@ namespace Wajba.Controllers
                 });
             }
         }
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAsync(int id, [FromBody] CreateUpdateCurrenciesDto input)
+        [HttpPut]
+        public async Task<IActionResult> UpdateAsync(  UpadteCurrency input)
         {
             try
             {
-                var updatedCurrencies = await _currenciesAppService.UpdateAsync(id, input);
+                var updatedCurrencies = await _currenciesAppService.UpdateAsync(input.Id, input);
                 return Ok(new ApiResponse<CurrenciesDto>
                 {
                     Success = true,

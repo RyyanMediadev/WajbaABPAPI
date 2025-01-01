@@ -22,8 +22,6 @@ public class CreateUpdateComanyDto
     public string ZipCode { get; set; }
     [Required]
     public string Address { get; set; }
-    
-   
     public CreateUpdateComanyDto()
     {
         

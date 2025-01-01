@@ -91,12 +91,12 @@ public class CouponController : WajbaController
     }
 
     // Update Coupon
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateAsync(int id, [FromForm] CreateUpdateCouponDto input)
+    [HttpPut]
+    public async Task<IActionResult> UpdateAsync( UpdateCoupondto input)
     {
         try
         {
-            var updatedCoupon = await _couponAppService.UpdateAsync(id, input);
+            var updatedCoupon = await _couponAppService.UpdateAsync(input.Id, input);
             return Ok(new ApiResponse<CouponDto>
             {
                 Success = true,

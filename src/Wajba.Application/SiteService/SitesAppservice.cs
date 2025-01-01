@@ -22,27 +22,27 @@ public class SitesAppservice : ApplicationService
     }
     public async Task<SiteDto> CreateAsync(CreateSiteDto input)
     {
-        Branch branch = await _repository1.FindAsync(input.BranchId);
+        Branch branch = await _repository1.FindAsync(input.defaultBranch);
         if (branch == null)
             throw new Exception("Branch Not Found");
-        if (await _repository2.FindAsync(input.CurrencyId) == null)
+        if (await _repository2.FindAsync(input.defaultCurrency) == null)
             throw new Exception("Currency Not Found");
-        if (await _repository3.FindAsync(input.LanguageId) == null)
+        if (await _repository3.FindAsync(input.defaultLanguage) == null)
             throw new Exception("Language Not Found");
         Site site = new Site()
         {
-            AndroidAPPLink = input.AndroidAPPLink,
-            BranchId = input.BranchId,
-            CurrencyId = input.CurrencyId,
-            currencyPosition = input.CurrencyPosition,
+            AndroidAPPLink = input.androidAPPLink,
+            BranchId = input.defaultBranch,
+            CurrencyId = input.defaultCurrency,
+            currencyPosition = input.currencyPosition,
             Email = input.Email,
-            GoogleMapKey = input.GoogleMapKey,
+            GoogleMapKey = input.googleMapKey,
             Copyrights = input.Copyrights,
-            Quantity = input.Quantity,
+            Quantity = input.digitAfterDecimal,
             Name = input.Name,
-            LanguageId = input.LanguageId,
-            languageSwitch = input.LanguageSwitch,
-            IOSAPPLink = input.IOSAPPLink,
+            LanguageId = input.defaultLanguage,
+            languageSwitch = input.languageSwitch,
+            IOSAPPLink = input.iosappLink,
             IsDeleted = false,
         };
         Site site1 = await _repository.InsertAsync(site, true);
@@ -64,25 +64,25 @@ public class SitesAppservice : ApplicationService
         Site site = await _repository.FirstOrDefaultAsync();
         if (site == null)
             throw new Exception("Site Not Found");
-        Branch branch = await _repository1.FindAsync(input.BranchId);
+        Branch branch = await _repository1.FindAsync(input.defaultBranch);
         if (branch == null)
             throw new Exception("Branch Not Found");
-        if (await _repository2.FindAsync(input.CurrencyId) == null)
+        if (await _repository2.FindAsync(input.defaultCurrency) == null)
             throw new Exception("Currency Not Found");
-        if (await _repository3.FindAsync(input.LanguageId) == null)
+        if (await _repository3.FindAsync(input.defaultLanguage) == null)
             throw new Exception("Language Not Found");
         site.Name = input.Name;
         site.Email = input.Email;
-        site.IOSAPPLink = input.IOSAPPLink;
-        site.AndroidAPPLink = input.AndroidAPPLink;
+        site.IOSAPPLink = input.iosappLink;
+        site.AndroidAPPLink = input.androidAPPLink;
         site.Copyrights = input.Copyrights;
-        site.GoogleMapKey = input.GoogleMapKey;
-        site.Quantity = input.Quantity;
-        site.currencyPosition = input.CurrencyPosition;
-        site.languageSwitch = input.LanguageSwitch;
-        site.BranchId = input.BranchId;
-        site.CurrencyId = input.CurrencyId;
-        site.LanguageId = input.LanguageId;
+        site.GoogleMapKey = input.googleMapKey;
+        site.Quantity = input.digitAfterDecimal;
+        site.currencyPosition = input.currencyPosition;
+        site.languageSwitch = input.languageSwitch;
+        site.BranchId = input.defaultBranch;
+        site.CurrencyId = input.defaultCurrency;
+        site.LanguageId = input.defaultLanguage;
         site.LastModificationTime = System.DateTime.UtcNow;
         Site site1 = await _repository.UpdateAsync(site, true);
         return ObjectMapper.Map<Site, SiteDto>(site1);

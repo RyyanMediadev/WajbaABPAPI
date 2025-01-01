@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Wajba.Dtos.OrderSetupContract;
-using Wajba.Models.OrderSetup;
+﻿global using Wajba.Dtos.OrderSetupContract;
+global using Wajba.Models.OrderSetup;
 
 namespace Wajba.OrderSetupService
 {

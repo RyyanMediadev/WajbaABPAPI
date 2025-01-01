@@ -7,23 +7,23 @@ public class CreateSiteDto
     [Required,EmailAddress]
     public string Email { get; set; }
     [Required,Url]
-    public string IOSAPPLink { get; set; }
+    public string iosappLink { get; set; }
     [Required,Url]
-    public string AndroidAPPLink { get; set; }
+    public string androidAPPLink { get; set; }
     [Required]
     public string Copyrights { get; set; }
     [Required]
-    public string GoogleMapKey { get; set; }
+    public string googleMapKey { get; set; }
     [Required]
-    public int Quantity { get; set; }
+    public int digitAfterDecimal { get; set; }
     [Required]
-    public CurrencyPosition CurrencyPosition { get; set; }
+    public CurrencyPosition currencyPosition { get; set; }
     [Required]
-    public LanguageSwitch LanguageSwitch { get; set; }
+    public LanguageSwitch languageSwitch { get; set; }
     [Required]
-    public int BranchId { get; set; }
+    public int defaultBranch { get; set; }
     [Required]
-    public int CurrencyId { get; set; }
+    public int defaultCurrency { get; set; }
     [Required]
-    public int LanguageId { get; set; }
+    public int defaultLanguage { get; set; }
 }

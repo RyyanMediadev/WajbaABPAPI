@@ -58,11 +58,10 @@ namespace Wajba.OrderSetupService
         public async Task<PagedResultDto<OrderSetupDto>> GetListAsync(GetOrderSetupInput input)
         {
             var queryable = await _orderSetupRepository.GetQueryableAsync();
-            var totalCount = await AsyncExecuter.CountAsync(queryable);
+            int totalCount = await AsyncExecuter.CountAsync(queryable);
             var items = await AsyncExecuter.ToListAsync(queryable
                 .OrderBy(input.Sorting ?? nameof(OrderSetup.FoodPreparationTime))
                 .PageBy(input.SkipCount, input.MaxResultCount));
-
             return new PagedResultDto<OrderSetupDto>(
                 totalCount,
                 ObjectMapper.Map<List<OrderSetup>, List<OrderSetupDto>>(items)

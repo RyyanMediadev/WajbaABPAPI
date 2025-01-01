@@ -9,4 +9,5 @@ public class CreatePopularitem
     public decimal preprice { get; set; }
     public decimal currentprice { get; set; }
     public string Description { get; set; }
+    public int BranchId { get; set; }
 }

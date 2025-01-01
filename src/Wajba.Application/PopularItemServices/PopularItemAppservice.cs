@@ -30,8 +30,8 @@ public class PopularItemAppservice:ApplicationService
         Category category = await _categoryrepo.GetAsync(item.CategoryId);
         if (input.ImgFile == null)
             throw new Exception("Image is required");
-        Branch branch = item.ItemBranches.FirstOrDefault().Branch;
-        if(branch == null)
+        Branch branch = item.ItemBranches.FirstOrDefault(p=>p.BranchId==input.BranchId).Branch;
+        if (branch == null)
             throw new EntityNotFoundException(typeof(Branch), item.ItemBranches.FirstOrDefault().BranchId);
         PopularItem popularitem = new PopularItem()
         {

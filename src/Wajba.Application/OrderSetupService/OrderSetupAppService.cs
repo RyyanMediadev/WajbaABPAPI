@@ -55,16 +55,14 @@ namespace Wajba.OrderSetupService
         public async Task<OrderSetupDto> GetByIdAsync(int id)
         {
             var orderSetup = await _orderSetupRepository.GetAsync(id);
+            if (orderSetup == null)
+                throw new EntityNotFoundException(typeof(OrderSetup), id);
             return ObjectMapper.Map<OrderSetup, OrderSetupDto>(orderSetup);
         }
 
         public async Task<PagedResultDto<OrderSetupDto>> GetListAsync(GetOrderSetupInput input)
         {
             var queryable = await _orderSetupRepository.GetQueryableAsync();
-            queryable = queryable.WhereIf(!string.IsNullOrWhiteSpace(input.Filter),
-                os => os.FoodPreparationTime.ToString().Contains(input.Filter) ||
-                      os.ScheduleOrderSlotDuration.ToString().Contains(input.Filter));
-
             var totalCount = await AsyncExecuter.CountAsync(queryable);
             var items = await AsyncExecuter.ToListAsync(queryable
                 .OrderBy(input.Sorting ?? nameof(OrderSetup.FoodPreparationTime))
@@ -78,6 +76,9 @@ namespace Wajba.OrderSetupService
 
         public async Task DeleteAsync(int id)
         {
+            OrderSetup orderSetup = await _orderSetupRepository.GetAsync(id);
+            if (orderSetup == null)
+                throw new EntityNotFoundException(typeof(OrderSetup), id);
             await _orderSetupRepository.DeleteAsync(id);
         }
     }

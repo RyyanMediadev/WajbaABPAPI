@@ -1,4 +1,6 @@
 ﻿global using Wajba.Dtos.DineInTableContract;
+global using Wajba.Services.QrCodeServices;
+using Wajba.Models.BranchDomain;
 
 namespace Wajba.DineIntableService;
 
@@ -7,17 +9,22 @@ public class DineinTableAppServices : ApplicationService
 {
     private readonly IRepository<DineInTable, int> _repository;
     private readonly IRepository<Branch, int> _branchrepo;
+    private readonly QrcodeServices _qrcodeServices;
 
     public DineinTableAppServices(IRepository<DineInTable, int> repository,
-        IRepository<Branch, int> branchrepo)
+        IRepository<Branch, int> branchrepo,
+        QrcodeServices qrcodeServices)
     {
         _repository = repository;
         _branchrepo = branchrepo;
+        _qrcodeServices = qrcodeServices;
     }
     public async Task<DiniINDto> CreateAsync(CreateDineIntable input)
     {
         if (await _branchrepo.FindAsync(input.BranchId) == null)
             throw new Exception("NotFound branch");
+        string qrCodeUrl = _qrcodeServices.GenerateQrCodeUrl(input.BranchId, input.Name);
+        string qrCodeImage = _qrcodeServices.GenerateQrCodeImage(qrCodeUrl);
         DineInTable dineInTable = new DineInTable()
         {
             BranchId = input.BranchId,
@@ -25,7 +32,7 @@ public class DineinTableAppServices : ApplicationService
             Name = input.Name,
             Size = input.Size,
             Status = input.IsActive,
-            QrCode = ""
+            QrCode = qrCodeImage
         };
         DineInTable dineInTable1 = await _repository.InsertAsync(dineInTable, true);
         return ObjectMapper.Map<DineInTable, DiniINDto>(dineInTable1);
@@ -39,7 +46,9 @@ public class DineinTableAppServices : ApplicationService
         dineInTable1.BranchId = dineIntable.BranchId;
         dineInTable1.Name = dineIntable.Name;
         dineInTable1.Status = dineIntable.IsActive;
-        dineInTable1.QrCode = "";
+        string qrCodeUrl = _qrcodeServices.GenerateQrCodeUrl(dineIntable.BranchId, dineIntable.Name);
+        string qrCodeImage = _qrcodeServices.GenerateQrCodeImage(qrCodeUrl);
+        dineInTable1.QrCode = qrCodeImage;
         dineInTable1.IsDeleted = false;
         dineInTable1.Size = dineIntable.Size;
         dineInTable1.LastModificationTime = DateTime.UtcNow;

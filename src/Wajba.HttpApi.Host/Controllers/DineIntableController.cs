@@ -12,7 +12,7 @@ public class DineIntableController : WajbaController
         _dineinTableAppServices = dineinTableAppServices;
     }
     [HttpPost]
-    public async Task<IActionResult> CreateAsync([FromForm] CreateDineIntable input)
+    public async Task<IActionResult> CreateAsync(CreateDineIntable input)
     {
         try
         {

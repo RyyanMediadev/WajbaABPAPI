@@ -1,9 +1,13 @@
-﻿namespace Wajba.Controllers;
+﻿global using Wajba.PopularItemServices;
+
+namespace Wajba.Controllers;
 
 public class PopularItemController : WajbaController
 {
-    public PopularItemController()
+    private readonly PopularItemAppservice _popularItemAppservice;
+
+    public PopularItemController(PopularItemAppservice popularItemAppservice)
     {
-        
+        _popularItemAppservice = popularItemAppservice;
     }
 }

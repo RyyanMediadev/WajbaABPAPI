@@ -919,6 +919,8 @@ namespace Wajba.Migrations
                     b.HasIndex("UserName");
 
                     b.ToTable("AbpUsers", (string)null);
+
+                    b.UseTptMappingStrategy();
                 });
 
             modelBuilder.Entity("Volo.Abp.Identity.IdentityUserClaim", b =>
@@ -1916,8 +1918,8 @@ namespace Wajba.Migrations
                     b.Property<string>("CustomerId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("CustomerId1")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("CustomerId1")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("DeleterId")
                         .HasColumnType("uniqueidentifier")
@@ -3123,6 +3125,80 @@ namespace Wajba.Migrations
                     b.ToTable("OrderSetups", (string)null);
                 });
 
+            modelBuilder.Entity("Wajba.Models.PopularItemsDomain.PopularItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BranchId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CategoryName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreationTime");
+
+                    b.Property<Guid?>("CreatorId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("CreatorId");
+
+                    b.Property<decimal>("CurrentPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid?>("DeleterId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("DeleterId");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("DeletionTime");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false)
+                        .HasColumnName("IsDeleted");
+
+                    b.Property<int>("ItemId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("LastModificationTime");
+
+                    b.Property<Guid?>("LastModifierId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("LastModifierId");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("PrePrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BranchId");
+
+                    b.HasIndex("ItemId");
+
+                    b.ToTable("PopularItems");
+                });
+
             modelBuilder.Entity("Wajba.Models.SiteDomain.Site", b =>
                 {
                     b.Property<int>("Id")
@@ -3315,13 +3391,9 @@ namespace Wajba.Migrations
                     b.ToTable("TimeSlots");
                 });
 
-            modelBuilder.Entity("Wajba.Models.UsersDomain.User", b =>
+            modelBuilder.Entity("Wajba.Models.UsersDomain.APPUser", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.HasBaseType("Volo.Abp.Identity.IdentityUser");
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -3330,34 +3402,9 @@ namespace Wajba.Migrations
                     b.Property<int>("BranchId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("CreatorId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("DeleterId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("DeletionTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastModificationTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("LastModifierId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -3374,11 +3421,9 @@ namespace Wajba.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
-
                     b.HasIndex("BranchId");
 
-                    b.ToTable("User", (string)null);
+                    b.ToTable("APPUser", (string)null);
                 });
 
             modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLogAction", b =>
@@ -3536,7 +3581,7 @@ namespace Wajba.Migrations
 
             modelBuilder.Entity("Wajba.Models.Carts.Cart", b =>
                 {
-                    b.HasOne("Wajba.Models.UsersDomain.User", "Customer")
+                    b.HasOne("Wajba.Models.UsersDomain.APPUser", "Customer")
                         .WithMany()
                         .HasForeignKey("CustomerId1");
 
@@ -3726,6 +3771,25 @@ namespace Wajba.Migrations
                     b.Navigation("Offer");
                 });
 
+            modelBuilder.Entity("Wajba.Models.PopularItemsDomain.PopularItem", b =>
+                {
+                    b.HasOne("Wajba.Models.BranchDomain.Branch", "Branch")
+                        .WithMany()
+                        .HasForeignKey("BranchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Wajba.Models.Items.Item", "Item")
+                        .WithMany()
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Branch");
+
+                    b.Navigation("Item");
+                });
+
             modelBuilder.Entity("Wajba.Models.SiteDomain.Site", b =>
                 {
                     b.HasOne("Wajba.Models.BranchDomain.Branch", "Branch")
@@ -3751,11 +3815,17 @@ namespace Wajba.Migrations
                     b.Navigation("Language");
                 });
 
-            modelBuilder.Entity("Wajba.Models.UsersDomain.User", b =>
+            modelBuilder.Entity("Wajba.Models.UsersDomain.APPUser", b =>
                 {
                     b.HasOne("Wajba.Models.BranchDomain.Branch", "Branch")
                         .WithMany()
                         .HasForeignKey("BranchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Volo.Abp.Identity.IdentityUser", null)
+                        .WithOne()
+                        .HasForeignKey("Wajba.Models.UsersDomain.APPUser", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

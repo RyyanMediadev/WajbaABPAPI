@@ -20,16 +20,35 @@ namespace Wajba.OrderSetupService
 
         public async Task<OrderSetupDto> CreateAsync(CreateUpdateOrderSetupDto input)
         {
-            var orderSetup = ObjectMapper.Map<CreateUpdateOrderSetupDto, OrderSetup>(input);
-            var insertedOrderSetup = await _orderSetupRepository.InsertAsync(orderSetup);
+            OrderSetup orderSetup=new OrderSetup()
+            {
+                BasicDeliveryCharge = input.BasicDeliveryCharge,
+                ChargePerKilo = input.ChargePerKilo,
+                FoodPreparationTime = input.FoodPreparationTime,
+                FreeDeliveryKilometer = input.FreeDeliveryKilometer,
+                IsDeliveryEnabled = input.IsDeliveryEnabled,
+                IsTakeawayEnabled = input.IsTakeawayEnabled,
+                ScheduleOrderSlotDuration = input.ScheduleOrderSlotDuration
+            };
+            var insertedOrderSetup = await _orderSetupRepository.InsertAsync(orderSetup,true);
             return ObjectMapper.Map<OrderSetup, OrderSetupDto>(insertedOrderSetup);
         }
 
         public async Task<OrderSetupDto> UpdateAsync(int id, CreateUpdateOrderSetupDto input)
         {
             var orderSetup = await _orderSetupRepository.GetAsync(id);
-            ObjectMapper.Map(input, orderSetup);
-            var updatedOrderSetup = await _orderSetupRepository.UpdateAsync(orderSetup);
+            if (orderSetup == null)
+                throw new EntityNotFoundException(typeof(OrderSetup), id);
+            orderSetup.BasicDeliveryCharge = input.BasicDeliveryCharge;
+            orderSetup.ChargePerKilo = input.ChargePerKilo;
+            orderSetup.FoodPreparationTime = input.FoodPreparationTime;
+            orderSetup.FreeDeliveryKilometer = input.FreeDeliveryKilometer;
+            orderSetup.IsDeliveryEnabled = input.IsDeliveryEnabled;
+            orderSetup.IsTakeawayEnabled = input.IsTakeawayEnabled;
+            orderSetup.ScheduleOrderSlotDuration = input.ScheduleOrderSlotDuration;
+           orderSetup.LastModificationTime = DateTime.Now;
+            //ObjectMapper.Map(input, orderSetup);
+            var updatedOrderSetup = await _orderSetupRepository.UpdateAsync(orderSetup,true);
             return ObjectMapper.Map<OrderSetup, OrderSetupDto>(updatedOrderSetup);
         }
 

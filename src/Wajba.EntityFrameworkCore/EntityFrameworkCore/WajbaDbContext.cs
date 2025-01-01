@@ -17,6 +17,7 @@ public class WajbaDbContext :
     IIdentityDbContext,
     ITenantManagementDbContext
 {
+   
     #region Entities from the modules
 
     //Identity

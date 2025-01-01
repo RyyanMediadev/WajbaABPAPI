@@ -1,6 +1,5 @@
 ﻿global using Volo.Abp.Identity;
 using AutoMapper;
-using System.Diagnostics.Metrics;
 
 namespace Wajba.Models.UsersDomain;
 
@@ -24,7 +23,7 @@ public class APPUser : IdentityUser//*: FullAuditedEntity<int>*/
     [Required]
     public string Address { get; set; }
     public int? ProfileId { get; set; }
-   // public Profile Profile { get; set; }
+    //public Profile Profile { get; set; }
 
     //public int? ProfileId { get; set; }
     //public Profile Profile { get; set; }

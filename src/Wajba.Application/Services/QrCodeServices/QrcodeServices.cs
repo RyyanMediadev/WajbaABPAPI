@@ -23,7 +23,6 @@ public class QrcodeServices
         return $"data:image/svg+xml;base64,{base64Svg}";
     }
 
-
     public string GenerateQrCodeUrl(int branchId, string tableName)
     {
         string baseUrl = "https://api.wajba.net/branch";

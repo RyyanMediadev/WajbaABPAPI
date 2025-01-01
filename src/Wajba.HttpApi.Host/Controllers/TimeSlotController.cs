@@ -5,6 +5,7 @@ namespace Wajba.Controllers;
 
 public class TimeSlotController : WajbaController
 {
+<<<<<<< HEAD
 
     private readonly ITimeSlotAppService _timeSlotAppService;
     
@@ -12,6 +13,13 @@ public class TimeSlotController : WajbaController
     {
         _timeSlotAppService = timeSlotAppService;
      
+=======
+    private readonly TimeSlotsAppservice _timeSlotsAppservice;
+
+    public TimeSlotController(TimeSlotsAppservice timeSlotsAppservice)
+    {
+        _timeSlotsAppservice = timeSlotsAppservice;
+>>>>>>> 224daba17be966aee697fc65ecabf2cf065bca85
     }
     [HttpPost("seed")]
     [IgnoreAntiforgeryToken]
@@ -43,7 +51,7 @@ public class TimeSlotController : WajbaController
     {
         try
         {
-            var timeSlots = await _timeSlotAppService.GetAllTimeSlotsAsync();
+            var timeSlots = await _timeSlotsAppservice.GetAllTimeSlotsAsync();
             return Ok(new ApiResponse<List<TimeSlotDto>>
             {
                 Success = true,
@@ -67,7 +75,7 @@ public class TimeSlotController : WajbaController
     {
         try
         {
-            await _timeSlotAppService.UpdateTimeSlotsAsync(updateTimeSlotDtos);
+            await _timeSlotsAppservice.UpdateTimeSlotsAsync(updateTimeSlotDtos);
             return Ok(new ApiResponse<object>
             {
                 Success = true,

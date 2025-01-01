@@ -16,7 +16,7 @@ public class LanguageAppService : ApplicationService
         _imageUploadService = imageUploadService;
     }
 
-    public async Task<PagedResultDto<LanguageDto>> GetListAsync(PagedAndSortedResultRequestDto input)
+    public async Task<PagedResultDto<LanguageDto>> GetListAsync(GetLanguageInput input)
     {
         var query = await _languageRepository.GetQueryableAsync();
         var items = await AsyncExecuter.ToListAsync(query

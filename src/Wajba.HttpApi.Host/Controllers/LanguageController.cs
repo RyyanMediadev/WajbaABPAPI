@@ -14,7 +14,7 @@ public class LanguageController : AbpController
         _languageAppService = languageAppService;
     }
     [HttpGet]
-    public async Task<IActionResult> GetAll([FromForm] PagedAndSortedResultRequestDto dto)
+    public async Task<IActionResult> GetAll( GetLanguageInput dto)
     {
         try
         {

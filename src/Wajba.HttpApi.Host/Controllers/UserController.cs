@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 ﻿global using Microsoft.AspNetCore.Mvc;
 global using Volo.Abp.Application.Dtos;
 global using Volo.Abp.Domain.Entities;
@@ -9,13 +9,7 @@ using System.Net;
 using Wajba.Dtos.UserDTO;
 using Wajba.UserAppService;
 using Wajba.Users;
-=======
-﻿global using Wajba.Dtos.SitesContact;
-global using Wajba.SiteService;
-using Wajba.Dtos.UserDTO;
-using Wajba.UserAppService;
 
->>>>>>> 224daba17be966aee697fc65ecabf2cf065bca85
 
 namespace Wajba.Controllers;
 
@@ -29,11 +23,9 @@ public class UserController : WajbaController
         _UserService = userAppService;
     }
 
-<<<<<<< HEAD
+
     [HttpPost]
-=======
-     [HttpPost]
->>>>>>> 224daba17be966aee697fc65ecabf2cf065bca85
+
     public async Task<IActionResult> Register([FromForm] UserInfoDTO UserInfoDTO)
     {
         try
@@ -58,12 +50,11 @@ public class UserController : WajbaController
 
 
     }
-<<<<<<< HEAD
-=======
+
 
 
     //[AllowAnonymous]
-     [HttpPost,Route("LogIn")]
+    [HttpPost, Route("LogIn")]
     public IActionResult LogIn(LogInDto LogInDto)
     {
         try
@@ -109,13 +100,12 @@ public class UserController : WajbaController
             return BadRequest(new { MessageAr = ex.Message, MessageEng = ex.Message });
 
         }
-    }
+    } }
 
 
 
 
->>>>>>> 224daba17be966aee697fc65ecabf2cf065bca85
-}
+
 
 
 

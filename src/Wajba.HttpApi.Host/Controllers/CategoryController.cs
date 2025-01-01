@@ -23,7 +23,7 @@ public class CategoryController : WajbaController
 
 
     [HttpPost]
-    public async Task<IActionResult> CreateAsync([FromForm] CreateUpdateCategoryDto input)
+    public async Task<IActionResult> CreateAsync(CreateUpdateCategoryDto input)
     {
         try
         {

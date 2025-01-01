@@ -13,7 +13,7 @@ public class BranchController : WajbaController
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateAsync([FromForm] CreateBranchDto input)
+    public async Task<IActionResult> CreateAsync( CreateBranchDto input)
     {
         try
         {

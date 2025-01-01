@@ -5,11 +5,8 @@ global using System;
 namespace Wajba.TimeSlotsServices;
 
 [RemoteService(false)]
-<<<<<<< HEAD
-public class TimeSlotsAppservice : ITimeSlotAppService, IApplicationService
-=======
-public class TimeSlotsAppservice : ApplicationService
->>>>>>> 224daba17be966aee697fc65ecabf2cf065bca85
+
+public class TimeSlotsAppservice : ApplicationService, IApplicationService
 {
     private readonly IRepository<TimeSlot, int> _timeSlotRepository;
 

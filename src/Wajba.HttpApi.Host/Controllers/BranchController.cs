@@ -38,7 +38,7 @@ public class BranchController : WajbaController
     }
 
     [HttpPut]
-    public async Task<IActionResult> UpdateAsync(  UpdateBranchDto input)
+    public async Task<IActionResult> UpdateAsync(UpdateBranchDto input)
     {
         try
         {

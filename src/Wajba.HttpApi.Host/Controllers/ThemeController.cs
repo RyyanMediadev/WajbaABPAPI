@@ -17,9 +17,7 @@ public class ThemeController : WajbaController
     {
         try
         {
-            // Call the service to create the theme
             await _themesAppservice.CreateAsync(input);
-
             return Ok(new ApiResponse<object>
             {
                 Success = true,
@@ -39,11 +37,11 @@ public class ThemeController : WajbaController
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateAsync(int id, [FromForm] CreateThemesDto input)
+    public async Task<IActionResult> UpdateAsync( UpdateThemeDto input )
     {
         try
         {
-            var updatedcategory = await _themesAppservice.UpdateAsync(id, input);
+            var updatedcategory = await _themesAppservice.UpdateAsync(input.Id, input);
             return Ok(new ApiResponse<object>
             {
                 Success = true,

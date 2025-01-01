@@ -3,9 +3,8 @@ global using Wajba.Dtos.Languages;
 
 namespace Wajba.Controllers;
 
-[Route("api/[controller]")]
-[ApiController]
-public class LanguageController : AbpController
+
+public class LanguageController : WajbaController
 {
     private readonly LanguageAppService _languageAppService;
 

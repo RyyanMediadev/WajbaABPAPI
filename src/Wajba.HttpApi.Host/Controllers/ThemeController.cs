@@ -24,7 +24,6 @@ public class ThemeController : WajbaController
         };
         try
         {
-            // Call the service to create the theme
             await _themesAppservice.CreateAsync(input);
 
             return Ok(new ApiResponse<object>

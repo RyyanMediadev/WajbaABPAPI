@@ -5,7 +5,8 @@ global using Wajba.Models.LanguageDomain;
 global using Wajba.Models.SiteDomain;
 global using Wajba.Models.ThemesDomain;
 global using Wajba.Models.TimeSlotsDomain;
-using Wajba.Models.OrderSetup;
+global using Wajba.Models.OrderSetup;
+global using Wajba.Models.PopularItemsDomain;
 
 namespace Wajba.EntityFrameworkCore;
 
@@ -37,7 +38,7 @@ public class WajbaDbContext :
     #region entities
     public DbSet<Item> Items { get; set; }
     public DbSet<ItemVariation> ItemVariations { get; set; }
-  
+  public DbSet<PopularItem> PopularItems { get; set; }
     public DbSet<ItemAddon> ItemAddons { get; set; }
     public DbSet<ItemExtra> ItemExtras { get; set; }
     public DbSet<ItemAttribute> ItemAttributes { get; set; }

@@ -1,6 +1,6 @@
-﻿global using Wajba.ThemesService;
-global using Wajba.Dtos.ThemesContract;
-using Microsoft.AspNetCore.Http;
+﻿global using Wajba.Dtos.ThemesContract;
+global using Wajba.ThemesService;
+global using Microsoft.AspNetCore.Http;
 
 namespace Wajba.Controllers;
 

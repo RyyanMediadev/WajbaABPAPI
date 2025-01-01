@@ -37,7 +37,7 @@ public class DineIntableController : WajbaController
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateAsync(int id, [FromForm] CreateDineIntable input)
+    public async Task<IActionResult> UpdateAsync(int id,  CreateDineIntable input)
     {
         try
         {

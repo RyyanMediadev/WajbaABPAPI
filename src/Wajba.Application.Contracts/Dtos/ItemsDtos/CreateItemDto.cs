@@ -5,7 +5,7 @@ public class CreateItemDto
     [Required]
     public string Name { get; set; }
     [Required]
-    public IFormFile ImageUrl { get; set; }
+    public IFormFile? ImageUrl { get; set; }
     [Required]
     public decimal Price { get; set; }
     [Required]

@@ -17,11 +17,6 @@ public class CategoryController : WajbaController
         _categoryAppService = categoryAppService;
     }
 
-
-
-
-
-
     [HttpPost]
     public async Task<IActionResult> CreateAsync(CreateUpdateCategoryDto input)
     {

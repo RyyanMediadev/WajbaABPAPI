@@ -7,7 +7,7 @@ public class UpdateCategory
     [Required]
     public string name { get; set; }
     [Required]
-    public IFormFile Image { get; set; }
+    public IFormFile? Image { get; set; }
     [Required]
     public Status status { get; set; }
     [Required]

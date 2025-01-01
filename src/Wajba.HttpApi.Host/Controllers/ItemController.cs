@@ -12,7 +12,7 @@ public class ItemController : WajbaController
         _itemAppServices = itemAppServices;
     }
     [HttpPost]
-    public async Task<IActionResult> CreateAsync([FromForm] CreateItemDto input)
+    public async Task<IActionResult> CreateAsync(CreateItemDto input)
     {
         try
         {
@@ -35,7 +35,7 @@ public class ItemController : WajbaController
         }
     }
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateAsync(int id, [FromForm] CreateItemDto input)
+    public async Task<IActionResult> UpdateAsync(int id,  CreateItemDto input)
     {
         try
         {

@@ -12,7 +12,7 @@ public class CompanyController : WajbaController
         _companyAppService = companyAppService;
     }
     [HttpPost]
-    public async Task<IActionResult> CreateAsync([FromForm] CreateUpdateComanyDto input)
+    public async Task<IActionResult> CreateAsync( CreateUpdateComanyDto input)
     {
         if (!ModelState.IsValid)
             return BadRequest("Data is not valid");
@@ -37,7 +37,7 @@ public class CompanyController : WajbaController
         }
     }
     [HttpPut]
-    public async Task<IActionResult> UpdateAsync( [FromForm] CreateUpdateComanyDto input)
+    public async Task<IActionResult> UpdateAsync(  CreateUpdateComanyDto input)
     {
         if (!ModelState.IsValid)
             return BadRequest("Data is not valid");

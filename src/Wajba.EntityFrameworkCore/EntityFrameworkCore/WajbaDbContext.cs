@@ -5,8 +5,8 @@ global using Wajba.Models.LanguageDomain;
 global using Wajba.Models.SiteDomain;
 global using Wajba.Models.ThemesDomain;
 global using Wajba.Models.TimeSlotsDomain;
-using System.Reflection;
-using Wajba.Models.OrderSetup;
+global using System.Reflection;
+global using Wajba.Models.OrderSetup;
 
 namespace Wajba.EntityFrameworkCore;
 

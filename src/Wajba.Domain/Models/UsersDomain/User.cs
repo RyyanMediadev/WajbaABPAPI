@@ -1,6 +1,5 @@
 ﻿global using Volo.Abp.Identity;
-using AutoMapper;
-using System.Diagnostics.Metrics;
+global using AutoMapper;
 
 namespace Wajba.Models.UsersDomain;
 

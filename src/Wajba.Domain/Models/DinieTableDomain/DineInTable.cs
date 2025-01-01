@@ -9,4 +9,9 @@ public class DineInTable : FullAuditedEntity<int>
     public int BranchId { get; set; } // Foreign key to Branch
     public virtual Branch Branch { get; set; }
     public bool Status { get; set; }
+
+    public DineInTable()
+    {
+
+    }
 }

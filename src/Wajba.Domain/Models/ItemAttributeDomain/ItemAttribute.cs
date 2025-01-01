@@ -4,6 +4,11 @@ namespace Wajba.Models.ItemAttributeDomain;
 
 public class ItemAttribute : FullAuditedEntity<int>
 {
+    public ItemAttribute()
+    {
+
+    }
+
     public string Name { get; set; } // e.g., "Size", "Drink", "Addons"
     public Status Status { get; set; }
 

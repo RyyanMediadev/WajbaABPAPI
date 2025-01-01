@@ -6,6 +6,11 @@ namespace Wajba.Models.BranchDomain;
 
 public class Branch : FullAuditedEntity<int>
 {
+
+    public Branch()
+    {
+
+    }
     public string Name { get; set; }
     public double Longitude { get; set; }
     public double Latitude { get; set; }
@@ -22,4 +27,6 @@ public class Branch : FullAuditedEntity<int>
     //  public ICollection<UserBranch> UserBranches { get; set; } = new List<UserBranch>();
     public ICollection<Offer> Offers { get; set; }
     public ICollection<Coupon> Coupons { get; set; }
+
+   
 }

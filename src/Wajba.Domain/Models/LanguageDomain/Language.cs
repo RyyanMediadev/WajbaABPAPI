@@ -8,4 +8,10 @@ public class Language : FullAuditedEntity<int>
     public string Code { get; set; }
     public string ImageUrl { get; set; } // Path or URL to the uploaded image
     public Status Status { get; set; }
+
+
+    public Language()
+    {
+
+    }
 }

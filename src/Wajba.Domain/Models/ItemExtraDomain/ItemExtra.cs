@@ -2,6 +2,10 @@
 
 public class ItemExtra : FullAuditedEntity<int>
 {
+    public ItemExtra()
+    {
+
+    }
     public string Name { get; set; }
     public Status Status { get; set; }
     public decimal AdditionalPrice { get; set; }

@@ -17,4 +17,9 @@ public class OrderItem
     public virtual Order Order { get; set; }
 
     public virtual Item Item { get; set; }
+
+    public OrderItem()
+    {
+
+    }
 }

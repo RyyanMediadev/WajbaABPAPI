@@ -7,6 +7,6 @@ public class Theme : FullAuditedEntity<int>
     public string FooterLogoUrl { get; set; }
     public Theme()
     {
-        
+
     }
 }

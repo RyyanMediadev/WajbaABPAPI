@@ -23,4 +23,9 @@ public class Site : FullAuditedEntity<int>
     public virtual Branch? Branch { get; set; }
     public virtual Currencies? Currencies { get; set; }
     public virtual Language? Language { get; set; }
+
+    public Site()
+    {
+
+    }
 }

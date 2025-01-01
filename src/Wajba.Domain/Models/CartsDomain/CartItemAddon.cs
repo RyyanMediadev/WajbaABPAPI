@@ -3,6 +3,11 @@
 namespace Wajba.Models.CartsDomain;
 public class CartItemAddon
 {
+    public CartItemAddon()
+    {
+
+    }
+
     [Key]
     public int AddonId { get; set; }
     public string AddonName { get; set; }
@@ -10,8 +15,4 @@ public class CartItemAddon
     // Foreign key to CartItem
     public int CartItemId { get; set; }
     public virtual CartItem? CartItem { get; set; }
-    public CartItemAddon()
-    {
-
-    }
 }

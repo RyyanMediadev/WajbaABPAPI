@@ -1,6 +1,10 @@
 ﻿namespace Wajba.Models.CartsDomain;
 public class CartItemExtra
 {
+    public CartItemExtra()
+    {
+
+    }
     [Key]
     public int ExtraId { get; set; }
     public string ExtraName { get; set; }

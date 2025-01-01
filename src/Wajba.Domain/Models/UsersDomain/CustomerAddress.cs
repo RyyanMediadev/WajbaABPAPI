@@ -6,7 +6,7 @@ public class CustomerAddress : FullAuditedEntity<int>
     public double Longitude { get; set; }
     public double Latitude { get; set; }
     public string CustomerId { get; set; }
-    public virtual User Customer { get; set; }
+    public virtual APPUser Customer { get; set; }
     public string? BuildingName { get; set; }
     public string? Street { get; set; }
     public string? ApartmentNumber { get; set; }

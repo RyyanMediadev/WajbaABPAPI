@@ -9,4 +9,9 @@ public class PosOrder : FullAuditedEntity<int>
 
     // Navigation property to Order
     public virtual Order? Order { get; set; }
+
+    public PosOrder()
+    {
+
+    }
 }

@@ -4,9 +4,12 @@ using System.Diagnostics.Metrics;
 
 namespace Wajba.Models.UsersDomain;
 
-public class User /*: IdentityUser*/: FullAuditedEntity<int>
+public class APPUser : IdentityUser//*: FullAuditedEntity<int>*/
 {
-   
+    public APPUser()
+    {
+
+    }
 
     [Required]
     public string FirstName { get; set; }
@@ -21,7 +24,7 @@ public class User /*: IdentityUser*/: FullAuditedEntity<int>
     [Required]
     public string Address { get; set; }
     public int? ProfileId { get; set; }
-    public Profile Profile { get; set; }
+   // public Profile Profile { get; set; }
 
     //public int? ProfileId { get; set; }
     //public Profile Profile { get; set; }

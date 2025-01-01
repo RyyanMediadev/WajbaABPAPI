@@ -12,5 +12,10 @@ public class DineInOrder
 
     // Navigation property to Order
     public virtual Order Order { get; set; }
-  
+
+    public DineInOrder()
+    {
+
+    }
+
 }

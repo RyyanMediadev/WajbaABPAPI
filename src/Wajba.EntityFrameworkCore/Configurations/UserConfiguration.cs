@@ -6,12 +6,12 @@ using Wajba.Models.UsersDomain;
 
 namespace Wajba.Configurations;
 
-public class UserConfiguration : IEntityTypeConfiguration<User>
+public class UserConfiguration : IEntityTypeConfiguration<APPUser>
 {
-    public void Configure(EntityTypeBuilder<User> builder)
+    public void Configure(EntityTypeBuilder<APPUser> builder)
     {
 
-        builder.ToTable("User");
+        builder.ToTable("APPUser");
     }
 
     

@@ -15,5 +15,10 @@ namespace Wajba.Models.OrderSetup
         public decimal ChargePerKilo { get; set; }
         public bool IsTakeawayEnabled { get; set; }
         public bool IsDeliveryEnabled { get; set; }
+
+        public OrderSetup()
+        {
+
+        }
     }
 }

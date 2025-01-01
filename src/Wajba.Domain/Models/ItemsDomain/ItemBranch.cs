@@ -8,4 +8,8 @@ public class ItemBranch : Entity<int>
     public Item Item { get; set; }
     public int BranchId { get; set; }
     public Branch Branch { get; set; }
+    public ItemBranch()
+    {
+
+    }
 }

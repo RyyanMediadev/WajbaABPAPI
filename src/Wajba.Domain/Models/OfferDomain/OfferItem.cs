@@ -10,4 +10,9 @@ public class OfferItem : FullAuditedEntity<int>
     // Navigation Properties
     public virtual Offer Offer { get; set; }
     public virtual Item Item { get; set; }
+
+    public OfferItem()
+    {
+
+    }
 }

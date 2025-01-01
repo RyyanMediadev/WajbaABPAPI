@@ -16,4 +16,10 @@ public class ItemVariation : FullAuditedEntity<int>
     // Foreign key to Item
     public int ItemId { get; set; }
     public virtual Item Item { get; set; }
+
+
+    public ItemVariation()
+    {
+
+    }
 }

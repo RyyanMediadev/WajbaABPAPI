@@ -15,5 +15,10 @@ public class PopularItem : FullAuditedEntity<int>
     public Item Item { get; set; }
     [ForeignKey(nameof(Item))]
     public int ItemId { get; set; }
-  
+
+    public PopularItem()
+    {
+
+    }
+
 }

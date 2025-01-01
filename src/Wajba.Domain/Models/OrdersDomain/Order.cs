@@ -4,6 +4,10 @@ namespace Wajba.Models.Orders;
 
 public class Order:FullAuditedEntity<int>
 {
+    public Order()
+    {
+
+    }
     public OrderStatus Status { get; set; }
     public OrderType Ordertype { get; set; }
     public PaymentMethod paymentMethod { get; set; }
@@ -21,7 +25,7 @@ public class Order:FullAuditedEntity<int>
     public string? CustomerId { get; set; }
 
     // Navigation property to Customer
-    public virtual User Customer { get; set; } = new User();
+    public virtual APPUser Customer { get; set; } = new APPUser();
     public virtual PickUpOrder PickUpOrder { get; set; } = new PickUpOrder();
     public virtual DeliveryOrder DeliveryOrder { get; set; } = new DeliveryOrder();
     public virtual DriveThruOrder DriveThruOrder { get; set; } = new DriveThruOrder();

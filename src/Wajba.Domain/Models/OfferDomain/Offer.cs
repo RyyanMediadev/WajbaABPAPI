@@ -24,4 +24,10 @@ public class Offer : FullAuditedEntity<int>
 
     // Many-to-many relationship with Category
     public virtual ICollection<OfferCategory> OfferCategories { get; set; }
+
+
+    public Offer()
+    {
+
+    }
 }

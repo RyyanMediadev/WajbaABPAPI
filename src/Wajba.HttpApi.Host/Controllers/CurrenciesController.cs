@@ -15,7 +15,7 @@ namespace Wajba.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateAsync([FromBody] CreateUpdateCurrenciesDto input)
+        public async Task<IActionResult> CreateAsync( CreateUpdateCurrenciesDto input)
         {
             try
             {

@@ -6,8 +6,7 @@ namespace Wajba.TimeSlotsServices;
 
 [RemoteService(false)]
 
-public class TimeSlotsAppservice : ITimeSlotAppService, IApplicationService
-
+public class TimeSlotsAppservice : ApplicationService, IApplicationService
 {
     private readonly IRepository<TimeSlot, int> _timeSlotRepository;
 

@@ -26,7 +26,7 @@ public class ThemesAppservice : ApplicationService
         Theme theme1 = await _repository.InsertAsync(theme, true);
         return ObjectMapper.Map<Theme, ThemesDto>(theme1);
     }
-    public async Task<ThemesDto> UpdateAsync(int id, UpdateThemeDto input)
+    public async Task<ThemesDto> UpdateAsync(int id, CreateThemesDto input)
     {
         Theme theme = await _repository.GetAsync(id);
         if (theme == null)

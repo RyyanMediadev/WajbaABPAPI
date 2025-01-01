@@ -11,7 +11,6 @@ public class ItemController : WajbaController
     {
         _itemAppServices = itemAppServices;
     }
-
     [HttpPost]
     public async Task<IActionResult> CreateAsync([FromForm] CreateItemDto input)
     {

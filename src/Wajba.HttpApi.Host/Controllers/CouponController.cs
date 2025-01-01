@@ -17,7 +17,7 @@ public class CouponController : WajbaController
 
     // Create Coupon
     [HttpPost]
-    public async Task<IActionResult> CreateAsync([FromForm] CreateUpdateCouponDto input)
+    public async Task<IActionResult> CreateAsync( CreateUpdateCouponDto input)
     {
         try
         {

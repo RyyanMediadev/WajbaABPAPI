@@ -32,6 +32,5 @@ public class WajbaApplicationModule : AbpModule
 
         });
         context.Services.AddTransient<IImageService, ImageService>();
-        context.Services.AddSingleton<ITimeSlotAppService,TimeSlotsAppservice>();
     }
 }

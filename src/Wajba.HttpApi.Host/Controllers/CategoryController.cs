@@ -7,6 +7,7 @@ global using Wajba.Dtos.Categories;
 
 namespace Wajba.Controllers;
 
+
 public class CategoryController : WajbaController
 {
     private readonly CategoryAppService _categoryAppService;
@@ -15,8 +16,14 @@ public class CategoryController : WajbaController
     {
         _categoryAppService = categoryAppService;
     }
+
+
+
+
+
+
     [HttpPost]
-    public async Task<IActionResult> CreateAsync([FromForm] CreateUpdateCategoryDto input)
+    public async Task<IActionResult> CreateAsync(CreateUpdateCategoryDto input)
     {
         try
         {

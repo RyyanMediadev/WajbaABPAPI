@@ -72,8 +72,7 @@ public class CategoryAppService : ApplicationService
             !string.IsNullOrWhiteSpace(input.Name),
             c => c.Name.ToLower() == input.Name.ToLower()
         );
-        List<CategoryDto> categoryItemsDtos = ObjectMapper.Map<List<Category>, List<CategoryDto>>
-            (await AsyncExecuter.ToListAsync(queryable
+        List<CategoryDto> categoryItemsDtos = ObjectMapper.Map<List<Category>, List<CategoryDto>>(await AsyncExecuter.ToListAsync(queryable
             .OrderBy(input.Sorting ?? nameof(Category.Name))
             .PageBy(input.SkipCount, input.MaxResultCount)));
         if (input.BranchId.HasValue)

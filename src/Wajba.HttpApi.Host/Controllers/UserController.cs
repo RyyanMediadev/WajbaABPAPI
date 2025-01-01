@@ -8,7 +8,8 @@ global using Wajba.Dtos.Categories;
 using System.Net;
 using Wajba.Dtos.UserDTO;
 using Wajba.UserAppService;
-using Wajba.Users;
+using Wajba.Dtos.UserDTO;
+using Wajba.UserAppService;
 
 
 namespace Wajba.Controllers;
@@ -23,10 +24,10 @@ public class UserController : WajbaController
         _UserService = userAppService;
     }
 
-
     [HttpPost]
 
-    public async Task<IActionResult> Register([FromForm] UserInfoDTO UserInfoDTO)
+     [HttpPost]
+    public async Task<IActionResult> Register( UserInfoDTO UserInfoDTO)
     {
         try
         {
@@ -54,7 +55,7 @@ public class UserController : WajbaController
 
 
     //[AllowAnonymous]
-    [HttpPost, Route("LogIn")]
+     [HttpPost,Route("LogIn")]
     public IActionResult LogIn(LogInDto LogInDto)
     {
         try
@@ -100,12 +101,12 @@ public class UserController : WajbaController
             return BadRequest(new { MessageAr = ex.Message, MessageEng = ex.Message });
 
         }
-    } }
+    }
 
 
 
 
-
+}
 
 
 

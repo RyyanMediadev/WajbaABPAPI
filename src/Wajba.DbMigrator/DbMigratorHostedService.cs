@@ -1,12 +1,12 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Wajba.Data;
 using Serilog;
-using System.Threading;
-using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.Data;
-using Wajba.Data;
 
 namespace Wajba.DbMigrator;
 

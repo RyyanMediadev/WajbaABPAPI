@@ -5,7 +5,9 @@ global using System;
 namespace Wajba.TimeSlotsServices;
 
 [RemoteService(false)]
-public class TimeSlotsAppservice : ApplicationService
+
+public class TimeSlotsAppservice : ITimeSlotAppService, IApplicationService
+
 {
     private readonly IRepository<TimeSlot, int> _timeSlotRepository;
 
@@ -13,7 +15,25 @@ public class TimeSlotsAppservice : ApplicationService
     {
         _timeSlotRepository = timeSlotRepository;
     }
+    public async Task SeedTimeSlotsAsync()
+    {
+        var timeSlots = new List<TimeSlot>
+    {
+        new TimeSlot { WeekDay = DayOfWeek.Sunday, OpeningTime = TimeSpan.Parse("08:00"), ClosingTime = TimeSpan.Parse("10:00") },
+        new TimeSlot { WeekDay = DayOfWeek.Monday, OpeningTime = TimeSpan.Parse("11:00"), ClosingTime = TimeSpan.Parse("13:00") },
+        new TimeSlot { WeekDay = DayOfWeek.Tuesday, OpeningTime = TimeSpan.Parse("09:00"), ClosingTime = TimeSpan.Parse("11:00") },
+        new TimeSlot { WeekDay = DayOfWeek.Tuesday, OpeningTime = TimeSpan.Parse("13:00"), ClosingTime = TimeSpan.Parse("15:00") },
+        new TimeSlot { WeekDay = DayOfWeek.Wednesday, OpeningTime = TimeSpan.Parse("10:00"), ClosingTime = TimeSpan.Parse("12:00") },
+        new TimeSlot { WeekDay = DayOfWeek.Wednesday, OpeningTime = TimeSpan.Parse("14:00"), ClosingTime = TimeSpan.Parse("16:00") },
+        new TimeSlot { WeekDay = DayOfWeek.Thursday, OpeningTime = TimeSpan.Parse("08:00"), ClosingTime = TimeSpan.Parse("10:00") },
+        new TimeSlot { WeekDay = DayOfWeek.Friday, OpeningTime = TimeSpan.Parse("09:00"), ClosingTime = TimeSpan.Parse("11:00") }
+    };
 
+        foreach (var slot in timeSlots)
+        {
+            await _timeSlotRepository.InsertAsync(slot);
+        }
+    }
     public async Task<List<TimeSlotDto>> GetAllTimeSlotsAsync()
     {
         var timeSlots = await _timeSlotRepository.GetListAsync();

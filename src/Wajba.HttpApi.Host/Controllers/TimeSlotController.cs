@@ -5,19 +5,45 @@ namespace Wajba.Controllers;
 
 public class TimeSlotController : WajbaController
 {
-    private readonly TimeSlotsAppservice _timeSlotsAppservice;
 
-    public TimeSlotController(TimeSlotsAppservice timeSlotsAppservice)
+    private readonly ITimeSlotAppService _timeSlotAppService;
+    
+    public TimeSlotController(ITimeSlotAppService timeSlotAppService)
     {
-        _timeSlotsAppservice = timeSlotsAppservice;
+        _timeSlotAppService = timeSlotAppService;
+     
     }
+    [HttpPost("seed")]
+    [IgnoreAntiforgeryToken]
+    public async Task<IActionResult> SeedData()
+    {
+        try
+        {
+            await _timeSlotAppService.SeedTimeSlotsAsync();
+            return Ok(new ApiResponse<object>
+            {
+                Success = true,
+                Message = "TimeSlots seeded successfully.",
+                Data = null
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ApiResponse<object>
+            {
+                Success = false,
+                Message = $"Error seeding timeslots: {ex.Message}",
+                Data = null
+            });
+        }
 
+    }
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
         try
         {
-            var timeSlots = await _timeSlotsAppservice.GetAllTimeSlotsAsync();
+            var timeSlots = await _timeSlotAppService.GetAllTimeSlotsAsync();
             return Ok(new ApiResponse<List<TimeSlotDto>>
             {
                 Success = true,
@@ -41,7 +67,7 @@ public class TimeSlotController : WajbaController
     {
         try
         {
-            await _timeSlotsAppservice.UpdateTimeSlotsAsync(updateTimeSlotDtos);
+            await _timeSlotAppService.UpdateTimeSlotsAsync(updateTimeSlotDtos);
             return Ok(new ApiResponse<object>
             {
                 Success = true,

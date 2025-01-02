@@ -1,6 +1,4 @@
-﻿using Wajba.Models.CategoriesDomain;
-
-namespace Wajba.Models.OfferDomain;
+﻿namespace Wajba.Models.OfferDomain;
 
 public class OfferCategory : FullAuditedEntity<int>
 {

@@ -10,5 +10,5 @@ public class CategoryItemsDto: EntityDto<int>
     public int TotalItems { get; set; }
     public Status Status { get; set; }
     public bool IsFilled { get; set; }
-    public List<ItemDto> Items { get; set; } = new List<ItemDto>();
+    //public List<ItemDto> Items { get; set; } = new List<ItemDto>();
 }

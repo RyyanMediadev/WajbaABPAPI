@@ -1,7 +1,8 @@
-﻿namespace Wajba.Models.OrderSetup;
+﻿namespace Wajba.Dtos.OrderSetupContract;
 
-public class OrderSetup : FullAuditedEntity<int> 
+public class UpdateOrderSetupDto
 {
+ 
     public int FoodPreparationTime { get; set; }
     public int ScheduleOrderSlotDuration { get; set; }
     public int FreeDeliveryKilometer { get; set; }
@@ -10,12 +11,7 @@ public class OrderSetup : FullAuditedEntity<int>
     public bool IsTakeawayEnabled { get; set; }
     public bool IsDeliveryEnabled { get; set; }
 
-
-        public string Ontime { get; set; }
-        public string Warning { get; set; }
-        public string DelayTime { get; set; }
-        public OrderSetup()
-        {
-
-    }
+    public string Ontime { get; set; }
+    public string Warning { get; set; }
+    public string DelayTime { get; set; }
 }

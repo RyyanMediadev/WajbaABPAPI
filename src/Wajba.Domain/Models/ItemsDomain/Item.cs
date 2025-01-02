@@ -26,7 +26,6 @@ public class Item : FullAuditedEntity<int>
     public ICollection<ItemExtra> ItemExtras { get; set; } = new List<ItemExtra>();
     public ICollection<ItemVariation> ItemVariations { get; set; } = new List<ItemVariation>();
     public virtual ICollection<OfferItem> OfferItems { get; set; } = new HashSet<OfferItem>();
-    public bool IsAvailable { get; set; }
     public Item()
     {
         

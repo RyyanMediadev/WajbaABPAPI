@@ -7,6 +7,8 @@ global using Volo.Abp.Modularity;
 global using Volo.Abp.PermissionManagement;
 global using Volo.Abp.SettingManagement;
 global using Volo.Abp.TenantManagement;
+using Wajba.Dtos.TimeSlotsContract;
+using Wajba.TimeSlotsServices;
 
 namespace Wajba;
 

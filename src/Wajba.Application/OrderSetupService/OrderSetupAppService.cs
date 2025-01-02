@@ -1,5 +1,6 @@
 ﻿global using Wajba.Dtos.OrderSetupContract;
 global using Wajba.Models.OrderSetup;
+using Volo.Abp.Domain.Repositories;
 
 namespace Wajba.OrderSetupService
 {
@@ -15,7 +16,7 @@ namespace Wajba.OrderSetupService
 
         public async Task<OrderSetupDto> CreateAsync(CreateUpdateOrderSetupDto input)
         {
-            OrderSetup orderSetup=new OrderSetup()
+            OrderSetup orderSetup = new OrderSetup()
             {
                 BasicDeliveryCharge = input.BasicDeliveryCharge,
                 ChargePerKilo = input.ChargePerKilo,
@@ -23,17 +24,21 @@ namespace Wajba.OrderSetupService
                 FreeDeliveryKilometer = input.FreeDeliveryKilometer,
                 IsDeliveryEnabled = input.IsDeliveryEnabled,
                 IsTakeawayEnabled = input.IsTakeawayEnabled,
-                ScheduleOrderSlotDuration = input.ScheduleOrderSlotDuration
+                ScheduleOrderSlotDuration = input.ScheduleOrderSlotDuration,
+                Ontime = input.Ontime,
+                Warning = input.Warning,
+                DelayTime = input.DelayTime
             };
-            var insertedOrderSetup = await _orderSetupRepository.InsertAsync(orderSetup,true);
+            var insertedOrderSetup = await _orderSetupRepository.InsertAsync(orderSetup, true);
             return ObjectMapper.Map<OrderSetup, OrderSetupDto>(insertedOrderSetup);
         }
 
-        public async Task<OrderSetupDto> UpdateAsync(int id, CreateUpdateOrderSetupDto input)
+        public async Task<OrderSetupDto> UpdateAsync(UpdateOrderSetupDto input)
         {
-            var orderSetup = await _orderSetupRepository.GetAsync(id);
+            // Company company = await _repository.FirstOrDefaultAsync();
+            OrderSetup orderSetup = await _orderSetupRepository.FirstOrDefaultAsync();
             if (orderSetup == null)
-                throw new EntityNotFoundException(typeof(OrderSetup), id);
+                throw new Exception("Not Found");
             orderSetup.BasicDeliveryCharge = input.BasicDeliveryCharge;
             orderSetup.ChargePerKilo = input.ChargePerKilo;
             orderSetup.FoodPreparationTime = input.FoodPreparationTime;
@@ -41,9 +46,12 @@ namespace Wajba.OrderSetupService
             orderSetup.IsDeliveryEnabled = input.IsDeliveryEnabled;
             orderSetup.IsTakeawayEnabled = input.IsTakeawayEnabled;
             orderSetup.ScheduleOrderSlotDuration = input.ScheduleOrderSlotDuration;
-           orderSetup.LastModificationTime = DateTime.Now;
+            orderSetup.LastModificationTime = DateTime.Now;
+            orderSetup.Ontime = input.Ontime;
+            orderSetup.Warning = input.Warning;
+            orderSetup.DelayTime = input.DelayTime;
             //ObjectMapper.Map(input, orderSetup);
-            var updatedOrderSetup = await _orderSetupRepository.UpdateAsync(orderSetup,true);
+            var updatedOrderSetup = await _orderSetupRepository.UpdateAsync(orderSetup, true);
             return ObjectMapper.Map<OrderSetup, OrderSetupDto>(updatedOrderSetup);
         }
 
@@ -58,10 +66,11 @@ namespace Wajba.OrderSetupService
         public async Task<PagedResultDto<OrderSetupDto>> GetListAsync(GetOrderSetupInput input)
         {
             var queryable = await _orderSetupRepository.GetQueryableAsync();
-            int totalCount = await AsyncExecuter.CountAsync(queryable);
+            var totalCount = await AsyncExecuter.CountAsync(queryable);
             var items = await AsyncExecuter.ToListAsync(queryable
                 .OrderBy(input.Sorting ?? nameof(OrderSetup.FoodPreparationTime))
                 .PageBy(input.SkipCount, input.MaxResultCount));
+
             return new PagedResultDto<OrderSetupDto>(
                 totalCount,
                 ObjectMapper.Map<List<OrderSetup>, List<OrderSetupDto>>(items)

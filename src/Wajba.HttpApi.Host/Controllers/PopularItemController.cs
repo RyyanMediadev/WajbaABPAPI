@@ -11,6 +11,7 @@ public class PopularItemController : WajbaController
     {
         _popularItemAppservice = popularItemAppservice;
     }
+    [HttpPost]
     public async Task<IActionResult> CreateAsync(CreatePopularitem input)
     {
         try
@@ -33,6 +34,7 @@ public class PopularItemController : WajbaController
             });
         }
     }
+    [HttpPut]
     public async Task<IActionResult> UpdateAsync(UpdatePopularItemdto input)
     {
         try

@@ -25,10 +25,7 @@ namespace Wajba.OTPService
         }
         public async Task<OTPDto> UpdateAsync(UpdateOtpDto input)
         {
-
-
-
-            var  otp = await _repository.FirstOrDefaultAsync();
+            var otp = await _repository.FirstOrDefaultAsync();
             if (otp == null)
                 throw new Exception("Not found");
             otp.DigitLimit = input.DigitLimit;

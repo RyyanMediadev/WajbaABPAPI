@@ -15,7 +15,7 @@ namespace Wajba.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateAsync([FromBody] CreateUpdateOrderSetupDto input)
+        public async Task<IActionResult> CreateAsync( CreateUpdateOrderSetupDto input)
         {
             try
             {
@@ -39,11 +39,11 @@ namespace Wajba.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAsync(int id, [FromBody] CreateUpdateOrderSetupDto input)
+        public async Task<IActionResult> UpdateAsync(UpdateOrderSetupDto input)
         {
             try
             {
-                var updatedOrderSetup = await _orderSetupAppService.UpdateAsync(id, input);
+                var updatedOrderSetup = await _orderSetupAppService.UpdateAsync(input.Id, input);
                 return Ok(new ApiResponse<OrderSetupDto>
                 {
                     Success = true,

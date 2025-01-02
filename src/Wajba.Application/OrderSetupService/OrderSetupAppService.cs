@@ -32,7 +32,7 @@ namespace Wajba.OrderSetupService
             return ObjectMapper.Map<OrderSetup, OrderSetupDto>(insertedOrderSetup);
         }
 
-        public async Task<OrderSetupDto> UpdateAsync(int id, CreateUpdateOrderSetupDto input)
+        public async Task<OrderSetupDto> UpdateAsync(int id, UpdateOrderSetupDto input)
         {
             var orderSetup = await _orderSetupRepository.GetAsync(id);
             if (orderSetup == null)

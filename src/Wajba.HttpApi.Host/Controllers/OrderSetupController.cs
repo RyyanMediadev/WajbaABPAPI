@@ -43,7 +43,7 @@ namespace Wajba.Controllers
         {
             try
             {
-                var updatedOrderSetup = await _orderSetupAppService.UpdateAsync(input.Id, input);
+                var updatedOrderSetup = await _orderSetupAppService.UpdateAsync(input);
                 return Ok(new ApiResponse<OrderSetupDto>
                 {
                     Success = true,

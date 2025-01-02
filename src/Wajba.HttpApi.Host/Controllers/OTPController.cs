@@ -88,7 +88,7 @@ public class OTPController : AbpController
     {
         try
         {
-            var updatedOTP = await _oTPAppService.UpdateAsync(input.Id, input);
+            var updatedOTP = await _oTPAppService.UpdateAsync( input);
             return Ok(new ApiResponse<OTPDto>
             {
                 Success = true,

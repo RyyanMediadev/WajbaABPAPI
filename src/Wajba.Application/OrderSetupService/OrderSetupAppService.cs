@@ -1,5 +1,6 @@
 ﻿global using Wajba.Dtos.OrderSetupContract;
 global using Wajba.Models.OrderSetup;
+using Volo.Abp.Domain.Repositories;
 
 namespace Wajba.OrderSetupService
 {
@@ -32,11 +33,12 @@ namespace Wajba.OrderSetupService
             return ObjectMapper.Map<OrderSetup, OrderSetupDto>(insertedOrderSetup);
         }
 
-        public async Task<OrderSetupDto> UpdateAsync(int id, UpdateOrderSetupDto input)
+        public async Task<OrderSetupDto> UpdateAsync(UpdateOrderSetupDto input)
         {
-            var orderSetup = await _orderSetupRepository.GetAsync(id);
+            // Company company = await _repository.FirstOrDefaultAsync();
+            OrderSetup orderSetup = await _orderSetupRepository.FirstOrDefaultAsync();
             if (orderSetup == null)
-                throw new EntityNotFoundException(typeof(OrderSetup), id);
+                throw new Exception("Not Found");
             orderSetup.BasicDeliveryCharge = input.BasicDeliveryCharge;
             orderSetup.ChargePerKilo = input.ChargePerKilo;
             orderSetup.FoodPreparationTime = input.FoodPreparationTime;

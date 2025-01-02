@@ -120,17 +120,19 @@ public class CategoryAppService : ApplicationService
     {
         Category category = await _categoryRepository.FindAsync(id);
         if (category == null)
-            throw new Exception("Not Found");
+            throw new EntityNotFoundException(typeof(Category), id);
+        if(image == null)
+            throw new Exception("Image is required");
         category.ImageUrl = await _imageService.UploadAsync(image);
         category.LastModificationTime = DateTime.UtcNow;
-        _categoryRepository.UpdateAsync(category, true);
+       await  _categoryRepository.UpdateAsync(category, true);
         return ObjectMapper.Map<Category, CategoryDto>(category);
     }
     public async Task DeleteAsync(int id)
     {
         Category category = await _categoryRepository.GetAsync(id);
         if (category == null)
-            throw new Exception("Not found");
+           throw new EntityNotFoundException(typeof(Category), id);
         await _categoryRepository.DeleteAsync(id,true);
     }
 }

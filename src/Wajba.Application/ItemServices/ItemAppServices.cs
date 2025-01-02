@@ -1,6 +1,7 @@
 ﻿global using Wajba.Dtos.ItemsDtos;
 global using Wajba.Enums;
 global using Wajba.Models.Items;
+using Wajba.Models.BranchDomain;
 
 namespace Wajba.ItemServices;
 
@@ -161,11 +162,41 @@ public class ItemAppServices : ApplicationService
             itemDtos
         );
     }
+    public async Task<PagedResultDto<ItemDto>> GetByname(string name)
+    {
+        var queryable = await _repository.WithDetailsAsync(x => x.ItemBranches);
+        List<ItemDto> itemDtos1 = new List<ItemDto>();
+        var items = queryable.ToList();
+        foreach (var item in items)
+        {
+            if (item.Name.ToLower() == name.ToLower())
+                itemDtos1.Add(ObjectMapper.Map<Item, ItemDto>(item));
+        }
+        return new PagedResultDto<ItemDto>(
+        itemDtos1.Count,
+          itemDtos1);
+    }
+    public async Task<PagedResultDto<ItemDto>> GetByBranchId(int branchid)
+    {
+        var queryable = await _repository.WithDetailsAsync(x => x.ItemBranches);
+        List<ItemDto> itemDtos1 = new List<ItemDto>();
+        var items = queryable.ToList();
+        foreach (var item in items)
+        {
+            var itemBranches = item.ItemBranches.Any(p => p.BranchId == branchid);
+            if (itemBranches)
+                itemDtos1.Add(ObjectMapper.Map<Item, ItemDto>(item));
+        }
+        return new PagedResultDto<ItemDto>(
+            itemDtos1.Count,
+              itemDtos1
+        );
+    }
     public async Task DeleteAsync(int id)
     {
         Item item = await _repository.GetAsync(id);
         if (item == null)
-            throw new Exception("Not found");
+            throw new EntityNotFoundException(typeof(Item), id);
         await _repository.DeleteAsync(id);
     }
 }

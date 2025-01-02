@@ -97,7 +97,7 @@ public class SitesAppservice : ApplicationService
     public async Task DeleteAsync(int id)
     {
         if (await _repository.FindAsync(id) == null)
-            throw new Exception("Not Found");
+            throw new EntityNotFoundException(typeof(Site), id);
         await _repository.DeleteAsync(id, true);
 
     }

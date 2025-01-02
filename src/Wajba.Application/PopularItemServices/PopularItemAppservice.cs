@@ -70,10 +70,8 @@ public class PopularItemAppservice:ApplicationService
     {
         var popularitem = await _popularitemrepo.GetAsync(id);
         if (popularitem == null)
-        {
             throw new EntityNotFoundException(typeof(PopularItem), id);
-        }
-        Item item = await _itemrepo.GetAsync(input.ItemId);
+        Item item = _itemrepo.WithDetailsAsync(p => p.ItemBranches).Result.FirstOrDefault(p => p.Id == input.ItemId);
         if (item == null)
             throw new EntityNotFoundException(typeof(Item), input.Id);
         Category category = await _categoryrepo.GetAsync(item.CategoryId);
@@ -81,17 +79,17 @@ public class PopularItemAppservice:ApplicationService
             throw new EntityNotFoundException(typeof(Category), item.CategoryId);
         if (input.ImgFile == null)
             throw new Exception("Image is required");
-        Branch branch = item.ItemBranches.FirstOrDefault().Branch;
-        if (branch == null)
+        if (item.ItemBranches.Any(p => p.BranchId == input.BranchId))
             throw new EntityNotFoundException(typeof(Branch), item.ItemBranches.FirstOrDefault().BranchId);
-        popularitem.ItemId = input.Id;
+        popularitem.ItemId = input.ItemId;
         popularitem.Name = input.Name;
         popularitem.PrePrice = input.preprice;
         popularitem.CurrentPrice = input.currentprice;
         popularitem.Description = input.Description;
         popularitem.Status = (Status)input.Status;
         popularitem.CategoryName = category.Name;
-        popularitem.BranchId = branch.Id;
+        popularitem.LastModificationTime = DateTime.UtcNow;
+        popularitem.BranchId = input.BranchId;
         popularitem.ImageUrl = await _imageService.UploadAsync(input.ImgFile);
         popularitem = await _popularitemrepo.UpdateAsync(popularitem, autoSave: true);
         return ObjectMapper.Map<PopularItem, Popularitemdto>(popularitem);

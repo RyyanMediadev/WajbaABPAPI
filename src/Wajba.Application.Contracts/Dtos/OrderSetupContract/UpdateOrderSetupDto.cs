@@ -2,7 +2,7 @@
 
 public class UpdateOrderSetupDto
 {
-    public int Id { get; set; }
+ 
     public int FoodPreparationTime { get; set; }
     public int ScheduleOrderSlotDuration { get; set; }
     public int FreeDeliveryKilometer { get; set; }

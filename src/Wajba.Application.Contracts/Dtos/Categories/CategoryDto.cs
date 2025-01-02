@@ -16,5 +16,4 @@ public class CategoryDto : EntityDto<int>
 public class GetCategoryInput : PagedAndSortedResultRequestDto
 {
     public string? Name { get; set; }
-    public int? BranchId { get; set; }
 }

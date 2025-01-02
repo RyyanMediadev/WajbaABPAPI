@@ -1,6 +1,6 @@
 ﻿namespace Wajba.Models.OrderSetup;
 
-public class OrderSetup : FullAuditedEntity<int> 
+public class OrderSetup : FullAuditedEntity<int>
 {
     public int FoodPreparationTime { get; set; }
     public int ScheduleOrderSlotDuration { get; set; }

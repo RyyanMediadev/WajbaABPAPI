@@ -103,6 +103,7 @@ public class ItemAppServices : ApplicationService
     public async Task<PagedResultDto<ItemDto>> GetListAsync(GetItemInput input)
     {
         IQueryable<Item> queryable = await _repository.GetQueryableAsync();
+        var items = _repository.WithDetailsAsync(p => p.Category).Result.ToList();
         IQueryable<Category> categoryQueryable = await _repository1.GetQueryableAsync();
 
         // Join query to include category name

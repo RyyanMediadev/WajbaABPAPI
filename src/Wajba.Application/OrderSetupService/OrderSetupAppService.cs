@@ -15,7 +15,7 @@ namespace Wajba.OrderSetupService
 
         public async Task<OrderSetupDto> CreateAsync(CreateUpdateOrderSetupDto input)
         {
-            OrderSetup orderSetup=new OrderSetup()
+            OrderSetup orderSetup = new OrderSetup()
             {
                 BasicDeliveryCharge = input.BasicDeliveryCharge,
                 ChargePerKilo = input.ChargePerKilo,
@@ -23,9 +23,12 @@ namespace Wajba.OrderSetupService
                 FreeDeliveryKilometer = input.FreeDeliveryKilometer,
                 IsDeliveryEnabled = input.IsDeliveryEnabled,
                 IsTakeawayEnabled = input.IsTakeawayEnabled,
-                ScheduleOrderSlotDuration = input.ScheduleOrderSlotDuration
+                ScheduleOrderSlotDuration = input.ScheduleOrderSlotDuration,
+                Ontime = input.Ontime,
+                Warning = input.Warning,
+                DelayTime = input.DelayTime
             };
-            var insertedOrderSetup = await _orderSetupRepository.InsertAsync(orderSetup,true);
+            var insertedOrderSetup = await _orderSetupRepository.InsertAsync(orderSetup, true);
             return ObjectMapper.Map<OrderSetup, OrderSetupDto>(insertedOrderSetup);
         }
 
@@ -41,9 +44,12 @@ namespace Wajba.OrderSetupService
             orderSetup.IsDeliveryEnabled = input.IsDeliveryEnabled;
             orderSetup.IsTakeawayEnabled = input.IsTakeawayEnabled;
             orderSetup.ScheduleOrderSlotDuration = input.ScheduleOrderSlotDuration;
-           orderSetup.LastModificationTime = DateTime.Now;
+            orderSetup.LastModificationTime = DateTime.Now;
+            orderSetup.Ontime = input.Ontime;
+            orderSetup.Warning = input.Warning;
+            orderSetup.DelayTime = input.DelayTime;
             //ObjectMapper.Map(input, orderSetup);
-            var updatedOrderSetup = await _orderSetupRepository.UpdateAsync(orderSetup,true);
+            var updatedOrderSetup = await _orderSetupRepository.UpdateAsync(orderSetup, true);
             return ObjectMapper.Map<OrderSetup, OrderSetupDto>(updatedOrderSetup);
         }
 

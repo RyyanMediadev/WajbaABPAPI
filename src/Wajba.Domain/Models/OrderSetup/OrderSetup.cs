@@ -16,6 +16,10 @@ namespace Wajba.Models.OrderSetup
         public bool IsTakeawayEnabled { get; set; }
         public bool IsDeliveryEnabled { get; set; }
 
+
+        public string Ontime { get; set; }
+        public string Warning { get; set; }
+        public string DelayTime { get; set; }
         public OrderSetup()
         {
 

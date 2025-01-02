@@ -11,7 +11,7 @@ namespace Wajba.Configurations
     {
         public void Configure(EntityTypeBuilder<OrderSetup> builder)
         {
-            builder.ToTable("OrderSetups"); 
+            builder.ToTable("OrderSetups");
             builder.Property(x => x.FoodPreparationTime).IsRequired();
             builder.Property(x => x.ScheduleOrderSlotDuration).IsRequired();
             builder.Property(x => x.FreeDeliveryKilometer).IsRequired();
@@ -19,6 +19,11 @@ namespace Wajba.Configurations
             builder.Property(x => x.ChargePerKilo).HasColumnType("decimal(18,2)").IsRequired();
             builder.Property(x => x.IsTakeawayEnabled).IsRequired();
             builder.Property(x => x.IsDeliveryEnabled).IsRequired();
+            builder.Property(x => x.Ontime).IsRequired();
+            builder.Property(x => x.Warning).IsRequired();
+            builder.Property(x => x.DelayTime).IsRequired();
+
+
         }
     }
 }

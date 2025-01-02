@@ -10,8 +10,12 @@ public class OrderSetup : FullAuditedEntity<int>
     public bool IsTakeawayEnabled { get; set; }
     public bool IsDeliveryEnabled { get; set; }
 
-    public OrderSetup()
-    {
+
+        public string Ontime { get; set; }
+        public string Warning { get; set; }
+        public string DelayTime { get; set; }
+        public OrderSetup()
+        {
 
     }
 }

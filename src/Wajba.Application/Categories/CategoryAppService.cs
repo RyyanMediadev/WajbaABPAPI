@@ -171,6 +171,7 @@ public class CategoryAppService : ApplicationService
             //{ categoryItemsDtos.Add(categoryItemsDto);
             //    categoryItemsDto.IsFilled = true;
             //}
+            categoryItemsDtos.Add(categoryItemsDto);
         }
         int totalCount = categoryItemsDtos.Count;
         return new PagedResultDto<CategoryItemsDto>(

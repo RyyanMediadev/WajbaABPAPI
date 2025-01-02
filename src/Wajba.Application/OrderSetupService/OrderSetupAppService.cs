@@ -29,6 +29,7 @@ namespace Wajba.OrderSetupService
                 Warning = input.Warning,
                 DelayTime = input.DelayTime
             };
+         
             var insertedOrderSetup = await _orderSetupRepository.InsertAsync(orderSetup, true);
             return ObjectMapper.Map<OrderSetup, OrderSetupDto>(insertedOrderSetup);
         }

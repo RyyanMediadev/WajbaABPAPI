@@ -37,7 +37,7 @@ public class PopularItemController : WajbaController
     {
         try
         {
-            PopularItemDto popularItemDto = await _popularItemAppservice.UpdateAsync(input.ItemId, input);
+            Popularitemdto popularItemDto = await _popularItemAppservice.UpdateAsync(input.ItemId, input);
             return Ok(new ApiResponse<object>
             {
                 Success = true,

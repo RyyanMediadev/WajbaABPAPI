@@ -14,6 +14,10 @@ public class Program
 {
     public async static Task<int> Main(string[] args)
     {
+
+        //using var application = await AbpApplicationFactory.CreateAsync<Wajba.ht>();
+        //await application.InitializeAsync();
+
         Log.Logger = new LoggerConfiguration()
 #if DEBUG
             .MinimumLevel.Debug()

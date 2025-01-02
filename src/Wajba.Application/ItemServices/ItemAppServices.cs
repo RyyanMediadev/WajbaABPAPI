@@ -41,6 +41,8 @@ public class ItemAppServices : ApplicationService
                 throw new Exception("Branch not found");
             itemBranches.Add(new ItemBranch() { BranchId = branchId, Branch = branch });
         }
+        if(itemBranches.Count == 0)
+            throw new Exception("Branches are required");
         Item item = new Item()
         {
             Name = input.Name,

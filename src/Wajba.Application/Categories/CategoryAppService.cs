@@ -18,14 +18,14 @@ public class CategoryAppService : ApplicationService
 {
     private readonly IRepository<Category, int> _categoryRepository;
     private readonly IImageService _imageService;
-    private readonly IUnitOfWorkManager _unitOfWorkManager;
+    private readonly IRepository<Item, int> _itemrepo;
 
     public CategoryAppService(IRepository<Category, int> categoryRepository, IImageService imageService,
-        IUnitOfWorkManager unitOfWorkManager)
+        IRepository<Item, int> itemrepo)
     {
         _categoryRepository = categoryRepository;
         _imageService = imageService;
-    _unitOfWorkManager = unitOfWorkManager;
+        _itemrepo = itemrepo;
     }
 
     public async Task<CategoryDto> CreateAsync(CreateUpdateCategoryDto input)
@@ -146,12 +146,20 @@ public class CategoryAppService : ApplicationService
                 Name = category.Name,
                 Description = category.Description,
                 Status = category.Status,
-                IsFilled = true,
+                IsFilled = false,
                 ImageUrl = category.ImageUrl,
             };
-            if (category.Items.Any(p => p.ItemBranches.Any(l => l.BranchId == branchid)))
-                categoryItemsDto.IsFilled = true;
-            else categoryItemsDto.IsFilled = false;
+            var items = category.Items.ToList();
+            foreach (var i in items)
+            {
+                Item item =  _itemrepo.WithDetailsAsync(p => p.ItemBranches).Result.FirstOrDefault(p => p.Id == i.Id);
+                var itemBranches = item.ItemBranches.ToList();
+                foreach (var l in itemBranches)
+                {
+                    if (l.BranchId == branchid)
+                        categoryItemsDto.IsFilled = true;
+                }
+            }
             //foreach (var item in category.Items)
             //{
             //    if (item.ItemBranches.Any(p => p.BranchId == branchid))
@@ -163,6 +171,7 @@ public class CategoryAppService : ApplicationService
             //{ categoryItemsDtos.Add(categoryItemsDto);
             //    categoryItemsDto.IsFilled = true;
             //}
+            categoryItemsDtos.Add(categoryItemsDto);
         }
         int totalCount = categoryItemsDtos.Count;
         return new PagedResultDto<CategoryItemsDto>(

@@ -94,4 +94,11 @@ public class PopularItemAppservice:ApplicationService
         popularitem = await _popularitemrepo.UpdateAsync(popularitem, autoSave: true);
         return ObjectMapper.Map<PopularItem, Popularitemdto>(popularitem);
     }
+    public async Task DeleteAsync(int id)
+    {
+        var popularitem = await _popularitemrepo.GetAsync(id);
+        if (popularitem == null)
+            throw new EntityNotFoundException(typeof(PopularItem), id);
+        await _popularitemrepo.DeleteAsync(id, autoSave: true);
+    }
 }

@@ -15,7 +15,7 @@ public class OTPController : AbpController
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateAsync([FromBody] CreateUpdateOTPDto input)
+    public async Task<IActionResult> CreateAsync( CreateUpdateOTPDto input)
     {
         try
         {

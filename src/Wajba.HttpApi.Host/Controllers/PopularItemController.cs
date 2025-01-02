@@ -1,5 +1,5 @@
 ﻿global using Wajba.PopularItemServices;
-using Wajba.Dtos.PopularItemstoday;
+global using Wajba.Dtos.PopularItemstoday;
 
 namespace Wajba.Controllers;
 

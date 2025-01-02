@@ -78,60 +78,9 @@ public class CategoryAppService : ApplicationService
             .PageBy(input.SkipCount, input.MaxResultCount));
         int totalCount = await AsyncExecuter.CountAsync(queryable);
         List<CategoryDto> categoryItemsDtos = ObjectMapper.Map<List<Category>, List<CategoryDto>>(categories);
-
-        //if (input.BranchId.HasValue)
-        //{
-        //    categoryItemsDtos = new List<CategoryDto>();
-        //    foreach (var category in queryable)
-        //    {
-        //        if (category.Items.Any(p => p.ItemBranches.Any(l => l.BranchId == input.BranchId.Value)))
-        //        {
-        //            var categoryItemsDto = new CategoryDto
-        //            {
-        //                Id = category.Id,
-        //                name = category.Name,
-        //                Description = category.Description,
-        //                status = category.Status,
-        //                ImageUrl = category.ImageUrl,
-        //                IsFilled = true,
-        //                TotalItems = category.Items.Count
-        //            };
-        //            foreach (var item in category.Items)
-        //            {
-        //                categoryItemsDto.Items.Add(ObjectMapper.Map<Item, ItemDto>(item));
-        //            }
-        //            if (categoryItemsDto.Items.Count > 0)
-        //            {
-        //                categoryItemsDtos.Add(categoryItemsDto);
-        //            }
-        //        }
-        //        else
-        //        {
-        //            var categoryItemsDto = new CategoryDto
-        //            {
-        //                Id = category.Id,
-        //                name = category.Name,
-        //                Description = category.Description,
-        //                status = category.Status,
-        //                ImageUrl = category.ImageUrl,
-        //                IsFilled = false,
-        //                TotalItems = 0
-        //            };
-        //            //categoryItemsDtos.Add(categoryItemsDto);
-        //        }
-        //    }
-        //}
-        //int totalCount = await AsyncExecuter.CountAsync(queryable);
-        //List<Category> items = await AsyncExecuter.ToListAsync(queryable
-        //    .OrderBy(input.Sorting ?? nameof(Category.Name))
-        //    .PageBy(input.SkipCount, input.MaxResultCount));
         return new PagedResultDto<CategoryDto>(
             totalCount,
             categoryItemsDtos);
-        //return new PagedResultDto<CategoryDto>(
-        //    totalCount,
-        //    ObjectMapper.Map<List<Category>, List<CategoryDto>>(items)
-        //);
     }
    public async Task<PagedResultDto<CategoryItemsDto>> GetCategoryItemsDtosAsync(int branchid)
     {
@@ -151,7 +100,7 @@ public class CategoryAppService : ApplicationService
             var items = category.Items.ToList();
             foreach (var i in items)
             {
-                Item item =  _itemrepo.WithDetailsAsync(p => p.ItemBranches).Result.FirstOrDefault(p => p.Id == i.Id);
+                Item item = _itemrepo.WithDetailsAsync(p => p.ItemBranches).Result.FirstOrDefault(p => p.Id == i.Id);
                 var itemBranches = item.ItemBranches.ToList();
                 foreach (var l in itemBranches)
                 {
@@ -159,24 +108,23 @@ public class CategoryAppService : ApplicationService
                         categoryItemsDto.IsFilled = true;
                 }
             }
-            //foreach (var item in category.Items)
-            //{
-            //    if (item.ItemBranches.Any(p => p.BranchId == branchid))
-            //    {
-            //        categoryItemsDto.Items.Add(ObjectMapper.Map<Item, ItemDto>(item));
-            //    }
-            //}
-            //if (categoryItemsDto.Items.Count > 0)
-            //{ categoryItemsDtos.Add(categoryItemsDto);
-            //    categoryItemsDto.IsFilled = true;
-            //}
             categoryItemsDtos.Add(categoryItemsDto);
         }
-        int totalCount = categoryItemsDtos.Count;
+        int totalCount = await AsyncExecuter.CountAsync(queryable);
         return new PagedResultDto<CategoryItemsDto>(
             totalCount,
             (IReadOnlyList<CategoryItemsDto>)categoryItemsDtos
         );
+    }
+    public async Task<CategoryDto> UpdateItemImage(int id, IFormFile image)
+    {
+        Category category = await _categoryRepository.FindAsync(id);
+        if (category == null)
+            throw new Exception("Not Found");
+        category.ImageUrl = await _imageService.UploadAsync(image);
+        category.LastModificationTime = DateTime.UtcNow;
+        _categoryRepository.UpdateAsync(category, true);
+        return ObjectMapper.Map<Category, CategoryDto>(category);
     }
     public async Task DeleteAsync(int id)
     {

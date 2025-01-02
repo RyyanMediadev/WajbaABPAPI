@@ -1,4 +1,5 @@
 ﻿global using Wajba.Models.PopularItemsDomain;
+using Volo.Abp.Domain.Entities;
 
 namespace Wajba.PopularItemServices;
 

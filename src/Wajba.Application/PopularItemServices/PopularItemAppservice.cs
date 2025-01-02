@@ -1,6 +1,7 @@
 ﻿global using Wajba.Models.PopularItemsDomain;
 
 namespace Wajba.PopularItemServices;
+
 [RemoteService(false)]
 public class PopularItemAppservice:ApplicationService
 {
@@ -24,15 +25,17 @@ public class PopularItemAppservice:ApplicationService
     }
     public async Task<Popularitemdto> CreateAsync(CreatePopularitem input)
     {
-        Item item = await _itemrepo.GetAsync(input.Id);
+        Item item = _itemrepo.WithDetailsAsync(p => p.ItemBranches).Result.FirstOrDefault(p => p.Id == input.Id);
         if (item == null)
             throw new EntityNotFoundException(typeof(Item), input.Id);
-        Category category = await _categoryrepo.GetAsync(item.CategoryId);
+        Category category =  _categoryrepo.WithDetailsAsync(p=>p.Items).Result.FirstOrDefault(p => p.Id == item.CategoryId);
+        if (category == null )
+            throw new EntityNotFoundException(typeof(Category), item.CategoryId);
         if (input.ImgFile == null)
             throw new Exception("Image is required");
-        Branch branch = item.ItemBranches.FirstOrDefault().Branch;
-        if(branch == null)
-            throw new EntityNotFoundException(typeof(Branch), item.ItemBranches.FirstOrDefault().BranchId);
+        bool isfound = item.ItemBranches.Any(p => p.BranchId == input.BranchId);
+        if (!isfound)
+            throw new EntityNotFoundException(typeof(Branch), input.BranchId);
         PopularItem popularitem = new PopularItem()
         {
             ItemId = input.Id,
@@ -42,7 +45,7 @@ public class PopularItemAppservice:ApplicationService
             Description = input.Description,
             Status = (Status)input.Status,
             CategoryName = category.Name,
-            BranchId = branch.Id,
+            BranchId = input.BranchId
         };
         popularitem.ImageUrl = await _imageService.UploadAsync(input.ImgFile);
         popularitem = await _popularitemrepo.InsertAsync(popularitem, autoSave: true);
@@ -60,6 +63,36 @@ public class PopularItemAppservice:ApplicationService
         {
             throw new EntityNotFoundException(typeof(PopularItem), id);
         }
+        return ObjectMapper.Map<PopularItem, Popularitemdto>(popularitem);
+    }
+    public async Task<Popularitemdto> UpdateAsync(int id, UpdatePopularItemdto input)
+    {
+        var popularitem = await _popularitemrepo.GetAsync(id);
+        if (popularitem == null)
+        {
+            throw new EntityNotFoundException(typeof(PopularItem), id);
+        }
+        Item item = await _itemrepo.GetAsync(input.ItemId);
+        if (item == null)
+            throw new EntityNotFoundException(typeof(Item), input.Id);
+        Category category = await _categoryrepo.GetAsync(item.CategoryId);
+        if(category == null)
+            throw new EntityNotFoundException(typeof(Category), item.CategoryId);
+        if (input.ImgFile == null)
+            throw new Exception("Image is required");
+        Branch branch = item.ItemBranches.FirstOrDefault().Branch;
+        if (branch == null)
+            throw new EntityNotFoundException(typeof(Branch), item.ItemBranches.FirstOrDefault().BranchId);
+        popularitem.ItemId = input.Id;
+        popularitem.Name = input.Name;
+        popularitem.PrePrice = input.preprice;
+        popularitem.CurrentPrice = input.currentprice;
+        popularitem.Description = input.Description;
+        popularitem.Status = (Status)input.Status;
+        popularitem.CategoryName = category.Name;
+        popularitem.BranchId = branch.Id;
+        popularitem.ImageUrl = await _imageService.UploadAsync(input.ImgFile);
+        popularitem = await _popularitemrepo.UpdateAsync(popularitem, autoSave: true);
         return ObjectMapper.Map<PopularItem, Popularitemdto>(popularitem);
     }
 }

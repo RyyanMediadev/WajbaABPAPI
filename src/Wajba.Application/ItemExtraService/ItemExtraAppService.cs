@@ -10,6 +10,7 @@ using Wajba.Models.Items;
 
 namespace Wajba.ItemExtraService
 {
+    [RemoteService(false)]
     public class ItemExtraAppService : ApplicationService, IItemExtraAppService
     {
         private readonly IRepository<ItemExtra, int> _repository;

@@ -1,6 +1,5 @@
 ﻿global using Wajba.Dtos.OrderSetupContract;
 global using Wajba.Models.OrderSetup;
-using Volo.Abp.Domain.Repositories;
 
 namespace Wajba.OrderSetupService
 {

@@ -3,7 +3,9 @@ global using Wajba.Dtos.PopularItemstoday;
 
 namespace Wajba.Controllers;
 
-public class PopularItemController : WajbaController
+[Route("api/[controller]")]
+[ApiController]
+public class PopularItemController : AbpController
 {
     private readonly PopularItemAppservice _popularItemAppservice;
 
@@ -103,7 +105,6 @@ public class PopularItemController : WajbaController
             });
         }
     }
-
 
     [HttpDelete]
     public async Task<IActionResult> DeleteAsync(int id)

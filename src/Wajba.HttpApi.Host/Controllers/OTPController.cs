@@ -3,9 +3,7 @@ global using Wajba.OTPService;
 
 namespace Wajba.Controllers;
 
-//[Route("api/[controller]")]
-//[ApiController]
-public class OTPController : AbpController
+public class OTPController : WajbaController
 {
     private readonly OTPAppService _oTPAppService;
 

@@ -11,9 +11,9 @@ public class SiteController :WajbaController
         _sitesAppservice = sitesAppservice;
     }
     [HttpPost]
-    public async Task<IActionResult> CreateAsync( CreateSiteDto input)
+    public async Task<IActionResult> CreateAsync(CreateSiteDto input)
     {
-        if(!ModelState.IsValid)
+        if (!ModelState.IsValid)
             return BadRequest("Data is not valid");
         try
         {

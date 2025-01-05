@@ -154,9 +154,7 @@ public class CategoryController : WajbaController
     {
         try
         {
-            // Call the service to delete the category
             await _categoryAppService.DeleteAsync(id);
-
             return Ok(new ApiResponse<object>
             {
                 Success = true,

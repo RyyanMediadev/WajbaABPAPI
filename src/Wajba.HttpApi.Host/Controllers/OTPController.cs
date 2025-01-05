@@ -36,7 +36,7 @@ public class OTPController : WajbaController
         }
     }
     [HttpGet]
-    public async Task<IActionResult> GetAll(PagedAndSortedResultRequestDto dto)
+    public async Task<IActionResult> GetAll(GetOtpInput dto)
     {
         try
         {

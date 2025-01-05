@@ -3,8 +3,6 @@ global using Wajba.Dtos.CouponContract;
 
 namespace Wajba.Controllers;
 
-[Route("api/[controller]")]
-[ApiController]
 
 public class CouponController : WajbaController
 {

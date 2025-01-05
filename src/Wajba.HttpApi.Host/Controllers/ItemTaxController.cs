@@ -1,45 +1,152 @@
 ﻿global using Wajba.Dtos.ItemTaxContract;
+global using Wajba.ItemTaxService;
 
 namespace Wajba.Controllers;
 
-[Route("api/[controller]")]
-[ApiController]
-public class ItemTaxController : AbpController
+public class ItemTaxController : WajbaController
 {
-    private readonly IItemTaxAppService _itemTaxAppService;
+    private readonly ItemTaxAppService _itemTaxAppService;
 
-    public ItemTaxController(IItemTaxAppService itemTaxAppService)
+    public ItemTaxController(ItemTaxAppService itemTaxAppService)
     {
         _itemTaxAppService = itemTaxAppService;
     }
 
     [HttpGet]
-    public async Task<PagedResultDto<ItemTaxDto>> GetListAsync([FromQuery] PagedAndSortedResultRequestDto input)
+    public async Task<IActionResult> GetListAsync([FromQuery] PagedAndSortedResultRequestDto input)
     {
-        return await _itemTaxAppService.GetListAsync(input);
+        try
+        {
+            var categories = await _itemTaxAppService.GetAllAsync(input);
+            return Ok(new ApiResponse<PagedResultDto<ItemTaxDto>>
+            {
+                Success = true,
+                Message = "ItemTax retrieved successfully.",
+                Data = categories
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ApiResponse<object>
+            {
+                Success = false,
+                Message = $"Error retrieving ItemTaxes: {ex.Message}",
+                Data = null
+            });
+        }
     }
 
     [HttpGet("{id}")]
-    public async Task<ItemTaxDto> GetAsync(int id)
+    public async Task<IActionResult> GetAsync(int id)
     {
-        return await _itemTaxAppService.GetAsync(id);
+        try
+        {
+            ItemTaxDto itemTaxDto = await _itemTaxAppService.GetByIdAsync(id);
+            return Ok(new ApiResponse<ItemTaxDto>
+            {
+                Success = true,
+                Message = "itemTaxDto retrieved successfully.",
+                Data = itemTaxDto
+            });
+        }
+        catch (EntityNotFoundException)
+        {
+            return NotFound(new ApiResponse<object>
+            {
+                Success = false,
+                Message = "itemTaxDto not found.",
+                Data = null
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ApiResponse<object>
+            {
+                Success = false,
+                Message = $"Error retrieving category: {ex.Message}",
+                Data = null
+            });
+        }
     }
-
     [HttpPost]
-    public async Task<ItemTaxDto> CreateAsync(CreateUpdateItemTaxDto input)
+    public async Task<IActionResult> CreateAsync(CreateUpdateItemTaxDto input)
     {
-        return await _itemTaxAppService.CreateAsync(input);
+        try
+        {
+            await _itemTaxAppService.CreateAsync(input);
+            return Ok(new ApiResponse<object>
+            {
+                Success = true,
+                Message = "ItemTax created successfully.",
+                Data = null
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ApiResponse<object>
+            {
+                Success = false,
+                Message = $"Error creating itemtax: {ex.Message}",
+                Data = null
+            });
+        }
     }
-
     [HttpPut("{id}")]
-    public async Task<ItemTaxDto> UpdateAsync(int id, CreateUpdateItemTaxDto input)
-    {
-        return await _itemTaxAppService.UpdateAsync(id, input);
+    public async Task<IActionResult> UpdateAsync(int id, UpdateItemTaxDto input)
+    { 
+        try
+        {
+            var updatedcategory = await _itemTaxAppService.UpdateAsync(input.Id, input);
+            return Ok(new ApiResponse<ItemTaxDto>
+            {
+                Success = true,
+                Message = "ItemTax updated successfully.",
+                Data = updatedcategory
+            });
+        }
+        catch (EntityNotFoundException)
+        {
+            return NotFound(new ApiResponse<object>
+            {
+                Success = false,
+                Message = "ItemTax  not found.",
+                Data = null
+            });
+        }
+
     }
 
     [HttpDelete("{id}")]
-    public async Task DeleteAsync(int id)
+    public async Task<IActionResult> DeleteAsync(int id)
     {
-        await _itemTaxAppService.DeleteAsync(id);
+        try
+        {
+            await _itemTaxAppService.DeleteAsync(id);
+
+            return Ok(new ApiResponse<object>
+            {
+                Success = true,
+                Message = "ItemTax deleted successfully.",
+                Data = null
+            });
+        }
+        catch (EntityNotFoundException)
+        {
+            return NotFound(new ApiResponse<object>
+            {
+                Success = false,
+                Message = "ItemTax not found.",
+                Data = null
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ApiResponse<object>
+            {
+                Success = false,
+                Message = $"Error deleting ItemTax: {ex.Message}",
+                Data = null
+            });
+        }
     }
 }

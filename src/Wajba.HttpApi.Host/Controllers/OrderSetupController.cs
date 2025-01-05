@@ -3,8 +3,8 @@ global using Wajba.OrderSetupService;
 
 namespace Wajba.Controllers;
 
-[Route("api/[controller]")]
-[ApiController]
+//[Route("api/[controller]")]
+//[ApiController]
 public class OrderSetupController : WajbaController
 {
     private readonly OrderSetupAppService _orderSetupAppService;
@@ -38,7 +38,7 @@ public class OrderSetupController : WajbaController
         }
     }
 
-    [HttpPut("{id}")]
+    [HttpPut]
     public async Task<IActionResult> UpdateAsync(UpdateOrderSetupDto input)
     {
         try

@@ -1,15 +1,14 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Wajba.Dtos.ItemAddonContract;
+﻿using Wajba.Dtos.ItemAddonContract;
+using Wajba.ItemAddonService;
 
 namespace Wajba.Controllers
 {
  
     public class ItemAddonController : WajbaController
     {
-        private readonly IItemAddonAppService _itemAddonAppService;
+        private readonly ItemAddonAppService _itemAddonAppService;
 
-        public ItemAddonController(IItemAddonAppService itemAddonAppService)
+        public ItemAddonController(ItemAddonAppService itemAddonAppService)
         {
             _itemAddonAppService = itemAddonAppService;
         }

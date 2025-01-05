@@ -17,7 +17,7 @@ public class ItemTaxController : WajbaController
     {
         try
         {
-            var categories = await _itemTaxAppService.GetListAsync(input);
+            var categories = await _itemTaxAppService.GetAllAsync(input);
             return Ok(new ApiResponse<PagedResultDto<ItemTaxDto>>
             {
                 Success = true,
@@ -41,7 +41,7 @@ public class ItemTaxController : WajbaController
     {
         try
         {
-            ItemTaxDto itemTaxDto = await _itemTaxAppService.GetAsync(id);
+            ItemTaxDto itemTaxDto = await _itemTaxAppService.GetByIdAsync(id);
             return Ok(new ApiResponse<ItemTaxDto>
             {
                 Success = true,

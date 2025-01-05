@@ -1,13 +1,12 @@
-﻿global using Wajba.Dtos.ThemesContract;
+﻿global using Microsoft.AspNetCore.Http;
+global using Wajba.Dtos.ThemesContract;
 global using Wajba.ThemesService;
-global using Microsoft.AspNetCore.Http;
 
 namespace Wajba.Controllers;
 
-
-[Route("api/[controller]")]
-[ApiController]
-public class ThemeController : AbpController
+//[Route("api/[controller]")]
+//[ApiController]
+public class ThemeController : WajbaController
 {
     private readonly ThemesAppservice _themesAppservice;
 

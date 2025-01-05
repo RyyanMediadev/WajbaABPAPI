@@ -6,7 +6,7 @@ using Wajba.Models.ItemAddonDomain;
 namespace Wajba.ItemAddonService
 {
     [RemoteService(false)]
-    public class ItemAddonAppService : ApplicationService, IItemAddonAppService
+    public class ItemAddonAppService : ApplicationService
     {
         private readonly IRepository<ItemAddon, int> _itemAddonRepository;
         private readonly IRepository<Item, int> _itemrepo;

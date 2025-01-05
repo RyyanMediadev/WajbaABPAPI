@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Volo.Abp.Domain.Entities;
-using Wajba.Dtos.ItemExtraContract;
-using Wajba.Models.ItemExtraDomain;
-using Wajba.Models.Items;
+﻿global using Wajba.Dtos.ItemExtraContract;
+global using Wajba.Models.ItemExtraDomain;
 
 namespace Wajba.ItemExtraService
 {

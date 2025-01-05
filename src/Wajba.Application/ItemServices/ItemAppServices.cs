@@ -1,7 +1,6 @@
 ﻿global using Wajba.Dtos.ItemsDtos;
 global using Wajba.Enums;
 global using Wajba.Models.Items;
-using Wajba.Models.BranchDomain;
 
 namespace Wajba.ItemServices;
 
@@ -25,10 +24,8 @@ public class ItemAppServices : ApplicationService
     }
     public async Task<ItemDto> CreateAsync(CreateItemDto input)
     {
-        string? imageUrl = null;
-        if (input.ImageUrl != null)
-            imageUrl = await _imageService.UploadAsync(input.ImageUrl);
-        else throw new Exception("Image is required");
+        //if (input.ImageUrl != null)
+        //    imageUrl = await _imageService.UploadAsync(input.ImageUrl);
         Category category = await _repository1.FindAsync(input.CategoryId);
         if (category == null)
             throw new Exception("Category not found");
@@ -48,7 +45,6 @@ public class ItemAppServices : ApplicationService
         {
             Name = input.Name,
             Description = input.Description,
-            ImageUrl = imageUrl,
             CategoryId = input.CategoryId,
             IsFeatured = input.IsFeatured,
             TaxValue = input.TaxValue,
@@ -58,6 +54,7 @@ public class ItemAppServices : ApplicationService
             Status = (Enums.Status)input.status,
             IsDeleted = false,
         };
+        item.ImageUrl = input.ImageUrl != null ? await _imageService.UploadAsync(input.ImageUrl) : null;
         item.ItemBranches = itemBranches;
         await _repository.InsertAsync(item, true);
         return ObjectMapper.Map<Item, ItemDto>(item);
@@ -67,8 +64,8 @@ public class ItemAppServices : ApplicationService
         Item item = await _repository.FindAsync(id);
         if (item == null)
             throw new Exception("Item not found");
-        if (input.ImageUrl == null)
-            throw new Exception("Image is required");
+        //if (input.ImageUrl == null)
+        //    throw new Exception("Image is required");
         Category category = await _repository1.FindAsync(input.CategoryId);
         if (category == null)
             throw new Exception("Category not found");
@@ -80,7 +77,7 @@ public class ItemAppServices : ApplicationService
                 throw new Exception("Branch not found");
             itemBranches.Add(new ItemBranch() { BranchId = branchId, Branch = branch });
         }
-        item.ImageUrl = await _imageService.UploadAsync(input.ImageUrl);
+        item.ImageUrl = input.ImageUrl != null ? await _imageService.UploadAsync(input.ImageUrl) : item.ImageUrl;
         item.Name = input.Name;
         item.Description = input.Description;
         item.CategoryId = input.CategoryId;

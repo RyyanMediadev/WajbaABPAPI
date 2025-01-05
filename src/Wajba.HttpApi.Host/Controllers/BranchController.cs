@@ -18,7 +18,6 @@ public class BranchController : WajbaController
         try
         {
             await _branchAppService.CreateAsync(input);
-
             return Ok(new ApiResponse<object>
             {
                 Success = true,
@@ -38,12 +37,11 @@ public class BranchController : WajbaController
     }
 
     [HttpPut]
-    public async Task<IActionResult> UpdateAsync(  UpdateBranchDto input)
+    public async Task<IActionResult> UpdateAsync(UpdateBranchDto input)
     {
         try
         {
             var updatedBranch = await _branchAppService.UpdateAsync(input.Id, input);
-
             return Ok(new ApiResponse<BranchDto>
             {
                 Success = true,
@@ -68,7 +66,6 @@ public class BranchController : WajbaController
         try
         {
             var branch = await _branchAppService.GetByIdAsync(id);
-
             return Ok(new ApiResponse<BranchDto>
             {
                 Success = true,
@@ -93,7 +90,6 @@ public class BranchController : WajbaController
         try
         {
             var branches = await _branchAppService.GetListAsync(input);
-
             return Ok(new ApiResponse<PagedResultDto<BranchDto>>
             {
                 Success = true,
@@ -118,7 +114,6 @@ public class BranchController : WajbaController
         try
         {
             await _branchAppService.DeleteAsync(id);
-
             return Ok(new ApiResponse<object>
             {
                 Success = true,

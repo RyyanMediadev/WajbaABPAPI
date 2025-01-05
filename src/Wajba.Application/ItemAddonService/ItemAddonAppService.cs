@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Volo.Abp.Domain.Entities;
-using Wajba.Dtos.ItemAddonContract;
-using Wajba.Models.ItemAddonDomain;
+﻿namespace Wajba.ItemAddonService;
 
 namespace Wajba.ItemAddonService
 {
@@ -14,52 +7,63 @@ namespace Wajba.ItemAddonService
     {
         private readonly IRepository<ItemAddon, int> _itemAddonRepository;
 
-        public ItemAddonAppService(IRepository<ItemAddon, int> itemAddonRepository)
+    public ItemAddonAppService(IRepository<ItemAddon, int> itemAddonRepository,
+        IRepository<Item, int> itemrepo)
+    {
+        _itemAddonRepository = itemAddonRepository;
+        _itemrepo = itemrepo;
+    }
+
+    public async Task<List<ItemAddonDto>> GetByItemIdAsync(int itemId)
+    {
+        var itemAddons = await _itemAddonRepository.GetListAsync(x => x.ItemId == itemId);
+        if (itemAddons == null)
         {
-            _itemAddonRepository = itemAddonRepository;
+            throw new EntityNotFoundException(typeof(ItemAddon), itemId);
         }
+        return ObjectMapper.Map<List<ItemAddon>, List<ItemAddonDto>>(itemAddons);
+    }
 
-        public async Task<List<ItemAddonDto>> GetByItemIdAsync(int itemId)
+    public async Task<ItemAddonDto> GetByIdAsync(int id)
+    {
+        ItemAddon itemAddon = await _itemAddonRepository.GetAsync(id);
+        if (itemAddon == null)
+            throw new EntityNotFoundException(typeof(ItemAddon), id);
+        return ObjectMapper.Map<ItemAddon, ItemAddonDto>(itemAddon);
+    }
+
+    public async Task<ItemAddonDto> CreateAsync(CreateUpdateItemAddonDto input)
+    {
+        Item item = await _itemrepo.GetAsync(input.ItemId);
+        if (item == null)
+            throw new EntityNotFoundException(typeof(Item), input.ItemId);
+        ItemAddon itemAddon = new ItemAddon
         {
-            var itemAddons = await _itemAddonRepository.GetListAsync(x => x.ItemId == itemId);
-            return ObjectMapper.Map<List<ItemAddon>, List<ItemAddonDto>>(itemAddons);
-        }
+            ItemId = input.ItemId,
+            AdditionalPrice = input.AdditionalPrice,
+            AddonName = input.AddonName,
+        };
+        await _itemAddonRepository.InsertAsync(itemAddon, true);
+        return ObjectMapper.Map<ItemAddon, ItemAddonDto>(itemAddon);
+    }
 
-        public async Task<ItemAddonDto> GetByIdAsync(int id)
+    public async Task<ItemAddonDto> UpdateForSpecificItemAsync(int itemId, int addonId, CreateUpdateItemAddonDto input)
+    {
+        var itemAddon = await _itemAddonRepository.FirstOrDefaultAsync(x => x.ItemId == itemId && x.Id == addonId);
+        if (itemAddon == null)
         {
-            var itemAddon = await _itemAddonRepository.GetAsync(id);
-            return ObjectMapper.Map<ItemAddon, ItemAddonDto>(itemAddon);
+            throw new EntityNotFoundException($"Addon with ID {addonId} for Item {itemId} not found.");
         }
+        ObjectMapper.Map(input, itemAddon);
+        await _itemAddonRepository.UpdateAsync(itemAddon, true);
+        return ObjectMapper.Map<ItemAddon, ItemAddonDto>(itemAddon);
+    }
 
-        public async Task<ItemAddonDto> CreateAsync(CreateUpdateItemAddonDto input)
-        {
-            var itemAddon = ObjectMapper.Map<CreateUpdateItemAddonDto, ItemAddon>(input);
-            await _itemAddonRepository.InsertAsync(itemAddon);
-            return ObjectMapper.Map<ItemAddon, ItemAddonDto>(itemAddon);
-        }
-
-        public async Task<ItemAddonDto> UpdateForSpecificItemAsync(int itemId, int addonId, CreateUpdateItemAddonDto input)
-        {
-            var itemAddon = await _itemAddonRepository.FirstOrDefaultAsync(x => x.ItemId == itemId && x.Id == addonId);
-            if (itemAddon == null)
-            {
-                throw new EntityNotFoundException($"Addon with ID {addonId} for Item {itemId} not found.");
-            }
-
-            ObjectMapper.Map(input, itemAddon);
-            await _itemAddonRepository.UpdateAsync(itemAddon);
-            return ObjectMapper.Map<ItemAddon, ItemAddonDto>(itemAddon);
-        }
-
-        public async Task DeleteForSpecificItemAsync(int itemId, int addonId)
-        {
-            var itemAddon = await _itemAddonRepository.FirstOrDefaultAsync(x => x.ItemId == itemId && x.Id == addonId);
-            if (itemAddon == null)
-            {
-                throw new EntityNotFoundException($"Addon with ID {addonId} for Item {itemId} not found.");
-            }
-
-            await _itemAddonRepository.DeleteAsync(itemAddon);
-        }
+    public async Task DeleteForSpecificItemAsync(int itemId, int addonId)
+    {
+        var itemAddon = await _itemAddonRepository.FirstOrDefaultAsync(x => x.ItemId == itemId && x.Id == addonId);
+        if (itemAddon == null)
+            throw new EntityNotFoundException($"Addon with ID {addonId} for Item {itemId} not found.");
+        await _itemAddonRepository.DeleteAsync(itemAddon, true);
     }
 }

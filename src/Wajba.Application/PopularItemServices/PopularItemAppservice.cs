@@ -1,5 +1,4 @@
 ﻿global using Wajba.Models.PopularItemsDomain;
-using Volo.Abp.Domain.Entities;
 
 namespace Wajba.PopularItemServices;
 
@@ -32,8 +31,8 @@ public class PopularItemAppservice:ApplicationService
         Category category =  _categoryrepo.WithDetailsAsync(p=>p.Items).Result.FirstOrDefault(p => p.Id == item.CategoryId);
         if (category == null )
             throw new EntityNotFoundException(typeof(Category), item.CategoryId);
-        if (input.ImgFile == null)
-            throw new Exception("Image is required");
+        //if (input.ImgFile == null)
+        //    throw new Exception("Image is required");
         bool isfound = item.ItemBranches.Any(p => p.BranchId == input.BranchId);
         if (!isfound)
             throw new EntityNotFoundException(typeof(Branch), input.BranchId);
@@ -48,7 +47,9 @@ public class PopularItemAppservice:ApplicationService
             CategoryName = category.Name,
             BranchId = input.BranchId
         };
-        popularitem.ImageUrl = await _imageService.UploadAsync(input.ImgFile);
+        input.ImgFile = null;
+        if (input.ImgFile != null)
+            popularitem.ImageUrl = await _imageService.UploadAsync(input.ImgFile);
         popularitem = await _popularitemrepo.InsertAsync(popularitem, autoSave: true);
         return ObjectMapper.Map<PopularItem, Popularitemdto>(popularitem);
     }
@@ -77,8 +78,8 @@ public class PopularItemAppservice:ApplicationService
         Category category = await _categoryrepo.GetAsync(item.CategoryId);
         if(category == null)
             throw new EntityNotFoundException(typeof(Category), item.CategoryId);
-        if (input.ImgFile == null)
-            throw new Exception("Image is required");
+        //if (input.ImgFile == null)
+        //    throw new Exception("Image is required");
         if (item.ItemBranches.Any(p => p.BranchId == input.BranchId))
             throw new EntityNotFoundException(typeof(Branch), item.ItemBranches.FirstOrDefault().BranchId);
         popularitem.ItemId = input.ItemId;
@@ -90,7 +91,8 @@ public class PopularItemAppservice:ApplicationService
         popularitem.CategoryName = category.Name;
         popularitem.LastModificationTime = DateTime.UtcNow;
         popularitem.BranchId = input.BranchId;
-        popularitem.ImageUrl = await _imageService.UploadAsync(input.ImgFile);
+        if (input.ImgFile != null)
+            popularitem.ImageUrl = await _imageService.UploadAsync(input.ImgFile);
         popularitem = await _popularitemrepo.UpdateAsync(popularitem, autoSave: true);
         return ObjectMapper.Map<PopularItem, Popularitemdto>(popularitem);
     }

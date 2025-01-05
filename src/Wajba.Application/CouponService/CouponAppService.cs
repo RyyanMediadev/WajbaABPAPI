@@ -25,7 +25,7 @@ public class CouponAppService : ApplicationService
         var coupon = ObjectMapper.Map<CreateUpdateCouponDto, Coupon>(input);
         coupon.ImageUrl = imageUrl;
 
-        await _couponRepository.InsertAsync(coupon);
+        await _couponRepository.InsertAsync(coupon, true);
         return ObjectMapper.Map<Coupon, CouponDto>(coupon);
     }
 
@@ -33,6 +33,8 @@ public class CouponAppService : ApplicationService
     public async Task<CouponDto> GetAsync(int id)
     {
         var coupon = await _couponRepository.GetAsync(id);
+        if (coupon == null)
+            throw new EntityNotFoundException(typeof(Coupon), id);
         return ObjectMapper.Map<Coupon, CouponDto>(coupon);
     }
 
@@ -65,15 +67,26 @@ public class CouponAppService : ApplicationService
     public async Task<CouponDto> UpdateAsync(int id, UpdateCoupondto input)
     {
         var coupon = await _couponRepository.GetAsync(id);
-
-        if (input.Image != null)
-        {
-            coupon.ImageUrl = await _imageService.UploadAsync(input.Image);
-        }
-
+        if (coupon == null)
+            throw new EntityNotFoundException(typeof(Coupon), id);
+        if (input.Image == null)
+            throw new Exception("Image is required");
+        coupon.ImageUrl = await _imageService.UploadAsync(input.Image);
+        coupon.Description = input.Description;
+        coupon.Discount = input.Discount;
+        coupon.EndDate = input.EndDate;
+        coupon.DiscountType = input.DiscountType;
+        coupon.Name = input.Name;
+        coupon.StartDate = input.StartDate;
+        coupon.Code = input.Code;
+        coupon.CountOfUsers = input.LimitPerUser;
+        coupon.MaximumDiscount = input.MaximumDiscount;
+        coupon.MinimumOrderAmount = input.MinimumOrderAmount;
+        coupon.IsExpired = input.EndDate < DateTime.UtcNow;
+        coupon.LimitPerUser = input.LimitPerUser;
+        coupon.LastModificationTime = DateTime.UtcNow;
         ObjectMapper.Map(input, coupon);
-        await _couponRepository.UpdateAsync(coupon);
-
+        await _couponRepository.UpdateAsync(coupon, true);
         return ObjectMapper.Map<Coupon, CouponDto>(coupon);
     }
 
@@ -87,7 +100,8 @@ public class CouponAppService : ApplicationService
         //{
         //    await _imageService.de(coupon.ImageUrl);
         //}
-
+        if(await _couponRepository.FindAsync(id) == null)
+            throw new EntityNotFoundException(typeof(Coupon), id);
         await _couponRepository.DeleteAsync(id);
     }
 }

@@ -36,7 +36,7 @@ public class OTPController : WajbaController
         }
     }
     [HttpGet]
-    public async Task<IActionResult> GetAll(GetOtpInput dto)
+    public async Task<IActionResult> GetAll([FromBody]GetOtpInput dto)
     {
         try
         {

@@ -6,7 +6,6 @@ namespace Wajba.Controllers;
 public class TimeSlotController : WajbaController
 {
 
-
     private readonly ITimeSlotAppService _timeSlotAppService;
 
     public TimeSlotController(ITimeSlotAppService timeSlotAppService)

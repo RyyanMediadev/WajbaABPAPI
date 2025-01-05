@@ -5,7 +5,9 @@ global using Microsoft.AspNetCore.Http;
 namespace Wajba.Controllers;
 
 
-public class ThemeController : WajbaController
+[Route("api/[controller]")]
+[ApiController]
+public class ThemeController : AbpController
 {
     private readonly ThemesAppservice _themesAppservice;
 

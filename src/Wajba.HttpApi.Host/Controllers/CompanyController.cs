@@ -2,7 +2,7 @@
 global using Wajba.Dtos.CompanyContact;
 
 namespace Wajba.Controllers;
-[IgnoreAntiforgeryToken]
+//[IgnoreAntiforgeryToken]
 public class CompanyController : WajbaController
 {
     private readonly CompanyAppService _companyAppService;

@@ -1,159 +1,159 @@
 ﻿global using Wajba.Dtos.CurrenciesContract;
 global using Wajba.CurrenciesService;
 
-namespace Wajba.Controllers
+namespace Wajba.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class CurrenciesController : AbpController
 {
-    
-    public class CurrenciesController : AbpController
+    private readonly CurrenciesAppService _currenciesAppService;
+
+    public CurrenciesController(CurrenciesAppService currenciesAppService)
     {
-        private readonly CurrenciesAppService _currenciesAppService;
+        _currenciesAppService = currenciesAppService;
+    }
 
-        public CurrenciesController(CurrenciesAppService currenciesAppService)
+    [HttpPost]
+    public async Task<IActionResult> CreateAsync( CreateUpdateCurrenciesDto input)
+    {
+        try
         {
-            _currenciesAppService = currenciesAppService;
+            await _currenciesAppService.CreateAsync(input);
+            return Ok(new ApiResponse<object>
+            {
+                Success = true,
+                Message = "Currencies created successfully.",
+                Data = null
+            });
         }
-
-        [HttpPost]
-        public async Task<IActionResult> CreateAsync( CreateUpdateCurrenciesDto input)
+        catch (Exception ex)
         {
-            try
+            return BadRequest(new ApiResponse<object>
             {
-                await _currenciesAppService.CreateAsync(input);
-                return Ok(new ApiResponse<object>
-                {
-                    Success = true,
-                    Message = "Currencies created successfully.",
-                    Data = null
-                });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = $"Error creating currencies: {ex.Message}",
-                    Data = null
-                });
-            }
+                Success = false,
+                Message = $"Error creating currencies: {ex.Message}",
+                Data = null
+            });
         }
-        [HttpPut]
-        public async Task<IActionResult> UpdateAsync(  UpadteCurrency input)
+    }
+    [HttpPut]
+    public async Task<IActionResult> UpdateAsync(  UpadteCurrency input)
+    {
+        try
         {
-            try
+            var updatedCurrencies = await _currenciesAppService.UpdateAsync(input.Id, input);
+            return Ok(new ApiResponse<CurrenciesDto>
             {
-                var updatedCurrencies = await _currenciesAppService.UpdateAsync(input.Id, input);
-                return Ok(new ApiResponse<CurrenciesDto>
-                {
-                    Success = true,
-                    Message = "Currencies updated successfully.",
-                    Data = updatedCurrencies
-                });
-            }
-            catch (EntityNotFoundException)
-            {
-                return NotFound(new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = "Currencies not found.",
-                    Data = null
-                });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = $"Error updating currencies: {ex.Message}",
-                    Data = null
-                });
-            }
+                Success = true,
+                Message = "Currencies updated successfully.",
+                Data = updatedCurrencies
+            });
         }
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetByIdAsync(int id)
+        catch (EntityNotFoundException)
         {
-            try
+            return NotFound(new ApiResponse<object>
             {
-                var currencies = await _currenciesAppService.GetByIdAsync(id);
-                return Ok(new ApiResponse<CurrenciesDto>
-                {
-                    Success = true,
-                    Message = "Currencies retrieved successfully.",
-                    Data = currencies
-                });
-            }
-            catch (EntityNotFoundException)
-            {
-                return NotFound(new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = "Currencies not found.",
-                    Data = null
-                });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = $"Error retrieving currencies: {ex.Message}",
-                    Data = null
-                });
-            }
+                Success = false,
+                Message = "Currencies not found.",
+                Data = null
+            });
         }
-        [HttpGet]
-        public async Task<IActionResult> GetListAsync([FromQuery] PagedAndSortedResultRequestDto input)
+        catch (Exception ex)
         {
-            try
+            return BadRequest(new ApiResponse<object>
             {
-                var currencies = await _currenciesAppService.GetAllAsync(input);
-                return Ok(new ApiResponse<PagedResultDto<CurrenciesDto>>
-                {
-                    Success = true,
-                    Message = "Currencies retrieved successfully.",
-                    Data = currencies
-                });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = $"Error retrieving currencies: {ex.Message}",
-                    Data = null
-                });
-            }
+                Success = false,
+                Message = $"Error updating currencies: {ex.Message}",
+                Data = null
+            });
         }
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAsync(int id)
+    }
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetByIdAsync(int id)
+    {
+        try
         {
-            try
+            var currencies = await _currenciesAppService.GetByIdAsync(id);
+            return Ok(new ApiResponse<CurrenciesDto>
             {
-                await _currenciesAppService.DeleteAsync(id);
-                return Ok(new ApiResponse<object>
-                {
-                    Success = true,
-                    Message = "Currencies deleted successfully.",
-                    Data = null
-                });
-            }
-            catch (EntityNotFoundException)
+                Success = true,
+                Message = "Currencies retrieved successfully.",
+                Data = currencies
+            });
+        }
+        catch (EntityNotFoundException)
+        {
+            return NotFound(new ApiResponse<object>
             {
-                return NotFound(new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = "Currencies not found.",
-                    Data = null
-                });
-            }
-            catch (Exception ex)
+                Success = false,
+                Message = "Currencies not found.",
+                Data = null
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ApiResponse<object>
             {
-                return BadRequest(new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = $"Error deleting currencies: {ex.Message}",
-                    Data = null
-                });
-            }
+                Success = false,
+                Message = $"Error retrieving currencies: {ex.Message}",
+                Data = null
+            });
+        }
+    }
+    [HttpGet]
+    public async Task<IActionResult> GetListAsync([FromQuery] PagedAndSortedResultRequestDto input)
+    {
+        try
+        {
+            var currencies = await _currenciesAppService.GetAllAsync(input);
+            return Ok(new ApiResponse<PagedResultDto<CurrenciesDto>>
+            {
+                Success = true,
+                Message = "Currencies retrieved successfully.",
+                Data = currencies
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ApiResponse<object>
+            {
+                Success = false,
+                Message = $"Error retrieving currencies: {ex.Message}",
+                Data = null
+            });
+        }
+    }
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteAsync(int id)
+    {
+        try
+        {
+            await _currenciesAppService.DeleteAsync(id);
+            return Ok(new ApiResponse<object>
+            {
+                Success = true,
+                Message = "Currencies deleted successfully.",
+                Data = null
+            });
+        }
+        catch (EntityNotFoundException)
+        {
+            return NotFound(new ApiResponse<object>
+            {
+                Success = false,
+                Message = "Currencies not found.",
+                Data = null
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ApiResponse<object>
+            {
+                Success = false,
+                Message = $"Error deleting currencies: {ex.Message}",
+                Data = null
+            });
         }
     }
 }

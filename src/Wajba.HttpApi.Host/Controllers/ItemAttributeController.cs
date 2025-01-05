@@ -2,7 +2,8 @@
 
 namespace Wajba.Controllers;
 
-
+[Route("api/[controller]")]
+[ApiController]
 public class ItemAttributeController : AbpController
 {
     private readonly IItemAttributeAppService _itemAttributeAppService;

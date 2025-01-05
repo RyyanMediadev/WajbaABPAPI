@@ -7,7 +7,6 @@ global using Wajba.Dtos.Categories;
 
 namespace Wajba.Controllers;
 
-
 public class CategoryController : WajbaController
 {
     private readonly CategoryAppService _categoryAppService;

@@ -3,7 +3,9 @@ global using Wajba.Dtos.PopularItemstoday;
 
 namespace Wajba.Controllers;
 
-public class PopularItemController : WajbaController
+[Route("api/[controller]")]
+[ApiController]
+public class PopularItemController : AbpController
 {
     private readonly PopularItemAppservice _popularItemAppservice;
 

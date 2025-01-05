@@ -8,6 +8,7 @@ namespace Wajba.Controllers;
 [ApiController]
 public abstract class WajbaController : AbpControllerBase
 {
+
     protected WajbaController()
     {
         LocalizationResource = typeof(WajbaResource);

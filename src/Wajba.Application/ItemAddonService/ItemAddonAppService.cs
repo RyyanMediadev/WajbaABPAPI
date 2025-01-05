@@ -1,9 +1,11 @@
 ﻿namespace Wajba.ItemAddonService;
 
-public class ItemAddonAppService : ApplicationService
+namespace Wajba.ItemAddonService
 {
-    private readonly IRepository<ItemAddon, int> _itemAddonRepository;
-    private readonly IRepository<Item, int> _itemrepo;
+    [RemoteService(false)]
+    public class ItemAddonAppService : ApplicationService, IItemAddonAppService
+    {
+        private readonly IRepository<ItemAddon, int> _itemAddonRepository;
 
     public ItemAddonAppService(IRepository<ItemAddon, int> itemAddonRepository,
         IRepository<Item, int> itemrepo)

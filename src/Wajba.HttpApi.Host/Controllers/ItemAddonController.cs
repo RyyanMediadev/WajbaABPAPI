@@ -3,8 +3,7 @@ using Wajba.ItemAddonService;
 
 namespace Wajba.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
+ 
     public class ItemAddonController : WajbaController
     {
         private readonly ItemAddonAppService _itemAddonAppService;

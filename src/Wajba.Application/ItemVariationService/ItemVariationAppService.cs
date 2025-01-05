@@ -9,6 +9,7 @@ using Wajba.Models.ItemVariationDomain;
 
 namespace Wajba.ItemVariationService
 {
+    [RemoteService(false)]
     public class ItemVariationAppService : ApplicationService, IItemVariationAppService
     {
         private readonly IRepository<ItemVariation, int> _repository;

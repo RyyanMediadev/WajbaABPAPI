@@ -3,6 +3,7 @@ global using Wajba.Models.ItemExtraDomain;
 
 namespace Wajba.ItemExtraService
 {
+    [RemoteService(false)]
     public class ItemExtraAppService : ApplicationService, IItemExtraAppService
     {
         private readonly IRepository<ItemExtra, int> _repository;

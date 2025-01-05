@@ -34,7 +34,7 @@ public class ItemController : WajbaController
             });
         }
     }
-    [HttpPut("{id}")]
+    [HttpPut]
     public async Task<IActionResult> UpdateAsync(int id,  CreateItemDto input)
     {
         try

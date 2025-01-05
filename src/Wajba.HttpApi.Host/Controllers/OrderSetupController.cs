@@ -38,7 +38,7 @@ namespace Wajba.Controllers
             }
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
         public async Task<IActionResult> UpdateAsync(UpdateOrderSetupDto input)
         {
             try

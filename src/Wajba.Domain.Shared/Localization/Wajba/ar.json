@@ -4,6 +4,17 @@
     "AppName": "Wajba",
     "Menu:Home": "الصفحة الرئيسية",
     "Welcome": "مرحباً",
-    "LongWelcomeMessage": "مرحبا بكم في التطبيق. هذا مشروع بدء تشغيل يعتمد على إطار عمل ABP. لمزيد من المعلومات ، يرجى زيارة abp.io."
+    "LongWelcomeMessage": "مرحبا بكم في التطبيق. هذا مشروع بدء تشغيل يعتمد على إطار عمل ABP. لمزيد من المعلومات ، يرجى زيارة abp.io.",
+    "Wajba.Categories": "الفئات",
+
+    "Permission:Categories:CreateCategory": "الفئات -جديد",
+    "Permission:Categories:UpdateCategory": "الفئات -تعديل",
+
+    "Permission:Categories:GetListCategory": "الفئات -عرض قائمة الفئات",
+
+
+    "Permission:Categories:GetCategoryItemsCategory": "الفئات -عرض اصناف الفئات",
+    "Permission:Categories:DeleteCategory": "الفئات -حذف فئة"
+
   }
 }

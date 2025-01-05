@@ -4,6 +4,18 @@
     "AppName": "Wajba",
     "Menu:Home": "Home",
     "Welcome": "Welcome",
-    "LongWelcomeMessage": "Welcome to the application. This is a startup project based on the ABP framework. For more information, visit abp.io."
+    "LongWelcomeMessage": "Welcome to the application. This is a startup project based on the ABP framework. For more information, visit abp.io.",
+
+    "Wajba.Categories": "Categories",
+
+
+    "Permission:Categories:CreateCategory": "Create Category",
+    "Permission:Categories:UpdateCategory": "Update Category",
+    "Permission:Categories:GetListCategory": "Get List Category",
+    "Permission:Categories:GetCategoryItemsCategory": "Get Category Items Category",
+    "Permission:Categories:DeleteCategory": "Delete Category"
+
+
+
   }
 }

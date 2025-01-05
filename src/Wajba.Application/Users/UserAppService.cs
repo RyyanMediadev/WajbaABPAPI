@@ -1,14 +1,6 @@
-﻿
-using BLayer.Security;
-using System.Web.Http;
-using Volo.Abp.Users;
-using Wajba.Dtos.UserDTO;
-using Wajba.Models.UsersDomain;
-using static Volo.Abp.Identity.Settings.IdentitySettingNames;
+﻿namespace Wajba.UserAppService;
 
-namespace Wajba.UserAppService;
 [RemoteService(false)]
-
 public class UserService : ApplicationService
 {
     //private readonly IRepository<Models.UsersDomain.APPUser, int> _userRepository;

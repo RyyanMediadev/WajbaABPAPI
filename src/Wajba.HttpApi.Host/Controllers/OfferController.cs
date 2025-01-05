@@ -3,8 +3,7 @@ global using Wajba.OfferService;
 
 namespace Wajba.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
+
     public class OfferController : AbpController
     {
         private readonly OfferAppService _offerAppService;

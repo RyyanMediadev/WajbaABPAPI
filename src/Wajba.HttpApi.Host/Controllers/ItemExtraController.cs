@@ -4,8 +4,7 @@ using Wajba.Dtos.ItemExtraContract;
 
 namespace Wajba.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
+    
     public class ItemExtraController : WajbaController
     {
         private readonly IItemExtraAppService _appService;

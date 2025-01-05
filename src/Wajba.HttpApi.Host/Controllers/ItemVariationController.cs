@@ -5,8 +5,7 @@ using Wajba.Models.Items;
 
 namespace Wajba.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
+ 
     public class ItemVariationController : WajbaController
     {
         private readonly IItemVariationAppService _appService;

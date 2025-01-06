@@ -3,7 +3,7 @@ global using Wajba.SiteService;
 
 namespace Wajba.Controllers;
 
-public class SiteController :WajbaController
+public class SiteController : WajbaController
 {
     private readonly SitesAppservice _sitesAppservice;
     public SiteController(SitesAppservice sitesAppservice)
@@ -36,7 +36,7 @@ public class SiteController :WajbaController
         }
     }
     [HttpPut]
-    public async Task<IActionResult> UpdateAsync(  CreateSiteDto input)
+    public async Task<IActionResult> UpdateAsync(CreateSiteDto input)
     {
         if (!ModelState.IsValid)
             return BadRequest("Data is not valid");

@@ -107,7 +107,6 @@ public class CategoryController : WajbaController
         {
             // Call the service to get the list of categories
             var categories = await _categoryAppService.GetListAsync(input);
-
             return Ok(new ApiResponse<PagedResultDto<CategoryDto>>
             {
                 Success = true,

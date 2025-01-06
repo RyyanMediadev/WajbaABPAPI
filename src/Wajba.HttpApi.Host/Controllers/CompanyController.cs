@@ -12,7 +12,7 @@ public class CompanyController : WajbaController
         _companyAppService = companyAppService;
     }
     [HttpPost]
-    public async Task<IActionResult> CreateAsync( CreateUpdateComanyDto input)
+    public async Task<IActionResult> CreateAsync(CreateUpdateComanyDto input)
     {
         if (!ModelState.IsValid)
             return BadRequest("Data is not valid");
@@ -37,7 +37,7 @@ public class CompanyController : WajbaController
         }
     }
     [HttpPut]
-    public async Task<IActionResult> UpdateAsync(  CreateUpdateComanyDto input)
+    public async Task<IActionResult> UpdateAsync(CreateUpdateComanyDto input)
     {
         if (!ModelState.IsValid)
             return BadRequest("Data is not valid");
@@ -95,30 +95,30 @@ public class CompanyController : WajbaController
         }
     }
 
- /*   [HttpGet]
-    public async Task<IActionResult> GetListAsync([FromQuery] GetComanyInput input)
-    {
-        try
-        {
-            var dto = await _companyAppService.GetListAsync(input);
-            return Ok(new ApiResponse<PagedResultDto<CompanyDto>>
-            {
-                Success = true,
-                Message = "CompanyDtos retrieved successfully.",
-                Data = dto
-            });
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(new ApiResponse<object>
-            {
-                Success = false,
-                Message = $"Error retrieving CompanyDtos: {ex.Message}",
-                Data = null
-            });
-        }
-    }
- */
+    /*   [HttpGet]
+       public async Task<IActionResult> GetListAsync([FromQuery] GetComanyInput input)
+       {
+           try
+           {
+               var dto = await _companyAppService.GetListAsync(input);
+               return Ok(new ApiResponse<PagedResultDto<CompanyDto>>
+               {
+                   Success = true,
+                   Message = "CompanyDtos retrieved successfully.",
+                   Data = dto
+               });
+           }
+           catch (Exception ex)
+           {
+               return BadRequest(new ApiResponse<object>
+               {
+                   Success = false,
+                   Message = $"Error retrieving CompanyDtos: {ex.Message}",
+                   Data = null
+               });
+           }
+       }
+    */
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteAsync(int id)
     {

@@ -15,7 +15,7 @@ public class CouponController : WajbaController
 
     // Create Coupon
     [HttpPost]
-    public async Task<IActionResult> CreateAsync( CreateUpdateCouponDto input)
+    public async Task<IActionResult> CreateAsync(CreateUpdateCouponDto input)
     {
         try
         {
@@ -90,7 +90,7 @@ public class CouponController : WajbaController
 
     // Update Coupon
     [HttpPut]
-    public async Task<IActionResult> UpdateAsync( UpdateCoupondto input)
+    public async Task<IActionResult> UpdateAsync(UpdateCoupondto input)
     {
         try
         {
@@ -138,4 +138,3 @@ public class CouponController : WajbaController
         }
     }
 }
-

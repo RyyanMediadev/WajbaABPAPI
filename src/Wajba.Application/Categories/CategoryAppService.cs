@@ -88,7 +88,7 @@ public class CategoryAppService : ApplicationService
             };
             if (input.BranchId == null)
             {
-                categoryItemsDto.IsFilled = true;
+                categoryItemsDto.IsFilled = category.Items.Count > 0;
                 categoryItemsDto.TotalItems = category.Items.Count;
                 categoryItemsDtos.Add(categoryItemsDto);
                 continue;

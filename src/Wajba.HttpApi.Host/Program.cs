@@ -70,6 +70,14 @@ public class Program
             await app.InitializeApplicationAsync();
             app.UseAuthentication();
             app.UseAuthorization();
+            //app.UseStaticFiles();
+            //app.UseEndpoints(endpoints => { endpoints.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}"); });
+            //app.UseRouting();
+            //app.UseEndpoints(p =>
+            //{
+            //    p.MapRazorPages();
+            //    p.MapControllers();
+            //});
             await app.RunAsync();
             return 0;
         }

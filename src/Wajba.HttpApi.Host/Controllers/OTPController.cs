@@ -58,29 +58,29 @@ public class OTPController : WajbaController
             });
         }
     }
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetAsync(int id)
-    {
-        try
-        {
-            var oTPDto = await _oTPAppService.GetByIdAsync(id);
-            return Ok(new ApiResponse<OTPDto>
-            {
-                Success = true,
-                Message = "OTP retrieved successfully.",
-                Data = oTPDto
-            });
-        }
-        catch (EntityNotFoundException ex)
-        {
-            return NotFound(new ApiResponse<object>
-            {
-                Success = false,
-                Message = $"Error retrieving OTP: {ex.Message}",
-                Data = null
-            });
-        }
-    }
+    //[HttpGet("{id}")]
+    //public async Task<IActionResult> GetAsync(int id)
+    //{
+    //    try
+    //    {
+    //        var oTPDto = await _oTPAppService.GetByIdAsync(id);
+    //        return Ok(new ApiResponse<OTPDto>
+    //        {
+    //            Success = true,
+    //            Message = "OTP retrieved successfully.",
+    //            Data = oTPDto
+    //        });
+    //    }
+    //    catch (EntityNotFoundException ex)
+    //    {
+    //        return NotFound(new ApiResponse<object>
+    //        {
+    //            Success = false,
+    //            Message = $"Error retrieving OTP: {ex.Message}",
+    //            Data = null
+    //        });
+    //    }
+    //}
     [HttpPut]
     public async Task<IActionResult> UpdateAsync( UpdateOtpDto input)
     {

@@ -1,7 +1,7 @@
 ﻿global using Wajba.Dtos.ItemsDtos;
 global using Wajba.Enums;
 global using Wajba.Models.Items;
-using Microsoft.EntityFrameworkCore;
+global using Microsoft.EntityFrameworkCore;
 
 
 namespace Wajba.ItemServices;
@@ -25,7 +25,6 @@ public class ItemAppServices : ApplicationService
         _imageService = imageService;
     }
 
-
     public async Task<List<ItemDto>> GetItemsByCategoryAsync(int categoryId)
     {
         var items = await _repository.WithDetailsAsync(
@@ -33,11 +32,9 @@ public class ItemAppServices : ApplicationService
             x => x.ItemExtras,
             x => x.ItemVariations
         );
-
         var result = items.Where(x => x.CategoryId == categoryId)
                           .Select(item => ObjectMapper.Map<Item, ItemDto>(item))
                           .ToList();
-
         return result;
     }
 

@@ -69,9 +69,9 @@ public class Program
             var app = builder.Build();
             await app.InitializeApplicationAsync();
             app.UseAuthentication();
+            app.UseAuthorization();
             //app.UseStaticFiles();
             //app.UseEndpoints(endpoints => { endpoints.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}"); });
-            app.UseAuthorization();
             //app.UseRouting();
             //app.UseEndpoints(p =>
             //{

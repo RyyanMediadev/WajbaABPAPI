@@ -49,7 +49,10 @@ public class Program
                            .AllowAnyHeader()
                            .AllowAnyMethod()
                            .AllowCredentials();
-
+                    builder.WithOrigins("https://localhost:44330") // Add the Angular app's URL
+                          .AllowAnyHeader()
+                          .AllowAnyMethod()
+                          .AllowCredentials();
                     builder.WithOrigins("https://abpngtest-079dcadea84b.herokuapp.com") // Add the Angular app's URL
                           .AllowAnyHeader()
                           .AllowAnyMethod()

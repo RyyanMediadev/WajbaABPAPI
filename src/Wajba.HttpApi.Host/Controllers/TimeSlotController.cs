@@ -20,8 +20,10 @@ public class TimeSlotController : WajbaController
     {
         _timeSlotsAppservice = timeSlotsAppservice;
     }
-    [HttpPost("seed")]
+
+
     [IgnoreAntiforgeryToken]
+    [HttpPost]
     public async Task<IActionResult> SeedData()
     {
         try

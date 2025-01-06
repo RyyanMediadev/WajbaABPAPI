@@ -12,7 +12,7 @@ public class ItemTaxAppService : ApplicationService
     {
        _repository = repository;
     }
-    public async Task<ItemTaxDto> CreateAsync(CreateUpdateItemTaxDto input)
+    public async Task<ItemTaxDto> CreateAsync(CreateItemTaxDto input)
     {
         ItemTax itemTax = new ItemTax
         {

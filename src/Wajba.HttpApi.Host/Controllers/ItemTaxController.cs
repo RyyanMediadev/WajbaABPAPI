@@ -69,7 +69,7 @@ public class ItemTaxController : WajbaController
         }
     }
     [HttpPost]
-    public async Task<IActionResult> CreateAsync(CreateUpdateItemTaxDto input)
+    public async Task<IActionResult> CreateAsync(CreateItemTaxDto input)
     {
         try
         {
@@ -91,8 +91,8 @@ public class ItemTaxController : WajbaController
             });
         }
     }
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateAsync(int id, UpdateItemTaxDto input)
+    [HttpPut]
+    public async Task<IActionResult> UpdateAsync( UpdateItemTaxDto input)
     { 
         try
         {

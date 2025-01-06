@@ -14,32 +14,149 @@ public class ItemAttributeController : AbpController
     }
 
     [HttpGet]
-    public async Task<PagedResultDto<ItemAttributeDto>> GetListAsync([FromQuery] PagedAndSortedResultRequestDto input)
+    public async Task<IActionResult> GetListAsync([FromQuery] PagedAndSortedResultRequestDto input)
     {
-        return await _itemAttributeAppService.GetListAsync(input);
+        try
+        {
+            var result = await _itemAttributeAppService.GetListAsync(input);
+            return Ok(new ApiResponse<PagedResultDto<ItemAttributeDto>>
+            {
+                Success = true,
+                Message = "Item attributes retrieved successfully.",
+                Data = result
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ApiResponse<object>
+            {
+                Success = false,
+                Message = $"Error retrieving item attributes: {ex.Message}",
+                Data = null
+            });
+        }
     }
 
     [HttpGet("{id}")]
-    public async Task<ItemAttributeDto> GetAsync(int id)
+    public async Task<IActionResult> GetAsync(int id)
     {
-        return await _itemAttributeAppService.GetAsync(id);
+        try
+        {
+            var result = await _itemAttributeAppService.GetAsync(id);
+            return Ok(new ApiResponse<ItemAttributeDto>
+            {
+                Success = true,
+                Message = "Item attribute retrieved successfully.",
+                Data = result
+            });
+        }
+        catch (EntityNotFoundException)
+        {
+            return NotFound(new ApiResponse<object>
+            {
+                Success = false,
+                Message = "Item attribute not found.",
+                Data = null
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ApiResponse<object>
+            {
+                Success = false,
+                Message = $"Error retrieving item attribute: {ex.Message}",
+                Data = null
+            });
+        }
     }
 
     [HttpPost]
-    public async Task<ItemAttributeDto> CreateAsync(CreateUpdateItemAttributeDto input)
+    public async Task<IActionResult> CreateAsync(CreateItemAttributeDto input)
     {
-        return await _itemAttributeAppService.CreateAsync(input);
+        try
+        {
+            var result = await _itemAttributeAppService.CreateAsync(input);
+            return Ok(new ApiResponse<ItemAttributeDto>
+            {
+                Success = true,
+                Message = "Item attribute created successfully.",
+                Data = result
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ApiResponse<object>
+            {
+                Success = false,
+                Message = $"Error creating item attribute: {ex.Message}",
+                Data = null
+            });
+        }
     }
 
-    [HttpPut("{id}")]
-    public async Task<ItemAttributeDto> UpdateAsync(int id, CreateUpdateItemAttributeDto input)
+    [HttpPut]
+    public async Task<IActionResult> UpdateAsync(UpdateItemAttributeDto input)
     {
-        return await _itemAttributeAppService.UpdateAsync(id, input);
+        try
+        {
+            var result = await _itemAttributeAppService.UpdateAsync(input.id, input);
+            return Ok(new ApiResponse<ItemAttributeDto>
+            {
+                Success = true,
+                Message = "Item attribute updated successfully.",
+                Data = result
+            });
+        }
+        catch (EntityNotFoundException)
+        {
+            return NotFound(new ApiResponse<object>
+            {
+                Success = false,
+                Message = "Item attribute not found.",
+                Data = null
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ApiResponse<object>
+            {
+                Success = false,
+                Message = $"Error updating item attribute: {ex.Message}",
+                Data = null
+            });
+        }
     }
 
     [HttpDelete("{id}")]
-    public async Task DeleteAsync(int id)
+    public async Task<IActionResult> DeleteAsync(int id)
     {
-        await _itemAttributeAppService.DeleteAsync(id);
+        try
+        {
+            await _itemAttributeAppService.DeleteAsync(id);
+            return Ok(new ApiResponse<object>
+            {
+                Success = true,
+                Message = "Item attribute deleted successfully.",
+                Data = null
+            });
+        }
+        catch (EntityNotFoundException)
+        {
+            return NotFound(new ApiResponse<object>
+            {
+                Success = false,
+                Message = "Item attribute not found.",
+                Data = null
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ApiResponse<object>
+            {
+                Success = false,
+                Message = $"Error deleting item attribute: {ex.Message}",
+                Data = null
+            });
+        }
     }
 }

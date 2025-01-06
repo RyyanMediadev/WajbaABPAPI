@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace Wajba.Dtos.NotificationContract
 {
-    public class CreateUpdateNotificationDto
+    public class UpdateNotificationDto
     {
+        public int id { get; set; }
         public string FireBasePublicVapidKey { get; set; }
         public string FireBaseAPIKey { get; set; }
         public string FireBaseProjectId { get; set; }

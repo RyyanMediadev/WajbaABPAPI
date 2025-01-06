@@ -5,7 +5,7 @@ using Wajba.NotificationService;
 
 namespace Wajba.Controllers
 {
-    public class NotificationController :WajbaController
+    public class NotificationController : WajbaController
     {
         private readonly NotificationAppService _notificationAppService;
 
@@ -15,34 +15,141 @@ namespace Wajba.Controllers
         }
 
         [HttpPost]
-        public async Task<NotificationDto> CreateAsync([FromBody] CreateUpdateNotificationDto input)
+        public async Task<IActionResult> CreateAsync(CreateNotificationDto input)
         {
-            return await _notificationAppService.CreateAsync(input);
+            try
+            {
+                await _notificationAppService.CreateAsync(input);
+                return Ok(new ApiResponse<object>
+                {
+                    Success = true,
+                    Message = "Notification created successfully.",
+                    Data = null
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = $"Error creating notification: {ex.Message}",
+                    Data = null
+                });
+            }
         }
 
-        [HttpPut("{id}")]
-        public async Task<NotificationDto> UpdateAsync(int id, [FromBody] CreateUpdateNotificationDto input)
+        [HttpPut]
+        public async Task<IActionResult> UpdateAsync(UpdateNotificationDto input)
         {
-            return await _notificationAppService.UpdateAsync(id, input);
+            try
+            {
+                var updatedNotification = await _notificationAppService.UpdateAsync(input);
+                return Ok(new ApiResponse<NotificationDto>
+                {
+                    Success = true,
+                    Message = "Notification updated successfully.",
+                    Data = updatedNotification
+                });
+            }
+            catch (EntityNotFoundException)
+            {
+                return NotFound(new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = "Notification not found.",
+                    Data = null
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = $"Error updating notification: {ex.Message}",
+                    Data = null
+                });
+            }
         }
 
         [HttpGet("{id}")]
-        public async Task<NotificationDto> GetAsync(int id)
+        public async Task<IActionResult> GetByIdAsync(int id)
         {
-            return await _notificationAppService.GetAsync(id);
-        }
-
-        [HttpDelete("{id}")]
-        public async Task DeleteAsync(int id)
-        {
-            await _notificationAppService.DeleteAsync(id);
+            try
+            {
+                var notification = await _notificationAppService.GetAsync(id);
+                return Ok(new ApiResponse<NotificationDto>
+                {
+                    Success = true,
+                    Message = "Notification retrieved successfully.",
+                    Data = notification
+                });
+            }
+            catch (EntityNotFoundException)
+            {
+                return NotFound(new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = "Notification not found.",
+                    Data = null
+                });
+            }
         }
 
         [HttpGet]
-        public async Task<ListResultDto<NotificationDto>> GetAllAsync()
+        public async Task<IActionResult> GetAllAsync([FromQuery] GetNotificationInput input)
         {
-            var result = await _notificationAppService.GetAllAsync();
-            return new ListResultDto<NotificationDto>(result);
+            try
+            {
+                var notifications = await _notificationAppService.GetAllAsync(input);
+                return Ok(new ApiResponse<PagedResultDto<NotificationDto>>
+                {
+                    Success = true,
+                    Message = "Notifications retrieved successfully.",
+                    Data = notifications
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = $"Error retrieving notifications: {ex.Message}",
+                    Data = null
+                });
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAsync(int id)
+        {
+            try
+            {
+                await _notificationAppService.DeleteAsync(id);
+                return Ok(new ApiResponse<object>
+                {
+                    Success = true,
+                    Message = "Notification deleted successfully.",
+                    Data = null
+                });
+            }
+            catch (EntityNotFoundException)
+            {
+                return NotFound(new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = "Notification not found.",
+                    Data = null
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = $"Error deleting notification: {ex.Message}",
+                    Data = null
+                });
+            }
         }
     }
 }

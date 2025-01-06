@@ -73,7 +73,7 @@ public class ThemeController : WajbaController
         }
     }
     [HttpPut("UpdateBrowserTabIconUrl")]
-    public async Task<IActionResult> UpdateBrowserTabIconUrl([FromBody] IFormFile BrowserTabIconUrl)
+    public async Task<IActionResult> UpdateBrowserTabIconUrl([FromQuery] IFormFile BrowserTabIconUrl)
     {
         try
         {
@@ -97,7 +97,7 @@ public class ThemeController : WajbaController
     }
 
     [HttpPut("UpdateLogoUrl")]
-    public async Task<IActionResult> UpdateLogoUrlasync([FromBody]IFormFile BrowserTabIconUrl)
+    public async Task<IActionResult> UpdateLogoUrlasync([FromQuery]IFormFile BrowserTabIconUrl)
     {
         try
         {
@@ -120,7 +120,7 @@ public class ThemeController : WajbaController
         }
     }
     [HttpPut("UpdateFooterLogoUrl")]
-    public async Task<IActionResult> UpdateFooterLogoUrlasync([FromBody]IFormFile BrowserTabIconUrl)
+    public async Task<IActionResult> UpdateFooterLogoUrlasync([FromQuery]IFormFile BrowserTabIconUrl)
     {
         try
         {

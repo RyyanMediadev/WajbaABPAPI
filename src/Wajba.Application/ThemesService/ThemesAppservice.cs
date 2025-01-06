@@ -42,6 +42,33 @@ public class ThemesAppservice : ApplicationService
         Theme theme1 = await _repository.UpdateAsync(theme,true);
         return ObjectMapper.Map<Theme, ThemesDto>(theme1);
     }
+    public async Task<ThemesDto> UpdateBrowserTabIconUrl(IFormFile formFile)
+    {
+        Theme theme = await _repository.FirstOrDefaultAsync();
+        if (theme == null) throw new Exception("Not Found");
+        theme.BrowserTabIconUrl = await _imageService.UploadAsync(formFile);
+        theme.LastModificationTime = DateTime.UtcNow;
+        Theme theme1 = await _repository.UpdateAsync(theme, true);
+        return ObjectMapper.Map<Theme, ThemesDto>(theme1);
+    }
+    public async Task<ThemesDto> UpdateLogoUrl(IFormFile formFile)
+    {
+        Theme theme = await _repository.FirstOrDefaultAsync();
+        if (theme == null) throw new Exception("Not Found");
+        theme.LogoUrl = await _imageService.UploadAsync(formFile);
+        theme.LastModificationTime = DateTime.UtcNow;
+        Theme theme1 = await _repository.UpdateAsync(theme, true);
+        return ObjectMapper.Map<Theme, ThemesDto>(theme1);
+    }
+    public async Task<ThemesDto> UpdateFooterLogoUrl(IFormFile formFile)
+    {
+        Theme theme = await _repository.FirstOrDefaultAsync();
+        if (theme == null) throw new Exception("Not Found");
+        theme.FooterLogoUrl = await _imageService.UploadAsync(formFile);
+        theme.LastModificationTime = DateTime.UtcNow;
+        Theme theme1 = await _repository.UpdateAsync(theme, true);
+        return ObjectMapper.Map<Theme, ThemesDto>(theme1);
+    }
     public async Task<ThemesDto> GetByIdAsync()
     {
         Theme theme1 = await _repository.FirstOrDefaultAsync();

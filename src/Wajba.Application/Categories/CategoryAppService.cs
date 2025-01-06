@@ -86,6 +86,13 @@ public class CategoryAppService : ApplicationService
                 ImageUrl = category.ImageUrl,
                 IsFilled = false
             };
+            if (input.BranchId == null)
+            {
+                categoryItemsDto.IsFilled = true;
+                categoryItemsDto.TotalItems = category.Items.Count;
+                categoryItemsDtos.Add(categoryItemsDto);
+                continue;
+            }
             var items = category.Items.ToList();
             foreach (var i in items)
             {

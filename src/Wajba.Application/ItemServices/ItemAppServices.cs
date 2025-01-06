@@ -1,6 +1,8 @@
 ﻿global using Wajba.Dtos.ItemsDtos;
 global using Wajba.Enums;
 global using Wajba.Models.Items;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace Wajba.ItemServices;
 
@@ -21,6 +23,55 @@ public class ItemAppServices : ApplicationService
         _repository1 = repository1;
         _repositoryBranch = repositoryBranch;
         _imageService = imageService;
+    }
+
+
+    public async Task<List<ItemDto>> GetItemsByCategoryAsync(int categoryId)
+    {
+        var items = await _repository.WithDetailsAsync(
+            x => x.ItemAddons,
+            x => x.ItemExtras,
+            x => x.ItemVariations
+        );
+
+        var result = items.Where(x => x.CategoryId == categoryId)
+                          .Select(item => ObjectMapper.Map<Item, ItemDto>(item))
+                          .ToList();
+
+        return result;
+    }
+
+    public async Task<List<ItemDto>> GetItemsByBranchAsync(int branchId)
+    {
+        var items = await _repository.WithDetailsAsync(
+            x => x.ItemBranches,
+            x => x.ItemAddons,
+            x => x.ItemExtras,
+            x => x.ItemVariations
+        );
+
+        var result = items.Where(item => item.ItemBranches.Any(ib => ib.BranchId == branchId))
+                          .Select(item => ObjectMapper.Map<Item, ItemDto>(item))
+                          .ToList();
+
+        return result;
+    }
+
+    public async Task<ItemDto> GetItemWithDetailsAsync(int id)
+    {
+        var queryable = await _repository.WithDetailsAsync(
+        x => x.ItemAddons,
+        x => x.ItemExtras,
+        x => x.ItemVariations
+    );
+
+        var item = await queryable.FirstOrDefaultAsync(x => x.Id == id);
+
+
+        if (item == null)
+            throw new EntityNotFoundException(typeof(Item), id);
+
+        return ObjectMapper.Map<Item, ItemDto>(item);
     }
     public async Task<ItemDto> CreateAsync(CreateItemDto input)
     {

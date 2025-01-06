@@ -11,6 +11,26 @@ public class ItemController : WajbaController
     {
         _itemAppServices = itemAppServices;
     }
+
+
+    [HttpGet("by-category/{categoryId}")]
+    public async Task<List<ItemDto>> GetItemsByCategory(int categoryId)
+    {
+        return await _itemAppServices.GetItemsByCategoryAsync(categoryId);
+    }
+
+    [HttpGet("by-branch/{branchId}")]
+    public async Task<List<ItemDto>> GetItemsByBranch(int branchId)
+    {
+        return await _itemAppServices.GetItemsByBranchAsync(branchId);
+    }
+
+    [HttpGet("{id}/details")]
+    public async Task<ItemDto> GetItemWithDetails(int id)
+    {
+        return await _itemAppServices.GetItemWithDetailsAsync(id);
+    }
+
     [HttpPost]
     public async Task<IActionResult> CreateAsync(CreateItemDto input)
     {

@@ -22,6 +22,9 @@ public class SitesAppservice : ApplicationService
     }
     public async Task<SiteDto> CreateAsync(CreateSiteDto input)
     {
+        Site site2 = await _repository.FirstOrDefaultAsync();
+        if (site2 != null)
+            throw new Exception("Site already exists");
         Branch branch = await _repository1.FindAsync(input.defaultBranch);
         if (branch == null)
             throw new Exception("Branch Not Found");

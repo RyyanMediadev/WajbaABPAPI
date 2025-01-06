@@ -92,31 +92,6 @@ public class SiteController :WajbaController
             });
         }
     }
-    /*
-    [HttpGet]
-    public async Task<IActionResult> GetListAsync([FromQuery] GetSiteInput input)
-    {
-        try
-        {
-            var dto = await _sitesAppservice.GetListAsync(input);
-            return Ok(new ApiResponse<PagedResultDto<SiteDto>>
-            {
-                Success = true,
-                Message = "sites retrieved successfully.",
-                Data = dto
-            });
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(new ApiResponse<object>
-            {
-                Success = false,
-                Message = $"Error retrieving sites: {ex.Message}",
-                Data = null
-            });
-        }
-    }
-    */
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteAsync(int id)
     {

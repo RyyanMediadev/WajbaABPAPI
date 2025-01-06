@@ -44,17 +44,17 @@ public class ThemeController : WajbaController
     }
 
     [HttpPut]
-    public async Task<IActionResult> UpdateAsync( IFormFile BrowserTabIconUrl, IFormFile FooterLogoUrl, IFormFile LogoUrl)
+    public async Task<IActionResult> UpdateAsync(CreateThemesDto  createThemesDto)
     {
-        CreateThemesDto input = new CreateThemesDto()
-        {
-            BrowserTabIconUrl = BrowserTabIconUrl,
-            FooterLogoUrl = FooterLogoUrl,
-            LogoUrl = LogoUrl
-        };
+        //CreateThemesDto input = new CreateThemesDto()
+        //{
+        //    BrowserTabIconUrl = BrowserTabIconUrl,
+        //    FooterLogoUrl = FooterLogoUrl,
+        //    LogoUrl = LogoUrl
+        //};
         try
         {
-            var updatedcategory = await _themesAppservice.UpdateAsync( input);
+            var updatedcategory = await _themesAppservice.UpdateAsync(createThemesDto);
             return Ok(new ApiResponse<object>
             {
                 Success = true,
@@ -72,6 +72,77 @@ public class ThemeController : WajbaController
             });
         }
     }
+    [HttpPut("UpdateBrowserTabIconUrl")]
+    public async Task<IActionResult> UpdateBrowserTabIconUrl(IFormFile BrowserTabIconUrl)
+    {
+        try
+        {
+            var updatedcategory = await _themesAppservice.UpdateBrowserTabIconUrl(BrowserTabIconUrl);
+            return Ok(new ApiResponse<object>
+            {
+                Success = true,
+                Message = "THeme updated successfully.",
+                Data = updatedcategory
+            });
+        }
+        catch (EntityNotFoundException)
+        {
+            return NotFound(new ApiResponse<object>
+            {
+                Success = false,
+                Message = "Theme not found.",
+                Data = null
+            });
+        }
+    }
+
+    [HttpPut("UpdateLogoUrl")]
+    public async Task<IActionResult> UpdateLogoUrlasync(IFormFile BrowserTabIconUrl)
+    {
+        try
+        {
+            var updatedcategory = await _themesAppservice.UpdateLogoUrl(BrowserTabIconUrl);
+            return Ok(new ApiResponse<object>
+            {
+                Success = true,
+                Message = "THeme updated successfully.",
+                Data = updatedcategory
+            });
+        }
+        catch (EntityNotFoundException)
+        {
+            return NotFound(new ApiResponse<object>
+            {
+                Success = false,
+                Message = "Theme not found.",
+                Data = null
+            });
+        }
+    }
+    [HttpPut("UpdateFooterLogoUrl")]
+    public async Task<IActionResult> UpdateFooterLogoUrlasync(IFormFile BrowserTabIconUrl)
+    {
+        try
+        {
+            var updatedcategory = await _themesAppservice.UpdateFooterLogoUrl(BrowserTabIconUrl);
+            return Ok(new ApiResponse<object>
+            {
+                Success = true,
+                Message = "THeme updated successfully.",
+                Data = updatedcategory
+            });
+        }
+        catch (EntityNotFoundException)
+        {
+            return NotFound(new ApiResponse<object>
+            {
+                Success = false,
+                Message = "Theme not found.",
+                Data = null
+            });
+        }
+    }
+
     [HttpGet]
     public async Task<IActionResult> GetByIdAsync()
     {

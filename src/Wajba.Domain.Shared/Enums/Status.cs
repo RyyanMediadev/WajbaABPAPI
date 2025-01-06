@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Wajba.Enums;
 
-public enum Status 
+public enum Status
 {
     [Display(Description = "InActive")]
     InActive=1 ,

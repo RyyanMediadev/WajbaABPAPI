@@ -36,12 +36,12 @@ public class OTPController : WajbaController
         }
     }
     [HttpGet]
-    public async Task<IActionResult> GetAll([FromBody]GetOtpInput dto)
+    public async Task<IActionResult> GetAll()
     {
         try
         {
-            var oTPDtos = await _oTPAppService.GetAllAsync(dto);
-            return Ok(new ApiResponse<PagedResultDto<OTPDto>>
+            var oTPDtos = await _oTPAppService.GetByIdAsync();
+            return Ok(new ApiResponse<OTPDto>
             {
                 Success = true,
                 Message = "OTP retrieved successfully.",
@@ -104,12 +104,12 @@ public class OTPController : WajbaController
             });
         }
     }
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteAsync(int id)
+    [HttpDelete]
+    public async Task<IActionResult> DeleteAsync()
     {
         try
         {
-            await _oTPAppService.DeleteAsync(id);
+            await _oTPAppService.DeleteAsync();
             return Ok(new ApiResponse<object>
             {
                 Success = true,

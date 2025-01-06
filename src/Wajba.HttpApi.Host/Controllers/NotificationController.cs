@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Wajba.Dtos.NotificationContract;
+﻿using Wajba.Dtos.NotificationContract;
 using Wajba.NotificationService;
+using Wajba.Dtos.NotificationContract;
 
 namespace Wajba.Controllers
 {

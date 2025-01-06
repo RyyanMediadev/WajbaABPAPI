@@ -15,6 +15,9 @@ namespace Wajba.OTPService
         }
         public async Task<OTPDto> CreateAsync(CreateUpdateOTPDto input)
         {
+            OTP oTP =await _repository.FirstOrDefaultAsync();
+            if (oTP != null)
+                throw new Exception("OTP already exists");
             OTP otp = new OTP
             {
                 DigitLimit = input.DigitLimit,
@@ -34,14 +37,14 @@ namespace Wajba.OTPService
             OTP updatedOTP = await _repository.UpdateAsync(otp, true);
             return ObjectMapper.Map<OTP, OTPDto>(updatedOTP);
         }
-        public async Task<OTPDto> GetByIdAsync(int id)
+        public async Task<OTPDto> GetByIdAsync()
         {
-            OTP otp = await _repository.GetAsync(id);
+            OTP otp = await _repository.FirstOrDefaultAsync();
             if (otp == null)
-                throw new EntityNotFoundException(typeof(OTP), id);
+                throw new EntityNotFoundException(typeof(OTP));
             return ObjectMapper.Map<OTP, OTPDto>(otp);
         }
-        public async Task<PagedResultDto<OTPDto>> GetAllAsync(GetOtpInput input)
+        public async Task<PagedResultDto<OTPDto>> GetList(GetOtpInput input)
         {
             var otps = await _repository.GetListAsync();
             return new PagedResultDto<OTPDto>
@@ -50,11 +53,11 @@ namespace Wajba.OTPService
                 Items = ObjectMapper.Map<List<OTP>, List<OTPDto>>(otps)
             };
         }
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync()
         {
-            OTP otp = await _repository.GetAsync(id);
+            OTP otp = await _repository.FirstOrDefaultAsync();
             if (otp == null)
-                throw new EntityNotFoundException(typeof(OTP), id);
+                throw new EntityNotFoundException(typeof(OTP));
             await _repository.DeleteAsync(otp);
         }
     }

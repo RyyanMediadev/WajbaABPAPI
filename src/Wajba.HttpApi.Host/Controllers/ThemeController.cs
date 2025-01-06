@@ -43,8 +43,8 @@ public class ThemeController : WajbaController
         }
     }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateAsync(int id, IFormFile BrowserTabIconUrl, IFormFile FooterLogoUrl, IFormFile LogoUrl)
+    [HttpPut]
+    public async Task<IActionResult> UpdateAsync( IFormFile BrowserTabIconUrl, IFormFile FooterLogoUrl, IFormFile LogoUrl)
     {
         CreateThemesDto input = new CreateThemesDto()
         {
@@ -54,7 +54,7 @@ public class ThemeController : WajbaController
         };
         try
         {
-            var updatedcategory = await _themesAppservice.UpdateAsync(id, input);
+            var updatedcategory = await _themesAppservice.UpdateAsync( input);
             return Ok(new ApiResponse<object>
             {
                 Success = true,
@@ -72,12 +72,12 @@ public class ThemeController : WajbaController
             });
         }
     }
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetByIdAsync(int id)
+    [HttpGet]
+    public async Task<IActionResult> GetByIdAsync()
     {
         try
         {
-           var category = await _themesAppservice.GetByIdAsync(id);
+           var category = await _themesAppservice.GetByIdAsync();
 
             return Ok(new ApiResponse<object>
             {
@@ -106,36 +106,12 @@ public class ThemeController : WajbaController
         }
     }
 
-    [HttpGet]
-    public async Task<IActionResult> GetListAsync([FromQuery] GetThemeInput input)
-
+    [HttpDelete]
+    public async Task<IActionResult> DeleteAsync()
     {
         try
         {
-            var themes = await _themesAppservice.GetListAsync(input);
-            return Ok(new ApiResponse<PagedResultDto<ThemesDto>>
-            {
-                Success = true,
-                Message = "themes retrieved successfully.",
-                Data = themes
-            });
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(new ApiResponse<object>
-            {
-                Success = false,
-                Message = $"Error retrieving categories: {ex.Message}",
-                Data = null
-            });
-        }
-    }
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteAsync(int id)
-    {
-        try
-        {
-            await _themesAppservice.DeleteAsync(id);
+            await _themesAppservice.DeleteAsync();
             return Ok(new ApiResponse<object>
             {
                 Success = true,

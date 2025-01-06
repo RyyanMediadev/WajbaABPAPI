@@ -11,11 +11,16 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Wajba.EntityFrameworkCore\Wajba.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\Wajba.Application.Tests\Wajba.Application.Tests.csproj" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.4" />
+    <PackageReference Include="Volo.Abp.Account.Application" Version="9.0.0" />
     <PackageReference Include="Volo.Abp.EntityFrameworkCore.Sqlite" Version="9.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1.0" />
+    <PackageReference Include="Volo.Abp.Identity.Application" Version="9.0.0" />
+    <PackageReference Include="Volo.Abp.Identity.AspNetCore" Version="9.0.0" />
+    <PackageReference Include="Volo.Abp.Identity.HttpApi" Version="9.0.0" />
   </ItemGroup>
 
 </Project>

@@ -10,19 +10,19 @@ public class APPUser : IdentityUser//*: FullAuditedEntity<int>*/
 
     }
 
-    [Required]
-    public string FirstName { get; set; }
-    [Required]
-    public string SecoundName { get; set; }
-    [Required]
-    public string Phone { get; set; }
-    [Required]
-    public string Email { get; set; }
-    [Required]
-    public string Password { get; set; }
-    [Required]
-    public string Address { get; set; }
-    public int? ProfileId { get; set; }
+    //[Required]
+    //public string FirstName { get; set; }
+    //[Required]
+    //public string SecoundName { get; set; }
+    //[Required]
+    //public string Phone { get; set; }
+    //[Required]
+    //public string Email { get; set; }
+    //[Required]
+    //public string Password { get; set; }
+    //[Required]
+    //public string Address { get; set; }
+    //public int? ProfileId { get; set; }
     //public Profile Profile { get; set; }
 
     //public int? ProfileId { get; set; }
@@ -33,8 +33,8 @@ public class APPUser : IdentityUser//*: FullAuditedEntity<int>*/
 
 
 
-    public int BranchId { get; set; }
-    public Branch Branch { get; set; }
+    //public int BranchId { get; set; }
+    //public Branch Branch { get; set; }
 
 
 

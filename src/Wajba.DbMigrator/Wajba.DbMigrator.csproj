@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>    
+    <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.4" />    
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -31,10 +32,14 @@
     <PackageReference Include="Serilog.Sinks.File" Version="6.0.0.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0.0" />
+    <PackageReference Include="Volo.Abp.Account.Application" Version="9.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Volo.Abp.Autofac" Version="9.0.0" />
+    <PackageReference Include="Volo.Abp.Identity.Application" Version="9.0.0" />
+    <PackageReference Include="Volo.Abp.Identity.AspNetCore" Version="9.0.0" />
+    <PackageReference Include="Volo.Abp.Identity.HttpApi" Version="9.0.0" />
     <ProjectReference Include="..\Wajba.Application.Contracts\Wajba.Application.Contracts.csproj" />
     <ProjectReference Include="..\Wajba.EntityFrameworkCore\Wajba.EntityFrameworkCore.csproj" />
   </ItemGroup>

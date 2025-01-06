@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Volo.Abp.EntityFrameworkCore;
 using Wajba.EntityFrameworkCore;
@@ -12,9 +13,11 @@ using Wajba.EntityFrameworkCore;
 namespace Wajba.Migrations
 {
     [DbContext(typeof(WajbaDbContext))]
-    partial class WajbaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250106121519_updateuser")]
+    partial class updateuser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

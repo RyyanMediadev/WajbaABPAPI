@@ -10,10 +10,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.4" />
     <PackageReference Include="TinyMapper" Version="3.0.3" />
+    <PackageReference Include="Volo.Abp.Account.Application" Version="9.0.0" />
+    <PackageReference Include="Volo.Abp.Identity.Application" Version="9.0.0" />
+    <PackageReference Include="Volo.Abp.Identity.AspNetCore" Version="9.0.0" />
     <PackageReference Include="Volo.Abp.Identity.Domain.Shared" Version="9.0.0" />
     <PackageReference Include="Volo.Abp.BackgroundJobs.Domain.Shared" Version="9.0.0" />
     <PackageReference Include="Volo.Abp.AuditLogging.Domain.Shared" Version="9.0.0" />
+    <PackageReference Include="Volo.Abp.Identity.HttpApi" Version="9.0.0" />
     <PackageReference Include="Volo.Abp.TenantManagement.Domain.Shared" Version="9.0.0" />
     <PackageReference Include="Volo.Abp.FeatureManagement.Domain.Shared" Version="9.0.0" />
     <PackageReference Include="Volo.Abp.PermissionManagement.Domain.Shared" Version="9.0.0" />

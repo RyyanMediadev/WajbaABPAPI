@@ -21,22 +21,22 @@ namespace Wajba.NotificationService
             _imageService = imageService;
         }
 
-        public async Task<NotificationDto> CreateAsync(CreateUpdateNotificationDto input)
+        public async Task<NotificationDto> CreateAsync(CreateNotificationDto input)
         {
             var imageUrl = await _imageService.UploadAsync(input.ImageUrl);
-            var notification = ObjectMapper.Map<CreateUpdateNotificationDto, Notification>(input);
+            var notification = ObjectMapper.Map<CreateNotificationDto, Notification>(input);
             notification.ImageUrl = imageUrl;
 
             await _notificationRepository.InsertAsync(notification);
             return ObjectMapper.Map<Notification, NotificationDto>(notification);
         }
 
-        public async Task<NotificationDto> UpdateAsync(int id, CreateUpdateNotificationDto input)
+        public async Task<NotificationDto> UpdateAsync(UpdateNotificationDto input)
         {
-            var notification = await _notificationRepository.GetAsync(id);
+            var notification = await _notificationRepository.GetAsync(input.id);
             if (notification == null)
             {
-                throw new EntityNotFoundException(typeof(Notification), id);
+                throw new EntityNotFoundException(typeof(Notification), input.id);
             }
 
             var imageUrl = await _imageService.UploadAsync(input.ImageUrl);
@@ -57,11 +57,27 @@ namespace Wajba.NotificationService
         {
             await _notificationRepository.DeleteAsync(id);
         }
-
-        public async Task<List<NotificationDto>> GetAllAsync()
+        public async Task<PagedResultDto<NotificationDto>> GetAllAsync(GetNotificationInput input)
         {
-            var notifications = await _notificationRepository.GetListAsync();
-            return ObjectMapper.Map<List<Notification>, List<NotificationDto>>(notifications);
+            var queryable = await _notificationRepository.GetQueryableAsync();
+
+            queryable = queryable.WhereIf(
+                !string.IsNullOrWhiteSpace(input.Filter),
+                n => n.FireBasePublicVapidKey.Contains(input.Filter) ||
+                     n.FireBaseAPIKey.Contains(input.Filter) ||
+                     n.FireBaseProjectId.Contains(input.Filter) ||
+                     n.ImageUrl.Contains(input.Filter)
+            );
+
+            var totalCount = await AsyncExecuter.CountAsync(queryable);
+            var items = await AsyncExecuter.ToListAsync(queryable
+                .OrderBy(input.Sorting ?? nameof(Notification.FireBasePublicVapidKey))
+                .PageBy(input.SkipCount, input.MaxResultCount));
+
+            return new PagedResultDto<NotificationDto>(
+                totalCount,
+                ObjectMapper.Map<List<Notification>, List<NotificationDto>>(items)
+            );
         }
     }
 }

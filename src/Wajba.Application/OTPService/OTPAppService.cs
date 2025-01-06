@@ -41,7 +41,7 @@ namespace Wajba.OTPService
                 throw new EntityNotFoundException(typeof(OTP), id);
             return ObjectMapper.Map<OTP, OTPDto>(otp);
         }
-        public async Task<PagedResultDto<OTPDto>> GetAllAsync(GetOtpInput input)
+        public async Task<PagedResultDto<OTPDto>> GetList(GetOtpInput input)
         {
             var otps = await _repository.GetListAsync();
             return new PagedResultDto<OTPDto>

@@ -40,7 +40,7 @@ public class OTPController : WajbaController
     {
         try
         {
-            var oTPDtos = await _oTPAppService.GetAllAsync(dto);
+            var oTPDtos = await _oTPAppService.GetList(dto);
             return Ok(new ApiResponse<PagedResultDto<OTPDto>>
             {
                 Success = true,

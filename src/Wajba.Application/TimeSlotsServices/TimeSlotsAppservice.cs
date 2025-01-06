@@ -8,7 +8,7 @@ namespace Wajba.TimeSlotsServices;
 
 [RemoteService(false)]
 
-public class TimeSlotsAppservice : ApplicationService, IApplicationService
+public class TimeSlotsAppservice :ITimeSlotAppService, IApplicationService
 {
     private readonly IRepository<TimeSlot, int> _timeSlotRepository;
 
@@ -32,20 +32,9 @@ public class TimeSlotsAppservice : ApplicationService, IApplicationService
 
         foreach (var slot in timeSlots)
         {
-            try
-            {
+            
                 await _timeSlotRepository.InsertAsync(slot);
-            }
-            catch (JsonException jsonEx)
-            {
-                // Log the error
-                Logger.LogError(jsonEx, "JSON deserialization error for TimeSlot with WeekDay: {WeekDay}", slot.WeekDay);
-            }
-            catch (Exception ex)
-            {
-                // Handle other exceptions
-                Logger.LogError(ex, "Unexpected error during seeding of TimeSlot with WeekDay: {WeekDay}", slot.WeekDay);
-            }
+            
         }
     }
     public async Task<List<TimeSlotDto>> GetAllTimeSlotsAsync()

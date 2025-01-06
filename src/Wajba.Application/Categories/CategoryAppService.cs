@@ -84,6 +84,7 @@ public class CategoryAppService : ApplicationService
                 Description = category.Description,
                 status = category.Status,
                 ImageUrl = category.ImageUrl,
+                IsFilled = false
             };
             var items = category.Items.ToList();
             foreach (var i in items)

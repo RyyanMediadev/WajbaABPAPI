@@ -44,17 +44,17 @@ public class ThemeController : WajbaController
     }
 
     [HttpPut]
-    public async Task<IActionResult> UpdateAsync( IFormFile BrowserTabIconUrl, IFormFile FooterLogoUrl, IFormFile LogoUrl)
+    public async Task<IActionResult> UpdateAsync(CreateThemesDto  createThemesDto)
     {
-        CreateThemesDto input = new CreateThemesDto()
-        {
-            BrowserTabIconUrl = BrowserTabIconUrl,
-            FooterLogoUrl = FooterLogoUrl,
-            LogoUrl = LogoUrl
-        };
+        //CreateThemesDto input = new CreateThemesDto()
+        //{
+        //    BrowserTabIconUrl = BrowserTabIconUrl,
+        //    FooterLogoUrl = FooterLogoUrl,
+        //    LogoUrl = LogoUrl
+        //};
         try
         {
-            var updatedcategory = await _themesAppservice.UpdateAsync( input);
+            var updatedcategory = await _themesAppservice.UpdateAsync(createThemesDto);
             return Ok(new ApiResponse<object>
             {
                 Success = true,
@@ -72,6 +72,30 @@ public class ThemeController : WajbaController
             });
         }
     }
+    //[HttpPut("UpdateBrowserTabIconUrlAsync")]
+    //public async Task<IActionResult> UpdateBrowserTabIconUrlAsync()
+    //{
+    //    try
+    //    {
+    //        var updatedcategory = await _themesAppservice.UpdateBrowserTabIconUrlAsync();
+    //        return Ok(new ApiResponse<object>
+    //        {
+    //            Success = true,
+    //            Message = "BrowserTabIconUrl updated successfully.",
+    //            Data = updatedcategory
+    //        });
+    //    }
+    //    catch (EntityNotFoundException)
+    //    {
+    //        return NotFound(new ApiResponse<object>
+    //        {
+    //            Success = false,
+    //            Message = "BrowserTabIconUrl not found.",
+    //            Data = null
+    //        });
+    //    }
+    //    return null;
+    //}
     [HttpGet]
     public async Task<IActionResult> GetByIdAsync()
     {

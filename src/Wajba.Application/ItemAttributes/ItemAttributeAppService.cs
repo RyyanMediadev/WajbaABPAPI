@@ -9,7 +9,7 @@ ItemAttribute,
 ItemAttributeDto,
 int,
 PagedAndSortedResultRequestDto,
-CreateUpdateItemAttributeDto>,
+CreateItemAttributeDto>,
 IItemAttributeAppService
 {
     public ItemAttributeAppService(IRepository<ItemAttribute, int> repository)

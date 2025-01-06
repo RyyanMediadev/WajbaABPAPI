@@ -1,6 +1,6 @@
 ﻿namespace Wajba.Dtos.ItemAttributes;
 
-public class CreateUpdateItemAttributeDto
+public class CreateItemAttributeDto
 {
     [Required]
     public string Name { get; set; }

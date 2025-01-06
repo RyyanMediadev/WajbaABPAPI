@@ -5,6 +5,6 @@ ICrudAppService<
     ItemAttributeDto,
     int,
     PagedAndSortedResultRequestDto,
-    CreateUpdateItemAttributeDto>
+    CreateItemAttributeDto>
 {
 }

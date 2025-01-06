@@ -68,23 +68,65 @@ public class CategoryAppService : ApplicationService
 
     public async Task<PagedResultDto<CategoryDto>> GetListAsync(GetCategoryInput input)
     {
-        IQueryable<Category> queryable = await _categoryRepository.GetQueryableAsync();
-        queryable = queryable.WhereIf(
-            !string.IsNullOrWhiteSpace(input.Name),
-            c => c.Name.ToLower() == input.Name.ToLower()
-        );
-        List<Category> categories = await AsyncExecuter.ToListAsync(queryable
-            .OrderBy(input.Sorting ?? nameof(Category.Name))
-            .PageBy(input.SkipCount, input.MaxResultCount));
-        int totalCount = await AsyncExecuter.CountAsync(queryable);
-        List<CategoryDto> categoryItemsDtos = ObjectMapper.Map<List<Category>, List<CategoryDto>>(categories);
-        return new PagedResultDto<CategoryDto>(
-            totalCount,
-            categoryItemsDtos);
+       var queryable =await _categoryRepository.WithDetailsAsync(p => p.Items).Result.ToListAsync();
+        if (queryable == null)
+            throw new EntityNotFoundException(typeof(Category));
+        if (input.Name != null)
+            queryable = queryable.Where(p => p.Name.ToLower() == input.Name.ToLower()).ToList();
+        List<CategoryDto> categoryItemsDtos = new List<CategoryDto>();
+        int countitems = 0;
+        foreach(var category in queryable)
+        {
+            var categoryItemsDto = new CategoryDto
+            {
+                Id = category.Id,
+                name = category.Name,
+                Description = category.Description,
+                status = category.Status,
+                ImageUrl = category.ImageUrl,
+            };
+            var items = category.Items.ToList();
+            foreach (var i in items)
+            {
+                Item item = _itemrepo.WithDetailsAsync(p => p.ItemBranches).Result.FirstOrDefault(p => p.Id == i.Id);
+                var itemBranches = item.ItemBranches.ToList();
+                if (itemBranches.Any(p => p.BranchId == input.BranchId))
+                {
+                    categoryItemsDto.IsFilled = true;
+                    countitems++;
+                }
+            }
+            categoryItemsDto.TotalItems = countitems;
+            countitems= 0;
+            categoryItemsDtos.Add(categoryItemsDto);
+        }
+        //queryable = queryable.WhereIf(
+        //    !string.IsNullOrWhiteSpace(input.Name),
+        //    c => c.Name.ToLower() == input.Name.ToLower()
+        //);
+        int totalCount = queryable.Count();
+        categoryItemsDtos = categoryItemsDtos.OrderBy(p => p.name).
+            Skip(input.SkipCount)
+            .Take(input.MaxResultCount)
+            .ToList();
+        return new PagedResultDto<CategoryDto>(totalCount, categoryItemsDtos);
+        //.OrderBy(input.Sorting ?? nameof(Category.Name))
+        //.Skip(input.SkipCount)
+        //.Take(input.MaxResultCount)
+        //.ToList();
+        //List <Category> categories = await AsyncExecuter.ToListAsync(queryable
+        //    .OrderBy(input.Sorting ?? nameof(Category.Name))
+        //    .PageBy(input.SkipCount, input.MaxResultCount));
+        //int totalCount = await AsyncExecuter.CountAsync(queryable);
+        //List<CategoryDto> categoryItemsDtos = ObjectMapper.Map<List<Category>, List<CategoryDto>>(categories);
+        //return new PagedResultDto<CategoryDto>(
+        //    totalCount,
+        //    categoryItemsDtos);
     }
     public async Task<PagedResultDto<CategoryItemsDto>> GetCategoryItemsDtosAsync(int branchid)
     {
         var queryable = await _categoryRepository.WithDetailsAsync(x => x.Items);
+
         List<CategoryItemsDto> categoryItemsDtos = new List<CategoryItemsDto>();
         foreach (var category in queryable)
         {

@@ -1,166 +1,165 @@
 ﻿using Wajba.Dtos.ItemAddonContract;
 using Wajba.ItemAddonService;
 
-namespace Wajba.Controllers
+namespace Wajba.Controllers;
+
+
+public class ItemAddonController : WajbaController
 {
- 
-    public class ItemAddonController : WajbaController
+    private readonly ItemAddonAppService _itemAddonAppService;
+
+    public ItemAddonController(ItemAddonAppService itemAddonAppService)
     {
-        private readonly ItemAddonAppService _itemAddonAppService;
+        _itemAddonAppService = itemAddonAppService;
+    }
 
-        public ItemAddonController(ItemAddonAppService itemAddonAppService)
+    [HttpGet("item/{itemId}")]
+    public async Task<IActionResult> GetAddonsByItemIdAsync(int itemId)
+    {
+        try
         {
-            _itemAddonAppService = itemAddonAppService;
+            var addons = await _itemAddonAppService.GetByItemIdAsync(itemId);
+            return Ok(new ApiResponse<List<ItemAddonDto>>
+            {
+                Success = true,
+                Message = "Addons retrieved successfully.",
+                Data = addons
+            });
         }
-
-        [HttpGet("item/{itemId}")]
-        public async Task<IActionResult> GetAddonsByItemIdAsync(int itemId)
+        catch (Exception ex)
         {
-            try
+            return BadRequest(new ApiResponse<object>
             {
-                var addons = await _itemAddonAppService.GetByItemIdAsync(itemId);
-                return Ok(new ApiResponse<List<ItemAddonDto>>
-                {
-                    Success = true,
-                    Message = "Addons retrieved successfully.",
-                    Data = addons
-                });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = $"Error retrieving addons: {ex.Message}",
-                    Data = null
-                });
-            }
+                Success = false,
+                Message = $"Error retrieving addons: {ex.Message}",
+                Data = null
+            });
         }
+    }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetByIdAsync(int id)
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetByIdAsync(int id)
+    {
+        try
         {
-            try
-            {
-                var addon = await _itemAddonAppService.GetByIdAsync(id);
+            var addon = await _itemAddonAppService.GetByIdAsync(id);
 
-                return Ok(new ApiResponse<ItemAddonDto>
-                {
-                    Success = true,
-                    Message = "Item addon retrieved successfully.",
-                    Data = addon
-                });
-            }
-            catch (EntityNotFoundException)
+            return Ok(new ApiResponse<ItemAddonDto>
             {
-                return NotFound(new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = "Item addon not found.",
-                    Data = null
-                });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = $"Error retrieving item addon: {ex.Message}",
-                    Data = null
-                });
-            }
+                Success = true,
+                Message = "Item addon retrieved successfully.",
+                Data = addon
+            });
         }
-
-        [HttpPost]
-        public async Task<IActionResult> CreateAsync(CreateUpdateItemAddonDto input)
+        catch (EntityNotFoundException)
         {
-            try
+            return NotFound(new ApiResponse<object>
             {
-                var createdAddon = await _itemAddonAppService.CreateAsync(input);
-
-                return Ok(new ApiResponse<ItemAddonDto>
-                {
-                    Success = true,
-                    Message = "Item addon created successfully.",
-                    Data = createdAddon
-                });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = $"Error creating item addon: {ex.Message}",
-                    Data = null
-                });
-            }
+                Success = false,
+                Message = "Item addon not found.",
+                Data = null
+            });
         }
-
-        [HttpPut("item/{itemId}/addon/{addonId}")]
-        public async Task<IActionResult> UpdateAddonForItemAsync(int itemId, int addonId, [FromBody] CreateUpdateItemAddonDto input)
+        catch (Exception ex)
         {
-            try
+            return BadRequest(new ApiResponse<object>
             {
-                var updatedAddon = await _itemAddonAppService.UpdateForSpecificItemAsync(itemId, addonId, input);
-                return Ok(new ApiResponse<ItemAddonDto>
-                {
-                    Success = true,
-                    Message = "Addon updated successfully.",
-                    Data = updatedAddon
-                });
-            }
-            catch (EntityNotFoundException)
-            {
-                return NotFound(new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = "Addon not found for the specified item.",
-                    Data = null
-                });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = $"Error updating addon: {ex.Message}",
-                    Data = null
-                });
-            }
+                Success = false,
+                Message = $"Error retrieving item addon: {ex.Message}",
+                Data = null
+            });
         }
+    }
 
-
-        [HttpDelete("item/{itemId}/addon/{addonId}")]
-        public async Task<IActionResult> DeleteAddonForItemAsync(int itemId, int addonId)
+    [HttpPost]
+    public async Task<IActionResult> CreateAsync(CreateUpdateItemAddonDto input)
+    {
+        try
         {
-            try
+            var createdAddon = await _itemAddonAppService.CreateAsync(input);
+
+            return Ok(new ApiResponse<ItemAddonDto>
             {
-                await _itemAddonAppService.DeleteForSpecificItemAsync(itemId, addonId);
-                return Ok(new ApiResponse<object>
-                {
-                    Success = true,
-                    Message = "Item addon deleted successfully.",
-                    Data = null
-                });
-            }
-            catch (EntityNotFoundException)
+                Success = true,
+                Message = "Item addon created successfully.",
+                Data = createdAddon
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ApiResponse<object>
             {
-                return NotFound(new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = "Item addon not found for the specified item.",
-                    Data = null
-                });
-            }
-            catch (Exception ex)
+                Success = false,
+                Message = $"Error creating item addon: {ex.Message}",
+                Data = null
+            });
+        }
+    }
+
+    [HttpPut("item/{itemId}/addon/{addonId}")]
+    public async Task<IActionResult> UpdateAddonForItemAsync(int itemId, int addonId, [FromBody] CreateUpdateItemAddonDto input)
+    {
+        try
+        {
+            var updatedAddon = await _itemAddonAppService.UpdateForSpecificItemAsync(itemId, addonId, input);
+            return Ok(new ApiResponse<ItemAddonDto>
             {
-                return BadRequest(new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = $"Error deleting item addon: {ex.Message}",
-                    Data = null
-                });
-            }
+                Success = true,
+                Message = "Addon updated successfully.",
+                Data = updatedAddon
+            });
+        }
+        catch (EntityNotFoundException)
+        {
+            return NotFound(new ApiResponse<object>
+            {
+                Success = false,
+                Message = "Addon not found for the specified item.",
+                Data = null
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ApiResponse<object>
+            {
+                Success = false,
+                Message = $"Error updating addon: {ex.Message}",
+                Data = null
+            });
+        }
+    }
+
+
+    [HttpDelete("item/{itemId}/addon/{addonId}")]
+    public async Task<IActionResult> DeleteAddonForItemAsync(int itemId, int addonId)
+    {
+        try
+        {
+            await _itemAddonAppService.DeleteForSpecificItemAsync(itemId, addonId);
+            return Ok(new ApiResponse<object>
+            {
+                Success = true,
+                Message = "Item addon deleted successfully.",
+                Data = null
+            });
+        }
+        catch (EntityNotFoundException)
+        {
+            return NotFound(new ApiResponse<object>
+            {
+                Success = false,
+                Message = "Item addon not found for the specified item.",
+                Data = null
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ApiResponse<object>
+            {
+                Success = false,
+                Message = $"Error deleting item addon: {ex.Message}",
+                Data = null
+            });
         }
     }
 }

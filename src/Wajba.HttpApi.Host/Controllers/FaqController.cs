@@ -12,7 +12,7 @@ public class FaqController : WajbaController
         _faqAppService = faqAppService;
     }
     [HttpPost]
-    public async Task<IActionResult> CreateAsync( CreateFaqs input)
+    public async Task<IActionResult> CreateAsync(CreateFaqs input)
     {
         try
         {
@@ -37,7 +37,7 @@ public class FaqController : WajbaController
     }
 
     [HttpPut]
-    public async Task<IActionResult> UpdateAsync( UpadtefaqDto input)
+    public async Task<IActionResult> UpdateAsync(UpadtefaqDto input)
     {
         try
         {

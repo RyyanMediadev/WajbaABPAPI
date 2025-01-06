@@ -58,7 +58,7 @@ public class Program
                 });
                 //builder.Services.AddHttpsRedirection(p =>
                 //{
-                //    p.RedirectStatusCode = Status308PermanentRedirect;
+                //    //p.RedirectStatusCode = OkResult;
                 //    p.HttpsPort = 443;
                 //});
                 //options.AddDefaultPolicy(builder =>
@@ -76,14 +76,11 @@ public class Program
             //{
 
             //});
-            //app.UseHttpsRedirection(options =>
-            //{
-            //    options.RedirectStatusCode = Status308PermanentRedirect;
-            //    options.HttpsPort = 443;
-            //});
+           
             app.UseAuthentication();
             app.UseAuthorization();
-            //app.UseStaticFiles();
+            app.UseStaticFiles();
+            app.UseDefaultFiles();
             //app.UseEndpoints(endpoints => { endpoints.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}"); });
             //app.UseRouting();
             //app.UseEndpoints(p =>

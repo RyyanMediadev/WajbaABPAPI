@@ -4,6 +4,9 @@ global using Volo.Abp.Domain.Entities;
 global using Wajba.APIResponse;
 global using Wajba.Categories;
 global using Wajba.Dtos.Categories;
+using Microsoft.AspNetCore.Authorization;
+using Volo.Abp.Authorization;
+using Wajba.Permissions;
 
 namespace Wajba.Controllers;
 
@@ -16,8 +19,26 @@ public class CategoryController : WajbaController
     {
         _categoryAppService = categoryAppService;
     }
+    //[HttpPost]
+
+    //public async Task<bool> TestComplexPermissions()
+    //{
+    //    // Perform authorization check for the specified permission
+    //    var result = await AuthorizationService.AuthorizeAsync(WajbaPermissions.CreateCategoryPermission);
+
+    //    // If authorization fails, throw an exception with a detailed message
+    //    if (!result.Succeeded)
+    //    {
+    //        throw new AbpAuthorizationException("Access denied: You don't have permission to perform this action. Required permission: 'CreateEditProductPermission'.");
+    //    }
+
+    //    // Authorization successful, return true
+    //    return true;
+    //}
+
 
     [HttpPost]
+    [Authorize(WajbaPermissions.CreateCategoryPermission)]
     public async Task<IActionResult> CreateAsync(CreateUpdateCategoryDto input)
     {
         try
@@ -43,6 +64,7 @@ public class CategoryController : WajbaController
         }
     }
     [HttpPut]
+    [Authorize(WajbaPermissions.UpdateCategoryPermission)]
     public async Task<IActionResult> UpdateAsync(UpdateCategory input)
     {
         try
@@ -68,6 +90,8 @@ public class CategoryController : WajbaController
 
     }
     [HttpGet("{id}")]
+
+    [Authorize(WajbaPermissions.GetCategoryItemsCategoryPermission)]
     public async Task<IActionResult> GetByIdAsync(int id)
     {
         try
@@ -102,6 +126,8 @@ public class CategoryController : WajbaController
         }
     }
     [HttpGet]
+
+    [Authorize(WajbaPermissions.GetListCategoryPermission)]
     public async Task<IActionResult> GetListAsync([FromQuery] GetCategoryInput input)
     {
         try
@@ -127,6 +153,7 @@ public class CategoryController : WajbaController
         }
     }
     [HttpGet("getcategoryItems")]
+    [Authorize(WajbaPermissions.GetCategoryItemsCategoryPermission)]
     public async Task<IActionResult> GetCategoryItemsdto(int branchid)
     {
         try
@@ -150,6 +177,7 @@ public class CategoryController : WajbaController
         }
     }
     [HttpDelete("{id}")]
+    [Authorize(WajbaPermissions.DeleteCategoryPermission)]
     public async Task<IActionResult> DeleteAsync(int id)
     {
         try

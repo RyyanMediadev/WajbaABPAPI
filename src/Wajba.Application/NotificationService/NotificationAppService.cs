@@ -8,6 +8,7 @@ using Wajba.Models.NotificationDomain;
 
 namespace Wajba.NotificationService
 {
+    [RemoteService(false)]
     public class NotificationAppService : ApplicationService
     {
         private readonly IRepository<Notification, int> _notificationRepository;

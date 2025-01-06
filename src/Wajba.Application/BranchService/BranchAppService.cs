@@ -33,6 +33,8 @@ public class BranchAppService : ApplicationService
     public async Task<BranchDto> UpdateAsync(int id, UpdateBranchDto input)
     {
         var branch = await _branchRepository.GetAsync(id);
+        if (branch == null)
+            throw new EntityNotFoundException(typeof(Branch), id);
         branch.Name = input.Name;
         branch.Longitude = input.Longitude;
         branch.Latitude = input.Latitude;
@@ -44,14 +46,15 @@ public class BranchAppService : ApplicationService
         branch.Address = input.Address;
         branch.Status = input.Status;
         branch.LastModificationTime = DateTime.UtcNow;
-
-        var updatedBranch = await _branchRepository.UpdateAsync(branch);
+        var updatedBranch = await _branchRepository.UpdateAsync(branch, true);
         return ObjectMapper.Map<Branch, BranchDto>(updatedBranch);
     }
 
     public async Task<BranchDto> GetByIdAsync(int id)
     {
         var branch = await _branchRepository.GetAsync(id);
+        if (branch == null)
+            throw new EntityNotFoundException(typeof(Branch), id);
         return ObjectMapper.Map<Branch, BranchDto>(branch);
     }
 
@@ -77,6 +80,8 @@ public class BranchAppService : ApplicationService
 
     public async Task DeleteAsync(int id)
     {
-        await _branchRepository.DeleteAsync(id);
+        if (await _branchRepository.FindAsync(id) == null)
+            throw new EntityNotFoundException(typeof(Branch), id);
+        await _branchRepository.DeleteAsync(id,true);
     }
 }

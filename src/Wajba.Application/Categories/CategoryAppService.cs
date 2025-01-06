@@ -82,7 +82,7 @@ public class CategoryAppService : ApplicationService
             totalCount,
             categoryItemsDtos);
     }
-   public async Task<PagedResultDto<CategoryItemsDto>> GetCategoryItemsDtosAsync(int branchid)
+    public async Task<PagedResultDto<CategoryItemsDto>> GetCategoryItemsDtosAsync(int branchid)
     {
         var queryable = await _categoryRepository.WithDetailsAsync(x => x.Items);
         List<CategoryItemsDto> categoryItemsDtos = new List<CategoryItemsDto>();
@@ -121,18 +121,18 @@ public class CategoryAppService : ApplicationService
         Category category = await _categoryRepository.FindAsync(id);
         if (category == null)
             throw new EntityNotFoundException(typeof(Category), id);
-        if(image == null)
+        if (image == null)
             throw new Exception("Image is required");
         category.ImageUrl = await _imageService.UploadAsync(image);
         category.LastModificationTime = DateTime.UtcNow;
-       await  _categoryRepository.UpdateAsync(category, true);
+        await _categoryRepository.UpdateAsync(category, true);
         return ObjectMapper.Map<Category, CategoryDto>(category);
     }
     public async Task DeleteAsync(int id)
     {
         Category category = await _categoryRepository.GetAsync(id);
         if (category == null)
-           throw new EntityNotFoundException(typeof(Category), id);
-        await _categoryRepository.DeleteAsync(id,true);
+            throw new EntityNotFoundException(typeof(Category), id);
+        await _categoryRepository.DeleteAsync(id, true);
     }
 }

@@ -1,11 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Wajba.Dtos.ItemVariationContract;
-using Wajba.Models.Items;
+﻿global using Wajba.Dtos.ItemVariationContract;
 
 namespace Wajba.Controllers
 {
- 
+
     public class ItemVariationController : WajbaController
     {
         private readonly IItemVariationAppService _appService;

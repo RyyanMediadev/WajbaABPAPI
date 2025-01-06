@@ -79,8 +79,6 @@ public class Program
            
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseStaticFiles();
-            app.UseDefaultFiles();
             //app.UseEndpoints(endpoints => { endpoints.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}"); });
             //app.UseRouting();
             //app.UseEndpoints(p =>

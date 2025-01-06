@@ -28,8 +28,8 @@ public class PopularItemAppservice:ApplicationService
         Item item = _itemrepo.WithDetailsAsync(p => p.ItemBranches).Result.FirstOrDefault(p => p.Id == input.Id);
         if (item == null)
             throw new EntityNotFoundException(typeof(Item), input.Id);
-        Category category =  _categoryrepo.WithDetailsAsync(p=>p.Items).Result.FirstOrDefault(p => p.Id == item.CategoryId);
-        if (category == null )
+        Category category = _categoryrepo.WithDetailsAsync(p => p.Items).Result.FirstOrDefault(p => p.Id == item.CategoryId);
+        if (category == null)
             throw new EntityNotFoundException(typeof(Category), item.CategoryId);
         //if (input.ImgFile == null)
         //    throw new Exception("Image is required");
@@ -47,7 +47,7 @@ public class PopularItemAppservice:ApplicationService
             CategoryName = category.Name,
             BranchId = input.BranchId
         };
-        input.ImgFile = null;
+        popularitem.ImageUrl = null;
         if (input.ImgFile != null)
             popularitem.ImageUrl = await _imageService.UploadAsync(input.ImgFile);
         popularitem = await _popularitemrepo.InsertAsync(popularitem, autoSave: true);
@@ -62,9 +62,7 @@ public class PopularItemAppservice:ApplicationService
     {
         var popularitem = await _popularitemrepo.GetAsync(id);
         if (popularitem == null)
-        {
             throw new EntityNotFoundException(typeof(PopularItem), id);
-        }
         return ObjectMapper.Map<PopularItem, Popularitemdto>(popularitem);
     }
     public async Task<Popularitemdto> UpdateAsync(int id, UpdatePopularItemdto input)

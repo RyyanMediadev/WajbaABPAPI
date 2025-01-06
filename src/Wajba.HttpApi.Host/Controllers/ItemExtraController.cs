@@ -1,10 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Wajba.Dtos.ItemExtraContract;
+﻿global using Wajba.Dtos.ItemExtraContract;
 
 namespace Wajba.Controllers
 {
-    
+
     public class ItemExtraController : WajbaController
     {
         private readonly IItemExtraAppService _appService;

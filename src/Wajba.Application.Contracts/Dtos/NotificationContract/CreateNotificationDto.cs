@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Wajba.Dtos.NotificationContract
+﻿namespace Wajba.Dtos.NotificationContract
 {
     public class CreateNotificationDto
     {

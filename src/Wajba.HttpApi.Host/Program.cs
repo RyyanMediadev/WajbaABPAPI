@@ -56,7 +56,11 @@ public class Program
                           .AllowCredentials();
 
                 });
-
+                //builder.Services.AddHttpsRedirection(p =>
+                //{
+                //    p.RedirectStatusCode = Status308PermanentRedirect;
+                //    p.HttpsPort = 443;
+                //});
                 //options.AddDefaultPolicy(builder =>
                 //{
                 //    builder.WithOrigins("https://wajbaapi-08765bdfe115.herokuapp.com") // Add the Angular app's URL
@@ -68,6 +72,15 @@ public class Program
 
             var app = builder.Build();
             await app.InitializeApplicationAsync();
+            //app.UseHttpsRedirection(propa =>
+            //{
+
+            //});
+            //app.UseHttpsRedirection(options =>
+            //{
+            //    options.RedirectStatusCode = Status308PermanentRedirect;
+            //    options.HttpsPort = 443;
+            //});
             app.UseAuthentication();
             app.UseAuthorization();
             //app.UseStaticFiles();

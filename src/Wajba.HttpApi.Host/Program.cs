@@ -59,7 +59,7 @@ public class Program
                           .AllowCredentials();
 
                 });
-                builder.Services.AddEndpointsApiExplorer();
+               // builder.Services.AddEndpointsApiExplorer();
                 //builder.Services.AddHttpsRedirection(p =>
                 //{
                 //    //p.RedirectStatusCode = OkResult;

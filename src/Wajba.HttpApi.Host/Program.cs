@@ -59,6 +59,8 @@ public class Program
                           .AllowCredentials();
 
                 });
+                //hism this line for test git only
+
                // builder.Services.AddEndpointsApiExplorer();
                 //builder.Services.AddHttpsRedirection(p =>
                 //{

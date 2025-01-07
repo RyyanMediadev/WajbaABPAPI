@@ -68,11 +68,11 @@ public class CategoryAppService : ApplicationService
 
     public async Task<PagedResultDto<CategoryDto>> GetListAsync(GetCategoryInput input)
     {
-       var queryable =await _categoryRepository.WithDetailsAsync(p => p.Items).Result.ToListAsync();
+        var queryable = await _categoryRepository.WithDetailsAsync(p => p.Items);
         if (queryable == null)
             throw new EntityNotFoundException(typeof(Category));
         if (input.Name != null)
-            queryable = queryable.Where(p => p.Name.ToLower() == input.Name.ToLower()).ToList();
+            queryable = queryable.Where(p => p.Name.ToLower() == input.Name.ToLower());
         List<CategoryDto> categoryItemsDtos = new List<CategoryDto>();
         int countitems = 0;
         foreach(var category in queryable)
@@ -96,7 +96,7 @@ public class CategoryAppService : ApplicationService
             var items = category.Items.ToList();
             foreach (var i in items)
             {
-                Item item = _itemrepo.WithDetailsAsync(p => p.ItemBranches).Result.FirstOrDefault(p => p.Id == i.Id);
+                Item item =  _itemrepo.WithDetailsAsync(p => p.ItemBranches).Result.FirstOrDefault(p => p.Id == i.Id);
                 var itemBranches = item.ItemBranches.ToList();
                 if (itemBranches.Any(p => p.BranchId == input.BranchId))
                 {

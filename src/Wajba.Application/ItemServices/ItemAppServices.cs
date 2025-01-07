@@ -46,11 +46,9 @@ public class ItemAppServices : ApplicationService
             x => x.ItemExtras,
             x => x.ItemVariations
         );
-
         var result = items.Where(item => item.ItemBranches.Any(ib => ib.BranchId == branchId))
                           .Select(item => ObjectMapper.Map<Item, ItemDto>(item))
                           .ToList();
-
         return result;
     }
 
@@ -61,10 +59,7 @@ public class ItemAppServices : ApplicationService
         x => x.ItemExtras,
         x => x.ItemVariations
     );
-
         var item = await queryable.FirstOrDefaultAsync(x => x.Id == id);
-
-
         if (item == null)
             throw new EntityNotFoundException(typeof(Item), id);
 

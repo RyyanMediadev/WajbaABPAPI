@@ -36,6 +36,8 @@ public class FaqAppService : ApplicationService
     public async Task<FaqDto> GetByIdAsync(int id)
     {
         FAQs fAQs = await _repository.GetAsync(id);
+        if (fAQs == null)
+            throw new EntityNotFoundException(typeof(FAQs), id);
         return ObjectMapper.Map<FAQs, FaqDto>(fAQs);
     }
     public async Task<PagedResultDto<FaqDto>> GetListAsync(GetFaqInput input)
@@ -53,8 +55,9 @@ public class FaqAppService : ApplicationService
 
     public async Task DeleteAsync(int id)
     {
-        if (await _repository.FindAsync(id) == null)
-            throw new Exception("Not Found");
-        await _repository.DeleteAsync(id);
+        FAQs fAQs = await _repository.FindAsync(id);
+        if (fAQs == null)
+            throw new EntityNotFoundException(typeof(FAQs), id);
+        await _repository.DeleteAsync(id, true);
     }
 }

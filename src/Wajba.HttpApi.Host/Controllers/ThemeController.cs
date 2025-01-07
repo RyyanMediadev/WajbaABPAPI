@@ -70,14 +70,6 @@ public class ThemeController : WajbaController
 		});
 	}
 
-
-
-
-
-
-
-
-
 	[HttpPut]
     public async Task<IActionResult> UpdateAsync(IFormFile BrowserTabIconUrl, IFormFile FooterLogoUrl, IFormFile LogoUrl)
 	{

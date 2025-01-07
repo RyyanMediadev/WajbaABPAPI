@@ -1,6 +1,5 @@
 ﻿using Wajba.Dtos.NotificationContract;
 using Wajba.NotificationService;
-using Wajba.Dtos.NotificationContract;
 
 namespace Wajba.Controllers
 {

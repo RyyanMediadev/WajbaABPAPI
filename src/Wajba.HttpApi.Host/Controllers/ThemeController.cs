@@ -24,7 +24,6 @@ public class ThemeController : WajbaController
         try
         {
             await _themesAppservice.CreateAsync(input);
-
             return Ok(new ApiResponse<object>
             {
                 Success = true,
@@ -44,7 +43,7 @@ public class ThemeController : WajbaController
     }
 
     [HttpPut]
-    public async Task<IActionResult> UpdateAsync(CreateThemesDto  createThemesDto)
+    public async Task<IActionResult> UpdateAsync( CreateThemesDto  createThemesDto)
     {
         //CreateThemesDto input = new CreateThemesDto()
         //{
@@ -95,7 +94,6 @@ public class ThemeController : WajbaController
             });
         }
     }
-
     [HttpPut("UpdateLogoUrl")]
     public async Task<IActionResult> UpdateLogoUrlasync(IFormFile BrowserTabIconUrl)
     {

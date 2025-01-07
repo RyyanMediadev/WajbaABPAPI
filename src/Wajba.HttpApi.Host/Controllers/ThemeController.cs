@@ -130,7 +130,6 @@ public class ThemeController : WajbaController
             });
         }
     }
-
     [HttpPut("UpdateLogoUrl")]
     public async Task<IActionResult> UpdateLogoUrlasync(IFormFile BrowserTabIconUrl)
     {

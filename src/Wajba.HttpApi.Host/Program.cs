@@ -59,6 +59,7 @@ public class Program
                           .AllowCredentials();
 
                 });
+                builder.Services.AddEndpointsApiExplorer();
                 //builder.Services.AddHttpsRedirection(p =>
                 //{
                 //    //p.RedirectStatusCode = OkResult;
@@ -82,6 +83,8 @@ public class Program
            
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseSwaggerUI();
+            app.UseSwagger();
             //app.UseEndpoints(endpoints => { endpoints.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}"); });
             //app.UseRouting();
             //app.UseEndpoints(p =>

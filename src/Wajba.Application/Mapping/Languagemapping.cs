@@ -9,7 +9,7 @@ public class Languagemapping: Profile
             .ForMember(x => x.Name, opt => opt.MapFrom(x => x.Name))
             .ForMember(x => x.Code, opt => opt.MapFrom(x => x.Code))
             .ForMember(x => x.Status, opt => opt.MapFrom(x => x.Status))
-            .ForMember(p => p.ImageUrl, opt => opt.MapFrom(x => x.ImageUrl))
+            //.ForMember(p => p.ImageUrl, opt => opt.MapFrom(x => x.ImageUrl))
             .ReverseMap();
         CreateMap<CreateUpdateLanguageDto, Language>()
             .ForMember(x => x.Id, opt => opt.Ignore())

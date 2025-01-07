@@ -13,7 +13,8 @@ public class ThemeController : WajbaController
         _themesAppservice = themesAppservice;
     }
     [HttpPost]
-    public async Task<IActionResult> CreateAsync(IFormFile BrowserTabIconUrl, IFormFile FooterLogoUrl, IFormFile LogoUrl)
+    public async Task<IActionResult> CreateAsync
+        (IFormFile BrowserTabIconUrl, IFormFile FooterLogoUrl, IFormFile LogoUrl)
     {
         CreateThemesDto input = new CreateThemesDto()
         {
@@ -23,7 +24,7 @@ public class ThemeController : WajbaController
         };
         try
         {
-            await _themesAppservice.CreateAsync(input);
+            await _themesAppservice.CreateAsync( BrowserTabIconUrl,  FooterLogoUrl,  LogoUrl);
 
             return Ok(new ApiResponse<object>
             {
@@ -44,17 +45,19 @@ public class ThemeController : WajbaController
     }
 
     [HttpPut]
-    public async Task<IActionResult> UpdateAsync(CreateThemesDto  createThemesDto)
-    {
-        //CreateThemesDto input = new CreateThemesDto()
-        //{
-        //    BrowserTabIconUrl = BrowserTabIconUrl,
-        //    FooterLogoUrl = FooterLogoUrl,
-        //    LogoUrl = LogoUrl
-        //};
-        try
+    public async Task<IActionResult> UpdateAsync
+
+		(IFormFile BrowserTabIconUrl, IFormFile FooterLogoUrl, IFormFile LogoUrl)
+	{
+		//CreateThemesDto input = new CreateThemesDto()
+		//{
+		//    BrowserTabIconUrl = BrowserTabIconUrl,
+		//    FooterLogoUrl = FooterLogoUrl,
+		//    LogoUrl = LogoUrl
+		//};
+		try
         {
-            var updatedcategory = await _themesAppservice.UpdateAsync(createThemesDto);
+            var updatedcategory = await _themesAppservice.UpdateAsync(BrowserTabIconUrl, FooterLogoUrl, LogoUrl);
             return Ok(new ApiResponse<object>
             {
                 Success = true,

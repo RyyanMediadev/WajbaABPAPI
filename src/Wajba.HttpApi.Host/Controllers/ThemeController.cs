@@ -44,10 +44,42 @@ public class ThemeController : WajbaController
         }
     }
 
-    [HttpPut]
-    public async Task<IActionResult> UpdateAsync
 
-		(IFormFile BrowserTabIconUrl, IFormFile FooterLogoUrl, IFormFile LogoUrl)
+	[HttpPost]
+	[Route("upload-base64")]
+	public IActionResult UploadBase64Image([FromBody] Base64ImageModel model)
+	{
+		if (string.IsNullOrEmpty(model.Base64Content))
+			return BadRequest("No file content provided.");
+
+		var uploadsFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "images");
+
+		if (!Directory.Exists(uploadsFolderPath))
+			Directory.CreateDirectory(uploadsFolderPath);
+
+		var filePath = Path.Combine(uploadsFolderPath, model.FileName);
+		var fileBytes = Convert.FromBase64String(model.Base64Content);
+
+		System.IO.File.WriteAllBytes(filePath, fileBytes);
+
+		return Ok(new
+		{
+			Message = "File uploaded successfully",
+			FileName = model.FileName,
+			FilePath = filePath
+		});
+	}
+
+
+
+
+
+
+
+
+
+	[HttpPut]
+    public async Task<IActionResult> UpdateAsync(IFormFile BrowserTabIconUrl, IFormFile FooterLogoUrl, IFormFile LogoUrl)
 	{
 		//CreateThemesDto input = new CreateThemesDto()
 		//{

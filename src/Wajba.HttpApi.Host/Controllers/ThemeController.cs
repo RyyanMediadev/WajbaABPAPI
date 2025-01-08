@@ -79,6 +79,8 @@ public class ThemeController : WajbaController
         //    FooterLogoUrl = FooterLogoUrl,
         //    LogoUrl = LogoUrl
         //};
+
+
         try
         {
             var updatedcategory = await _themesAppservice.UpdateAsync(BrowserTabIconUrl, FooterLogoUrl, LogoUrl);

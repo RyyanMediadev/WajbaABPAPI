@@ -3,7 +3,7 @@
 namespace Wajba.PopularItemServices;
 
 [RemoteService(false)]
-public class PopularItemAppservice:ApplicationService
+public class PopularItemAppservice : ApplicationService
 {
     private readonly IRepository<PopularItem, int> _popularitemrepo;
     private readonly IRepository<Item, int> _itemrepo;
@@ -14,25 +14,25 @@ public class PopularItemAppservice:ApplicationService
     public PopularItemAppservice(IRepository<PopularItem, int> popularitemrepo,
         IRepository<Item, int> itemrepo,
         IRepository<Branch, int> branchrepo,
-        IRepository<Category,int> categoryrepo,
+        IRepository<Category, int> categoryrepo,
         IImageService imageService)
     {
         _popularitemrepo = popularitemrepo;
         _itemrepo = itemrepo;
         _branchrepo = branchrepo;
-       _categoryrepo = categoryrepo;
+        _categoryrepo = categoryrepo;
         _imageService = imageService;
     }
+
     public async Task<Popularitemdto> CreateAsync(CreatePopularitem input)
     {
-        Item item = _itemrepo.WithDetailsAsync(p => p.ItemBranches).Result.FirstOrDefault(p => p.Id == input.Id);
+        var items = await _itemrepo.WithDetailsAsync(p => p.ItemBranches);
+        Item item = await items.FirstOrDefaultAsync(p => p.Id == input.Id);
         if (item == null)
             throw new EntityNotFoundException(typeof(Item), input.Id);
         Category category = _categoryrepo.WithDetailsAsync(p => p.Items).Result.FirstOrDefault(p => p.Id == item.CategoryId);
         if (category == null)
             throw new EntityNotFoundException(typeof(Category), item.CategoryId);
-        //if (input.ImgFile == null)
-        //    throw new Exception("Image is required");
         bool isfound = item.ItemBranches.Any(p => p.BranchId == input.BranchId);
         if (!isfound)
             throw new EntityNotFoundException(typeof(Branch), input.BranchId);
@@ -70,12 +70,15 @@ public class PopularItemAppservice:ApplicationService
         var popularitem = await _popularitemrepo.GetAsync(id);
         if (popularitem == null)
             throw new EntityNotFoundException(typeof(PopularItem), id);
-        Item item = _itemrepo.WithDetailsAsync(p => p.ItemBranches).Result.FirstOrDefault(p => p.Id == input.ItemId);
+        var items = await _itemrepo.WithDetailsAsync(p => p.ItemBranches);
+        Item item = await items.FirstOrDefaultAsync(p => p.Id == input.ItemId);
         if (item == null)
             throw new EntityNotFoundException(typeof(Item), input.Id);
         Category category = await _categoryrepo.GetAsync(item.CategoryId);
-        if(category == null)
+        if (category == null)
             throw new EntityNotFoundException(typeof(Category), item.CategoryId);
+        if (popularitem.ItemId != input.ItemId)
+            throw new EntityNotFoundException(typeof(Item), input.ItemId);
         //if (input.ImgFile == null)
         //    throw new Exception("Image is required");
         if (item.ItemBranches.Any(p => p.BranchId == input.BranchId))

@@ -57,7 +57,7 @@ public class ThemeController : WajbaController
         if (!Directory.Exists(uploadsFolderPath))
             Directory.CreateDirectory(uploadsFolderPath);
 
-        var filePath = Path.Combine(uploadsFolderPath, model.FileName);
+        var filePath = Path.Combine(uploadsFolderPath, model.FileName+".jpg");
         var fileBytes = Convert.FromBase64String(model.Base64Content);
 
         System.IO.File.WriteAllBytes(filePath, fileBytes);

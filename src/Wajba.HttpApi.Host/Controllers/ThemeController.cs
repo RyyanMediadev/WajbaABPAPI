@@ -45,6 +45,8 @@ public class ThemeController : WajbaController
     }
 
 
+
+
     [HttpPost]
     [Route("upload-base64")]
     public IActionResult UploadBase64Image([FromBody] Base64ImageModel model)

@@ -69,7 +69,7 @@ public class ItemAttributeController : AbpController
             });
         }
     }
-
+    [IgnoreAntiforgeryToken]
     [HttpPost]
     public async Task<IActionResult> CreateAsync(CreateItemAttributeDto input)
     {

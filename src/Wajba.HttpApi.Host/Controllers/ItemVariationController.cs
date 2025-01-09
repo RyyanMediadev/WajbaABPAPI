@@ -1,4 +1,5 @@
 ﻿global using Wajba.Dtos.ItemVariationContract;
+using Wajba.ItemVariationService;
 
 namespace Wajba.Controllers
 {
@@ -45,7 +46,30 @@ namespace Wajba.Controllers
                 });
             }
         }
-
+        [HttpGet]
+        [Route("item-variations/by-attribute/{itemAttributeId}")]
+        public async Task<IActionResult> GetListByItemAttributeIdAsync(int itemAttributeId)
+        {
+            try
+            {
+                var variations = await _appService.GetListByItemAttributeIdAsync(itemAttributeId);
+                return Ok(new ApiResponse<List<ItemVariationDto>>
+                {
+                    Success = true,
+                    Message = "Variations retrieved successfully.",
+                    Data = variations
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = $"Error retrieving variations: {ex.Message}",
+                    Data = null
+                });
+            }
+        }
         [HttpGet("item/{itemId}")]
         public async Task<IActionResult> GetVariationsByItemIdAsync(int itemId)
         {

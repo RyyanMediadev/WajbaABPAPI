@@ -30,9 +30,13 @@ public class ItemAttributeAppService : ApplicationService, IItemAttributeAppServ
 
     public async Task<ItemAttributeDto> CreateAsync(CreateItemAttributeDto input)
     {
-        var entity = ObjectMapper.Map<CreateItemAttributeDto, ItemAttribute>(input);
-        await _itemAttributeRepository.InsertAsync(entity);
-        return ObjectMapper.Map<ItemAttribute, ItemAttributeDto>(entity);
+        var entity = new ItemAttribute
+        {
+           Name=input.Name,
+           Status=input.Status
+        };
+       var insertedattr= await _itemAttributeRepository.InsertAsync(entity);
+        return ObjectMapper.Map<ItemAttribute, ItemAttributeDto>(insertedattr);
     }
 
     public async Task<ItemAttributeDto> UpdateAsync(int id, UpdateItemAttributeDto input)

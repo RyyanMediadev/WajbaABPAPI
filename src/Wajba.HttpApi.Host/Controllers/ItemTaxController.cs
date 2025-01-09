@@ -68,6 +68,9 @@ public class ItemTaxController : WajbaController
             });
         }
     }
+
+
+    [IgnoreAntiforgeryToken]
     [HttpPost]
     public async Task<IActionResult> CreateAsync(CreateItemTaxDto input)
     {

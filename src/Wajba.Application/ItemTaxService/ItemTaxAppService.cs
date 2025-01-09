@@ -21,8 +21,8 @@ public class ItemTaxAppService : ApplicationService
             Status = input.Status,
             TaxRate = input.TaxRate
         };
-        await _repository.InsertAsync(itemTax, true);
-        return ObjectMapper.Map<ItemTax, ItemTaxDto>(itemTax);
+        var insertedtax=await _repository.InsertAsync(itemTax, true);
+        return ObjectMapper.Map<ItemTax, ItemTaxDto>(insertedtax);
     }
     public async Task<ItemTaxDto> UpdateAsync(int id, UpdateItemTaxDto input)
     {

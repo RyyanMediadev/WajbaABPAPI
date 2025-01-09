@@ -78,22 +78,11 @@ public class Program
 
             var app = builder.Build();
             await app.InitializeApplicationAsync();
-            //app.UseHttpsRedirection(propa =>
-            //{
-
-            //});
            
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseSwaggerUI();
-            app.UseSwagger();
-            //app.UseEndpoints(endpoints => { endpoints.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}"); });
-            //app.UseRouting();
-            //app.UseEndpoints(p =>
-            //{
-            //    p.MapRazorPages();
-            //    p.MapControllers();
-            //});
+          
+           
             await app.RunAsync();
             return 0;
         }

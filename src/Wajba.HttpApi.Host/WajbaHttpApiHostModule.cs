@@ -214,12 +214,15 @@ public class WajbaHttpApiHostModule : AbpModule
         app.UseAbpSwaggerUI(c =>
         {
             c.SwaggerEndpoint("/swagger/v1/swagger.json", "Wajba API");
-
+            c.RoutePrefix = "swagger";
             var configuration = context.ServiceProvider.GetRequiredService<IConfiguration>();
             c.OAuthClientId(configuration["AuthServer:SwaggerClientId"]);
             c.OAuthScopes("Wajba");
         });
-
+        app.UseEndpoints(p =>
+        {
+            p.MapControllers();
+        });
         app.UseAuditing();
         app.UseAbpSerilogEnrichers();
         app.UseConfiguredEndpoints();

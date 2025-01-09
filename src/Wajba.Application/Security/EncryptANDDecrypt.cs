@@ -9,7 +9,7 @@ namespace BLayer.Security
         private static readonly string encryptionPassword = "123";
 
         private static readonly byte[] salt = Encoding.ASCII.GetBytes("123");
-
+        //09012025 test
         public static string EncryptText(string textToEncrypt)
         {
             var algorithm = GetAlgorithm(encryptionPassword);

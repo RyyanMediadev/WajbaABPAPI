@@ -13,7 +13,7 @@ public class OTPController : WajbaController
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateAsync( CreateUpdateOTPDto input)
+    public async Task<IActionResult> CreateAsync(CreateUpdateOTPDto input)
     {
         try
         {
@@ -59,11 +59,11 @@ public class OTPController : WajbaController
         }
     }
     [HttpPut]
-    public async Task<IActionResult> UpdateAsync( UpdateOtpDto input)
+    public async Task<IActionResult> UpdateAsync(UpdateOtpDto input)
     {
         try
         {
-            var updatedOTP = await _oTPAppService.UpdateAsync( input);
+            var updatedOTP = await _oTPAppService.UpdateAsync(input);
             return Ok(new ApiResponse<OTPDto>
             {
                 Success = true,

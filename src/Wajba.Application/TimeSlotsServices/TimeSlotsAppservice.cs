@@ -1,8 +1,6 @@
-﻿global using Wajba.Dtos.TimeSlotsContract;
+﻿global using System;
+global using Wajba.Dtos.TimeSlotsContract;
 global using Wajba.Models.TimeSlotsDomain;
-global using System;
-using Microsoft.Extensions.Logging;
-using System.Text.Json;
 
 namespace Wajba.TimeSlotsServices;
 

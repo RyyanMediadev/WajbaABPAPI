@@ -15,7 +15,7 @@ public class CurrenciesController : AbpController
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateAsync( CreateUpdateCurrenciesDto input)
+    public async Task<IActionResult> CreateAsync(CreateUpdateCurrenciesDto input)
     {
         try
         {
@@ -38,7 +38,7 @@ public class CurrenciesController : AbpController
         }
     }
     [HttpPut]
-    public async Task<IActionResult> UpdateAsync(  UpadteCurrency input)
+    public async Task<IActionResult> UpdateAsync(UpadteCurrency input)
     {
         try
         {

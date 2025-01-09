@@ -59,7 +59,9 @@ public class Program
                           .AllowCredentials();
 
                 });
-                builder.Services.AddEndpointsApiExplorer();
+                //hism this line for test git only
+
+               // builder.Services.AddEndpointsApiExplorer();
                 //builder.Services.AddHttpsRedirection(p =>
                 //{
                 //    //p.RedirectStatusCode = OkResult;

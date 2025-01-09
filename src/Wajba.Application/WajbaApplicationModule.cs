@@ -8,6 +8,7 @@ global using Volo.Abp.PermissionManagement;
 global using Volo.Abp.SettingManagement;
 global using Volo.Abp.TenantManagement;
 using Wajba.Dtos.TimeSlotsContract;
+using Wajba.NotificationService;
 using Wajba.TimeSlotsServices;
 
 namespace Wajba;
@@ -33,5 +34,6 @@ public class WajbaApplicationModule : AbpModule
         });
         context.Services.AddTransient<IImageService, ImageService>();
         context.Services.AddScoped<ITimeSlotAppService, TimeSlotsAppservice>();
+        context.Services.AddScoped<INotificationService, NotificationAppService>();
     }
 }

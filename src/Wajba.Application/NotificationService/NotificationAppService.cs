@@ -4,7 +4,7 @@ global using Wajba.Models.NotificationDomain;
 namespace Wajba.NotificationService;
 
 [RemoteService(false)]
-public class NotificationAppService : ApplicationService
+public class NotificationAppService :ApplicationService, INotificationService
 {
     private readonly IRepository<Notification, int> _notificationRepository;
     private readonly IImageService _imageService;

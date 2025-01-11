@@ -3,11 +3,12 @@ using Wajba.NotificationService;
 
 namespace Wajba.Controllers
 {
+    [IgnoreAntiforgeryToken]
     public class NotificationController : WajbaController
     {
-        private readonly NotificationAppService _notificationAppService;
+        private readonly INotificationService _notificationAppService;
 
-        public NotificationController(NotificationAppService notificationAppService)
+        public NotificationController(INotificationService notificationAppService)
         {
             _notificationAppService = notificationAppService;
         }

@@ -25,6 +25,12 @@ namespace Wajba.ItemVariationService
             return ObjectMapper.Map<ItemVariation, ItemVariationDto>(entity);
         }
 
+        public async Task<List<ItemVariationDto>> GetListByItemAttributeIdAsync(int itemAttributeId)
+        {
+            var entities = await _repository.GetListAsync(x => x.ItemAttributesId == itemAttributeId);
+            return ObjectMapper.Map<List<ItemVariation>, List<ItemVariationDto>>(entities);
+        }
+
         public async Task<List<ItemVariationDto>> GetListByItemIdAsync(int itemId)
         {
             var entities = await _repository.GetListAsync(x => x.ItemId == itemId);

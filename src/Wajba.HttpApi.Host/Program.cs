@@ -61,12 +61,6 @@ public class Program
                 });
                 //hism this line for test git only
 
-               // builder.Services.AddEndpointsApiExplorer();
-                //builder.Services.AddHttpsRedirection(p =>
-                //{
-                //    //p.RedirectStatusCode = OkResult;
-                //    p.HttpsPort = 443;
-                //});
                 //options.AddDefaultPolicy(builder =>
                 //{
                 //    builder.WithOrigins("https://wajbaapi-08765bdfe115.herokuapp.com") // Add the Angular app's URL
@@ -81,8 +75,8 @@ public class Program
            
             app.UseAuthentication();
             app.UseAuthorization();
-          
-           
+
+
             await app.RunAsync();
             return 0;
         }

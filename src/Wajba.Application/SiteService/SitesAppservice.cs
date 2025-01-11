@@ -62,7 +62,7 @@ public class SitesAppservice : ApplicationService
   ObjectMapper.Map<List<Site>, List<SiteDto>>(sites)
 );
     }
-    public async Task<SiteDto> UpdateAsync( CreateSiteDto input)
+    public async Task<SiteDto> UpdateAsync(CreateSiteDto input)
     {
         Site site = await _repository.FirstOrDefaultAsync();
         if (site == null)

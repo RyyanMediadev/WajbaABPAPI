@@ -11,8 +11,6 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "applicationUrl": "https://localhost:44330",
-      "sslPort": 44330,
-      "launchUrl": "swagger",
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
@@ -21,9 +19,7 @@
     "Wajba.HttpApi.Host": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "swagger",
       "applicationUrl": "https://localhost:44330",
-      "sslPort": 44330,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

@@ -51,7 +51,7 @@ public class WajbaHttpApiHostModule : AbpModule
                 options.UseAspNetCore();
             });
         });
-     
+
     }
 
     public override void ConfigureServices(ServiceConfigurationContext context)
@@ -214,7 +214,7 @@ public class WajbaHttpApiHostModule : AbpModule
         app.UseAbpSwaggerUI(c =>
         {
             c.SwaggerEndpoint("/swagger/v1/swagger.json", "Wajba API");
-            c.RoutePrefix = "swagger";
+            c.RoutePrefix = string.Empty;
             var configuration = context.ServiceProvider.GetRequiredService<IConfiguration>();
             c.OAuthClientId(configuration["AuthServer:SwaggerClientId"]);
             c.OAuthScopes("Wajba");

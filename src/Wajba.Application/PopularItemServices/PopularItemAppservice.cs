@@ -55,8 +55,10 @@ public class PopularItemAppservice : ApplicationService
     }
     public async Task<List<Popularitemdto>> GetPopularItems(GetPopulariteminput input)
     {
-        var popularitems = await _popularitemrepo.GetListAsync();
-        return ObjectMapper.Map<List<PopularItem>, List<Popularitemdto>>(popularitems);
+        var popularitems = await _popularitemrepo.WithDetailsAsync(p => p.Item, p => p.Branch);
+        int count = popularitems.Count();
+        List<PopularItem> popularitemslist = popularitems.ToList();
+        return ObjectMapper.Map<List<PopularItem>, List<Popularitemdto>>(popularitemslist);
     }
     public async Task<Popularitemdto> GetPopularItemById(int id)
     {

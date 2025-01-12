@@ -2,11 +2,11 @@
 public class CreateThemesDto
 {
     [Required]
-    public IFormFile LogoUrl { get; set; }
+    public Base64ImageModel LogoUrl { get; set; }
     [Required]
-    public IFormFile BrowserTabIconUrl { get; set; }
+    public Base64ImageModel BrowserTabIconUrl { get; set; }
     [Required]
-    public IFormFile FooterLogoUrl { get; set; }
+    public Base64ImageModel FooterLogoUrl { get; set; }
 
 
 }

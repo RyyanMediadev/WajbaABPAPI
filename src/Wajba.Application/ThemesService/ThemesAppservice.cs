@@ -1,6 +1,5 @@
 ﻿global using Wajba.Dtos.ThemesContract;
 global using Wajba.Models.ThemesDomain;
-using System.ComponentModel.DataAnnotations;
 
 namespace Wajba.ThemesService;
 
@@ -15,68 +14,45 @@ public class ThemesAppservice : ApplicationService
 		_repository = repository;
 		_imageService = imageService;
 	}
-	// public async Task<ThemesDto> CreateAsync(CreateThemesDto input)
 
-	//		[Required]
-	//public IFormFile LogoUrl { get; set; }
-	//[Required]
-	//public IFormFile BrowserTabIconUrl { get; set; }
-	//[Required]
-	//public IFormFile FooterLogoUrl { get; set; }
-	public async Task<ThemesDto> CreateAsync(IFormFile LogoUrl, IFormFile BrowserTabIconUrl, IFormFile FooterLogoUrl)
-
+	public async Task<ThemesDto> CreateAsync(CreateThemesDto themesDto)
 	{
-		Theme theme2 = await _repository.FirstOrDefaultAsync();
-		if (theme2 != null)
+		Theme theme = await _repository.FirstOrDefaultAsync();
+		if (theme != null)
 			throw new Exception("Theme already exists");
-		Theme theme = new Theme();
-		if (FooterLogoUrl == null || LogoUrl == null || BrowserTabIconUrl == null)
+		theme = new Theme();
+		if (themesDto.FooterLogoUrl == null || themesDto.LogoUrl == null || themesDto.BrowserTabIconUrl == null)
 			throw new Exception("Please provide all the required fields");
-		theme.FooterLogoUrl = await _imageService.UploadAsync(FooterLogoUrl);
-		theme.LogoUrl = await _imageService.UploadAsync(LogoUrl);
-		theme.BrowserTabIconUrl = await _imageService.UploadAsync(BrowserTabIconUrl);
+		var imagebytes = Convert.FromBase64String(themesDto.FooterLogoUrl.Base64Content);
+		using var ms = new MemoryStream(imagebytes);
+		theme.FooterLogoUrl = await _imageService.UploadAsync(ms, themesDto.FooterLogoUrl.FileName);
+		imagebytes = Convert.FromBase64String(themesDto.LogoUrl.Base64Content);
+		using var ms1 = new MemoryStream(imagebytes);
+		theme.LogoUrl = await _imageService.UploadAsync(ms1, themesDto.LogoUrl.FileName);
+		imagebytes = Convert.FromBase64String(themesDto.BrowserTabIconUrl.Base64Content);
+		using var ms2 = new MemoryStream(imagebytes);
+		theme.BrowserTabIconUrl = await _imageService.UploadAsync(ms2, themesDto.BrowserTabIconUrl.FileName);
+		theme.LastModificationTime = DateTime.Now;
 		Theme theme1 = await _repository.InsertAsync(theme, true);
 		return ObjectMapper.Map<Theme, ThemesDto>(theme1);
 	}
-	public async Task<ThemesDto> UpdateAsync(IFormFile BrowserTabIconUrl, IFormFile FooterLogoUrl, IFormFile LogoUrl)
-
+	public async Task<ThemesDto> UpdateAsync(CreateThemesDto themesDto)
 	{
 		Theme theme = await _repository.FirstOrDefaultAsync();
 		if (theme == null)
 			throw new Exception("Not Found");
-		if (FooterLogoUrl == null || LogoUrl == null || BrowserTabIconUrl == null)
+		if (themesDto.FooterLogoUrl == null || themesDto.LogoUrl == null || themesDto.BrowserTabIconUrl == null)
 			throw new Exception("Please provide all the required fields");
-		theme.FooterLogoUrl = await _imageService.UploadAsync(FooterLogoUrl);
-		theme.BrowserTabIconUrl = await _imageService.UploadAsync(BrowserTabIconUrl);
-		theme.LogoUrl = await _imageService.UploadAsync(LogoUrl);
+		var FooterLogoUrl = Convert.FromBase64String(themesDto.FooterLogoUrl.Base64Content);
+		var BrowserTabIconUrl = Convert.FromBase64String(themesDto.BrowserTabIconUrl.Base64Content);
+		var LogoUrl = Convert.FromBase64String(themesDto.LogoUrl.Base64Content);
+		using var ms = new MemoryStream(FooterLogoUrl);
+		using var ms1 = new MemoryStream(BrowserTabIconUrl);
+		using var ms2 = new MemoryStream(LogoUrl);
+		theme.FooterLogoUrl = await _imageService.UploadAsync(ms, themesDto.FooterLogoUrl.FileName);
+		theme.BrowserTabIconUrl = await _imageService.UploadAsync(ms1, themesDto.BrowserTabIconUrl.FileName);
+		theme.LogoUrl = await _imageService.UploadAsync(ms2, themesDto.LogoUrl.FileName);
 		theme.LastModificationTime = DateTime.Now;
-		Theme theme1 = await _repository.UpdateAsync(theme, true);
-		return ObjectMapper.Map<Theme, ThemesDto>(theme1);
-	}
-	public async Task<ThemesDto> UpdateBrowserTabIconUrl(IFormFile formFile)
-	{
-		Theme theme = await _repository.FirstOrDefaultAsync();
-		if (theme == null) throw new Exception("Not Found");
-		theme.BrowserTabIconUrl = await _imageService.UploadAsync(formFile);
-		theme.LastModificationTime = DateTime.UtcNow;
-		Theme theme1 = await _repository.UpdateAsync(theme, true);
-		return ObjectMapper.Map<Theme, ThemesDto>(theme1);
-	}
-	public async Task<ThemesDto> UpdateLogoUrl(IFormFile formFile)
-	{
-		Theme theme = await _repository.FirstOrDefaultAsync();
-		if (theme == null) throw new Exception("Not Found");
-		theme.LogoUrl = await _imageService.UploadAsync(formFile);
-		theme.LastModificationTime = DateTime.UtcNow;
-		Theme theme1 = await _repository.UpdateAsync(theme, true);
-		return ObjectMapper.Map<Theme, ThemesDto>(theme1);
-	}
-	public async Task<ThemesDto> UpdateFooterLogoUrl(IFormFile formFile)
-	{
-		Theme theme = await _repository.FirstOrDefaultAsync();
-		if (theme == null) throw new Exception("Not Found");
-		theme.FooterLogoUrl = await _imageService.UploadAsync(formFile);
-		theme.LastModificationTime = DateTime.UtcNow;
 		Theme theme1 = await _repository.UpdateAsync(theme, true);
 		return ObjectMapper.Map<Theme, ThemesDto>(theme1);
 	}

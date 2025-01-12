@@ -12,7 +12,6 @@ public class ItemController : WajbaController
         _itemAppServices = itemAppServices;
     }
 
-
     [HttpGet("by-category/{categoryId}")]
     public async Task<List<ItemDto>> GetItemsByCategory(int categoryId)
     {

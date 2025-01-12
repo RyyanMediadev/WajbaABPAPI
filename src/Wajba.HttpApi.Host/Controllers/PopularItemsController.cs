@@ -1,18 +1,18 @@
-﻿global using Wajba.PopularItemServices;
-global using Wajba.Dtos.PopularItemstoday;
+﻿global using Wajba.Dtos.PopularItemstoday;
+global using Wajba.PopularItemServices;
 
 namespace Wajba.Controllers;
 
-//[Route("api/[controller]")]
-//[ApiController]
-public class PopularItemController : BaseApiController
+public class PopularItemsController : WajbaController
 {
     private readonly PopularItemAppservice _popularItemAppservice;
 
-    public PopularItemController(PopularItemAppservice popularItemAppservice)
+    public PopularItemsController(PopularItemAppservice popularItemAppservice)
     {
-        _popularItemAppservice = popularItemAppservice;
+        this._popularItemAppservice = popularItemAppservice;
     }
+
+
     [HttpPost]
     public async Task<IActionResult> CreateAsync(CreatePopularitem input)
     {
@@ -37,7 +37,7 @@ public class PopularItemController : BaseApiController
         }
     }
     [HttpGet]
-    public async Task<IActionResult> GetAsync(GetPopulariteminput input)
+    public async Task<IActionResult> GetAsync([FromQuery]GetPopulariteminput input)
     {
         try
         {

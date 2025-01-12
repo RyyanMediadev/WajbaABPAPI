@@ -14,6 +14,8 @@ namespace Wajba.EntityFrameworkCore;
 [ReplaceDbContext(typeof(IIdentityDbContext))]
 [ReplaceDbContext(typeof(ITenantManagementDbContext))]
 [ConnectionStringName("Default")]
+
+
 public class WajbaDbContext :
     AbpDbContext<WajbaDbContext>,
     IIdentityDbContext,

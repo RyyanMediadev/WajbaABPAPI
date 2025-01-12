@@ -15,6 +15,7 @@ namespace Wajba.OrderSetupService
 
         public async Task<OrderSetupDto> CreateAsync(CreateUpdateOrderSetupDto input)
         {
+
             OrderSetup orderSetup = new OrderSetup()
             {
                 BasicDeliveryCharge = input.BasicDeliveryCharge,
@@ -28,7 +29,7 @@ namespace Wajba.OrderSetupService
                 Warning = input.Warning,
                 DelayTime = input.DelayTime
             };
-         
+
             var insertedOrderSetup = await _orderSetupRepository.InsertAsync(orderSetup, true);
             return ObjectMapper.Map<OrderSetup, OrderSetupDto>(insertedOrderSetup);
         }

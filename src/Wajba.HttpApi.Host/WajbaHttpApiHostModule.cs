@@ -23,6 +23,7 @@ global using Volo.Abp.UI.Navigation.Urls;
 global using Volo.Abp.VirtualFileSystem;
 global using Wajba.CloudinaryConfigure;
 global using Wajba.MultiTenancy;
+using Wajba.CustomIdentity;
 
 
 namespace Wajba;
@@ -37,6 +38,8 @@ namespace Wajba;
     typeof(AbpAccountWebOpenIddictModule),
     typeof(AbpAspNetCoreSerilogModule),
     typeof(AbpSwashbuckleModule)
+    
+
 )]
 public class WajbaHttpApiHostModule : AbpModule
 {
@@ -56,6 +59,14 @@ public class WajbaHttpApiHostModule : AbpModule
 
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
+
+        Configure<AbpApplicationOptions>(options =>
+        {
+            options.Modules.AbpIdentity.IsEnabled = false;
+            options.Modules.AbpTenantManagement.IsEnabled = false;
+        });
+
+
         var configuration = context.Services.GetConfiguration();
         var hostingEnvironment = context.Services.GetHostingEnvironment();
 

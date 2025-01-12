@@ -2841,6 +2841,76 @@ namespace Wajba.Migrations
                     b.ToTable("Languages");
                 });
 
+            modelBuilder.Entity("Wajba.Models.NotificationDomain.Notification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreationTime");
+
+                    b.Property<Guid?>("CreatorId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("CreatorId");
+
+                    b.Property<Guid?>("DeleterId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("DeleterId");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("DeletionTime");
+
+                    b.Property<string>("FireBaseAPIKey")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FireBaseAppId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FireBaseAuthDomain")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FireBaseMeasurementId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FireBaseMessageSenderId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FireBaseProjectId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FireBasePublicVapidKey")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FireBaseStorageBucket")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false)
+                        .HasColumnName("IsDeleted");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("LastModificationTime");
+
+                    b.Property<Guid?>("LastModifierId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("LastModifierId");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Notifications");
+                });
+
             modelBuilder.Entity("Wajba.Models.OTPDomain.OTP", b =>
                 {
                     b.Property<int>("Id")
@@ -3160,7 +3230,7 @@ namespace Wajba.Migrations
                         .HasColumnName("CreatorId");
 
                     b.Property<decimal>("CurrentPrice")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18, 2)");
 
                     b.Property<Guid?>("DeleterId")
                         .HasColumnType("uniqueidentifier")
@@ -3197,7 +3267,7 @@ namespace Wajba.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("PrePrice")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18, 2)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -3208,7 +3278,7 @@ namespace Wajba.Migrations
 
                     b.HasIndex("ItemId");
 
-                    b.ToTable("PopularItems");
+                    b.ToTable("PopularItems", (string)null);
                 });
 
             modelBuilder.Entity("Wajba.Models.SiteDomain.Site", b =>

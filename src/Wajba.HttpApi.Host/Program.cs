@@ -9,11 +9,14 @@ global using System.Threading.Tasks;
 global using Wajba.EntityFrameworkCore;
 
 
+
+
+
 namespace Wajba;
 public class Program
 {
     public async static Task<int> Main(string[] args)
-    {   
+    {
         Log.Logger = new LoggerConfiguration()
 #if DEBUG
             .MinimumLevel.Debug()
@@ -61,12 +64,6 @@ public class Program
                 });
                 //hism this line for test git only
 
-               // builder.Services.AddEndpointsApiExplorer();
-                //builder.Services.AddHttpsRedirection(p =>
-                //{
-                //    //p.RedirectStatusCode = OkResult;
-                //    p.HttpsPort = 443;
-                //});
                 //options.AddDefaultPolicy(builder =>
                 //{
                 //    builder.WithOrigins("https://wajbaapi-08765bdfe115.herokuapp.com") // Add the Angular app's URL
@@ -78,22 +75,11 @@ public class Program
 
             var app = builder.Build();
             await app.InitializeApplicationAsync();
-            //app.UseHttpsRedirection(propa =>
-            //{
 
-            //});
-           
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseSwaggerUI();
-            app.UseSwagger();
-            //app.UseEndpoints(endpoints => { endpoints.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}"); });
-            //app.UseRouting();
-            //app.UseEndpoints(p =>
-            //{
-            //    p.MapRazorPages();
-            //    p.MapControllers();
-            //});
+
+
             await app.RunAsync();
             return 0;
         }

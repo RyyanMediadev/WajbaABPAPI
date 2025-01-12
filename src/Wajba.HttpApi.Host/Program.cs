@@ -13,7 +13,7 @@ namespace Wajba;
 public class Program
 {
     public async static Task<int> Main(string[] args)
-    {   
+    {
         Log.Logger = new LoggerConfiguration()
 #if DEBUG
             .MinimumLevel.Debug()
@@ -72,7 +72,7 @@ public class Program
 
             var app = builder.Build();
             await app.InitializeApplicationAsync();
-           
+
             app.UseAuthentication();
             app.UseAuthorization();
 
@@ -93,8 +93,5 @@ public class Program
         {
             Log.CloseAndFlush();
         }
-
-
-
     }
 }

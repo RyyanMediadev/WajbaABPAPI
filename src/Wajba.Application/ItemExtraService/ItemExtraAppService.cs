@@ -13,9 +13,13 @@ namespace Wajba.ItemExtraService
             _repository = repository;
         }
 
-        public async Task<ItemExtraDto> GetAsync(int id)
+        public async Task<ItemExtraDto> GetAsync(int itemid,int extraid)
         {
-            var entity = await _repository.GetAsync(id);
+            var entity = await _repository.FirstOrDefaultAsync(
+        itemExtra => itemExtra.ItemId == itemid && itemExtra.Id == extraid);
+
+            if (entity == null)
+                throw new EntityNotFoundException(typeof(ItemExtra), new { itemid, extraid });
             return ObjectMapper.Map<ItemExtra, ItemExtraDto>(entity);
         }
 

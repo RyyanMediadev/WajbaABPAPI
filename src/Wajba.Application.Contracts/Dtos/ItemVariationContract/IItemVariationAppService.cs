@@ -8,7 +8,7 @@ namespace Wajba.Dtos.ItemVariationContract
 {
     public interface IItemVariationAppService : IApplicationService
     {
-        Task<ItemVariationDto> GetAsync(int id);
+        Task<ItemVariationDto> GetAsync(int itemid, int variationid);
 
         Task<List<ItemVariationDto>> GetListByItemAttributeIdAsync(int itemAttributeId);
         Task<List<ItemVariationDto>> GetListByItemIdAsync(int itemId);

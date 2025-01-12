@@ -53,12 +53,14 @@ public class PopularItemAppservice : ApplicationService
         popularitem = await _popularitemrepo.InsertAsync(popularitem, autoSave: true);
         return ObjectMapper.Map<PopularItem, Popularitemdto>(popularitem);
     }
-    public async Task<List<Popularitemdto>> GetPopularItems(GetPopulariteminput input)
+    public async Task<PagedResultDto<Popularitemdto>> GetPopularItems(GetPopulariteminput input)
     {
         var popularitems = await _popularitemrepo.GetQueryableAsync();
         int count = popularitems.Count();
-        List<PopularItem> popularitemslist = popularitems.ToList();
-        return ObjectMapper.Map<List<PopularItem>, List<Popularitemdto>>(popularitemslist);
+        popularitems = popularitems.OrderBy(input.Sorting?? nameof(PopularItem.Name)).PageBy(input.SkipCount, input.MaxResultCount);
+        List<PopularItem> popularitemslist = await popularitems.ToListAsync();
+        List<Popularitemdto> populartitemsdto = ObjectMapper.Map<List<PopularItem>, List<Popularitemdto>>(popularitemslist);
+        return new PagedResultDto<Popularitemdto>(count, populartitemsdto);
     }
     public async Task<Popularitemdto> GetPopularItemById(int id)
     {

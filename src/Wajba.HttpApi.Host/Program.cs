@@ -9,6 +9,8 @@ global using System.Threading.Tasks;
 global using Wajba.EntityFrameworkCore;
 
 
+
+
 namespace Wajba;
 public class Program
 {

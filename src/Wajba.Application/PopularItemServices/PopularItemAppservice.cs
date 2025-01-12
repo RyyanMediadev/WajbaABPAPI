@@ -1,4 +1,6 @@
 ﻿global using Wajba.Models.PopularItemsDomain;
+using Wajba.Dtos.ThemesContract;
+using Wajba.Models.ThemesDomain;
 
 namespace Wajba.PopularItemServices;
 
@@ -48,8 +50,13 @@ public class PopularItemAppservice : ApplicationService
             BranchId = input.BranchId
         };
         popularitem.ImageUrl = null;
-        if (input.ImgFile != null)
-            popularitem.ImageUrl = await _imageService.UploadAsync(input.ImgFile);
+        if (input.Model != null)
+        {
+            byte[] imagebytes = File.ReadAllBytes(input.Model.Base64Content);
+            var url = Convert.FromBase64String(input.Model.Base64Content);
+            using var ms = new MemoryStream(url);
+            popularitem.ImageUrl = await _imageService.UploadAsync(ms, input.Model.FileName);
+        }
         popularitem = await _popularitemrepo.InsertAsync(popularitem, autoSave: true);
         return ObjectMapper.Map<PopularItem, Popularitemdto>(popularitem);
     }
@@ -96,8 +103,13 @@ public class PopularItemAppservice : ApplicationService
         popularitem.CategoryName = category.Name;
         popularitem.LastModificationTime = DateTime.UtcNow;
         popularitem.BranchId = input.BranchId;
-        if (input.ImgFile != null)
-            popularitem.ImageUrl = await _imageService.UploadAsync(input.ImgFile);
+        if (input.Model != null)
+        {
+            byte[] imagebytes = File.ReadAllBytes(input.Model.Base64Content);
+            var url = Convert.FromBase64String(input.Model.Base64Content);
+            using var ms = new MemoryStream(url);
+            popularitem.ImageUrl = await _imageService.UploadAsync(ms, input.Model.FileName);
+        }
         popularitem = await _popularitemrepo.UpdateAsync(popularitem, autoSave: true);
         return ObjectMapper.Map<PopularItem, Popularitemdto>(popularitem);
     }

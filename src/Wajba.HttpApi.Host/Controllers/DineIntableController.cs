@@ -37,11 +37,11 @@ public class DineIntableController : WajbaController
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateAsync(int id,  CreateDineIntable input)
+    public async Task<IActionResult> UpdateAsync( UpdateDinInTable input)
     {
         try
         {
-            DiniINDto dineInTable = await _dineinTableAppServices.UpdateAsync(id, input);
+            DiniINDto dineInTable = await _dineinTableAppServices.UpdateAsync(input.Id, input);
             return Ok(new ApiResponse<object>
             {
                 Success = true,

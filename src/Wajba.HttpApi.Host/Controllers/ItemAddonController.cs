@@ -6,9 +6,9 @@ namespace Wajba.Controllers;
 
 public class ItemAddonController : WajbaController
 {
-    private readonly ItemAddonAppService _itemAddonAppService;
+    private readonly IItemAddonAppService _itemAddonAppService;
 
-    public ItemAddonController(ItemAddonAppService itemAddonAppService)
+    public ItemAddonController(IItemAddonAppService itemAddonAppService)
     {
         _itemAddonAppService = itemAddonAppService;
     }
@@ -37,12 +37,12 @@ public class ItemAddonController : WajbaController
         }
     }
 
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetByIdAsync(int id)
+    [HttpGet("item/{itemId}/addon/{addonId}")]
+    public async Task<IActionResult> GetByIdAsync(int itemId,int addonId)
     {
         try
         {
-            var addon = await _itemAddonAppService.GetByIdAsync(id);
+            var addon = await _itemAddonAppService.GetByIdAsync(itemId, addonId);
 
             return Ok(new ApiResponse<ItemAddonDto>
             {
@@ -70,9 +70,9 @@ public class ItemAddonController : WajbaController
             });
         }
     }
-
+    [IgnoreAntiforgeryToken]
     [HttpPost]
-    public async Task<IActionResult> CreateAsync(CreateUpdateItemAddonDto input)
+    public async Task<IActionResult> CreateAsync(CreateItemAddonDto input)
     {
         try
         {
@@ -97,11 +97,11 @@ public class ItemAddonController : WajbaController
     }
 
     [HttpPut("item/{itemId}/addon/{addonId}")]
-    public async Task<IActionResult> UpdateAddonForItemAsync(int itemId, int addonId, [FromBody] CreateUpdateItemAddonDto input)
+    public async Task<IActionResult> UpdateAddonForItemAsync(  UpdateItemAddonDto input)
     {
         try
         {
-            var updatedAddon = await _itemAddonAppService.UpdateForSpecificItemAsync(itemId, addonId, input);
+            var updatedAddon = await _itemAddonAppService.UpdateForSpecificItemAsync(input.itemId, input.addonId, input);
             return Ok(new ApiResponse<ItemAddonDto>
             {
                 Success = true,

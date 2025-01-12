@@ -30,4 +30,19 @@ public class ImageService : IImageService
 
         return uploadResult.SecureUrl.ToString();
     }
+
+    public Task<string> UploadAsync(Stream stream, string fileName)
+    {
+        var uploadParams = new ImageUploadParams
+        {
+            File = new FileDescription(fileName, stream),
+            Folder = "categories"
+        };
+        var uploadResult = _cloudinary.Upload(uploadParams);
+        if (uploadResult.StatusCode != System.Net.HttpStatusCode.OK)
+        {
+            throw new UserFriendlyException("Failed to upload the image.");
+        }
+        return Task.FromResult(uploadResult.SecureUrl.ToString());
+    }
 }

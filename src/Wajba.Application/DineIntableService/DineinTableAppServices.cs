@@ -1,6 +1,5 @@
 ﻿global using Wajba.Dtos.DineInTableContract;
 global using Wajba.Services.QrCodeServices;
-using Wajba.Models.BranchDomain;
 
 namespace Wajba.DineIntableService;
 
@@ -42,7 +41,8 @@ public class DineinTableAppServices : ApplicationService
         if (await _branchrepo.FindAsync(dineIntable.BranchId) == null)
             throw new Exception("NotFound branch");
         DineInTable dineInTable1 = await _repository.FindAsync(id);
-        if (dineInTable1 == null) throw new Exception("NotFound DineTable");
+        if (dineInTable1 == null)
+            throw new Exception("NotFound DineTable");
         dineInTable1.BranchId = dineIntable.BranchId;
         dineInTable1.Name = dineIntable.Name;
         dineInTable1.Status = dineIntable.IsActive;
@@ -63,7 +63,7 @@ public class DineinTableAppServices : ApplicationService
             p => p.Name.ToLower() == input.Name.ToLower())
             .WhereIf(input.Size != null,  p => p.Size == input.Size)
             .WhereIf(!string.IsNullOrEmpty(input.Status)
-            , p => p.Status.ToString().ToLower() == input.Status.ToLower());
+            , p => p.Status.ToString() == input.Status);
         var totalCount = await AsyncExecuter.CountAsync(queryable);
         var dineInTables = await AsyncExecuter.ToListAsync(queryable
             .OrderBy(p=>p.Name)

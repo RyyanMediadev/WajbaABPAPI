@@ -15,5 +15,9 @@ namespace Wajba.Dtos.ItemExtraContract
     }
     public class UpdateItemExtraDto : CreateItemExtraDto
     {
+       
+        public int extraId { get; set; }
+
+        public int itemId { get; set; }
     }
 }

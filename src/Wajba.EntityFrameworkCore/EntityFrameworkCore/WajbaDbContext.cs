@@ -7,11 +7,14 @@ global using Wajba.Models.ThemesDomain;
 global using Wajba.Models.TimeSlotsDomain;
 global using Wajba.Models.OrderSetup;
 global using Wajba.Models.PopularItemsDomain;
+using Wajba.Models.NotificationDomain;
 
 namespace Wajba.EntityFrameworkCore;
 
 
 [ConnectionStringName("Default")]
+
+
 public class WajbaDbContext :
     AbpDbContext<WajbaDbContext>
     
@@ -56,7 +59,7 @@ public class WajbaDbContext :
     public DbSet<DineInTable> DineInTables { get; set; }
     public DbSet<Company> Companies { get; set; }
     public DbSet<FAQs> FAQs { get; set; }
-
+    public DbSet<Notification> Notifications { get; set; }
     public DbSet<OTP> OTPs { get; set; }
     public DbSet<OrderSetup> OrderSetups { get; set; }
     #endregion

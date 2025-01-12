@@ -1,5 +1,4 @@
-﻿global using Microsoft.AspNetCore.Http;
-global using Wajba.Dtos.ThemesContract;
+﻿global using Wajba.Dtos.ThemesContract;
 global using Wajba.ThemesService;
 
 namespace Wajba.Controllers;
@@ -13,18 +12,11 @@ public class ThemeController : WajbaController
         _themesAppservice = themesAppservice;
     }
     [HttpPost]
-    public async Task<IActionResult> CreateAsync
-        (IFormFile BrowserTabIconUrl, IFormFile FooterLogoUrl, IFormFile LogoUrl)
+    public async Task<IActionResult> CreateAsync(CreateThemesDto createThemes)
     {
-        CreateThemesDto input = new CreateThemesDto()
-        {
-            BrowserTabIconUrl = BrowserTabIconUrl,
-            FooterLogoUrl = FooterLogoUrl,
-            LogoUrl = LogoUrl
-        };
         try
         {
-            await _themesAppservice.CreateAsync(BrowserTabIconUrl, FooterLogoUrl, LogoUrl);
+            await _themesAppservice.CreateAsync(createThemes);
 
             return Ok(new ApiResponse<object>
             {
@@ -43,7 +35,6 @@ public class ThemeController : WajbaController
             });
         }
     }
-
 
     [HttpPost]
     [Route("upload-base64")]
@@ -71,17 +62,11 @@ public class ThemeController : WajbaController
     }
 
     [HttpPut]
-    public async Task<IActionResult> UpdateAsync(IFormFile BrowserTabIconUrl, IFormFile FooterLogoUrl, IFormFile LogoUrl)
+    public async Task<IActionResult> UpdateAsync(CreateThemesDto themesDto)
     {
-        //CreateThemesDto input = new CreateThemesDto()
-        //{
-        //    BrowserTabIconUrl = BrowserTabIconUrl,
-        //    FooterLogoUrl = FooterLogoUrl,
-        //    LogoUrl = LogoUrl
-        //};
         try
         {
-            var updatedcategory = await _themesAppservice.UpdateAsync(BrowserTabIconUrl, FooterLogoUrl, LogoUrl);
+            var updatedcategory = await _themesAppservice.UpdateAsync(themesDto);
             return Ok(new ApiResponse<object>
             {
                 Success = true,
@@ -99,83 +84,12 @@ public class ThemeController : WajbaController
             });
         }
     }
-    [HttpPut("UpdateBrowserTabIconUrl")]
-    public async Task<IActionResult> UpdateBrowserTabIconUrl(IFormFile BrowserTabIconUrl)
-    {
-        try
-        {
-            var updatedcategory = await _themesAppservice.UpdateBrowserTabIconUrl(BrowserTabIconUrl);
-            return Ok(new ApiResponse<object>
-            {
-                Success = true,
-                Message = "THeme updated successfully.",
-                Data = updatedcategory
-            });
-        }
-        catch (EntityNotFoundException)
-        {
-            return NotFound(new ApiResponse<object>
-            {
-                Success = false,
-                Message = "Theme not found.",
-                Data = null
-            });
-        }
-    }
-    [HttpPut("UpdateLogoUrl")]
-    public async Task<IActionResult> UpdateLogoUrlasync(IFormFile BrowserTabIconUrl)
-    {
-        try
-        {
-            var updatedcategory = await _themesAppservice.UpdateLogoUrl(BrowserTabIconUrl);
-            return Ok(new ApiResponse<object>
-            {
-                Success = true,
-                Message = "THeme updated successfully.",
-                Data = updatedcategory
-            });
-        }
-        catch (EntityNotFoundException)
-        {
-            return NotFound(new ApiResponse<object>
-            {
-                Success = false,
-                Message = "Theme not found.",
-                Data = null
-            });
-        }
-    }
-    [HttpPut("UpdateFooterLogoUrl")]
-    public async Task<IActionResult> UpdateFooterLogoUrlasync(IFormFile BrowserTabIconUrl)
-    {
-        try
-        {
-            var updatedcategory = await _themesAppservice.UpdateFooterLogoUrl(BrowserTabIconUrl);
-            return Ok(new ApiResponse<object>
-            {
-                Success = true,
-                Message = "THeme updated successfully.",
-                Data = updatedcategory
-            });
-        }
-        catch (EntityNotFoundException)
-        {
-            return NotFound(new ApiResponse<object>
-            {
-                Success = false,
-                Message = "Theme not found.",
-                Data = null
-            });
-        }
-    }
-
     [HttpGet]
-    public async Task<IActionResult> GetByIdAsync()
+    public async Task<IActionResult> GetAsync()
     {
         try
         {
             var category = await _themesAppservice.GetByIdAsync();
-
             return Ok(new ApiResponse<object>
             {
                 Success = true,

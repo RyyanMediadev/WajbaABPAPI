@@ -9,9 +9,8 @@ public class PopularItemsController : WajbaController
 
     public PopularItemsController(PopularItemAppservice popularItemAppservice)
     {
-        this._popularItemAppservice = popularItemAppservice;
+        _popularItemAppservice = popularItemAppservice;
     }
-
 
     [HttpPost]
     public async Task<IActionResult> CreateAsync(CreatePopularitem input)
@@ -87,7 +86,7 @@ public class PopularItemsController : WajbaController
     {
         try
         {
-            Popularitemdto popularItemDto = await _popularItemAppservice.UpdateAsync(input.ItemId, input);
+            Popularitemdto popularItemDto = await _popularItemAppservice.UpdateAsync(input.Id, input);
             return Ok(new ApiResponse<object>
             {
                 Success = true,

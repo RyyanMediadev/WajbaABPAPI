@@ -11,6 +11,7 @@ global using Wajba.EntityFrameworkCore;
 
 
 
+
 namespace Wajba;
 public class Program
 {

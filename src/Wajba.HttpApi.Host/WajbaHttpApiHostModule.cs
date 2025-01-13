@@ -227,9 +227,11 @@ public class WajbaHttpApiHostModule : AbpModule
             c.OAuthClientId(configuration["AuthServer:SwaggerClientId"]);
             c.OAuthScopes("Wajba");
         });
+  
         app.UseEndpoints(p =>
         {
             p.MapControllers();
+            p.MapHub<OfferHub>("/hubs/offer");
         });
         app.UseAuditing();
         app.UseAbpSerilogEnrichers();

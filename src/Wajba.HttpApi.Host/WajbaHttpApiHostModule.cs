@@ -23,6 +23,7 @@ global using Volo.Abp.UI.Navigation.Urls;
 global using Volo.Abp.VirtualFileSystem;
 global using Wajba.CloudinaryConfigure;
 global using Wajba.MultiTenancy;
+using Wajba.Hubs;
 
 
 namespace Wajba;
@@ -198,6 +199,7 @@ public class WajbaHttpApiHostModule : AbpModule
         app.UseCorrelationId();
         app.MapAbpStaticAssets();
         app.UseRouting();
+       
         app.UseCors();
         app.UseAuthentication();
         app.UseAbpOpenIddictValidation();
@@ -223,5 +225,6 @@ public class WajbaHttpApiHostModule : AbpModule
         app.UseAuditing();
         app.UseAbpSerilogEnrichers();
         app.UseConfiguredEndpoints();
+        
     }
 }

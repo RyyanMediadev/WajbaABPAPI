@@ -1,6 +1,7 @@
 ﻿global using Wajba.Models.OfferDomain;
 global using Wajba.OffersContract;
-using Microsoft.AspNet.SignalR;
+
+using Microsoft.AspNetCore.SignalR;
 using Wajba.Hubs;
 
 namespace Wajba.OfferService
@@ -45,7 +46,7 @@ namespace Wajba.OfferService
             offer.ImageUrl = await _fileUploadService.UploadAsync(input.Image);
             var createdOffer = await _offerRepository.InsertAsync(offer, true);
             var offerdto= ObjectMapper.Map<Offer, OfferDto>(createdOffer);
-           // await _hubContext.Clients.All.SendAsync("ReceiveOffer", offerdto);
+            await _hubContext.Clients.All.SendAsync("ReceiveOffer", offerdto);
             return offerdto;
         }
 

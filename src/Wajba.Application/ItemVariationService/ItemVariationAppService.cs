@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp.Domain.Entities;
 using Wajba.Dtos.ItemVariationContract;
+using Wajba.Models.ItemAddonDomain;
 using Wajba.Models.ItemVariationDomain;
 
 namespace Wajba.ItemVariationService
@@ -19,9 +20,12 @@ namespace Wajba.ItemVariationService
             _repository = repository;
         }
 
-        public async Task<ItemVariationDto> GetAsync(int id)
+        public async Task<ItemVariationDto> GetAsync(int itemid, int variationid)
         {
-            var entity = await _repository.GetAsync(id);
+            var entity = await _repository.FirstOrDefaultAsync(
+        itemVariation=> itemVariation.ItemId == itemid && itemVariation.Id == variationid);
+            if (entity == null)
+                throw new EntityNotFoundException(typeof(ItemAddon), new { itemid, variationid });
             return ObjectMapper.Map<ItemVariation, ItemVariationDto>(entity);
         }
 

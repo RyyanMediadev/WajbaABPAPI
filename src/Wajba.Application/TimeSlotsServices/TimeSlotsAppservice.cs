@@ -6,7 +6,7 @@ namespace Wajba.TimeSlotsServices;
 
 [RemoteService(false)]
 
-public class TimeSlotsAppservice :ITimeSlotAppService, IApplicationService
+public class TimeSlotsAppservice : ApplicationService, ITimeSlotAppService
 {
     private readonly IRepository<TimeSlot, int> _timeSlotRepository;
 
@@ -38,6 +38,11 @@ public class TimeSlotsAppservice :ITimeSlotAppService, IApplicationService
     public async Task<List<TimeSlotDto>> GetAllTimeSlotsAsync()
     {
         var timeSlots = await _timeSlotRepository.GetListAsync();
+        if (timeSlots == null || !timeSlots.Any())
+        {
+            // Handle the case where no timeslots are available
+            return new List<TimeSlotDto>();
+        }
         var groupedSlots = timeSlots
             .GroupBy(s => s.WeekDay)
             .Select(g => new TimeSlotDto

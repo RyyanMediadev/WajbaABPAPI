@@ -1,5 +1,6 @@
 ﻿global using Wajba.Dtos.ItemVariationContract;
 using Wajba.ItemVariationService;
+using Wajba.Models.Items;
 
 namespace Wajba.Controllers
 {
@@ -13,12 +14,12 @@ namespace Wajba.Controllers
             _appService = appService;
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetAsync(int id)
+        [HttpGet("item/{itemId}/variation/{variationId}")]
+        public async Task<IActionResult> GetAsync(int itemId,int variationId)
         {
             try
             {
-                var itemVariation = await _appService.GetAsync(id);
+                var itemVariation = await _appService.GetAsync(itemId,variationId);
 
                 return Ok(new ApiResponse<ItemVariationDto>
                 {

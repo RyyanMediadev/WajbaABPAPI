@@ -1,7 +1,7 @@
 ﻿namespace Wajba.ItemAddonService;
 
 [RemoteService(false)]
-public class ItemAddonAppService : ApplicationService
+public class ItemAddonAppService : ApplicationService,IItemAddonAppService
 {
     private readonly IRepository<ItemAddon, int> _itemAddonRepository;
     private readonly IRepository<Item, int> _itemrepo;
@@ -22,15 +22,16 @@ public class ItemAddonAppService : ApplicationService
         return ObjectMapper.Map<List<ItemAddon>, List<ItemAddonDto>>(itemAddons);
     }
 
-    public async Task<ItemAddonDto> GetByIdAsync(int id)
+    public async Task<ItemAddonDto> GetByIdAsync(int itemid,int addonid)
     {
-        ItemAddon itemAddon = await _itemAddonRepository.GetAsync(id);
+        ItemAddon itemAddon = await _itemAddonRepository.FirstOrDefaultAsync(
+        itemAddon => itemAddon.ItemId == itemid && itemAddon.Id == addonid);
         if (itemAddon == null)
-            throw new EntityNotFoundException(typeof(ItemAddon), id);
+            throw new EntityNotFoundException(typeof(ItemAddon), new { itemid, addonid });
         return ObjectMapper.Map<ItemAddon, ItemAddonDto>(itemAddon);
     }
 
-    public async Task<ItemAddonDto> CreateAsync(CreateUpdateItemAddonDto input)
+    public async Task<ItemAddonDto> CreateAsync(CreateItemAddonDto input)
     {
         Item item = await _itemrepo.GetAsync(input.ItemId);
         if (item == null)
@@ -45,7 +46,7 @@ public class ItemAddonAppService : ApplicationService
         return ObjectMapper.Map<ItemAddon, ItemAddonDto>(itemAddon);
     }
 
-    public async Task<ItemAddonDto> UpdateForSpecificItemAsync(int itemId, int addonId, CreateUpdateItemAddonDto input)
+    public async Task<ItemAddonDto> UpdateForSpecificItemAsync(int itemId, int addonId, UpdateItemAddonDto input)
     {
         var itemAddon = await _itemAddonRepository.FirstOrDefaultAsync(x => x.ItemId == itemId && x.Id == addonId);
         if (itemAddon == null)

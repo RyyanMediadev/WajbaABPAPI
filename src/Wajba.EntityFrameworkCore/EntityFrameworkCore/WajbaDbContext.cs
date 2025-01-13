@@ -12,15 +12,13 @@ global using Wajba.Models.UsersDomain;
 
 namespace Wajba.EntityFrameworkCore;
 
-[ReplaceDbContext(typeof(IIdentityDbContext))]
-[ReplaceDbContext(typeof(ITenantManagementDbContext))]
+
 [ConnectionStringName("Default")]
 
 
 public class WajbaDbContext :
-    AbpDbContext<WajbaDbContext>,
-    IIdentityDbContext,
-    ITenantManagementDbContext
+    AbpDbContext<WajbaDbContext>
+    
 {
    
     #region Entities from the modules

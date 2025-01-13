@@ -38,6 +38,8 @@ namespace Wajba;
     typeof(AbpAccountWebOpenIddictModule),
     typeof(AbpAspNetCoreSerilogModule),
     typeof(AbpSwashbuckleModule)
+    
+
 )]
 public class WajbaHttpApiHostModule : AbpModule
 {
@@ -57,6 +59,10 @@ public class WajbaHttpApiHostModule : AbpModule
 
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
+
+        
+
+
         var configuration = context.Services.GetConfiguration();
         var hostingEnvironment = context.Services.GetHostingEnvironment();
 

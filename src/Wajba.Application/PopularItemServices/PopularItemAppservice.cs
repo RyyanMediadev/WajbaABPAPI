@@ -1,6 +1,4 @@
 ﻿global using Wajba.Models.PopularItemsDomain;
-using Wajba.Dtos.ThemesContract;
-using Wajba.Models.ThemesDomain;
 
 namespace Wajba.PopularItemServices;
 
@@ -29,9 +27,9 @@ public class PopularItemAppservice : ApplicationService
     public async Task<Popularitemdto> CreateAsync(CreatePopularitem input)
     {
         var items = await _itemrepo.WithDetailsAsync(p => p.ItemBranches);
-        Item item = await items.FirstOrDefaultAsync(p => p.Id == input.Id);
+        Item item = await items.FirstOrDefaultAsync(p => p.Id == input.ItemId);
         if (item == null)
-            throw new EntityNotFoundException(typeof(Item), input.Id);
+            throw new EntityNotFoundException(typeof(Item), input.ItemId);
         Category category = _categoryrepo.WithDetailsAsync(p => p.Items).Result.FirstOrDefault(p => p.Id == item.CategoryId);
         if (category == null)
             throw new EntityNotFoundException(typeof(Category), item.CategoryId);
@@ -40,7 +38,7 @@ public class PopularItemAppservice : ApplicationService
             throw new EntityNotFoundException(typeof(Branch), input.BranchId);
         PopularItem popularitem = new PopularItem()
         {
-            ItemId = input.Id,
+            ItemId = input.ItemId,
             Name = input.Name,
             PrePrice = input.preprice,
             CurrentPrice = input.currentprice,
@@ -52,7 +50,6 @@ public class PopularItemAppservice : ApplicationService
         popularitem.ImageUrl = null;
         if (input.Model != null)
         {
-            byte[] imagebytes = File.ReadAllBytes(input.Model.Base64Content);
             var url = Convert.FromBase64String(input.Model.Base64Content);
             using var ms = new MemoryStream(url);
             popularitem.ImageUrl = await _imageService.UploadAsync(ms, input.Model.FileName);
@@ -105,7 +102,6 @@ public class PopularItemAppservice : ApplicationService
         popularitem.BranchId = input.BranchId;
         if (input.Model != null)
         {
-            byte[] imagebytes = File.ReadAllBytes(input.Model.Base64Content);
             var url = Convert.FromBase64String(input.Model.Base64Content);
             using var ms = new MemoryStream(url);
             popularitem.ImageUrl = await _imageService.UploadAsync(ms, input.Model.FileName);

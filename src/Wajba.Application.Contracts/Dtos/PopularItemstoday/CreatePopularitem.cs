@@ -4,7 +4,7 @@ namespace Wajba.Dtos.PopularItemstoday;
 
 public class CreatePopularitem
 {
-    public int Id { get; set; }
+    public int ItemId { get; set; }
     public string Name { get; set; }
     public int Status { get; set; }
     public Base64ImageModel Model { get; set; }

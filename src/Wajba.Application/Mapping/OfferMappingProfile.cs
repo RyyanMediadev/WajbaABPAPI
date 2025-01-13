@@ -1,4 +1,6 @@
-﻿namespace Wajba.Mapping;
+﻿using Wajba.Dtos.OffersContract;
+
+namespace Wajba.Mapping;
 
 public class OfferMappingProfile:Profile
 {

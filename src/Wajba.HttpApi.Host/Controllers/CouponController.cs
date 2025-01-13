@@ -3,7 +3,6 @@ global using Wajba.Dtos.CouponContract;
 
 namespace Wajba.Controllers;
 
-
 public class CouponController : WajbaController
 {
     private readonly CouponAppService _couponAppService;

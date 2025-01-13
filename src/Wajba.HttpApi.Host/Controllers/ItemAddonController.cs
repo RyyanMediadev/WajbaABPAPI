@@ -1,5 +1,5 @@
-﻿using Wajba.Dtos.ItemAddonContract;
-using Wajba.ItemAddonService;
+﻿global using Wajba.Dtos.ItemAddonContract;
+global using Wajba.ItemAddonService;
 
 namespace Wajba.Controllers;
 

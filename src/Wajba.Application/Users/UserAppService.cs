@@ -1,31 +1,53 @@
-﻿namespace Wajba.UserAppService;
+﻿using BLayer.Security;
+using Volo.Abp.Domain.Repositories;
+using Wajba.Dtos.UserDTO;
+using Wajba.Models.UsersDomain;
+
+namespace Wajba.UserAppService;
 
 [RemoteService(false)]
 public class UserService : ApplicationService
 {
-    //private readonly IRepository<Models.UsersDomain.APPUser, int> _userRepository;
-    //public UserService(IRepository<Models.UsersDomain.APPUser, int> userrepository1)
-    //{
-    //    _userRepository = userrepository1;
-    //}
+    private readonly IRepository<APPUser, Guid> _userRepository;
+
+    public UserService(IRepository<APPUser, Guid> repository)
+
+    {
+        _userRepository = repository;
+
+    }
+
+    public async Task<UserInfoDTO> Register(UserInfoDTO userDto)
+    {
+
+        var user = new APPUser()
+        {
+            Name = userDto.Name,
+            Email = userDto.Email,
+            Password = userDto.Password
 
 
-    //[HttpPost, Route("Register")]
-    //public async Task<UserInfoDTO> Register(UserInfoDTO userDto)
-    //{
-    //    Models.UsersDomain.APPUser user = new Models.UsersDomain.APPUser()
-    //    {
-    //        FirstName = userDto.FirstName,
-    //        SecoundName = userDto.SecoundName,
-    //        Phone = userDto.Phone,
-    //        Email = userDto.Email,
-    //        Password = EncryptANDDecrypt.EncryptText(userDto.Password),
-    //        Address = userDto.Address,
-    //        ProfileId = userDto.ProfileId
+            //TenantId = userDto.TenantId,
+            //UserName = userDto.UserName,
+            //userDto.Name
+            //      userDto.Surname
+            //       userDto.Email
+            //      userDto.EmailConfirmed
+            //         userDto.PhoneNumber
+            //          userDto.PhoneNumberConfirmed
+            //     userDto.IsActive
+            //     userDto.LockoutEnabled
+            //    userDto.AccessFailedCount
+            //      userDto.LockoutEnd
+            //     userDto.ConcurrencyStamp
 
-    //    };
-    //    Models.UsersDomain.User user1 = await _userRepository.InsertAsync(user, true);
-    //    return ObjectMapper.Map<Models.UsersDomain.User, UserInfoDTO>(user1);
+            //public int EntityVersion
 
-    //}
+            //public DateTimeOffset? LastPasswordChangeTime
+
+        };
+        APPUser user1 = await _userRepository.InsertAsync(user, true);
+        return ObjectMapper.Map<APPUser, UserInfoDTO>(user1);
+
+    }
 }

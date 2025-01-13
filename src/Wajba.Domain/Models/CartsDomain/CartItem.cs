@@ -8,6 +8,7 @@ public class CartItem
 {
     [Key]
     public int Id { get; set; }
+
     [ForeignKey(nameof(Item))]
     public int ItemId { get; set; }
     public Item Item { get; set; }

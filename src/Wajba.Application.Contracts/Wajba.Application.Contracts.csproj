@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <Folder Include="Dtos\OrderContact\" />
+    <Folder Include="Volo\" />
   </ItemGroup>
 
 </Project>

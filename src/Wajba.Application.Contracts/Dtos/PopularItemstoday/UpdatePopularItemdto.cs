@@ -2,5 +2,5 @@
 
 public class UpdatePopularItemdto : CreatePopularitem
 {
-    public int ItemId { get; set; }
+    public int Id { get; set; }
 }

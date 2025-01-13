@@ -23,6 +23,7 @@ global using Volo.Abp.UI.Navigation.Urls;
 global using Volo.Abp.VirtualFileSystem;
 global using Wajba.CloudinaryConfigure;
 global using Wajba.MultiTenancy;
+using Wajba.Hubs;
 
 
 namespace Wajba;
@@ -37,6 +38,8 @@ namespace Wajba;
     typeof(AbpAccountWebOpenIddictModule),
     typeof(AbpAspNetCoreSerilogModule),
     typeof(AbpSwashbuckleModule)
+    
+
 )]
 public class WajbaHttpApiHostModule : AbpModule
 {
@@ -56,6 +59,12 @@ public class WajbaHttpApiHostModule : AbpModule
 
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
+
+
+        //configure signalr service
+        var services = context.Services;
+        services.AddSignalR();
+
         var configuration = context.Services.GetConfiguration();
         var hostingEnvironment = context.Services.GetHostingEnvironment();
 
@@ -198,9 +207,17 @@ public class WajbaHttpApiHostModule : AbpModule
         app.UseCorrelationId();
         app.MapAbpStaticAssets();
         app.UseRouting();
+      
         app.UseCors();
         app.UseAuthentication();
         app.UseAbpOpenIddictValidation();
+        app.UseConfiguredEndpoints(endpoints =>
+        {
+            endpoints.MapHub<OfferHub>("/OfferHub", options =>
+            {
+                options.LongPolling.PollTimeout = TimeSpan.FromSeconds(60);
+            });
+        });
 
         if (MultiTenancyConsts.IsEnabled)
         {
@@ -219,12 +236,15 @@ public class WajbaHttpApiHostModule : AbpModule
             c.OAuthClientId(configuration["AuthServer:SwaggerClientId"]);
             c.OAuthScopes("Wajba");
         });
+       
         app.UseEndpoints(p =>
         {
             p.MapControllers();
+           // p.MapHub<OfferHub>("/hubs/offer");
         });
         app.UseAuditing();
         app.UseAbpSerilogEnrichers();
         app.UseConfiguredEndpoints();
+       
     }
 }

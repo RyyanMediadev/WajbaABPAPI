@@ -1,6 +1,9 @@
 ﻿global using Wajba.Models.OfferDomain;
 global using Wajba.Dtos.OffersContract;
 
+using Microsoft.AspNetCore.SignalR;
+using Wajba.Hubs;
+
 namespace Wajba.OfferService
 {
     [RemoteService(false)]
@@ -9,20 +12,32 @@ namespace Wajba.OfferService
         private readonly IRepository<Offer, int> _offerRepository;
         private readonly IImageService _fileUploadService;
         private readonly IRepository<Branch, int> _branchrepo;
+
         private readonly IRepository<Category, int> _categoryrepo;
         private readonly IRepository<Item, int> _itemrepo;
+
+     private readonly IHubContext<OfferHub> _hubContext;
+
 
         public OfferAppService(IRepository<Offer, int> offerRepository,
             IImageService imageService,
             IRepository<Branch, int> branchrepo,
+
             IRepository<Category, int> categoryrepo,
             IRepository<Item, int> itemrepo)
+
+            IHubContext<OfferHub> hubContext)
+
         {
             _offerRepository = offerRepository;
             _fileUploadService = imageService;
             _branchrepo = branchrepo;
+
             _categoryrepo = categoryrepo;
             _itemrepo = itemrepo;
+
+            _hubContext = hubContext;
+
         }
 
         public async Task<OfferDto> CreateAsync(CreateUpdateOfferDto input)
@@ -64,7 +79,9 @@ namespace Wajba.OfferService
             }
             offer.ImageUrl = await _fileUploadService.UploadAsync(input.Image);
             var createdOffer = await _offerRepository.InsertAsync(offer, true);
-            return ObjectMapper.Map<Offer, OfferDto>(createdOffer);
+            var offerdto= ObjectMapper.Map<Offer, OfferDto>(createdOffer);
+            await _hubContext.Clients.All.SendAsync("ReceiveOffer", offerdto);
+            return offerdto;
         }
 
         public async Task<OfferDto> UpdateAsync(int id, CreateUpdateOfferDto input)

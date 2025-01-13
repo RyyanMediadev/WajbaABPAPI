@@ -14,12 +14,7 @@ public class TimeSlotController : WajbaController
     }
      
 
-    private readonly TimeSlotsAppservice _timeSlotsAppservice;
-
-    public TimeSlotController(TimeSlotsAppservice timeSlotsAppservice)
-    {
-        _timeSlotsAppservice = timeSlotsAppservice;
-    }
+   
 
 
     [IgnoreAntiforgeryToken]
@@ -52,7 +47,7 @@ public class TimeSlotController : WajbaController
     {
         try
         {
-            var timeSlots = await _timeSlotsAppservice.GetAllTimeSlotsAsync();
+            var timeSlots = await _timeSlotAppService.GetAllTimeSlotsAsync();
             return Ok(new ApiResponse<List<TimeSlotDto>>
             {
                 Success = true,
@@ -70,13 +65,13 @@ public class TimeSlotController : WajbaController
             });
         }
     }
-
+    [IgnoreAntiforgeryToken]
     [HttpPut]
-    public async Task<IActionResult> Update([FromBody] List<UpdateTimeSlotDto> updateTimeSlotDtos)
+    public async Task<IActionResult> Update( List<UpdateTimeSlotDto> updateTimeSlotDtos)
     {
         try
         {
-            await _timeSlotsAppservice.UpdateTimeSlotsAsync(updateTimeSlotDtos);
+            await _timeSlotAppService.UpdateTimeSlotsAsync(updateTimeSlotDtos);
             return Ok(new ApiResponse<object>
             {
                 Success = true,

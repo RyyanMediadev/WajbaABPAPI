@@ -7,19 +7,18 @@ global using Wajba.Models.ThemesDomain;
 global using Wajba.Models.TimeSlotsDomain;
 global using Wajba.Models.OrderSetup;
 global using Wajba.Models.PopularItemsDomain;
-using Wajba.Models.NotificationDomain;
+global using Wajba.Models.NotificationDomain;
+global using Wajba.Models.UsersDomain;
 
 namespace Wajba.EntityFrameworkCore;
 
-[ReplaceDbContext(typeof(IIdentityDbContext))]
-[ReplaceDbContext(typeof(ITenantManagementDbContext))]
+
 [ConnectionStringName("Default")]
 
 
 public class WajbaDbContext :
-    AbpDbContext<WajbaDbContext>,
-    IIdentityDbContext,
-    ITenantManagementDbContext
+    AbpDbContext<WajbaDbContext>
+    
 {
    
     #region Entities from the modules

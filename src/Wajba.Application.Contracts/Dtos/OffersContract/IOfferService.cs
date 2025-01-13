@@ -1,6 +1,6 @@
-﻿namespace Wajba.OffersContract
+﻿namespace Wajba.Dtos.OffersContract
 {
-    public interface IOfferService 
+    public interface IOfferService
     {
         Task<OfferDto> GetAsync(int id);
         Task<List<OfferDto>> GetAllAsync();

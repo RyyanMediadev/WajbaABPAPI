@@ -1,5 +1,5 @@
-﻿global using Wajba.OffersContract;
-global using Wajba.OfferService;
+﻿global using Wajba.OfferService;
+global using Wajba.Dtos.OffersContract;
 
 namespace Wajba.Controllers
 {
@@ -38,12 +38,12 @@ namespace Wajba.Controllers
             }
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAsync(int id, [FromForm] CreateUpdateOfferDto input)
+        [HttpPut]
+        public async Task<IActionResult> UpdateAsync( [FromForm] UpdateOfferdto input)
         {
             try
             {
-                var updatedOffer = await _offerAppService.UpdateAsync(id, input);
+                var updatedOffer = await _offerAppService.UpdateAsync(input.Id, input);
                 return Ok(new ApiResponse<OfferDto>
                 {
                     Success = true,

@@ -1,5 +1,5 @@
 ﻿global using Wajba.Models.OfferDomain;
-global using Wajba.OffersContract;
+global using Wajba.Dtos.OffersContract;
 
 using Microsoft.AspNetCore.SignalR;
 using Wajba.Hubs;
@@ -12,17 +12,32 @@ namespace Wajba.OfferService
         private readonly IRepository<Offer, int> _offerRepository;
         private readonly IImageService _fileUploadService;
         private readonly IRepository<Branch, int> _branchrepo;
-        private readonly IHubContext<OfferHub> _hubContext;
+
+        private readonly IRepository<Category, int> _categoryrepo;
+        private readonly IRepository<Item, int> _itemrepo;
+
+     private readonly IHubContext<OfferHub> _hubContext;
+
 
         public OfferAppService(IRepository<Offer, int> offerRepository,
             IImageService imageService,
             IRepository<Branch, int> branchrepo,
+
+            IRepository<Category, int> categoryrepo,
+            IRepository<Item, int> itemrepo)
+
             IHubContext<OfferHub> hubContext)
+
         {
             _offerRepository = offerRepository;
             _fileUploadService = imageService;
             _branchrepo = branchrepo;
+
+            _categoryrepo = categoryrepo;
+            _itemrepo = itemrepo;
+
             _hubContext = hubContext;
+
         }
 
         public async Task<OfferDto> CreateAsync(CreateUpdateOfferDto input)
@@ -43,6 +58,25 @@ namespace Wajba.OfferService
             };
             offer.discountType = (Enums.DiscountType)input.DiscountType;
             offer.status = (Enums.Status)input.Status;
+            if (input.CategoryIds == null || !input.CategoryIds.Any()
+                && input.ItemIds == null || !input.ItemIds.Any())
+                throw new Exception("At least one of ItemIds or CategoryIds must be provided.");
+            offer.OfferCategories = new List<OfferCategory>();
+            offer.OfferItems = new List<OfferItem>();
+            foreach (var i in input.ItemIds)
+            {
+                Item item = await _itemrepo.FindAsync(i);
+                if (item == null)
+                    throw new Exception("item not found");
+                offer.OfferItems.Add(new OfferItem() { Item = item, ItemId = i });
+            }
+            foreach (var cat in input.CategoryIds)
+            {
+                Category category = await _categoryrepo.FindAsync(cat);
+                if (category == null)
+                    throw new Exception("category not found");
+                offer.OfferCategories.Add(new OfferCategory() { Category = category });
+            }
             offer.ImageUrl = await _fileUploadService.UploadAsync(input.Image);
             var createdOffer = await _offerRepository.InsertAsync(offer, true);
             var offerdto= ObjectMapper.Map<Offer, OfferDto>(createdOffer);

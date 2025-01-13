@@ -12,12 +12,12 @@ namespace Wajba.Controllers
             _appService = appService;
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetAsync(int id)
+        [HttpGet("item/{itemId}/extra/{extraId}")]
+        public async Task<IActionResult> GetAsync(int itemId,int extraId)
         {
             try
             {
-                var itemExtra = await _appService.GetAsync(id);
+                var itemExtra = await _appService.GetAsync(itemId, extraId);
 
                 return Ok(new ApiResponse<ItemExtraDto>
                 {
@@ -69,7 +69,7 @@ namespace Wajba.Controllers
                 });
             }
         }
-
+        [IgnoreAntiforgeryToken]
         [HttpPost]
         public async Task<IActionResult> CreateAsync(CreateItemExtraDto input)
         {
@@ -96,11 +96,11 @@ namespace Wajba.Controllers
         }
 
         [HttpPut("item/{itemId}/extra/{extraId}")]
-        public async Task<IActionResult> UpdateExtraForItemAsync(int itemId, int extraId, [FromBody] UpdateItemExtraDto input)
+        public async Task<IActionResult> UpdateExtraForItemAsync( UpdateItemExtraDto input)
         {
             try
             {
-                var updatedExtra = await _appService.UpdateForSpecificItemAsync(itemId, extraId, input);
+                var updatedExtra = await _appService.UpdateForSpecificItemAsync(input.itemId, input.extraId, input);
                 return Ok(new ApiResponse<ItemExtraDto>
                 {
                     Success = true,

@@ -36,7 +36,7 @@ public class DineIntableController : WajbaController
         }
     }
 
-    [HttpPut("{id}")]
+    [HttpPut]
     public async Task<IActionResult> UpdateAsync( UpdateDinInTable input)
     {
         try

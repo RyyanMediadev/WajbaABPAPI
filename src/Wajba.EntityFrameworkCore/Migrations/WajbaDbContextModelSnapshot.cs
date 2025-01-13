@@ -3508,6 +3508,19 @@ namespace Wajba.Migrations
                     b.ToTable("APPUser", (string)null);
                 });
 
+            modelBuilder.Entity("Wajba.Models.UsersDomain.Customer", b =>
+                {
+                    b.HasBaseType("Volo.Abp.Identity.IdentityUser");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.ToTable("Customers");
+                });
+
             modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLogAction", b =>
                 {
                     b.HasOne("Volo.Abp.AuditLogging.AuditLog", null)
@@ -3912,6 +3925,15 @@ namespace Wajba.Migrations
                         .IsRequired();
 
                     b.Navigation("Branch");
+                });
+
+            modelBuilder.Entity("Wajba.Models.UsersDomain.Customer", b =>
+                {
+                    b.HasOne("Volo.Abp.Identity.IdentityUser", null)
+                        .WithOne()
+                        .HasForeignKey("Wajba.Models.UsersDomain.Customer", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLog", b =>

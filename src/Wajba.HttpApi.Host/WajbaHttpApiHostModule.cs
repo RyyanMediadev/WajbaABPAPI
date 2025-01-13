@@ -225,6 +225,9 @@ public class WajbaHttpApiHostModule : AbpModule
         app.UseAuditing();
         app.UseAbpSerilogEnrichers();
         app.UseConfiguredEndpoints();
-        
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints.MapHub<OfferHub>("/hubs/offer");
+        });
     }
 }

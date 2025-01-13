@@ -1,8 +1,7 @@
-﻿global using Wajba.Models.OfferDomain;
-global using Wajba.Dtos.OffersContract;
-
-using Microsoft.AspNetCore.SignalR;
-using Wajba.Hubs;
+﻿global using Wajba.Dtos.OffersContract;
+global using Wajba.Models.OfferDomain;
+global using Microsoft.AspNetCore.SignalR;
+global using Wajba.Hubs;
 
 namespace Wajba.OfferService
 {
@@ -16,16 +15,14 @@ namespace Wajba.OfferService
         private readonly IRepository<Category, int> _categoryrepo;
         private readonly IRepository<Item, int> _itemrepo;
 
-     private readonly IHubContext<OfferHub> _hubContext;
+        private readonly IHubContext<OfferHub> _hubContext;
 
 
         public OfferAppService(IRepository<Offer, int> offerRepository,
             IImageService imageService,
             IRepository<Branch, int> branchrepo,
-
             IRepository<Category, int> categoryrepo,
-            IRepository<Item, int> itemrepo)
-
+            IRepository<Item, int> itemrepo,
             IHubContext<OfferHub> hubContext)
 
         {
@@ -79,7 +76,7 @@ namespace Wajba.OfferService
             }
             offer.ImageUrl = await _fileUploadService.UploadAsync(input.Image);
             var createdOffer = await _offerRepository.InsertAsync(offer, true);
-            var offerdto= ObjectMapper.Map<Offer, OfferDto>(createdOffer);
+            var offerdto = ObjectMapper.Map<Offer, OfferDto>(createdOffer);
             await _hubContext.Clients.All.SendAsync("ReceiveOffer", offerdto);
             return offerdto;
         }
@@ -108,7 +105,7 @@ namespace Wajba.OfferService
             return ObjectMapper.Map<Offer, OfferDto>(offer);
         }
 
-        public async Task<PagedResultDto<OfferDto>> GetListAsync(PagedAndSortedResultRequestDto input)
+        public async Task<PagedResultDto<OfferDto>> GetListAsync(GetOfferInput input)
         {
             var offers = await _offerRepository.GetPagedListAsync(input.SkipCount, input.MaxResultCount, input.Sorting);
             var totalCount = await _offerRepository.GetCountAsync();

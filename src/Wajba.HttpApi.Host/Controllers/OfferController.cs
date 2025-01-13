@@ -105,11 +105,11 @@ namespace Wajba.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetListAsync([FromQuery] PagedAndSortedResultRequestDto input)
+        public async Task<IActionResult> GetListAsync([FromQuery] GetOfferInput input)
         {
             try
             {
-                //var offers = await _offerAppService.GetListAsync(input);
+                var offers = await _offerAppService.GetListAsync(input);
                 return Ok(new ApiResponse<PagedResultDto<OfferDto>>
                 {
                     Success = true,

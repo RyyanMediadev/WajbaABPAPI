@@ -66,14 +66,16 @@ public class WajbaHttpApiHostModule : AbpModule
         context.Services.AddSwaggerGen(options =>
         {
             
-
             // Register the custom Document Filter
             options.DocumentFilter<HideBuiltInEndpointsDocumentFilter>();
         });
-        //configure signalr service
-        var services = context.Services;
-        services.AddSignalR();
 
+        //configure signalr service
+        // Adding SignalR
+        context.Services.AddSignalR();
+
+        // Add ABP Swashbuckle for Swagger UI integration
+        //context.Services.AddAbpSwashbuckle();
         var configuration = context.Services.GetConfiguration();
         var hostingEnvironment = context.Services.GetHostingEnvironment();
 
@@ -237,6 +239,8 @@ public class WajbaHttpApiHostModule : AbpModule
         app.UseDynamicClaims();
         app.UseAuthorization();
         app.UseMiddleware<BlockBuiltInEndpointsMiddleware>();
+      
+
         app.UseSwagger();
         app.UseAbpSwaggerUI(c =>
         {
@@ -246,8 +250,8 @@ public class WajbaHttpApiHostModule : AbpModule
             c.OAuthClientId(configuration["AuthServer:SwaggerClientId"]);
             c.OAuthScopes("Wajba");
         });
-       
-       
+
+        app.UseStaticFiles();
         app.UseAuditing();
         app.UseAbpSerilogEnrichers();
         app.UseConfiguredEndpoints();

@@ -36,12 +36,12 @@ namespace Wajba.SwaggerFilters
              "/api/User",
              "/api/Home",
               "/api/permission-management/permissions",
-                "/api/setting-management/emailing",
-                  "/api/setting-management/emailing/send-test-email",
-                   "/api/setting-management/timezones",
-                    "/api/setting-management/timezone",
-                    "/api/setting-management/timezone/timezones",
-                     "/api/feature-management/features",
+               "/api/setting-management/emailing",
+              "/api/setting-management/emailing/send-test-email",
+              "/api/setting-management/timezones",
+               "/api/setting-management/timezone",
+               "/api/setting-management/timezone/timezones",
+              "/api/feature-management/features",
 
         };
 

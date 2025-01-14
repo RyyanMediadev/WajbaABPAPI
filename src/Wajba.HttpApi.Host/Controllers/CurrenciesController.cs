@@ -5,7 +5,7 @@ namespace Wajba.Controllers;
 
 //[Route("api/[controller]")]
 //[ApiController]
-public class CurrenciesController : AbpController
+public class CurrenciesController : WajbaController
 {
     private readonly CurrenciesAppService _currenciesAppService;
 

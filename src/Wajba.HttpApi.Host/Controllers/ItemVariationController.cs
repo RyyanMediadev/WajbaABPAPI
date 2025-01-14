@@ -120,7 +120,7 @@ namespace Wajba.Controllers
             }
         }
 
-        [HttpPut("item/{itemId}/variation/{variationId}")]
+        [HttpPut]
         public async Task<IActionResult> UpdateVariationForItemAsync(int itemId, int variationId, [FromBody] UpdateItemVariationDto input)
         {
             try

@@ -2,7 +2,7 @@
 
 namespace Wajba.Controllers;
 
-public class HomeController : AbpController
+public class HomeController : WajbaController
 {
     public ActionResult Index()
     {

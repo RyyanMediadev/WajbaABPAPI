@@ -8,7 +8,7 @@ namespace Wajba.Middleware
         private readonly string[] _blockedPaths = new[]
         {
             "/api/users",
-            "/api/users/", // To handle sub-paths like /api/users/{id}
+            "/api/users/", 
             "/api/roles",
             "/api/roles/",
             "/api/permissions",

@@ -2,9 +2,9 @@
 
 namespace Wajba.Controllers;
 
-[Route("api/[controller]")]
-[ApiController]
-public class ItemAttributeController : AbpController
+//[Route("api/[controller]")]
+//[ApiController]
+public class ItemAttributeController : WajbaController
 {
     private readonly IItemAttributeAppService _itemAttributeAppService;
 

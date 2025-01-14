@@ -3,9 +3,9 @@ global using Wajba.Dtos.OffersContract;
 
 namespace Wajba.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class OfferController : AbpController
+    //[Route("api/[controller]")]
+    //[ApiController]
+    public class OfferController : WajbaController
     {
         private readonly OfferAppService _offerAppService;
 

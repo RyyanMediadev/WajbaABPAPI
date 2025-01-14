@@ -23,7 +23,11 @@ global using Volo.Abp.UI.Navigation.Urls;
 global using Volo.Abp.VirtualFileSystem;
 global using Wajba.CloudinaryConfigure;
 global using Wajba.MultiTenancy;
+using Volo.Abp.SettingManagement;
 using Wajba.Hubs;
+using Wajba.Middleware;
+using Wajba.SwaggerFilters;
+using static OpenIddict.Abstractions.OpenIddictConstants.Permissions;
 
 
 namespace Wajba;
@@ -59,8 +63,13 @@ public class WajbaHttpApiHostModule : AbpModule
 
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
+        context.Services.AddSwaggerGen(options =>
+        {
+            
 
-
+            // Register the custom Document Filter
+            options.DocumentFilter<HideBuiltInEndpointsDocumentFilter>();
+        });
         //configure signalr service
         var services = context.Services;
         services.AddSignalR();
@@ -213,10 +222,11 @@ public class WajbaHttpApiHostModule : AbpModule
         app.UseAbpOpenIddictValidation();
         app.UseConfiguredEndpoints(endpoints =>
         {
-            endpoints.MapHub<OfferHub>("/OfferHub", options =>
+            endpoints.MapHub<OfferHub>("/hubs/offer", options =>
             {
                 options.LongPolling.PollTimeout = TimeSpan.FromSeconds(60);
             });
+            endpoints.MapControllers();
         });
 
         if (MultiTenancyConsts.IsEnabled)
@@ -226,7 +236,7 @@ public class WajbaHttpApiHostModule : AbpModule
         app.UseUnitOfWork();
         app.UseDynamicClaims();
         app.UseAuthorization();
-
+        app.UseMiddleware<BlockBuiltInEndpointsMiddleware>();
         app.UseSwagger();
         app.UseAbpSwaggerUI(c =>
         {
@@ -237,11 +247,7 @@ public class WajbaHttpApiHostModule : AbpModule
             c.OAuthScopes("Wajba");
         });
        
-        app.UseEndpoints(p =>
-        {
-            p.MapControllers();
-           // p.MapHub<OfferHub>("/hubs/offer");
-        });
+       
         app.UseAuditing();
         app.UseAbpSerilogEnrichers();
         app.UseConfiguredEndpoints();

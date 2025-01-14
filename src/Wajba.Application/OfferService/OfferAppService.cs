@@ -19,16 +19,18 @@ namespace Wajba.OfferService
      private readonly IHubContext<OfferHub> _hubContext;
 
 
-        public OfferAppService(IRepository<Offer, int> offerRepository,
+        public OfferAppService(
+            IRepository<Offer, int> offerRepository,
             IImageService imageService,
             IRepository<Branch, int> branchrepo,
 
             IRepository<Category, int> categoryrepo,
-            IRepository<Item, int> itemrepo)
+            IRepository<Item, int> itemrepo,
 
             IHubContext<OfferHub> hubContext)
 
         {
+
             _offerRepository = offerRepository;
             _fileUploadService = imageService;
             _branchrepo = branchrepo;

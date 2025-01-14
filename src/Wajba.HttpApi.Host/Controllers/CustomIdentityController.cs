@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Wajba.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
+    //[Route("api/[controller]")]
+    //[ApiController]
     public class CustomIdentityController : ControllerBase
     {
     }

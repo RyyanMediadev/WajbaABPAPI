@@ -5,7 +5,7 @@ namespace Wajba.Controllers;
 //[ApiController]
 public class HomeController : WajbaController
 {
-    [HttpGet]
+   // [HttpGet]
     public ActionResult Index()
     {
         return Redirect("~/swagger");

@@ -96,7 +96,7 @@ public class ItemAddonController : WajbaController
         }
     }
 
-    [HttpPut("item/{itemId}/addon/{addonId}")]
+    [HttpPut]
     public async Task<IActionResult> UpdateAddonForItemAsync(  UpdateItemAddonDto input)
     {
         try

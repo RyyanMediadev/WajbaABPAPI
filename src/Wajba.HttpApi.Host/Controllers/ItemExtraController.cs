@@ -95,7 +95,7 @@ namespace Wajba.Controllers
             }
         }
 
-        [HttpPut("item/{itemId}/extra/{extraId}")]
+        [HttpPut]
         public async Task<IActionResult> UpdateExtraForItemAsync( UpdateItemExtraDto input)
         {
             try

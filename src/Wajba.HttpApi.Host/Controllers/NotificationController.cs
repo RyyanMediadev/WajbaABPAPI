@@ -3,7 +3,7 @@ using Wajba.NotificationService;
 
 namespace Wajba.Controllers
 {
-    [IgnoreAntiforgeryToken]
+    //[IgnoreAntiforgeryToken]
     public class NotificationController : WajbaController
     {
         private readonly INotificationService _notificationAppService;

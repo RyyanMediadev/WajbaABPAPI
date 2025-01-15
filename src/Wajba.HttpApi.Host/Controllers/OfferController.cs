@@ -114,7 +114,7 @@ namespace Wajba.Controllers
                 {
                     Success = true,
                     Message = "Offers retrieved successfully.",
-                    Data = null
+                    Data = offers,
                 });
             }
             catch (Exception ex)

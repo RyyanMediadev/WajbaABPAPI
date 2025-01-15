@@ -7,7 +7,7 @@ public class CreateDineIntable
     [Required]
     public byte Size { get; set; }
     [Required]
-    public bool IsActive { get; set; }
+    public Status status { get; set; }
     [Required]
     public int BranchId { get; set; }
 }

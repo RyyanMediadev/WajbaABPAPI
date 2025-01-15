@@ -8,7 +8,7 @@ public class CreateUpdateOfferDto
     public DateTime? EndDate { get; set; }
     public decimal DiscountPercentage { get; set; }
     public DiscountType DiscountType { get; set; }
-    public IFormFile Image { get; set; }
+    public Base64ImageModel Model { get; set; }
     public string Description { get; set; }
     public int BranchId { get; set; }
 

@@ -1,4 +1,5 @@
-﻿namespace Wajba.Models.BranchDomain;
+﻿
+namespace Wajba.Models.BranchDomain;
 
 public class DineInTable : FullAuditedEntity<int>
 {
@@ -8,10 +9,15 @@ public class DineInTable : FullAuditedEntity<int>
     [ForeignKey("Branch")]
     public int BranchId { get; set; } // Foreign key to Branch
     public virtual Branch Branch { get; set; }
-    public bool Status { get; set; }
+    public Status Status { get; set; }
 
     public DineInTable()
     {
 
     }
+
+    //public static implicit operator DineInTable(DineInTable v)
+    //{
+    //    throw new NotImplementedException();
+    //}
 }

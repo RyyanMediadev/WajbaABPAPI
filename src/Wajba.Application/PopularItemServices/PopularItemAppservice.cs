@@ -33,19 +33,14 @@ public class PopularItemAppservice : ApplicationService
         Category category = _categoryrepo.WithDetailsAsync(p => p.Items).Result.FirstOrDefault(p => p.Id == item.CategoryId);
         if (category == null)
             throw new EntityNotFoundException(typeof(Category), item.CategoryId);
-        bool isfound = item.ItemBranches.Any(p => p.BranchId == input.BranchId);
-        if (!isfound)
-            throw new EntityNotFoundException(typeof(Branch), input.BranchId);
         PopularItem popularitem = new PopularItem()
         {
             ItemId = input.ItemId,
-            Name = input.Name,
+            Name = item.Name,
             PrePrice = input.preprice,
             CurrentPrice = input.currentprice,
             Description = input.Description,
-            Status = (Status)input.Status,
             CategoryName = category.Name,
-            BranchId = input.BranchId
         };
         popularitem.ImageUrl = null;
         if (input.Model != null)
@@ -89,17 +84,13 @@ public class PopularItemAppservice : ApplicationService
             throw new EntityNotFoundException(typeof(Item), input.ItemId);
         //if (input.ImgFile == null)
         //    throw new Exception("Image is required");
-        if (item.ItemBranches.Any(p => p.BranchId == input.BranchId))
-            throw new EntityNotFoundException(typeof(Branch), item.ItemBranches.FirstOrDefault().BranchId);
-        popularitem.ItemId = input.ItemId;
-        popularitem.Name = input.Name;
+      popularitem.ItemId = input.ItemId;
+        popularitem.Name = item.Name;
         popularitem.PrePrice = input.preprice;
         popularitem.CurrentPrice = input.currentprice;
         popularitem.Description = input.Description;
-        popularitem.Status = (Status)input.Status;
         popularitem.CategoryName = category.Name;
         popularitem.LastModificationTime = DateTime.UtcNow;
-        popularitem.BranchId = input.BranchId;
         if (input.Model != null)
         {
             var url = Convert.FromBase64String(input.Model.Base64Content);

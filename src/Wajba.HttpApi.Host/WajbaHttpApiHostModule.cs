@@ -23,9 +23,10 @@ global using Volo.Abp.UI.Navigation.Urls;
 global using Volo.Abp.VirtualFileSystem;
 global using Wajba.CloudinaryConfigure;
 global using Wajba.MultiTenancy;
-using Volo.Abp.SettingManagement;
+
 using Wajba.Hubs;
 using Wajba.Middleware;
+using Wajba.Models.UsersDomain;
 using Wajba.SwaggerFilters;
 using static OpenIddict.Abstractions.OpenIddictConstants.Permissions;
 
@@ -73,9 +74,16 @@ public class WajbaHttpApiHostModule : AbpModule
         //configure signalr service
         // Adding SignalR
         context.Services.AddSignalR();
-
+       
         // Add ABP Swashbuckle for Swagger UI integration
         //context.Services.AddAbpSwashbuckle();
+
+      
+         //context.Services.AddAbpIdentity<APPUser>()
+         //  .AddEntityFrameworkStores<WajbaDbContext>()
+         //  .AddDefaultTokenProviders();
+
+        context.Services.AddApplication<WajbaApplicationModule>();
         var configuration = context.Services.GetConfiguration();
         var hostingEnvironment = context.Services.GetHostingEnvironment();
 

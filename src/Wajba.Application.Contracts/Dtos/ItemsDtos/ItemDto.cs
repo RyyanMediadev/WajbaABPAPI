@@ -17,6 +17,7 @@ public class ItemDto:FullAuditedEntityDto<int>
     public string CategoryName { get; set; }
     public string ItemType { get; set; }
     public bool IsDeleted { get; set; }
+    public List<int> Branchesids {  get; set; }
     //public List<BranchesDTO> Branches { get; set; } = new List<BranchesDTO>();
 
 }

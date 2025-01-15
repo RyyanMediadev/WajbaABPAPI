@@ -6,7 +6,7 @@ public class CreateUpdateCategoryDto
 {
     [Required]
     public string name { get; set; }
-    public IFormFile? Image { get; set; }
+    public Base64ImageModel? Model { get; set; }
     [Required]
     public Status status { get; set; }
     [Required]

@@ -21,5 +21,5 @@ public class CreateUpdateCouponDto
     public string? Description { get; set; }
     [Required]
   //  public int BranchId { get; set; }
-    public IFormFile? Image { get; set; }
+    public Base64ImageModel? Image { get; set; }
 }

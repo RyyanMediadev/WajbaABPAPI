@@ -5,7 +5,7 @@ public class CreateItemDto
     [Required]
     public string Name { get; set; }
     [Required]
-    public IFormFile? ImageUrl { get; set; }
+    public Base64ImageModel? model { get; set; }
     [Required]
     public decimal Price { get; set; }
     [Required]

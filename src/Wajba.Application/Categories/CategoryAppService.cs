@@ -29,7 +29,7 @@ public class CategoryAppService : ApplicationService
 
     public async Task<CategoryDto> CreateAsync(CreateUpdateCategoryDto input)
     {
-        if (input.Image == null)
+        if (input.Model == null)
             throw new Exception("Image is required");
         var category = new Category
         {
@@ -37,7 +37,9 @@ public class CategoryAppService : ApplicationService
             Description = input.Description,
             Status = input.status
         };
-        category.ImageUrl = await _imageService.UploadAsync(input.Image);
+        var imagebytes = Convert.FromBase64String(input.Model.Base64Content);
+        using var ms = new MemoryStream(imagebytes);
+        category.ImageUrl = await _imageService.UploadAsync(ms, input.Model.FileName);
         var insertedCategory = await _categoryRepository.InsertAsync(category, true);
         return ObjectMapper.Map<Category, CategoryDto>(insertedCategory);
     }
@@ -47,9 +49,11 @@ public class CategoryAppService : ApplicationService
         Category category = await _categoryRepository.GetAsync(id);
         if (category == null)
             throw new Exception("Not found");
-        if (input.Image == null)
+        if (input.Model == null)
             throw new Exception("Image is required");
-        category.ImageUrl = await _imageService.UploadAsync(input.Image);
+        var imagebytes = Convert.FromBase64String(input.Model.Base64Content);
+        using var ms = new MemoryStream(imagebytes);
+        category.ImageUrl = await _imageService.UploadAsync(ms, input.Model.FileName);
         category.Name = input.name;
         category.Description = input.Description;
         category.Status = input.status;
@@ -166,14 +170,16 @@ public class CategoryAppService : ApplicationService
             (IReadOnlyList<CategoryItemsDto>)categoryItemsDtos
         );
     }
-    public async Task<CategoryDto> UpdateItemImage(int id, IFormFile image)
+    public async Task<CategoryDto> UpdateItemImage(int id, Base64ImageModel model)
     {
         Category category = await _categoryRepository.FindAsync(id);
         if (category == null)
             throw new EntityNotFoundException(typeof(Category), id);
-        if (image == null)
+        if (model == null)
             throw new Exception("Image is required");
-        category.ImageUrl = await _imageService.UploadAsync(image);
+        var imagebytes = Convert.FromBase64String(model.Base64Content);
+        using var ms = new MemoryStream(imagebytes);
+        category.ImageUrl = await _imageService.UploadAsync(ms, model.FileName);
         category.LastModificationTime = DateTime.UtcNow;
         await _categoryRepository.UpdateAsync(category, true);
         return ObjectMapper.Map<Category, CategoryDto>(category);

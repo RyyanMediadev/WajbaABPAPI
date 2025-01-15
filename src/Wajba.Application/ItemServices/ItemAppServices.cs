@@ -57,20 +57,22 @@ public class ItemAppServices : ApplicationService
         var queryable = await _repository.WithDetailsAsync(
         x => x.ItemAddons,
         x => x.ItemExtras,
-        x => x.ItemVariations
+        x => x.ItemVariations,
+        x=>x.ItemBranches
     );
         var item = await queryable.FirstOrDefaultAsync(x => x.Id == id);
         if (item == null)
             throw new EntityNotFoundException(typeof(Item), id);
-
-        return ObjectMapper.Map<Item, ItemDto>(item);
+        ItemDto itemDto = ObjectMapper.Map<Item, ItemDto>(item);
+        itemDto.Branchesids = new List<int>();
+        itemDto.Branchesids = item.ItemBranches.Select(p => p.BranchId).ToList();
+        return itemDto;
     }
     public async Task<ItemDto> CreateAsync(CreateItemDto input)
     {
         //if (input.ImageUrl != null)
         //    imageUrl = await _imageService.UploadAsync(input.ImageUrl);
-        Category category = await _repository1.FindAsync(input.CategoryId);
-        if (category == null)
+        if (await _repository1.FindAsync(input.CategoryId) == null)
             throw new Exception("Category not found");
         List<ItemBranch> itemBranches = new List<ItemBranch>();
         if (input.BranchIds == null || input.BranchIds.Count == 0)
@@ -97,20 +99,21 @@ public class ItemAppServices : ApplicationService
             Status = (Enums.Status)input.status,
             IsDeleted = false,
         };
-        item.ImageUrl = input.ImageUrl != null ? await _imageService.UploadAsync(input.ImageUrl) : null;
+        var imagebytes = Convert.FromBase64String(input.model.Base64Content);
+        using var ms = new MemoryStream(imagebytes);
+        item.ImageUrl = await _imageService.UploadAsync(ms, input.model.FileName);
         item.ItemBranches = itemBranches;
         await _repository.InsertAsync(item, true);
         return ObjectMapper.Map<Item, ItemDto>(item);
     }
-    public async Task<ItemDto> UpdateAsync(int id, CreateItemDto input)
+    public async Task<ItemDto> UpdateAsync(int id, UpdateItemDTO input)
     {
         Item item = await _repository.FindAsync(id);
         if (item == null)
             throw new Exception("Item not found");
         //if (input.ImageUrl == null)
         //    throw new Exception("Image is required");
-        Category category = await _repository1.FindAsync(input.CategoryId);
-        if (category == null)
+        if (await _repository1.FindAsync(input.CategoryId) == null)
             throw new Exception("Category not found");
         List<ItemBranch> itemBranches = new List<ItemBranch>();
         foreach (var branchId in input.BranchIds)
@@ -120,7 +123,12 @@ public class ItemAppServices : ApplicationService
                 throw new Exception("Branch not found");
             itemBranches.Add(new ItemBranch() { BranchId = branchId, Branch = branch });
         }
-        item.ImageUrl = input.ImageUrl != null ? await _imageService.UploadAsync(input.ImageUrl) : item.ImageUrl;
+        if (input.model != null)
+        {
+            var imagebytes = Convert.FromBase64String(input.model.Base64Content);
+            using var ms = new MemoryStream(imagebytes);
+            item.ImageUrl = await _imageService.UploadAsync(ms, input.model.FileName);
+        }
         item.Name = input.Name;
         item.Description = input.Description;
         item.CategoryId = input.CategoryId;

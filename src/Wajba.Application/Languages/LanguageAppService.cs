@@ -1,5 +1,6 @@
 ﻿global using Wajba.Dtos.Languages;
 global using Wajba.Models.LanguageDomain;
+using Wajba.Models.OfferDomain;
 
 namespace Wajba.Languages;
 
@@ -39,7 +40,7 @@ public class LanguageAppService : ApplicationService
 
     public async Task<LanguageDto> CreateAsync(CreateUpdateLanguageDto input)
     {
-        if(input.Image == null)
+        if(input.Model == null)
             throw new Exception("Image is required");
         Language language = new Language()
         {
@@ -47,7 +48,9 @@ public class LanguageAppService : ApplicationService
             Name = input.Name,
             Status = input.Status
         };
-       language.ImageUrl = await _imageUploadService.UploadAsync(input.Image); // Upload image
+        var imagebytes = Convert.FromBase64String(input.Model.Base64Content);
+        using var ms = new MemoryStream(imagebytes);
+        language.ImageUrl = await _imageUploadService.UploadAsync(ms, input.Model.FileName);
         await _languageRepository.InsertAsync(language, true);
         return ObjectMapper.Map<Language, LanguageDto>(language);
     }
@@ -57,9 +60,11 @@ public class LanguageAppService : ApplicationService
         Language language = await _languageRepository.GetAsync(id);
         if (language == null)
             throw new Exception("Not found");
-        if (input.Image == null)
+        if (input.Model == null)
             throw new Exception("Image is required");
-        language.ImageUrl = await _imageUploadService.UploadAsync(input.Image);
+        var imagebytes = Convert.FromBase64String(input.Model.Base64Content);
+        using var ms = new MemoryStream(imagebytes);
+        language.ImageUrl = await _imageUploadService.UploadAsync(ms, input.Model.FileName);
         language.Status = input.Status;
         language.Code = input.Code;
         language.Name = input.Name;

@@ -7,7 +7,7 @@ public class CreateUpdateLanguageDto
     [Required]
     public string Code { get; set; }
     [Required]
-    public IFormFile Image { get; set; } // File input for the image
+    public Base64ImageModel Model { get; set; } // File input for the image
     [Required]
     public Status Status { get; set; }
 }

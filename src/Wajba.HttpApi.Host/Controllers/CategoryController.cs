@@ -23,7 +23,6 @@ public class CategoryController : WajbaController
         {
             // Call the service to create the category
             await _categoryAppService.CreateAsync(input);
-
             return Ok(new ApiResponse<object>
             {
                 Success = true,

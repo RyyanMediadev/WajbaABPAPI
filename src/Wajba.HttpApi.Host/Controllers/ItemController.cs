@@ -54,11 +54,11 @@ public class ItemController : WajbaController
         }
     }
     [HttpPut]
-    public async Task<IActionResult> UpdateAsync(int id,  CreateItemDto input)
+    public async Task<IActionResult> UpdateAsync(  UpdateItemDTO input)
     {
         try
         {
-            ItemDto itemDto = await _itemAppServices.UpdateAsync(id, input);
+            ItemDto itemDto = await _itemAppServices.UpdateAsync(input.Id, input);
             return Ok(new ApiResponse<ItemDto>
             {
                 Success = true,

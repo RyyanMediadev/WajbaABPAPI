@@ -1,5 +1,5 @@
-﻿global using Wajba.Models.CouponsDomain;
-global using Wajba.Dtos.CouponContract;
+﻿global using Wajba.Dtos.CouponContract;
+global using Wajba.Models.CouponsDomain;
 
 namespace Wajba.CouponService;
 
@@ -18,10 +18,13 @@ public class CouponAppService : ApplicationService
     // Create Coupon
     public async Task<CouponDto> CreateAsync(CreateUpdateCouponDto input)
     {
-        var imageUrl = input.Image != null
-            ? await _imageService.UploadAsync(input.Image)
-            : null;
-
+        string imageUrl = null;
+        if (input.Image != null)
+        {
+            var imagebytes = Convert.FromBase64String(input.Image.Base64Content);
+            using var ms = new MemoryStream(imagebytes);
+            imageUrl = await _imageService.UploadAsync(ms, input.Image.FileName);
+        }
         var coupon = ObjectMapper.Map<CreateUpdateCouponDto, Coupon>(input);
         coupon.ImageUrl = imageUrl;
 
@@ -71,7 +74,12 @@ public class CouponAppService : ApplicationService
             throw new EntityNotFoundException(typeof(Coupon), id);
         if (input.Image == null)
             throw new Exception("Image is required");
-        coupon.ImageUrl = await _imageService.UploadAsync(input.Image);
+        if (input.Image != null)
+        {
+            var imagebytes = Convert.FromBase64String(input.Image.Base64Content);
+            using var ms = new MemoryStream(imagebytes);
+            coupon.ImageUrl = await _imageService.UploadAsync(ms, input.Image.FileName);
+        }
         coupon.Description = input.Description;
         coupon.Discount = input.Discount;
         coupon.EndDate = input.EndDate;

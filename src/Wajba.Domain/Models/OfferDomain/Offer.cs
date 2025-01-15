@@ -1,6 +1,4 @@
-﻿using Wajba.Models.BranchDomain;
-
-namespace Wajba.Models.OfferDomain;
+﻿namespace Wajba.Models.OfferDomain;
 
 public class Offer : FullAuditedEntity<int>
 {
@@ -24,7 +22,6 @@ public class Offer : FullAuditedEntity<int>
 
     // Many-to-many relationship with Category
     public virtual ICollection<OfferCategory> OfferCategories { get; set; }
-
 
     public Offer()
     {

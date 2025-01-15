@@ -1,7 +1,7 @@
-﻿global using Wajba.Dtos.OffersContract;
-global using Wajba.Models.OfferDomain;
-global using Microsoft.AspNetCore.SignalR;
+﻿global using Microsoft.AspNetCore.SignalR;
+global using Wajba.Dtos.OffersContract;
 global using Wajba.Hubs;
+global using Wajba.Models.OfferDomain;
 
 namespace Wajba.OfferService
 {
@@ -11,12 +11,9 @@ namespace Wajba.OfferService
         private readonly IRepository<Offer, int> _offerRepository;
         private readonly IImageService _fileUploadService;
         private readonly IRepository<Branch, int> _branchrepo;
-
         private readonly IRepository<Category, int> _categoryrepo;
         private readonly IRepository<Item, int> _itemrepo;
-
         private readonly IHubContext<OfferHub> _hubContext;
-
 
         public OfferAppService(
             IRepository<Offer, int> offerRepository,
@@ -44,7 +41,7 @@ namespace Wajba.OfferService
             Branch branch = await _branchrepo.GetAsync(input.BranchId);
             if (branch == null)
                 throw new Exception("Branch not found");
-            if (input.Image == null)
+            if (input.Model == null)
                 throw new Exception("Image is required");
             Offer offer = new Offer()
             {
@@ -76,7 +73,9 @@ namespace Wajba.OfferService
                     throw new Exception("category not found");
                 offer.OfferCategories.Add(new OfferCategory() { Category = category });
             }
-            offer.ImageUrl = await _fileUploadService.UploadAsync(input.Image);
+            var imagebytes = Convert.FromBase64String(input.Model.Base64Content);
+            using var ms = new MemoryStream(imagebytes);
+            offer.ImageUrl = await _fileUploadService.UploadAsync(ms, input.Model.FileName);
             var createdOffer = await _offerRepository.InsertAsync(offer, true);
             var offerdto = ObjectMapper.Map<Offer, OfferDto>(createdOffer);
             await _hubContext.Clients.All.SendAsync("ReceiveOffer", offerdto);
@@ -88,14 +87,16 @@ namespace Wajba.OfferService
             var offer = await _offerRepository.GetAsync(id);
             if (offer == null)
                 throw new Exception("Not found");
-            if (input.Image == null)
+            if (input.Model == null)
                 throw new Exception("Image is required");
             if (await _branchrepo.GetAsync(input.BranchId) == null)
                 throw new Exception("Branch not found");
-
             ObjectMapper.Map(input, offer);
-            offer.ImageUrl = await _fileUploadService.UploadAsync(input.Image);
-            var updatedOffer = await _offerRepository.UpdateAsync(offer);
+            var imagebytes = Convert.FromBase64String(input.Model.Base64Content);
+            using var ms = new MemoryStream(imagebytes);
+            offer.LastModificationTime = DateTime.UtcNow;
+            offer.ImageUrl = await _fileUploadService.UploadAsync(ms, input.Model.FileName);
+            var updatedOffer = await _offerRepository.UpdateAsync(offer,true);
             return ObjectMapper.Map<Offer, OfferDto>(updatedOffer);
         }
 

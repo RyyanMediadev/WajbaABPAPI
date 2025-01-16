@@ -10,6 +10,6 @@
         public string FireBaseMessageSenderId { get; set; }
         public string FireBaseAppId { get; set; }
         public string FireBaseMeasurementId { get; set; }
-        public IFormFile ImageUrl { get; set; }
+        public Base64ImageModel Model { get; set; }
     }
 }

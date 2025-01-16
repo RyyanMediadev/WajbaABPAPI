@@ -1,190 +1,186 @@
 ﻿global using Wajba.Dtos.ItemVariationContract;
-using Wajba.ItemVariationService;
-using Wajba.Models.Items;
 
-namespace Wajba.Controllers
+namespace Wajba.Controllers;
+
+public class ItemVariationController : WajbaController
 {
+    private readonly IItemVariationAppService _appService;
 
-    public class ItemVariationController : WajbaController
+    public ItemVariationController(IItemVariationAppService appService)
     {
-        private readonly IItemVariationAppService _appService;
+        _appService = appService;
+    }
 
-        public ItemVariationController(IItemVariationAppService appService)
+    [HttpGet("item/{itemId}/variation/{variationId}")]
+    public async Task<IActionResult> GetAsync(int itemId,int variationId)
+    {
+        try
         {
-            _appService = appService;
+            var itemVariation = await _appService.GetAsync(itemId,variationId);
+
+            return Ok(new ApiResponse<ItemVariationDto>
+            {
+                Success = true,
+                Message = "Item variation retrieved successfully.",
+                Data = itemVariation
+            });
         }
-
-        [HttpGet("item/{itemId}/variation/{variationId}")]
-        public async Task<IActionResult> GetAsync(int itemId,int variationId)
+        catch (EntityNotFoundException)
         {
-            try
+            return NotFound(new ApiResponse<object>
             {
-                var itemVariation = await _appService.GetAsync(itemId,variationId);
-
-                return Ok(new ApiResponse<ItemVariationDto>
-                {
-                    Success = true,
-                    Message = "Item variation retrieved successfully.",
-                    Data = itemVariation
-                });
-            }
-            catch (EntityNotFoundException)
-            {
-                return NotFound(new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = "Item variation not found.",
-                    Data = null
-                });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = $"Error retrieving item variation: {ex.Message}",
-                    Data = null
-                });
-            }
+                Success = false,
+                Message = "Item variation not found.",
+                Data = null
+            });
         }
-        [HttpGet]
-        [Route("item-variations/by-attribute/{itemAttributeId}")]
-        public async Task<IActionResult> GetListByItemAttributeIdAsync(int itemAttributeId)
+        catch (Exception ex)
         {
-            try
+            return BadRequest(new ApiResponse<object>
             {
-                var variations = await _appService.GetListByItemAttributeIdAsync(itemAttributeId);
-                return Ok(new ApiResponse<List<ItemVariationDto>>
-                {
-                    Success = true,
-                    Message = "Variations retrieved successfully.",
-                    Data = variations
-                });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = $"Error retrieving variations: {ex.Message}",
-                    Data = null
-                });
-            }
+                Success = false,
+                Message = $"Error retrieving item variation: {ex.Message}",
+                Data = null
+            });
         }
-        [HttpGet("item/{itemId}")]
-        public async Task<IActionResult> GetVariationsByItemIdAsync(int itemId)
+    }
+    [HttpGet]
+    [Route("item-variations/by-attribute/{itemAttributeId}")]
+    public async Task<IActionResult> GetListByItemAttributeIdAsync(int itemAttributeId)
+    {
+        try
         {
-            try
+            var variations = await _appService.GetListByItemAttributeIdAsync(itemAttributeId);
+            return Ok(new ApiResponse<List<ItemVariationDto>>
             {
-                var variations = await _appService.GetListByItemIdAsync(itemId);
-                return Ok(new ApiResponse<List<ItemVariationDto>>
-                {
-                    Success = true,
-                    Message = "Variations retrieved successfully.",
-                    Data = variations
-                });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = $"Error retrieving variations: {ex.Message}",
-                    Data = null
-                });
-            }
+                Success = true,
+                Message = "Variations retrieved successfully.",
+                Data = variations
+            });
         }
-
-        [HttpPost]
-        public async Task<IActionResult> CreateAsync(CreateItemVariationDto input)
+        catch (Exception ex)
         {
-            try
+            return BadRequest(new ApiResponse<object>
             {
-                var createdItemVariation = await _appService.CreateAsync(input);
-
-                return Ok(new ApiResponse<ItemVariationDto>
-                {
-                    Success = true,
-                    Message = "Item variation created successfully.",
-                    Data = createdItemVariation
-                });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = $"Error creating item variation: {ex.Message}",
-                    Data = null
-                });
-            }
+                Success = false,
+                Message = $"Error retrieving variations: {ex.Message}",
+                Data = null
+            });
         }
-
-        [HttpPut]
-        public async Task<IActionResult> UpdateVariationForItemAsync(int itemId, int variationId, [FromBody] UpdateItemVariationDto input)
+    }
+    [HttpGet("item/{itemId}")]
+    public async Task<IActionResult> GetVariationsByItemIdAsync(int itemId)
+    {
+        try
         {
-            try
+            var variations = await _appService.GetListByItemIdAsync(itemId);
+            return Ok(new ApiResponse<List<ItemVariationDto>>
             {
-                var updatedVariation = await _appService.UpdateForSpecificItemAsync(itemId, variationId, input);
-                return Ok(new ApiResponse<ItemVariationDto>
-                {
-                    Success = true,
-                    Message = "Variation updated successfully.",
-                    Data = updatedVariation
-                });
-            }
-            catch (EntityNotFoundException)
-            {
-                return NotFound(new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = "Variation not found for the specified item.",
-                    Data = null
-                });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = $"Error updating variation: {ex.Message}",
-                    Data = null
-                });
-            }
-         }
-        [HttpDelete("item/{itemId}/variation/{variationId}")]
-        public async Task<IActionResult> DeleteAsync(int itemId, int variationId)
+                Success = true,
+                Message = "Variations retrieved successfully.",
+                Data = variations
+            });
+        }
+        catch (Exception ex)
         {
-          
-            try
+            return BadRequest(new ApiResponse<object>
             {
-                await _appService.DeleteForSpecificItemAsync(itemId, variationId);
+                Success = false,
+                Message = $"Error retrieving variations: {ex.Message}",
+                Data = null
+            });
+        }
+    }
 
-                return Ok(new ApiResponse<object>
-                {
-                    Success = true,
-                    Message = "Item variation deleted successfully.",
-                    Data = null
-                });
-            }
-            catch (EntityNotFoundException)
+    [HttpPost]
+    public async Task<IActionResult> CreateAsync(CreateItemVariationDto input)
+    {
+        try
+        {
+            var createdItemVariation = await _appService.CreateAsync(input);
+
+            return Ok(new ApiResponse<ItemVariationDto>
             {
-                return NotFound(new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = "Item variation not found.",
-                    Data = null
-                });
-            }
-            catch (Exception ex)
+                Success = true,
+                Message = "Item variation created successfully.",
+                Data = createdItemVariation
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ApiResponse<object>
             {
-                return BadRequest(new ApiResponse<object>
-                {
-                    Success = false,
-                    Message = $"Error deleting item variation: {ex.Message}",
-                    Data = null
-                });
-            }
+                Success = false,
+                Message = $"Error creating item variation: {ex.Message}",
+                Data = null
+            });
+        }
+    }
+
+    [HttpPut]
+    public async Task<IActionResult> UpdateVariationForItemAsync(int itemId, int variationId, [FromBody] UpdateItemVariationDto input)
+    {
+        try
+        {
+            var updatedVariation = await _appService.UpdateForSpecificItemAsync(itemId, variationId, input);
+            return Ok(new ApiResponse<ItemVariationDto>
+            {
+                Success = true,
+                Message = "Variation updated successfully.",
+                Data = updatedVariation
+            });
+        }
+        catch (EntityNotFoundException)
+        {
+            return NotFound(new ApiResponse<object>
+            {
+                Success = false,
+                Message = "Variation not found for the specified item.",
+                Data = null
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ApiResponse<object>
+            {
+                Success = false,
+                Message = $"Error updating variation: {ex.Message}",
+                Data = null
+            });
+        }
+     }
+    [HttpDelete("item/{itemId}/variation/{variationId}")]
+    public async Task<IActionResult> DeleteAsync(int itemId, int variationId)
+    {
+      
+        try
+        {
+            await _appService.DeleteForSpecificItemAsync(itemId, variationId);
+
+            return Ok(new ApiResponse<object>
+            {
+                Success = true,
+                Message = "Item variation deleted successfully.",
+                Data = null
+            });
+        }
+        catch (EntityNotFoundException)
+        {
+            return NotFound(new ApiResponse<object>
+            {
+                Success = false,
+                Message = "Item variation not found.",
+                Data = null
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ApiResponse<object>
+            {
+                Success = false,
+                Message = $"Error deleting item variation: {ex.Message}",
+                Data = null
+            });
         }
     }
 }

@@ -4,7 +4,7 @@ global using Wajba.Models.NotificationDomain;
 namespace Wajba.NotificationService;
 
 [RemoteService(false)]
-public class NotificationAppService :ApplicationService, INotificationService
+public class NotificationAppService : ApplicationService, INotificationService
 {
     private readonly IRepository<Notification, int> _notificationRepository;
     private readonly IImageService _imageService;
@@ -19,11 +19,14 @@ public class NotificationAppService :ApplicationService, INotificationService
 
     public async Task<NotificationDto> CreateAsync(CreateNotificationDto input)
     {
-        var imageUrl = await _imageService.UploadAsync(input.ImageUrl);
         var notification = ObjectMapper.Map<CreateNotificationDto, Notification>(input);
-        notification.ImageUrl = imageUrl;
-
-        await _notificationRepository.InsertAsync(notification,true);
+        if (input.Model != null)
+        {
+            var imagebytes = Convert.FromBase64String(input.Model.Base64Content);
+            using var ms = new MemoryStream(imagebytes);
+            notification.ImageUrl = await _imageService.UploadAsync(ms, input.Model.FileName);
+        }
+        await _notificationRepository.InsertAsync(notification, true);
         return ObjectMapper.Map<Notification, NotificationDto>(notification);
     }
 
@@ -32,10 +35,15 @@ public class NotificationAppService :ApplicationService, INotificationService
         var notification = await _notificationRepository.GetAsync(input.id);
         if (notification == null)
             throw new EntityNotFoundException(typeof(Notification), input.id);
-        var imageUrl = await _imageService.UploadAsync(input.ImageUrl);
         ObjectMapper.Map(input, notification);
-        notification.ImageUrl = imageUrl;
-        await _notificationRepository.UpdateAsync(notification,true);
+        if (input.Model != null)
+        {
+            var imagebytes = Convert.FromBase64String(input.Model.Base64Content);
+            using var ms = new MemoryStream(imagebytes);
+            notification.ImageUrl = await _imageService.UploadAsync(ms, input.Model.FileName);
+        }
+        notification.LastModificationTime = DateTime.UtcNow;
+        await _notificationRepository.UpdateAsync(notification, true);
         return ObjectMapper.Map<Notification, NotificationDto>(notification);
     }
 

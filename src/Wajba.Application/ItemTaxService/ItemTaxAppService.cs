@@ -18,7 +18,7 @@ public class ItemTaxAppService : ApplicationService
         {
             Code = input.Code,
             Name = input.Name,
-            Status = input.Status,
+            Status = (Status)input.Status,
             TaxRate = input.TaxRate
         };
         var insertedtax=await _repository.InsertAsync(itemTax, true);
@@ -31,7 +31,7 @@ public class ItemTaxAppService : ApplicationService
             throw new EntityNotFoundException(typeof(ItemTax), id);
         itemTax.Code = input.Code;
         itemTax.Name = input.Name;
-        itemTax.Status = input.Status;
+        itemTax.Status = (Status)input.Status;
         itemTax.TaxRate = input.TaxRate;
         itemTax.LastModificationTime = DateTime.UtcNow;
         ItemTax updatedItemTax = await _repository.UpdateAsync(itemTax, true);

@@ -9,7 +9,7 @@ public class CreateUpdateCouponDto
     [Required]
     public decimal Discount { get; set; }
     [Required]
-    public DiscountType DiscountType { get; set; }
+    public int DiscountType { get; set; }
     public DateTime? StartDate { get; set; }
     public DateTime? EndDate { get; set; }
     [Required]

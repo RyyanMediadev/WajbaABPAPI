@@ -33,7 +33,7 @@ public class ItemAttributeAppService : ApplicationService, IItemAttributeAppServ
         var entity = new ItemAttribute
         {
            Name=input.Name,
-           Status=input.Status
+           Status= (Status)input.Status
         };
        var insertedattr= await _itemAttributeRepository.InsertAsync(entity);
         return ObjectMapper.Map<ItemAttribute, ItemAttributeDto>(insertedattr);

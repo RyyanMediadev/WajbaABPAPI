@@ -44,7 +44,7 @@ public class DineinTableAppServices : ApplicationService
         QrcodeServices qrcodeServices = new QrcodeServices();
         dineInTable1.BranchId = dineIntable.BranchId;
         dineInTable1.Name = dineIntable.Name;
-        dineInTable1.Status = dineIntable.status;
+        dineInTable1.Status = (Status)dineIntable.status;
         string qrCodeUrl = qrcodeServices.GenerateQrCodeUrl(dineIntable.BranchId, dineIntable.Name);
         string qrCodeImage = qrcodeServices.GenerateQrCodeImage(qrCodeUrl);
         dineInTable1.QrCode = qrCodeImage;

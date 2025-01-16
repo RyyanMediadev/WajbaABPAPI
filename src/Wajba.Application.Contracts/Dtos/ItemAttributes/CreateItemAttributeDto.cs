@@ -5,5 +5,5 @@ public class CreateItemAttributeDto
     [Required]
     public string Name { get; set; }
     [Required]
-    public Status Status { get; set; }
+    public int Status { get; set; }
 }

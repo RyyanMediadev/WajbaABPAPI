@@ -1,9 +1,8 @@
-﻿namespace Wajba.Enums
+﻿namespace Wajba.Enums;
+
+public enum OTPType
 {
-    public enum OTPType
-    {
-        Mail = 0,
-        SMS = 1,
-        Both = 2
-    }
+    Mail = 0,
+    SMS = 1,
+    Both = 2
 }

@@ -37,14 +37,14 @@ public class SitesAppservice : ApplicationService
             AndroidAPPLink = input.androidAPPLink,
             BranchId = input.defaultBranch,
             CurrencyId = input.defaultCurrency,
-            currencyPosition = input.currencyPosition,
+            currencyPosition = (CurrencyPosition)input.currencyPosition,
             Email = input.Email,
             GoogleMapKey = input.googleMapKey,
             Copyrights = input.Copyrights,
             Quantity = input.digitAfterDecimal,
             Name = input.Name,
             LanguageId = input.defaultLanguage,
-            languageSwitch = input.languageSwitch,
+            languageSwitch = (LanguageSwitch)input.languageSwitch,
             IOSAPPLink = input.iosappLink,
             IsDeleted = false,
         };
@@ -81,8 +81,8 @@ public class SitesAppservice : ApplicationService
         site.Copyrights = input.Copyrights;
         site.GoogleMapKey = input.googleMapKey;
         site.Quantity = input.digitAfterDecimal;
-        site.currencyPosition = input.currencyPosition;
-        site.languageSwitch = input.languageSwitch;
+        site.currencyPosition = (CurrencyPosition)input.currencyPosition;
+        site.languageSwitch = (LanguageSwitch)input.languageSwitch;
         site.BranchId = input.defaultBranch;
         site.CurrencyId = input.defaultCurrency;
         site.LanguageId = input.defaultLanguage;

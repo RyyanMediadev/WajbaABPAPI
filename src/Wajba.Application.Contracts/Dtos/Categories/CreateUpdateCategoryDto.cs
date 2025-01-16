@@ -8,7 +8,7 @@ public class CreateUpdateCategoryDto
     public string name { get; set; }
     public Base64ImageModel? Model { get; set; }
     [Required]
-    public Status status { get; set; }
+    public int status { get; set; }
     [Required]
     public string Description { get; set; }
 }

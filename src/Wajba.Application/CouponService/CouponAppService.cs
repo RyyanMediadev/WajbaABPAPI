@@ -83,7 +83,7 @@ public class CouponAppService : ApplicationService
         coupon.Description = input.Description;
         coupon.Discount = input.Discount;
         coupon.EndDate = input.EndDate;
-        coupon.DiscountType = input.DiscountType;
+        coupon.DiscountType = (DiscountType)input.DiscountType;
         coupon.Name = input.Name;
         coupon.StartDate = input.StartDate;
         coupon.Code = input.Code;

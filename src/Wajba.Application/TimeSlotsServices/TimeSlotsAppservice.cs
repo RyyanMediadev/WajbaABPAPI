@@ -47,7 +47,7 @@ public class TimeSlotsAppservice : ApplicationService, ITimeSlotAppService
             .GroupBy(s => s.WeekDay)
             .Select(g => new TimeSlotDto
             {
-                WeekDay = g.Key,
+                WeekDay = (int)g.Key,
                 TimeSlots = g.Select(s => new TimeSlotDetailDto
                 {
                     Id = s.Id,
@@ -63,7 +63,7 @@ public class TimeSlotsAppservice : ApplicationService, ITimeSlotAppService
     {
         foreach (var updateTimeSlotDto in updateTimeSlotDtos)
         {
-            var existingSlots = await _timeSlotRepository.GetListAsync(x => x.WeekDay == updateTimeSlotDto.WeekDay);
+            var existingSlots = await _timeSlotRepository.GetListAsync(x => x.WeekDay == (DayOfWeek)updateTimeSlotDto.WeekDay);
 
             foreach (var slotDto in updateTimeSlotDto.TimeSlots)
             {
@@ -78,7 +78,7 @@ public class TimeSlotsAppservice : ApplicationService, ITimeSlotAppService
                 {
                     await _timeSlotRepository.InsertAsync(new TimeSlot
                     {
-                        WeekDay = updateTimeSlotDto.WeekDay,
+                        WeekDay = (DayOfWeek)updateTimeSlotDto.WeekDay,
                         OpeningTime = TimeSpan.Parse(slotDto.OpeningTime),
                         ClosingTime = TimeSpan.Parse(slotDto.ClosingTime)
                     });

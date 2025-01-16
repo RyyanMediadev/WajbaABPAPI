@@ -1,5 +1,11 @@
-﻿namespace Wajba.Dtos.OffersContract;
+﻿using Microsoft.AspNetCore.Mvc;
 
-public class GetOfferInput:PagedAndSortedResultRequestDto
+namespace Wajba.Dtos.OffersContract;
+
+public class GetOfferInput : PagedAndSortedResultRequestDto
 {
+    public string? name { get; set; }
+    public int? status { get; set; }
+    public DateTime? startDate { get; set; }
+    public DateTime? endDate { get; set; }
 }

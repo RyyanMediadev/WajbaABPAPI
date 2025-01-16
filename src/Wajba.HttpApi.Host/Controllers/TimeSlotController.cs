@@ -1,5 +1,4 @@
 ﻿global using Wajba.Dtos.TimeSlotsContract;
-global using Wajba.TimeSlotsServices;
 
 namespace Wajba.Controllers;
 
@@ -12,10 +11,6 @@ public class TimeSlotController : WajbaController
     {
         _timeSlotAppService = timeSlotAppService;
     }
-     
-
-   
-
 
     [IgnoreAntiforgeryToken]
     [HttpPost]

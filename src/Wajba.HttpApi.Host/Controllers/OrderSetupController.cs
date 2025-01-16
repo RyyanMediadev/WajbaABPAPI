@@ -3,8 +3,6 @@ global using Wajba.OrderSetupService;
 
 namespace Wajba.Controllers;
 
-//[Route("api/[controller]")]
-//[ApiController]
 public class OrderSetupController : WajbaController
 {
     private readonly OrderSetupAppService _orderSetupAppService;

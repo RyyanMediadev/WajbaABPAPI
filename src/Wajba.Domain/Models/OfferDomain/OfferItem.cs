@@ -1,6 +1,4 @@
-﻿using Wajba.Models.Items;
-
-namespace Wajba.Models.OfferDomain;
+﻿namespace Wajba.Models.OfferDomain;
 
 public class OfferItem : FullAuditedEntity<int>
 {

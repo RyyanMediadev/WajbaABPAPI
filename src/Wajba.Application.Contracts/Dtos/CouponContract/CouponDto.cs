@@ -7,7 +7,7 @@ public class CouponDto : EntityDto<int>
     public string Name { get; set; }
     public decimal Code { get; set; }
     public decimal Discount { get; set; }
-    public DiscountType DiscountType { get; set; }
+    public int DiscountType { get; set; }
     public DateTime? StartDate { get; set; }
     public DateTime? EndDate { get; set; }
     public decimal MinimumOrderAmount { get; set; }

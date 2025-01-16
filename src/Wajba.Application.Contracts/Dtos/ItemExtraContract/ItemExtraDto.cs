@@ -10,7 +10,7 @@ namespace Wajba.Dtos.ItemExtraContract
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public Status Status { get; set; }
+        public int Status { get; set; }
         public decimal AdditionalPrice { get; set; }
         public int ItemId { get; set; }
     }

@@ -17,9 +17,9 @@ public class CreateSiteDto
     [Required]
     public int digitAfterDecimal { get; set; }
     [Required]
-    public CurrencyPosition currencyPosition { get; set; }
+    public int currencyPosition { get; set; }
     [Required]
-    public LanguageSwitch languageSwitch { get; set; }
+    public int languageSwitch { get; set; }
     [Required]
     public int defaultBranch { get; set; }
     [Required]

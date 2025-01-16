@@ -46,7 +46,7 @@ public class LanguageAppService : ApplicationService
         {
             Code = input.Code,
             Name = input.Name,
-            Status = input.Status
+            Status = (Status)input.Status
         };
         var imagebytes = Convert.FromBase64String(input.Model.Base64Content);
         using var ms = new MemoryStream(imagebytes);
@@ -65,7 +65,7 @@ public class LanguageAppService : ApplicationService
         var imagebytes = Convert.FromBase64String(input.Model.Base64Content);
         using var ms = new MemoryStream(imagebytes);
         language.ImageUrl = await _imageUploadService.UploadAsync(ms, input.Model.FileName);
-        language.Status = input.Status;
+        language.Status = (Status)input.Status;
         language.Code = input.Code;
         language.Name = input.Name;
         language.LastModificationTime = DateTime.UtcNow;

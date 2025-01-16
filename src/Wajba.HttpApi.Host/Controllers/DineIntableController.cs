@@ -17,7 +17,6 @@ public class DineIntableController : WajbaController
         try
         {
             await _dineinTableAppServices.CreateAsync(input);
-
             return Ok(new ApiResponse<object>
             {
                 Success = true,

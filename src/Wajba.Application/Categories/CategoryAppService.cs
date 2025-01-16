@@ -35,7 +35,7 @@ public class CategoryAppService : ApplicationService
         {
             Name = input.name,
             Description = input.Description,
-            Status = input.status
+            Status = (Status)input.status
         };
         var imagebytes = Convert.FromBase64String(input.Model.Base64Content);
         using var ms = new MemoryStream(imagebytes);
@@ -56,7 +56,7 @@ public class CategoryAppService : ApplicationService
         category.ImageUrl = await _imageService.UploadAsync(ms, input.Model.FileName);
         category.Name = input.name;
         category.Description = input.Description;
-        category.Status = input.status;
+        category.Status = (Status)input.status;
         category.LastModificationTime = DateTime.UtcNow;
         Category updatedcategory = await _categoryRepository.UpdateAsync(category, true);
         return ObjectMapper.Map<Category, CategoryDto>(updatedcategory);
@@ -86,7 +86,7 @@ public class CategoryAppService : ApplicationService
                 Id = category.Id,
                 name = category.Name,
                 Description = category.Description,
-                status = category.Status,
+                status = (int)category.Status,
                 ImageUrl = category.ImageUrl,
                 IsFilled = false
             };
@@ -147,7 +147,7 @@ public class CategoryAppService : ApplicationService
                 Id = category.Id,
                 Name = category.Name,
                 Description = category.Description,
-                Status = category.Status,
+                Status = (int)category.Status,
                 IsFilled = false,
                 ImageUrl = category.ImageUrl,
             };

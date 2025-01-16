@@ -9,5 +9,5 @@ public class CreateUpdateLanguageDto
     [Required]
     public Base64ImageModel Model { get; set; } // File input for the image
     [Required]
-    public Status Status { get; set; }
+    public int Status { get; set; }
 }

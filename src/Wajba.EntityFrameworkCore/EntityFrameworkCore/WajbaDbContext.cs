@@ -38,7 +38,10 @@ public class WajbaDbContext :
 
     #endregion
     #region entities
+
+    public DbSet<APPUser> CustomUsers { get; set; }
     public DbSet<Item> Items { get; set; }
+    //public DbSet<address> addresses { get; set; }
     public DbSet<ItemVariation> ItemVariations { get; set; }
   public DbSet<PopularItem> PopularItems { get; set; }
     public DbSet<ItemAddon> ItemAddons { get; set; }

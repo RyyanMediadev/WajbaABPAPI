@@ -1,53 +1,33 @@
 ﻿global using Volo.Abp.Identity;
+using Microsoft.AspNetCore.Identity;
+using Wajba.Enums;
+using Wajba.Models.AddressDomain;
 
 namespace Wajba.Models.UsersDomain;
 
-public class APPUser : IdentityUser//*: FullAuditedEntity<int>*/
+public class APPUser : IdentityUser<Guid>, IEntity<Guid>
 {
-    public APPUser()
+
+
+   
+    public string? FirstName { get; set; }
+    
+    public string? LastName { get; set; }
+
+    public string? FullName { get; set; }
+    public Status status { get; set; }
+    public UserTypes Type { get; set; }
+    public string? ProfilePhoto { get; set; }
+    public int Points { get; set; } = 0;
+    public ICollection<Coupon> Coupons { get; set; } = new List<Coupon>();
+    public ICollection<UserAddress>? Addresses { get; set; } = new List<UserAddress>();
+
+    public ICollection<Branch> Branches { get; set; } = new List<Branch>();
+
+    public Guid Id { get; set; }
+
+    public object[] GetKeys()
     {
-
+        throw new NotImplementedException();
     }
-
-    //[Required]
-    //public string FirstName { get; set; }
-    //[Required]
-    //public string SecoundName { get; set; }
-    //[Required]
-    //public string Phone { get; set; }
-
-    //[Required]
-    //public string Email { get; set; }
-    //[Required]
-    //public string Password { get; set; }
-    //[Required]
-    //public string Address { get; set; }
-    //public int? ProfileId { get; set; }
-    //public Profile Profile { get; set; }
-
-    //public int? ProfileId { get; set; }
-    //public Profile Profile { get; set; }
-    //[Required]
-    //public int CountryId { get; set; }
-    //public Country Country { get; set; }
-
-    public string Name { get; set; }
-    public string Email { get; set; }
-
-    public string Password { get; set; }
-
-    //Name = input.Name,
-    //Email = input.Email,
-    //Password = HashPassword(input.Password)
-  
-
-    public int BranchId { get; set; }
-    public Branch Branch { get; set; }
-
-
-
-
-
-    // }
-
 }

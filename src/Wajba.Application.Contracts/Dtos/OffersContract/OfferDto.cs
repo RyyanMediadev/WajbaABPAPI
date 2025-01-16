@@ -1,4 +1,6 @@
-﻿namespace Wajba.Dtos.OffersContract;
+﻿global using Wajba.Dtos.Categories;
+
+namespace Wajba.Dtos.OffersContract;
 
 public class OfferDto : EntityDto<int>
 {
@@ -11,4 +13,6 @@ public class OfferDto : EntityDto<int>
     public int DiscountType { get; set; }
     public string Description { get; set; }
     public int BranchId { get; set; }
+    public List<ItemDto> itemDtos=new List<ItemDto>();
+    public List<CategoryDto> categoryDtos=new List<CategoryDto>();
 }

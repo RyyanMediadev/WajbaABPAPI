@@ -60,9 +60,11 @@ public class DineinTableAppServices : ApplicationService
         queryable = queryable
             .WhereIf(!string.IsNullOrEmpty(input.Name),
             p => p.Name.ToLower() == input.Name.ToLower())
-            .WhereIf(input.Size != null,  p => p.Size == input.Size)
+            .WhereIf(input.Size != null, p => p.Size == input.Size)
             .WhereIf(!string.IsNullOrEmpty(input.Status)
-            , p => p.Status.ToString() == input.Status);
+            , p => p.Status.ToString() == input.Status)
+            .WhereIf(input.BranchId.HasValue, p => p.BranchId == input.BranchId.Value);
+    
         var totalCount = await AsyncExecuter.CountAsync(queryable);
         var dineInTables = await AsyncExecuter.ToListAsync(queryable
             .OrderBy(p=>p.Name)

@@ -22,18 +22,13 @@ namespace Wajba.OfferService
             IRepository<Category, int> categoryrepo,
             IRepository<Item, int> itemrepo,
             IHubContext<OfferHub> hubContext)
-
         {
-
             _offerRepository = offerRepository;
             _fileUploadService = imageService;
             _branchrepo = branchrepo;
-
             _categoryrepo = categoryrepo;
             _itemrepo = itemrepo;
-
             _hubContext = hubContext;
-
         }
 
         public async Task<OfferDto> CreateAsync(CreateUpdateOfferDto input)
@@ -110,12 +105,57 @@ namespace Wajba.OfferService
 
         public async Task<PagedResultDto<OfferDto>> GetListAsync(GetOfferInput input)
         {
-            var offers = await _offerRepository.GetPagedListAsync(input.SkipCount, input.MaxResultCount, input.Sorting);
-            var totalCount = await _offerRepository.GetCountAsync();
+            var offers = await _offerRepository.WithDetailsAsync(p => p.OfferCategories,
+                x => x.OfferItems);
+            offers = offers.WhereIf(string.IsNullOrEmpty(input.name), p => p.Name.ToLower() == input.name.ToLower())
+                .WhereIf(input.status.HasValue, p => p.status == (Status)input.status.Value)
+                .WhereIf(input.startDate.HasValue, p => p.StartDate.Value == input.startDate.Value)
+                .WhereIf(input.endDate.HasValue, p => p.EndDate.Value == input.endDate.Value);
+            var totalCount =await offers.CountAsync();
+            offers = (IQueryable<Offer>)offers.PageResult(input.SkipCount, input.MaxResultCount);
+            offers = offers.OrderBy(input.Sorting);
+            List<Offer> offers1 = await offers.ToListAsync();
 
+            List<OfferDto> offersdto = await offers.Select(o => new OfferDto()
+            {
+                Id = o.Id,
+                Name = o.Name,
+                Description = o.Description,
+                Image = o.ImageUrl,
+                Status = (int)o.status,
+                DiscountType = (int)o.discountType,
+                StartDate = o.StartDate,
+                EndDate = o.EndDate,
+                DiscountPercentage = o.DiscountPercentage,
+                categoryDtos = o.OfferCategories.Select(c => new CategoryDto()
+                {
+                    Description = c.Category.Description,
+                    ImageUrl = c.Category.ImageUrl,
+                    Id = c.Category.Id,
+                    status = (int)c.Category.Status,
+                    name = c.Category.Name
+                }).ToList(),
+                itemDtos = o.OfferItems.Select(m => new ItemDto()
+                {
+                    Name = m.Item.Name,
+                    status = m.Item.Status.ToString(),
+                    imageUrl = m.Item.ImageUrl,
+                    CategoryId = m.Item.CategoryId,
+                    IsFeatured = m.Item.IsFeatured,
+                    Description = m.Item.Description,
+                    Id = m.Item.Id,
+                    ItemType = m.Item.ItemType.ToString(),
+                    Price = m.Item.Price,
+                    TaxValue = m.Item.TaxValue,
+                    Note = m.Item.Note,
+
+                }).ToList()
+            }).ToListAsync();
+            //var offers = await _offerRepository.GetPagedListAsync(input.SkipCount, input.MaxResultCount, input.Sorting);
+            //var totalCount = await _offerRepository.GetCountAsync();
             return new PagedResultDto<OfferDto>(
                 totalCount,
-                ObjectMapper.Map<List<Offer>, List<OfferDto>>(offers)
+               offersdto
             );
         }
 

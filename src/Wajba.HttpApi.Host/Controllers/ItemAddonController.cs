@@ -100,7 +100,7 @@ public class ItemAddonController : WajbaController
     {
         try
         {
-            var updatedAddon = await _itemAddonAppService.UpdateForSpecificItemAsync(input.itemId, input.addonId, input);
+            var updatedAddon = await _itemAddonAppService.UpdateForSpecificItemAsync(input.ItemId, input.addonId, input);
             return Ok(new ApiResponse<ItemAddonDto>
             {
                 Success = true,

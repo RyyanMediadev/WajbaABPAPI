@@ -53,6 +53,7 @@ public class ItemController : WajbaController
             });
         }
     }
+
     [HttpPut]
     public async Task<IActionResult> UpdateAsync(  UpdateItemDTO input)
     {

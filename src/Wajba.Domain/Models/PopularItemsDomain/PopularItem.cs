@@ -1,4 +1,5 @@
-﻿namespace Wajba.Models.PopularItemsDomain;
+﻿
+namespace Wajba.Models.PopularItemsDomain;
 
 public class PopularItem : FullAuditedEntity<int>
 {
@@ -20,4 +21,9 @@ public class PopularItem : FullAuditedEntity<int>
     {
 
     }
+
+    //public static implicit operator PopularItem(Wajba.Dtos.PopularItemstoday.Popularitemdto v)
+    //{
+    //    throw new NotImplementedException();
+    //}
 }

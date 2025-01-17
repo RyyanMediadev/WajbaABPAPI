@@ -107,4 +107,9 @@ public class PopularItemAppservice : ApplicationService
             throw new EntityNotFoundException(typeof(PopularItem), id);
         await _popularitemrepo.DeleteAsync(id, autoSave: true);
     }
+
+    public async Task<PopularItem> GetpopItemByitemId(int id)
+    {
+        throw new NotImplementedException();
+    }
 }

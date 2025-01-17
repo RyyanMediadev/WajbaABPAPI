@@ -117,4 +117,9 @@ public class CouponAppService : ApplicationService
             throw new EntityNotFoundException(typeof(Coupon), id);
         await _couponRepository.DeleteAsync(id);
     }
+
+    public async Task GetListAsync()
+    {
+        throw new NotImplementedException();
+    }
 }

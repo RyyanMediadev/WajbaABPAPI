@@ -1,6 +1,4 @@
-﻿using Wajba.Dtos.CompanyContact;
-
-namespace Wajba.Mapping;
+﻿namespace Wajba.Mapping;
 
 public class CompanyMapping:Profile
 {

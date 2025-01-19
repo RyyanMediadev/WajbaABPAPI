@@ -12,7 +12,7 @@ namespace Wajba.Dtos.CustomerContract
         public string FullName { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
-        public UserTypes Type { get; set; }
-        public Status Status { get; set; }
+        public int Type { get; set; }
+        public int Status { get; set; }
     }
 }

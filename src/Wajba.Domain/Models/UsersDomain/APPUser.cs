@@ -1,6 +1,5 @@
 ﻿global using Volo.Abp.Identity;
 using Microsoft.AspNetCore.Identity;
-using Wajba.Enums;
 using Wajba.Models.AddressDomain;
 
 namespace Wajba.Models.UsersDomain;
@@ -22,7 +21,7 @@ public class APPUser : IdentityUser<Guid>, IEntity<Guid>
     public ICollection<Coupon> Coupons { get; set; } = new List<Coupon>();
     public ICollection<UserAddress>? Addresses { get; set; } = new List<UserAddress>();
 
-    public ICollection<Branch> Branches { get; set; } = new List<Branch>();
+    //public ICollection<Branch> Branches { get; set; } = new List<Branch>();
 
     public Guid Id { get; set; }
 

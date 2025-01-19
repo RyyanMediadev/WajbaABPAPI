@@ -1,11 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Wajba.CustomerAppService;
+﻿using Wajba.CustomerAppService;
 using Wajba.Dtos.CustomerContract;
 
 namespace Wajba.Controllers
 {
-   
+
     public class CustomerController : WajbaController
     {
         private readonly CustomUserAppService _userAppService;

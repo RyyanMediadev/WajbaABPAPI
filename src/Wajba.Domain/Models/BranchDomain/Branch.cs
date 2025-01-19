@@ -9,7 +9,6 @@ public class Branch : FullAuditedEntity<int>
 
     public Branch()
     {
-
     }
     public string Name { get; set; }
     public double Longitude { get; set; }

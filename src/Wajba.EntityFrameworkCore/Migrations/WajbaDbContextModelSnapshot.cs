@@ -919,8 +919,6 @@ namespace Wajba.Migrations
                     b.HasIndex("UserName");
 
                     b.ToTable("AbpUsers", (string)null);
-
-                    b.UseTptMappingStrategy();
                 });
 
             modelBuilder.Entity("Volo.Abp.Identity.IdentityUserClaim", b =>
@@ -1766,6 +1764,54 @@ namespace Wajba.Migrations
                     b.ToTable("AbpTenantConnectionStrings", (string)null);
                 });
 
+            modelBuilder.Entity("Wajba.Models.AddressDomain.UserAddress", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AddressLabel")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("AddressType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ApartmentNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BuildingName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("CustomerId1")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Floor")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Latitude")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Longitude")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Street")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId1");
+
+                    b.ToTable("UserAddress");
+                });
+
             modelBuilder.Entity("Wajba.Models.BranchDomain.Branch", b =>
                 {
                     b.Property<int>("Id")
@@ -1773,6 +1819,9 @@ namespace Wajba.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<Guid?>("APPUserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
@@ -1835,6 +1884,8 @@ namespace Wajba.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("APPUserId");
 
                     b.ToTable("Branches");
                 });
@@ -2217,6 +2268,9 @@ namespace Wajba.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<Guid?>("APPUserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int?>("BranchId")
                         .HasColumnType("int");
 
@@ -2290,6 +2344,8 @@ namespace Wajba.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("APPUserId");
 
                     b.HasIndex("BranchId");
 
@@ -3475,15 +3531,73 @@ namespace Wajba.Migrations
 
             modelBuilder.Entity("Wajba.Models.UsersDomain.APPUser", b =>
                 {
-                    b.HasBaseType("Volo.Abp.Identity.IdentityUser");
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("BranchId")
+                    b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<string>("Password")
+                    b.Property<string>("ConcurrencyStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("BranchId");
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FullName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Points")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ProfilePhoto")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
 
                     b.ToTable("APPUser", (string)null);
                 });
@@ -3630,6 +3744,22 @@ namespace Wajba.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Wajba.Models.AddressDomain.UserAddress", b =>
+                {
+                    b.HasOne("Wajba.Models.UsersDomain.APPUser", "Customer")
+                        .WithMany("Addresses")
+                        .HasForeignKey("CustomerId1");
+
+                    b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("Wajba.Models.BranchDomain.Branch", b =>
+                {
+                    b.HasOne("Wajba.Models.UsersDomain.APPUser", null)
+                        .WithMany("Branches")
+                        .HasForeignKey("APPUserId");
+                });
+
             modelBuilder.Entity("Wajba.Models.BranchDomain.DineInTable", b =>
                 {
                     b.HasOne("Wajba.Models.BranchDomain.Branch", "Branch")
@@ -3704,6 +3834,10 @@ namespace Wajba.Migrations
 
             modelBuilder.Entity("Wajba.Models.CouponsDomain.Coupon", b =>
                 {
+                    b.HasOne("Wajba.Models.UsersDomain.APPUser", null)
+                        .WithMany("Coupons")
+                        .HasForeignKey("APPUserId");
+
                     b.HasOne("Wajba.Models.BranchDomain.Branch", null)
                         .WithMany("Coupons")
                         .HasForeignKey("BranchId");
@@ -3877,23 +4011,6 @@ namespace Wajba.Migrations
                     b.Navigation("Language");
                 });
 
-            modelBuilder.Entity("Wajba.Models.UsersDomain.APPUser", b =>
-                {
-                    b.HasOne("Wajba.Models.BranchDomain.Branch", "Branch")
-                        .WithMany()
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Volo.Abp.Identity.IdentityUser", null)
-                        .WithOne()
-                        .HasForeignKey("Wajba.Models.UsersDomain.APPUser", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Branch");
-                });
-
             modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLog", b =>
                 {
                     b.Navigation("Actions");
@@ -3987,6 +4104,15 @@ namespace Wajba.Migrations
                     b.Navigation("OfferCategories");
 
                     b.Navigation("OfferItems");
+                });
+
+            modelBuilder.Entity("Wajba.Models.UsersDomain.APPUser", b =>
+                {
+                    b.Navigation("Addresses");
+
+                    b.Navigation("Branches");
+
+                    b.Navigation("Coupons");
                 });
 #pragma warning restore 612, 618
         }

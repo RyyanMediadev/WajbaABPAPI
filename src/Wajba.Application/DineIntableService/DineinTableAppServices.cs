@@ -29,7 +29,8 @@ public class DineinTableAppServices : ApplicationService
             Name = input.Name,
             Size = input.Size,
             Status =(Status) input.status,
-            QrCode = qrCodeImage
+            QrCode = qrCodeImage,
+           
         };
         Branch branch =await _branchrepo.FindAsync(input.BranchId);
         DineInTable dineInTable1 = await _repository.InsertAsync(dineInTable, true);
@@ -90,7 +91,6 @@ public class DineinTableAppServices : ApplicationService
             .WhereIf(!string.IsNullOrEmpty(input.Status)
             , p => p.Status.ToString() == input.Status)
             .WhereIf(input.BranchId.HasValue, p => p.BranchId == input.BranchId.Value);
-    
         var totalCount = await AsyncExecuter.CountAsync(queryable);
         var dineInTables = await AsyncExecuter.ToListAsync(queryable
             .OrderBy(p=>p.Name)

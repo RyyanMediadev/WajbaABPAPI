@@ -36,7 +36,8 @@ public class OfferController : WajbaController
     }
 
     [HttpPut]
-    public async Task<IActionResult> UpdateAsync([FromForm] UpdateOfferdto input)
+    public async Task<IActionResult> UpdateAsync([FromBody
+        ] UpdateOfferdto input)
     {
         try
         {

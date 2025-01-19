@@ -70,23 +70,23 @@ public class CategoryAppService : ApplicationService
         return ObjectMapper.Map<Category, CategoryDto>(category);
     }
 
-    public async Task<PagedResultDto<CategoryDto>> GetListAsync(GetCategoryInput input)
+    public async Task<PagedResultDto<CategoryItemsDto>> GetListAsync(GetCategoryInput input)
     {
         var queryable = await _categoryRepository.WithDetailsAsync(p => p.Items);
         if (queryable == null)
             throw new EntityNotFoundException(typeof(Category));
         if (input.Name != null)
             queryable = queryable.Where(p => p.Name.ToLower() == input.Name.ToLower());
-        List<CategoryDto> categoryItemsDtos = new List<CategoryDto>();
+        List<CategoryItemsDto> categoryItemsDtos = new List<CategoryItemsDto>();
         int countitems = 0;
         foreach(var category in queryable)
         {
-            var categoryItemsDto = new CategoryDto
+            var categoryItemsDto = new CategoryItemsDto
             {
                 Id = category.Id,
-                name = category.Name,
+                Name = category.Name,
                 Description = category.Description,
-                status = (int)category.Status,
+                Status = (int)category.Status,
                 ImageUrl = category.ImageUrl,
                 IsFilled = false
             };
@@ -117,11 +117,11 @@ public class CategoryAppService : ApplicationService
         //    c => c.Name.ToLower() == input.Name.ToLower()
         //);
         int totalCount = queryable.Count();
-        categoryItemsDtos = categoryItemsDtos.OrderBy(p => p.name).
+        categoryItemsDtos = categoryItemsDtos.OrderBy(p => p.Name).
             Skip(input.SkipCount)
             .Take(input.MaxResultCount)
             .ToList();
-        return new PagedResultDto<CategoryDto>(totalCount, categoryItemsDtos);
+        return new PagedResultDto<CategoryItemsDto>(totalCount, categoryItemsDtos);
         //.OrderBy(input.Sorting ?? nameof(Category.Name))
         //.Skip(input.SkipCount)
         //.Take(input.MaxResultCount)

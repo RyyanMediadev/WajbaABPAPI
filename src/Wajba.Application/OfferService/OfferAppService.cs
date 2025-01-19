@@ -111,7 +111,8 @@ namespace Wajba.OfferService
                 .WhereIf(input.status.HasValue, p => p.status == (Status)input.status.Value)
                 .WhereIf(input.startDate.HasValue, p => p.StartDate.Value == input.startDate.Value)
                 .WhereIf(input.endDate.HasValue, p => p.EndDate.Value == input.endDate.Value);
-            var totalCount =await offers.CountAsync();
+            List<Offer> offers2 =await offers.ToListAsync();
+            var totalCount = offers2.Count();
             offers = (IQueryable<Offer>)offers.PageResult(input.SkipCount, input.MaxResultCount);
             offers = offers.OrderBy(input.Sorting);
             List<Offer> offers1 = await offers.ToListAsync();

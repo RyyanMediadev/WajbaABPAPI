@@ -29,16 +29,22 @@ public class DineinTableAppServices : ApplicationService
             Name = input.Name,
             Size = input.Size,
             Status =(Status) input.status,
-            QrCode = qrCodeImage
+            QrCode = qrCodeImage,
+           
         };
+        Branch branch =await _branchrepo.FindAsync(input.BranchId);
         DineInTable dineInTable1 = await _repository.InsertAsync(dineInTable, true);
         DiniINDto diniINDto = new DiniINDto()
         {
             BranchId = dineInTable1.BranchId,
             Id = dineInTable1.Id,
-            IsActive = (int)dineInTable1.Status,
+            Status = (int)dineInTable1.Status,
             Name = dineInTable1.Name,
-            Size = (byte)dineInTable1.Size
+            Size = (byte)dineInTable1.Size,
+            BranchName = branch.Name,
+            Phone = branch.Phone,
+            Address = branch.Address,
+            QrCode = dineInTable1.QrCode
         };
         return diniINDto;
     }
@@ -60,13 +66,18 @@ public class DineinTableAppServices : ApplicationService
         dineInTable1.Size = dineIntable.Size;
         dineInTable1.LastModificationTime = DateTime.UtcNow;
         DineInTable dineInTable3 = await _repository.UpdateAsync(dineInTable1, true);
+        Branch branch = await _branchrepo.FindAsync(dineIntable.BranchId);
         DiniINDto diniINDto = new DiniINDto()
         {
             BranchId = dineInTable3.BranchId,
             Id = dineInTable3.Id,
-            IsActive = (int)dineInTable3.Status,
+            Status = (int)dineInTable3.Status,
             Name = dineInTable3.Name,
-            Size = (byte)dineInTable3.Size
+            Size = (byte)dineInTable3.Size,
+            QrCode = dineInTable3.QrCode,
+            Address = branch.Address,
+            Phone = branch.Phone,
+            BranchName = branch.Name,
         };
         return diniINDto;
     }
@@ -80,7 +91,6 @@ public class DineinTableAppServices : ApplicationService
             .WhereIf(!string.IsNullOrEmpty(input.Status)
             , p => p.Status.ToString() == input.Status)
             .WhereIf(input.BranchId.HasValue, p => p.BranchId == input.BranchId.Value);
-    
         var totalCount = await AsyncExecuter.CountAsync(queryable);
         var dineInTables = await AsyncExecuter.ToListAsync(queryable
             .OrderBy(p=>p.Name)
@@ -93,12 +103,27 @@ public class DineinTableAppServices : ApplicationService
     public async Task<DiniINDto> GetByIdAsync(int id)
     {
         DineInTable dine = await _repository.GetAsync(id);
-        return ObjectMapper.Map<DineInTable, DiniINDto>(dine);
+        if (dine == null)
+            throw new Exception("Not Found");
+        Branch branch = await _branchrepo.GetAsync(id);
+        DiniINDto diniINDto = new DiniINDto()
+        {
+            Name = dine.Name,
+            QrCode = dine.QrCode,
+            Status = (int)dine.Status,
+            BranchId = dine.BranchId,
+            Id = dine.Id,
+            Size = (byte)dine.Size,
+            BranchName = branch.Name,
+            Phone = branch.Phone,
+            Address = branch.Address,
+        };
+        return diniINDto;
     }
     public async Task DeleteAsync(int id)
     {
         DineInTable dine = await _repository.GetAsync(id);
         if (dine == null) throw new Exception("NotFound DineTable");
-        await _repository.DeleteAsync(id);
+        await _repository.DeleteAsync(id,true);
     }
 }

@@ -16,12 +16,12 @@ public class DineIntableController : WajbaController
     {
         try
         {
-            await _dineinTableAppServices.CreateAsync(input);
+          DiniINDto diniINDto=  await _dineinTableAppServices.CreateAsync(input);
             return Ok(new ApiResponse<object>
             {
                 Success = true,
                 Message = "DineTable created successfully.",
-                Data = null
+                Data = diniINDto
             });
         }
         catch (Exception ex)

@@ -32,7 +32,15 @@ public class DineinTableAppServices : ApplicationService
             QrCode = qrCodeImage
         };
         DineInTable dineInTable1 = await _repository.InsertAsync(dineInTable, true);
-        return ObjectMapper.Map<DineInTable, DiniINDto>(dineInTable1);
+        DiniINDto diniINDto = new DiniINDto()
+        {
+            BranchId = dineInTable1.BranchId,
+            Id = dineInTable1.Id,
+            IsActive = (int)dineInTable1.Status,
+            Name = dineInTable1.Name,
+            Size = (byte)dineInTable1.Size
+        };
+        return diniINDto;
     }
     public async Task<DiniINDto> UpdateAsync(int id, CreateDineIntable dineIntable)
     {
@@ -52,7 +60,15 @@ public class DineinTableAppServices : ApplicationService
         dineInTable1.Size = dineIntable.Size;
         dineInTable1.LastModificationTime = DateTime.UtcNow;
         DineInTable dineInTable3 = await _repository.UpdateAsync(dineInTable1, true);
-        return ObjectMapper.Map<DineInTable, DiniINDto>(dineInTable3);
+        DiniINDto diniINDto = new DiniINDto()
+        {
+            BranchId = dineInTable3.BranchId,
+            Id = dineInTable3.Id,
+            IsActive = (int)dineInTable3.Status,
+            Name = dineInTable3.Name,
+            Size = (byte)dineInTable3.Size
+        };
+        return diniINDto;
     }
     public async Task<PagedResultDto<DiniINDto>> GetListAsync(GetDiniTableInput input)
     {

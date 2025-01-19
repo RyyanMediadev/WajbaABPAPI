@@ -1,14 +1,5 @@
-﻿using AutoMapper.Internal.Mappers;
-using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Volo.Abp.ObjectMapping;
-using Wajba.CustomIdentity;
+﻿using Microsoft.AspNetCore.Identity;
 using Wajba.Dtos.CustomerContract;
-using Wajba.Enums;
 using Wajba.Models.UsersDomain;
 using IObjectMapper = Volo.Abp.ObjectMapping.IObjectMapper;
 
@@ -94,12 +85,12 @@ namespace Wajba.CustomerAppService
 
             if (input.Type.HasValue)
             {
-                query = query.Where(u => u.Type == input.Type);
+                query = query.Where(u => u.Type ==(UserTypes) input.Type);
             }
 
             if (input.Status.HasValue)
             {
-                query = query.Where(u => u.status == input.Status);
+                query = query.Where(u => u.status ==(Status) input.Status);
             }
 
             // Apply pagination (Skip and Take)

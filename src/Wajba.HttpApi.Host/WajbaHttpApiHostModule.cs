@@ -83,7 +83,7 @@ public class WajbaHttpApiHostModule : AbpModule
          //  .AddEntityFrameworkStores<WajbaDbContext>()
          //  .AddDefaultTokenProviders();
 
-        context.Services.AddApplication<WajbaApplicationModule>();
+        //context.Services.AddApplication<WajbaApplicationModule>();
         var configuration = context.Services.GetConfiguration();
         var hostingEnvironment = context.Services.GetHostingEnvironment();
 

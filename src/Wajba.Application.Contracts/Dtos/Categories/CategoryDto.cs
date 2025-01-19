@@ -2,7 +2,7 @@
 
 namespace Wajba.Dtos.Categories;
 
-public class CategoryDto : EntityDto<int>
+public class CategoryDto 
 {
 
     public string? name { get; set; }

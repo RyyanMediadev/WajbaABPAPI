@@ -66,7 +66,7 @@ public class CategoryController : WajbaController
 
     }
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetByIdAsync(int id)
+    public async Task<ActionResult<ApiResponse<CategoryDto>>> GetByIdAsync(int id)
     {
         try
         {

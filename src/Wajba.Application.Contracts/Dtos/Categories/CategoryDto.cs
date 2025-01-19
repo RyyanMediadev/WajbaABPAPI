@@ -2,7 +2,7 @@
 
 namespace Wajba.Dtos.Categories;
 
-public class CategoryDto :FullAuditedEntityWithUserDto<int>
+public class CategoryDto : FullAuditedEntityDto<int>
 {
     public string? name { get; set; }
     public string? ImageUrl { get; set; }

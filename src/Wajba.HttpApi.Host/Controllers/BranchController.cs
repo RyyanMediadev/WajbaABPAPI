@@ -61,7 +61,7 @@ public class BranchController : WajbaController
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetByIdAsync(int id)
+    public async Task<ActionResult<ApiResponse<BranchDto>>> GetByIdAsync(int id)
     {
         try
         {

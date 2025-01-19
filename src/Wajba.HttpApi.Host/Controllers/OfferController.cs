@@ -72,7 +72,7 @@ namespace Wajba.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetByIdAsync(int id)
+        public async Task<ActionResult<ApiResponse<OfferDto>>> GetByIdAsync(int id)
         {
             try
             {

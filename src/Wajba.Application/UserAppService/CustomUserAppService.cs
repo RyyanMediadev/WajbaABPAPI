@@ -42,18 +42,18 @@ namespace Wajba.CustomerAppService
                 Email = input.Email,
                 PhoneNumber = input.Phone,
                 FullName = input.FullName,
-                Type = input.Type,
+                Type = (UserTypes)input.Type,
                 status = Status.Active,
                 PasswordHash = _passwordHasher.HashPassword(null, input.Password)
             };
             // Assign role based on user type
-            if (input.Type == UserTypes.Admin)
+            if (input.Type == (int)UserTypes.Admin)
                 await _userManager.AddToRoleAsync(user, "Administrator");
-            else if (input.Type == UserTypes.Customer)
+            else if (input.Type ==(int) UserTypes.Customer)
                 await _userManager.AddToRoleAsync(user, "Customer");
-            else if (input.Type == UserTypes.Employee)
+            else if (input.Type == (int)UserTypes.Employee)
                 await _userManager.AddToRoleAsync(user, "Employee");
-            else if (input.Type == UserTypes.Deliveryboy)
+            else if (input.Type ==(int) UserTypes.Deliveryboy)
                 await _userManager.AddToRoleAsync(user, "DeliveryBoy");
             var hashedPassword = _passwordHasher.HashPassword(user, input.Password);
             user.PasswordHash = hashedPassword;
@@ -68,8 +68,8 @@ namespace Wajba.CustomerAppService
             user.FullName = input.FullName;
             user.Email = input.Email;
             user.PhoneNumber = input.Phone;
-            user.status = input.Status;
-            user.Type = input.Type;
+            user.status = (Status)input.Status;
+            user.Type = (UserTypes)input.Type;
 
             await _userRepository.UpdateAsync(user);
         }
@@ -112,9 +112,9 @@ namespace Wajba.CustomerAppService
                 FullName = user.FullName,
                 Email = user.Email,
                 Phone = user.PhoneNumber,
-                Type = user.Type,
-                Status = user.status
-               
+                Type = (int)user.Type,
+                Status = (int)user.status
+
             }).ToList();
 
             // Return the result in PagedResultDto

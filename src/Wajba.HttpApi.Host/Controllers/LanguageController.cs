@@ -36,7 +36,7 @@ public class LanguageController : WajbaController
         }
     }
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetByIdAsync(int id)
+    public async Task<ActionResult<ApiResponse<LanguageDto>>> GetByIdAsync(int id)
     {
         try
         {

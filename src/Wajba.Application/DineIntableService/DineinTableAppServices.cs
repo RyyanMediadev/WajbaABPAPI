@@ -36,7 +36,7 @@ public class DineinTableAppServices : ApplicationService
         {
             BranchId = dineInTable1.BranchId,
             Id = dineInTable1.Id,
-            IsActive = (int)dineInTable1.Status,
+            Status = (int)dineInTable1.Status,
             Name = dineInTable1.Name,
             Size = (byte)dineInTable1.Size
         };
@@ -64,7 +64,7 @@ public class DineinTableAppServices : ApplicationService
         {
             BranchId = dineInTable3.BranchId,
             Id = dineInTable3.Id,
-            IsActive = (int)dineInTable3.Status,
+            Status = (int)dineInTable3.Status,
             Name = dineInTable3.Name,
             Size = (byte)dineInTable3.Size
         };

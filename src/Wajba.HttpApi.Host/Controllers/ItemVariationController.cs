@@ -92,6 +92,8 @@ public class ItemVariationController : WajbaController
         }
     }
 
+
+    [IgnoreAntiforgeryToken]
     [HttpPost]
     public async Task<IActionResult> CreateAsync(CreateItemVariationDto input)
     {

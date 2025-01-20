@@ -23,7 +23,9 @@ global using Volo.Abp.UI.Navigation.Urls;
 global using Volo.Abp.VirtualFileSystem;
 global using Wajba.CloudinaryConfigure;
 global using Wajba.MultiTenancy;
+using Microsoft.AspNetCore.Identity;
 
+using Wajba.CustomerAppService;
 using Wajba.Hubs;
 using Wajba.Middleware;
 using Wajba.Models.UsersDomain;
@@ -74,15 +76,18 @@ public class WajbaHttpApiHostModule : AbpModule
         //configure signalr service
         // Adding SignalR
         context.Services.AddSignalR();
-       
+
         // Add ABP Swashbuckle for Swagger UI integration
         //context.Services.AddAbpSwashbuckle();
 
-      
-         //context.Services.AddAbpIdentity<APPUser>()
-         //  .AddEntityFrameworkStores<WajbaDbContext>()
-         //  .AddDefaultTokenProviders();
 
+        //context.Services.AddIdentity<APPUser, IdentityRole>()
+        //  .AddEntityFrameworkStores<WajbaDbContext>()
+        //  .AddDefaultTokenProviders();
+        // Register other necessary services for UserManager<APPUser>
+    //context.Services.AddTransient<IUserStore<APPUser>, UserStore<APPUser, IdentityRole, ApplicationDbContext>>();
+
+        //context.Services.AddTransient<icustomuser, CustomUserAppService>();
         //context.Services.AddApplication<WajbaApplicationModule>();
         var configuration = context.Services.GetConfiguration();
         var hostingEnvironment = context.Services.GetHostingEnvironment();

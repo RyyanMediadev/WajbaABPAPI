@@ -10,10 +10,12 @@ global using Volo.Abp.TenantManagement;
 using Wajba.CustomerAppService;
 using Wajba.CustomIdentityService;
 using Wajba.Dtos.TimeSlotsContract;
+using Wajba.Dtos.UserAddressContract;
 using Wajba.EntityFrameworkCore;
 using Wajba.Models.UsersDomain;
 using Wajba.NotificationService;
 using Wajba.TimeSlotsServices;
+using Wajba.UserAddressService;
 
 namespace Wajba;
 
@@ -39,6 +41,7 @@ public class WajbaApplicationModule : AbpModule
         context.Services.AddTransient<IImageService, ImageService>();
         context.Services.AddScoped<ITimeSlotAppService, TimeSlotsAppservice>();
         context.Services.AddScoped<INotificationService, NotificationAppService>();
+        context.Services.AddScoped<IUserAddressAppService, UserAddressAppService>();
         context.Services.AddTransient<CustomUserAppService>();
 
 

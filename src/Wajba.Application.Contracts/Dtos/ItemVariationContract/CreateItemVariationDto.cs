@@ -11,4 +11,5 @@ public class CreateItemVariationDto
 }
 public class UpdateItemVariationDto : CreateItemVariationDto
 {
+    public int VariationId { get; set; }
 }

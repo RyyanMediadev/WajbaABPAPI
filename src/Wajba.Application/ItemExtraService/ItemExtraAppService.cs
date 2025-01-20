@@ -38,12 +38,12 @@ namespace Wajba.ItemExtraService
 
      
         
-        public async Task<ItemExtraDto> UpdateForSpecificItemAsync(int itemId, int extraId, UpdateItemExtraDto input)
+        public async Task<ItemExtraDto> UpdateForSpecificItemAsync( UpdateItemExtraDto input)
         {
-            var entity = await _repository.FirstOrDefaultAsync(x => x.ItemId == itemId && x.Id == extraId);
+            var entity = await _repository.FirstOrDefaultAsync(x => x.ItemId == input.ItemId && x.Id == input.extraId);
             if (entity == null)
             {
-                throw new EntityNotFoundException($"Extra with ID {extraId} for Item {itemId} not found.");
+                throw new EntityNotFoundException($"Extra with ID {input.extraId} for Item {input.ItemId} not found.");
             }
 
             ObjectMapper.Map(input, entity);

@@ -2,8 +2,9 @@
 
 namespace Wajba.Dtos.OffersContract;
 
-public class OfferDto : EntityDto<int>
+public class OfferDto 
 {
+    public int Id { get; set; }
     public string Name { get; set; }
     public int Status { get; set; }
     public DateTime? StartDate { get; set; }
@@ -13,6 +14,6 @@ public class OfferDto : EntityDto<int>
     public int DiscountType { get; set; }
     public string Description { get; set; }
     public int BranchId { get; set; }
-    public List<ItemDto> itemDtos=new List<ItemDto>();
-    public List<CategoryDto> categoryDtos=new List<CategoryDto>();
+    public List<ItemDto> itemDtos = new List<ItemDto>();
+    public List<CategoryDto> categoryDtos = new List<CategoryDto>();
 }

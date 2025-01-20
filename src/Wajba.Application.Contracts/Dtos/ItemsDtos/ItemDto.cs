@@ -2,7 +2,7 @@
 
 namespace Wajba.Dtos.ItemsDtos;
 
-public class ItemDto:FullAuditedEntityDto<int>
+public class ItemDto: EntityDto<int>
 {
     public int Id { get; set; }
     public string Name { get; set; }

@@ -13,6 +13,8 @@ public class OfferAppService : ApplicationService
     private readonly IRepository<Branch, int> _branchrepo;
     private readonly IRepository<Category, int> _categoryrepo;
     private readonly IRepository<Item, int> _itemrepo;
+    private readonly IRepository<OfferCategory,int> _offercategory;
+    private readonly IRepository<OfferItem,int> _offeritems;
     private readonly IHubContext<OfferHub> _hubContext;
 
     public OfferAppService(
@@ -21,6 +23,8 @@ public class OfferAppService : ApplicationService
         IRepository<Branch, int> branchrepo,
         IRepository<Category, int> categoryrepo,
         IRepository<Item, int> itemrepo,
+        IRepository<OfferCategory,int> offercategory,
+        IRepository<OfferItem,int> offeritems,
         IHubContext<OfferHub> hubContext)
     {
         _offerRepository = offerRepository;
@@ -28,6 +32,8 @@ public class OfferAppService : ApplicationService
         _branchrepo = branchrepo;
         _categoryrepo = categoryrepo;
         _itemrepo = itemrepo;
+        _offercategory = offercategory;
+        _offeritems = offeritems;
         _hubContext = hubContext;
     }
 
@@ -83,28 +89,189 @@ public class OfferAppService : ApplicationService
 
     public async Task<OfferDto> UpdateAsync(int id, UpdateOfferdto input)
     {
-        var offer = await _offerRepository.GetAsync(id);
+        var offers = await _offerRepository.WithDetailsAsync(p => p.OfferCategories,
+           x => x.OfferItems).Result.Include(p => p.OfferCategories).ThenInclude(p => p.Category)
+           .Include(p => p.OfferItems).ThenInclude(p => p.Item).ToListAsync();
+        var offer = offers.FirstOrDefault(p => p.Id == input.Id);
         if (offer == null)
             throw new Exception("Not found");
         if (input.Model == null)
             throw new Exception("Image is required");
         if (await _branchrepo.GetAsync(input.BranchId) == null)
             throw new Exception("Branch not found");
-        ObjectMapper.Map(input, offer);
+        offer.Description = input.Description;
+        offer.BranchId = input.BranchId;
+        offer.status = (Status)input.Status;
+        offer.StartDate = input.StartDate;
+        offer.Name = input.Name;
+        offer.EndDate = input.EndDate;
+        offer.DiscountPercentage = input.DiscountPercentage;
+        offer.discountType = (DiscountType)input.DiscountType;
+        if (input.ItemIds.Count == 0 && input.CategoryIds.Count() == 0)
+            throw new Exception("Invalid data");
+        offer.OfferCategories.Clear();
+        offer.OfferItems.Clear();
+        //offer.OfferItems.RemoveAll(oi => !input.ItemIds.Contains(oi.ItemId));
+        //offer.OfferCategories.RemoveAll(oi => !input.CategoryIds.Contains(oi.CategoryId));
+        offer.OfferCategories = new List<OfferCategory>();
+        offer.OfferItems = new List<OfferItem>();
+        //offer = await _offerRepository.UpdateAsync(offer, true);
+        if (input.ItemIds.Count > 0)
+        {
+            foreach (var i in input.ItemIds)
+            {
+                var py = await _offeritems.FirstOrDefaultAsync(p => p.ItemId == i && p.OfferId == offer.Id);
+                if (py == null)
+                {
+                    Item item = await _itemrepo.FindAsync(i);
+                    if (item == null)
+                        throw new Exception("item not found");
+                    py = new OfferItem() { Item = item, ItemId = i , OfferId=offer.Id};
+
+                }
+                offer.OfferItems.Add(py);
+            }
+        }
+        else
+        {
+            foreach (var cat in input.CategoryIds)
+            {
+                var py = await _offercategory.FirstOrDefaultAsync(p => p.CategoryId == cat && p.OfferId == offer.Id);
+                if (py == null)
+                {
+                    Category category = await _categoryrepo.FindAsync(cat);
+                    if (category == null)
+                        throw new Exception("category not found");
+                    py = new OfferCategory() { Category = category ,OfferId=offer.Id};
+                    offer.OfferCategories.Add(py);
+                }
+            }
+        }
         var imagebytes = Convert.FromBase64String(input.Model.Base64Content);
         using var ms = new MemoryStream(imagebytes);
         offer.LastModificationTime = DateTime.UtcNow;
         offer.ImageUrl = await _fileUploadService.UploadAsync(ms, input.Model.FileName);
-        var updatedOffer = await _offerRepository.UpdateAsync(offer,true);
-        return ObjectMapper.Map<Offer, OfferDto>(updatedOffer);
+        var o = await _offerRepository.UpdateAsync(offer, true);
+        //return ObjectMapper.Map<Offer, OfferDto>(updatedOffer);
+        OfferDto offerDto = new OfferDto()
+        {
+            Id = o.Id,
+            Name = o.Name,
+            Description = o.Description,
+            Image = o.ImageUrl,
+            Status = (int)o.status,
+            DiscountType = (int)o.discountType,
+            StartDate = o.StartDate,
+            EndDate = o.EndDate,
+            BranchId=o.BranchId,
+            DiscountPercentage = o.DiscountPercentage,
+            categoryDtos = o.OfferCategories.Select(c => new CategoryDto()
+            {
+                Description = c.Category.Description,
+                ImageUrl = c.Category.ImageUrl,
+                Id = c.Category.Id,
+                status = (int)c.Category.Status,
+                name = c.Category.Name
+            }).ToList(),
+            itemDtos = o.OfferItems.Select(m => new ItemDto()
+            {
+                Name = m.Item.Name,
+                status = m.Item.Status.ToString(),
+                imageUrl = m.Item.ImageUrl,
+                CategoryId = m.Item.CategoryId,
+                IsFeatured = m.Item.IsFeatured,
+                Description = m.Item.Description,
+                Id = m.Item.Id,
+                ItemType = m.Item.ItemType.ToString(),
+                Price = m.Item.Price,
+                TaxValue = m.Item.TaxValue,
+                Note = m.Item.Note,
+
+            }).ToList()
+        };
+        return offerDto;
     }
 
     public async Task<OfferDto> GetAsync(int id)
     {
-        var offer = await _offerRepository.GetAsync(id);
-        if (offer == null)
+        var offers = await _offerRepository.WithDetailsAsync(p => p.OfferCategories,
+         x => x.OfferItems).Result.Include(p => p.OfferCategories).ThenInclude(p => p.Category)
+         .Include(p => p.OfferItems).ThenInclude(p => p.Item).ToListAsync();
+        var o =  offers.FirstOrDefault(p => p.Id == id);
+        if (o == null)
             throw new Exception("Not found");
-        return ObjectMapper.Map<Offer, OfferDto>(offer);
+        int l = o.OfferCategories.Count;
+        l = o.OfferItems.Count;
+        //var pp = o.OfferCategories.FirstOrDefault().Category.Name;
+        OfferDto offerDto = new OfferDto()
+        {
+            Id = o.Id,
+            Name = o.Name,
+            Description = o.Description,
+            Image = o.ImageUrl,
+            Status = (int)o.status,
+            DiscountType = (int)o.discountType,
+            StartDate = o.StartDate,
+            EndDate = o.EndDate,
+            BranchId=o.BranchId,
+            DiscountPercentage = o.DiscountPercentage,
+            categoryDtos = o.OfferCategories.Select(c => new CategoryDto()
+            {
+                Description = c.Category.Description,
+                ImageUrl = c.Category.ImageUrl,
+                Id = c.Category.Id,
+                status = (int)c.Category.Status,
+                name = c.Category.Name
+            }).ToList(),
+            itemDtos = o.OfferItems.Select(m => new ItemDto()
+            {
+                Name = m.Item.Name,
+                status = m.Item.Status.ToString(),
+                imageUrl = m.Item.ImageUrl,
+                CategoryId = m.Item.CategoryId,
+                IsFeatured = m.Item.IsFeatured,
+                Description = m.Item.Description,
+                Id = m.Item.Id,
+                ItemType = m.Item.ItemType.ToString(),
+                Price = m.Item.Price,
+                TaxValue = m.Item.TaxValue,
+                Note = m.Item.Note,
+
+            }).ToList()
+        };
+        offerDto.categoryDtos = new List<CategoryDto>();
+        offerDto.itemDtos = new List<ItemDto>();
+        foreach(var m in o.OfferItems)
+        {
+            ItemDto itemDto = new ItemDto()
+            {
+                Name = m.Item.Name,
+                status = m.Item.Status.ToString(),
+                imageUrl = m.Item.ImageUrl,
+                CategoryId = m.Item.CategoryId,
+                IsFeatured = m.Item.IsFeatured,
+                Description = m.Item.Description,
+                Id = m.Item.Id,
+                ItemType = m.Item.ItemType.ToString(),
+                Price = m.Item.Price,
+                TaxValue = m.Item.TaxValue,
+                Note = m.Item.Note,
+            };
+            offerDto.itemDtos.Add(itemDto);
+        }
+        foreach(var c in o.OfferCategories)
+        {
+            CategoryDto categoryDto = new CategoryDto()
+            {
+                Description = c.Category.Description,
+                ImageUrl = c.Category.ImageUrl,
+                Id = c.Category.Id,
+                status = (int)c.Category.Status,
+                name = c.Category.Name
+            };
+            offerDto.categoryDtos.Add(categoryDto);
+        }
+        return offerDto;
     }
 
     public async Task<PagedResultDto<OfferDto>> GetListAsync(GetOfferInput input)
@@ -129,6 +296,7 @@ public class OfferAppService : ApplicationService
             Status = (int)o.status,
             DiscountType = (int)o.discountType,
             StartDate = o.StartDate,
+            BranchId=o.BranchId,
             EndDate = o.EndDate,
             DiscountPercentage = o.DiscountPercentage,
             categoryDtos = o.OfferCategories.Select(c => new CategoryDto()
@@ -168,6 +336,6 @@ public class OfferAppService : ApplicationService
         var offer = await _offerRepository.GetAsync(id);
         if (offer == null)
             throw new Exception("Not found");
-        await _offerRepository.DeleteAsync(id);
+        await _offerRepository.DeleteAsync(id,true);
     }
 }

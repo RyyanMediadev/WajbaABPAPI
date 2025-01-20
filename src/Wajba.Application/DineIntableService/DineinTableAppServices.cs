@@ -28,9 +28,8 @@ public class DineinTableAppServices : ApplicationService
             IsDeleted = false,
             Name = input.Name,
             Size = input.Size,
-            Status =(Status) input.status,
+            Status = (Status)input.status,
             QrCode = qrCodeImage,
-           
         };
         Branch branch =await _branchrepo.FindAsync(input.BranchId);
         DineInTable dineInTable1 = await _repository.InsertAsync(dineInTable, true);

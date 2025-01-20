@@ -1,6 +1,4 @@
-﻿using Wajba.Dtos.OffersContract;
-
-namespace Wajba.Mapping;
+﻿namespace Wajba.Mapping;
 
 public class OfferMappingProfile:Profile
 {
@@ -17,6 +15,8 @@ public class OfferMappingProfile:Profile
             .ForMember(x => x.Image, opt => opt.MapFrom(x => x.ImageUrl))
             .ForMember(p => p.DiscountPercentage, opt => opt.MapFrom(x => x.DiscountPercentage))
             .ForMember(p => p.DiscountType, opt => opt.MapFrom(x => x.discountType))
+            .ForMember(p => p.categoryDtos, o => o.Ignore())
+            .ForMember(p => p.itemDtos, o => o.Ignore())
             .ReverseMap();
     }
 }

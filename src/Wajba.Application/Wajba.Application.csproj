@@ -11,6 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Wajba.Domain\Wajba.Domain.csproj" />
     <ProjectReference Include="..\Wajba.Application.Contracts\Wajba.Application.Contracts.csproj" />
+    <ProjectReference Include="..\Wajba.EntityFrameworkCore\Wajba.EntityFrameworkCore.csproj" />
   </ItemGroup>
 
   <ItemGroup>

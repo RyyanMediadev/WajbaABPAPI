@@ -191,7 +191,20 @@ public class OfferAppService : ApplicationService
         };
         return offerDto;
     }
-
+    public async Task<OfferDto> updateimage(int id, Base64ImageModel input)
+    {
+        var offer = await _offerRepository.FindAsync(id);
+        if (offer == null)
+            throw new EntityNotFoundException("not found");
+        if (input == null)
+            throw new Exception("invalid data");
+        var imagebytes = Convert.FromBase64String(input.Base64Content);
+        using var ms = new MemoryStream(imagebytes);
+        offer.LastModificationTime = DateTime.UtcNow;
+        offer.ImageUrl = await _fileUploadService.UploadAsync(ms, input.FileName);
+        var o = await _offerRepository.UpdateAsync(offer, true);
+        return new OfferDto();
+    }
     public async Task<OfferDto> GetAsync(int id)
     {
         var offers = await _offerRepository.WithDetailsAsync(p => p.OfferCategories,

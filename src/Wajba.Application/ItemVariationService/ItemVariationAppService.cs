@@ -48,12 +48,12 @@ namespace Wajba.ItemVariationService
             return ObjectMapper.Map<ItemVariation, ItemVariationDto>(entity);
         }
 
-        public async Task<ItemVariationDto> UpdateForSpecificItemAsync(int itemId, int variationId, UpdateItemVariationDto input)
+        public async Task<ItemVariationDto> UpdateForSpecificItemAsync( UpdateItemVariationDto input)
         {
-            var entity = await _repository.FirstOrDefaultAsync(x => x.ItemId == itemId && x.Id == variationId);
+            var entity = await _repository.FirstOrDefaultAsync(x => x.ItemId == input.ItemId && x.Id == input.VariationId);
             if (entity == null)
             {
-                throw new EntityNotFoundException($"Variation with ID {variationId} for Item {itemId} not found.");
+                throw new EntityNotFoundException($"Variation with ID {input.VariationId} for Item {input.ItemId} not found.");
             }
 
             ObjectMapper.Map(input, entity);

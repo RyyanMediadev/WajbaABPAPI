@@ -94,13 +94,13 @@ namespace Wajba.Controllers
                 });
             }
         }
-
+        [IgnoreAntiforgeryToken]
         [HttpPut]
         public async Task<IActionResult> UpdateExtraForItemAsync( UpdateItemExtraDto input)
         {
             try
             {
-                var updatedExtra = await _appService.UpdateForSpecificItemAsync(input.itemId, input.extraId, input);
+                var updatedExtra = await _appService.UpdateForSpecificItemAsync( input);
                 return Ok(new ApiResponse<ItemExtraDto>
                 {
                     Success = true,

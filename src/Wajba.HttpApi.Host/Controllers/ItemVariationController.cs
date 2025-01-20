@@ -118,13 +118,13 @@ public class ItemVariationController : WajbaController
             });
         }
     }
-
+    [IgnoreAntiforgeryToken]
     [HttpPut]
-    public async Task<IActionResult> UpdateVariationForItemAsync(int itemId, int variationId, [FromBody] UpdateItemVariationDto input)
+    public async Task<IActionResult> UpdateVariationForItemAsync( UpdateItemVariationDto input)
     {
         try
         {
-            var updatedVariation = await _appService.UpdateForSpecificItemAsync(itemId, variationId, input);
+            var updatedVariation = await _appService.UpdateForSpecificItemAsync( input);
             return Ok(new ApiResponse<ItemVariationDto>
             {
                 Success = true,

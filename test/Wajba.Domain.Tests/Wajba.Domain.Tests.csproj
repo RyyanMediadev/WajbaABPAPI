@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1.0" />
+    <PackageReference Include="MimeKit" Version="4.9.0" />
   </ItemGroup>
 
   <ItemGroup>

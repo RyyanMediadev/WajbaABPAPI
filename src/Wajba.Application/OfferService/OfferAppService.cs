@@ -2,6 +2,7 @@
 global using Wajba.Dtos.OffersContract;
 global using Wajba.Hubs;
 global using Wajba.Models.OfferDomain;
+using System.IO;
 
 namespace Wajba.OfferService
 {
@@ -69,7 +70,7 @@ namespace Wajba.OfferService
                 offer.OfferCategories.Add(new OfferCategory() { Category = category });
             }
             var imagebytes = Convert.FromBase64String(input.Model.Base64Content);
-            using var ms = new MemoryStream(imagebytes);
+            using var ms = new System.IO.MemoryStream(imagebytes);
             offer.ImageUrl = await _fileUploadService.UploadAsync(ms, input.Model.FileName);
             var createdOffer = await _offerRepository.InsertAsync(offer, true);
             var offerdto = ObjectMapper.Map<Offer, OfferDto>(createdOffer);

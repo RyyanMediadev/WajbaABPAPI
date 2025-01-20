@@ -1,15 +1,19 @@
-﻿global using System.IO;
-global using System.Security.Cryptography;
-global using System.Text;
+﻿using System.IO;
+using System.Security.Cryptography;
+using System.Text;
 
-namespace BLayer.Security
+ namespace Wajba.UserAppService
+
 {
     public static class EncryptANDDecrypt
     {
         private static readonly string encryptionPassword = "123";
+       
+
+       
 
         private static readonly byte[] salt = Encoding.ASCII.GetBytes("123");
-        //09012025 test
+
         public static string EncryptText(string textToEncrypt)
         {
             var algorithm = GetAlgorithm(encryptionPassword);

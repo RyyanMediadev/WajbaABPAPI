@@ -1,5 +1,6 @@
 ﻿global using Wajba.Dtos.NotificationContract;
 global using Wajba.Models.NotificationDomain;
+using System.IO;
 
 namespace Wajba.NotificationService;
 

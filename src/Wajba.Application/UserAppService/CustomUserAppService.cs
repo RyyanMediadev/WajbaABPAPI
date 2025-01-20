@@ -38,16 +38,16 @@ namespace Wajba.CustomerAppService
                 PasswordHash = _passwordHasher.HashPassword(null, input.Password)
             };
             // Assign role based on user type
-            if (input.Type == (int)UserTypes.Admin)
-                await _userManager.AddToRoleAsync(user, "Administrator");
-            else if (input.Type ==(int) UserTypes.Customer)
-                await _userManager.AddToRoleAsync(user, "Customer");
-            else if (input.Type == (int)UserTypes.Employee)
-                await _userManager.AddToRoleAsync(user, "Employee");
-            else if (input.Type ==(int) UserTypes.Deliveryboy)
-                await _userManager.AddToRoleAsync(user, "DeliveryBoy");
-            var hashedPassword = _passwordHasher.HashPassword(user, input.Password);
-            user.PasswordHash = hashedPassword;
+            //if (input.Type == (int)UserTypes.Admin)
+            //    await _userManager.AddToRoleAsync(user, "Administrator");
+            //else if (input.Type ==(int) UserTypes.Customer)
+            //    await _userManager.AddToRoleAsync(user, "Customer");
+            //else if (input.Type == (int)UserTypes.Employee)
+            //    await _userManager.AddToRoleAsync(user, "Employee");
+            //else if (input.Type ==(int) UserTypes.Deliveryboy)
+            //    await _userManager.AddToRoleAsync(user, "DeliveryBoy");
+            //var hashedPassword = _passwordHasher.HashPassword(user, input.Password);
+            //user.PasswordHash = hashedPassword;
 
             //await _userRepository.InsertAsync(user);
             await _userManager.CreateAsync(user);

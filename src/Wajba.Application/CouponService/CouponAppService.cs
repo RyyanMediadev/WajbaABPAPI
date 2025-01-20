@@ -1,5 +1,6 @@
 ﻿global using Wajba.Dtos.CouponContract;
 global using Wajba.Models.CouponsDomain;
+using System.IO;
 using System.Linq;
 
 namespace Wajba.CouponService;

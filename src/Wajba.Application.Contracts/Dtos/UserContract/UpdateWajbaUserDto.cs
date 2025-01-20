@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Wajba.Dtos.CustomerContract
 {
-    public class GetUserDto
+    public class UpdateWajbaUserDto
     {
         public int Id { get; set; }
         public string FullName { get; set; }

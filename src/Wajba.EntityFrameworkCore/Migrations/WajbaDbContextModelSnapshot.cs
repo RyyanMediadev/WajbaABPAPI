@@ -1820,9 +1820,6 @@ namespace Wajba.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<Guid?>("APPUserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
@@ -1884,8 +1881,6 @@ namespace Wajba.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("APPUserId");
 
                     b.ToTable("Branches");
                 });
@@ -3050,7 +3045,7 @@ namespace Wajba.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("DiscountPercentage")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18, 3)");
 
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
@@ -3753,13 +3748,6 @@ namespace Wajba.Migrations
                     b.Navigation("Customer");
                 });
 
-            modelBuilder.Entity("Wajba.Models.BranchDomain.Branch", b =>
-                {
-                    b.HasOne("Wajba.Models.UsersDomain.APPUser", null)
-                        .WithMany("Branches")
-                        .HasForeignKey("APPUserId");
-                });
-
             modelBuilder.Entity("Wajba.Models.BranchDomain.DineInTable", b =>
                 {
                     b.HasOne("Wajba.Models.BranchDomain.Branch", "Branch")
@@ -4109,8 +4097,6 @@ namespace Wajba.Migrations
             modelBuilder.Entity("Wajba.Models.UsersDomain.APPUser", b =>
                 {
                     b.Navigation("Addresses");
-
-                    b.Navigation("Branches");
 
                     b.Navigation("Coupons");
                 });

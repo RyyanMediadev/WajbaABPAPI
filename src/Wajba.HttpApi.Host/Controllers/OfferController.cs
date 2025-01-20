@@ -12,7 +12,7 @@ public class OfferController : WajbaController
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateAsync([FromForm] CreateUpdateOfferDto input)
+    public async Task<IActionResult> CreateAsync([FromBody] CreateUpdateOfferDto input)
     {
         try
         {

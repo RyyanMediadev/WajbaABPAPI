@@ -76,6 +76,39 @@ public class ItemController : WajbaController
             });
         }
     }
+    [HttpPut("editimage")]
+    public async Task<IActionResult> UpdatImage(int id, Base64ImageModel model)
+
+    {
+        try
+        {
+            ItemDto itemDto = await _itemAppServices.updateimage(id, model);
+            return Ok(new ApiResponse<ItemDto>
+            {
+                Success = true,
+                Message = "Itemimage uppated successfully.",
+                Data = itemDto
+            });
+        }
+        catch (EntityNotFoundException)
+        {
+            return NotFound(new ApiResponse<object>
+            {
+                Success = false,
+                Message = "Item not found.",
+                Data = null
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ApiResponse<object>
+            {
+                Success = false,
+                Message = $"Error update imageitem: {ex.Message}",
+                Data = null
+            });
+        }
+    }
     [HttpGet]
     public async Task<IActionResult> GetListAsync([FromQuery] GetItemInput input)
     {

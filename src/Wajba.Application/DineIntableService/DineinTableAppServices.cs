@@ -1,5 +1,6 @@
 ﻿global using Wajba.Dtos.DineInTableContract;
 global using Wajba.Services.QrCodeServices;
+using Wajba.Models.BranchDomain;
 using Wajba.Models.OfferDomain;
 
 namespace Wajba.DineIntableService;
@@ -87,6 +88,22 @@ public class DineinTableAppServices : ApplicationService
         dineInTable1.LastModificationTime = DateTime.UtcNow;
         DineInTable dineInTable3 = await _repository.UpdateAsync(dineInTable1, true);
         Branch branch = await _branchrepo.FindAsync(dineIntable.BranchId);
+        var writer = new BarcodeWriterSvg
+        {
+            Format = BarcodeFormat.QR_CODE,
+            Options = new EncodingOptions
+            {
+                Width = 300,  // Width of the QR code
+                Height = 300, // Height of the QR code
+                Margin = 1    // Margin around the QR code
+            }
+        };
+        var svgImage = writer.Write(qrCodeUrl);
+        var svgContent = svgImage.Content;
+        byte[] bytes = System.Text.Encoding.UTF8.GetBytes(svgContent);
+        using var stream = new MemoryStream(bytes);
+        string url = await _imageService.UploadAsync(stream, qrCodeUrl);
+
         DiniINDto diniINDto = new DiniINDto()
         {
             BranchId = dineInTable3.BranchId,
@@ -98,12 +115,14 @@ public class DineinTableAppServices : ApplicationService
             Address = branch.Address,
             Phone = branch.Phone,
             BranchName = branch.Name,
+            url=url
         };
         return diniINDto;
     }
     public async Task<PagedResultDto<DiniINDto>> GetListAsync(GetDiniTableInput input)
     {
-        var queryable = await _repository.GetQueryableAsync();
+        var queryable = await _repository.WithDetailsAsync(p => p.Branch);
+        //var queryable = await _repository.GetQueryableAsync();
         queryable = queryable
             .WhereIf(!string.IsNullOrEmpty(input.Name),
             p => p.Name.ToLower() == input.Name.ToLower())
@@ -115,9 +134,47 @@ public class DineinTableAppServices : ApplicationService
         var dineInTables = await AsyncExecuter.ToListAsync(queryable
             .OrderBy(p=>p.Name)
               .PageBy(input.SkipCount, input.MaxResultCount));
+        List<DiniINDto> diniINDtos = new List<DiniINDto>();
+        foreach(var i in dineInTables)
+        {
+
+            DiniINDto diniINDto = new DiniINDto()
+            {
+                Address = i.Branch.Address,
+                BranchName = i.Branch.Name,
+                Name = i.Name,
+                Id = i.Id,
+                Phone = i.Branch.Phone,
+                BranchId = i.BranchId,
+                Size = (byte)i.Size,
+                Status = (int)i.Status,
+                QrCode = i.QrCode,
+                url = ""
+            };
+            var writer = new BarcodeWriterSvg
+            {
+                Format = BarcodeFormat.QR_CODE,
+                Options = new EncodingOptions
+                {
+                    Width = 300,  // Width of the QR code
+                    Height = 300, // Height of the QR code
+                    Margin = 1    // Margin around the QR code
+                }
+            };
+            QrcodeServices qrcodeServices = new QrcodeServices();
+            string qrCodeUrl = qrcodeServices.GenerateQrCodeUrl(i.BranchId, i.Name);
+            string qrCodeImage = qrcodeServices.GenerateQrCodeImage(qrCodeUrl);
+            var svgImage = writer.Write(qrCodeUrl);
+            var svgContent = svgImage.Content;
+            byte[] bytes = System.Text.Encoding.UTF8.GetBytes(svgContent);
+            using var stream = new MemoryStream(bytes);
+            string url = await _imageService.UploadAsync(stream, qrCodeUrl);
+            diniINDto.url = url;
+            diniINDtos.Add(diniINDto);
+        }
         return new PagedResultDto<DiniINDto>(
       totalCount,
-      ObjectMapper.Map<List<DineInTable>, List<DiniINDto>>(dineInTables)
+     diniINDtos
   );
     }
     public async Task<DiniINDto> GetByIdAsync(int id)

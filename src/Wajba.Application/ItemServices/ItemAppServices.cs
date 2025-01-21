@@ -95,7 +95,7 @@ public class ItemAppServices : ApplicationService
         itemDto.ItemAddons = item.ItemAddons.Select(addon => new ItemAddonDto
         {
             Id = addon.Id,
-            AddonName = addon.AddonName,
+            Name = addon.AddonName,
           
             AdditionalPrice = addon.AdditionalPrice
         }).ToList();

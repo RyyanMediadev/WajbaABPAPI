@@ -4,15 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Wajba.Models.AddressDomain
+namespace Wajba.Dtos.UserAddressContract
 {
-    public class UserAddress:Entity<int>
+    public class UpdateUserAddressDto
     {
+        public int Id { get; set; }
         public string Title { get; set; }
         public double Longitude { get; set; }
         public double Latitude { get; set; }
         public string CustomerId { get; set; }
-       // public virtual APPUser Customer { get; set; }
         public string? BuildingName { get; set; }
         public string? Street { get; set; }
         public string? ApartmentNumber { get; set; }

@@ -17,9 +17,9 @@ namespace Wajba.EntityFrameworkCore;
 [ConnectionStringName("Default")]
 
 
-public class WajbaDbContext :
-    AbpDbContext<WajbaDbContext>
-    
+public class WajbaDbContext : 
+AbpDbContext<WajbaDbContext>
+
 {
    
     #region Entities from the modules

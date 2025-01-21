@@ -11,7 +11,7 @@ namespace Wajba.Dtos.ItemExtraContract
         Task<ItemExtraDto> GetAsync(int itemid, int extraid);
         Task<List<ItemExtraDto>> GetListByItemIdAsync(int itemId);
         Task<ItemExtraDto> CreateAsync(CreateItemExtraDto input);
-        Task<ItemExtraDto> UpdateForSpecificItemAsync(int itemId, int extraId, UpdateItemExtraDto input);
+        Task<ItemExtraDto> UpdateForSpecificItemAsync(UpdateItemExtraDto input);
         Task DeleteAsync(int itemId, int extraId);
     }
 }

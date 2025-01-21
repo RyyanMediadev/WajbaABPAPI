@@ -13,7 +13,7 @@ public class PopularItemsController : WajbaController
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateAsync(CreatePopularitem input)
+    public async Task<IActionResult> CreateAsync([FromBody]CreatePopularitem input)
     {
         try
         {
@@ -82,7 +82,7 @@ public class PopularItemsController : WajbaController
         }
     }
     [HttpPut]
-    public async Task<IActionResult> UpdateAsync(UpdatePopularItemdto input)
+    public async Task<IActionResult> UpdateAsync([FromBody]UpdatePopularItemdto input)
     {
         try
         {

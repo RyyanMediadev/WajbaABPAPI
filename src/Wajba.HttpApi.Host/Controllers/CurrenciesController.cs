@@ -3,8 +3,6 @@ global using Wajba.CurrenciesService;
 
 namespace Wajba.Controllers;
 
-//[Route("api/[controller]")]
-//[ApiController]
 public class CurrenciesController : WajbaController
 {
     private readonly CurrenciesAppService _currenciesAppService;

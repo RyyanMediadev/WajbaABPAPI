@@ -3045,7 +3045,7 @@ namespace Wajba.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("DiscountPercentage")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18, 3)");
 
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");

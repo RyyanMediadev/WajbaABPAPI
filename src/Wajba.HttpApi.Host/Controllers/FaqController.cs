@@ -17,7 +17,6 @@ public class FaqController : WajbaController
         try
         {
             await _faqAppService.CreateAsync(input);
-
             return Ok(new ApiResponse<object>
             {
                 Success = true,

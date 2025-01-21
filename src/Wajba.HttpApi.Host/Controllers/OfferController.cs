@@ -68,7 +68,7 @@ public class OfferController : WajbaController
 
     }
     [HttpPut]
-    public async Task<IActionResult> UpdateAsync([FromBody  ] UpdateOfferdto input)
+    public async Task<IActionResult> UpdateAsync([FromBody] UpdateOfferdto input)
     {
         try
         {
@@ -152,6 +152,72 @@ public class OfferController : WajbaController
             {
                 Success = false,
                 Message = $"Error retrieving offers: {ex.Message}",
+                Data = null
+            });
+        }
+    }
+
+    [HttpDelete("Deletecategoryoffer")]
+    public async Task<IActionResult> Deletecategorys(int offerid, int categoryid)
+    {
+        try
+        {
+            await _offerAppService.deletecategory(offerid, categoryid);
+            return Ok(new ApiResponse<object>
+            {
+                Success = true,
+                Message = "categoryoffer deleted successfully.",
+                Data = null
+            });
+        }
+        catch (EntityNotFoundException)
+        {
+            return NotFound(new ApiResponse<object>
+            {
+                Success = false,
+                Message = "Offer not found.",
+                Data = null
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ApiResponse<object>
+            {
+                Success = false,
+                Message = $"Error deleting offer: {ex.Message}",
+                Data = null
+            });
+        }
+    }
+
+    [HttpDelete("DeleteItemsoffer")]
+    public async Task<IActionResult> DeleteItems(int offerid, int itemid)
+    {
+        try
+        {
+            await _offerAppService.deleteitems(offerid, itemid);
+            return Ok(new ApiResponse<object>
+            {
+                Success = true,
+                Message = "Offeritems deleted successfully.",
+                Data = null
+            });
+        }
+        catch (EntityNotFoundException)
+        {
+            return NotFound(new ApiResponse<object>
+            {
+                Success = false,
+                Message = "Offer not found.",
+                Data = null
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ApiResponse<object>
+            {
+                Success = false,
+                Message = $"Error deleting offer: {ex.Message}",
                 Data = null
             });
         }

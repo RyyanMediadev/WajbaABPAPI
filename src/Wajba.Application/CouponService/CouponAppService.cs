@@ -27,9 +27,9 @@ public class CouponAppService : ApplicationService
             using var ms = new MemoryStream(imagebytes);
             imageUrl = await _imageService.UploadAsync(ms, input.Image.FileName);
         }
+     
         var coupon = ObjectMapper.Map<CreateUpdateCouponDto, Coupon>(input);
         coupon.ImageUrl = imageUrl;
-
         await _couponRepository.InsertAsync(coupon, true);
         return ObjectMapper.Map<Coupon, CouponDto>(coupon);
     }

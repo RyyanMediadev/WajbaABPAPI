@@ -1,6 +1,6 @@
 ﻿global using Wajba.Dtos.ThemesContract;
 global using Wajba.Models.ThemesDomain;
-using System.IO;
+global using System.IO;
 
 namespace Wajba.ThemesService;
 

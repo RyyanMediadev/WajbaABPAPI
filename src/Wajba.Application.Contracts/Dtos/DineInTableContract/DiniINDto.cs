@@ -9,6 +9,5 @@ public class DiniINDto:EntityDto<int>
     public string BranchName { get; set; }
     public string Phone { get; set; }
     public string Address { get; set; }
-    public string QrCode { get; set; }
     public string url { get; set; }
 }

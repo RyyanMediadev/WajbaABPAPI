@@ -3,9 +3,9 @@ using Volo.Abp.Uow;
 using Wajba.CustomerAppService;
 using Wajba.Dtos.CustomerContract;
 using Wajba.Dtos.UserDTO;
-using static Wajba.CustomerAppService.WajbaUserAppService.TokenAuthenticationService;
 using static Wajba.CustomerAppService.WajbaUserAppService;
 using Wajba.Services.ImageService;
+using Wajba.UserAppService;
 
 namespace Wajba.Controllers
 {
@@ -14,13 +14,13 @@ namespace Wajba.Controllers
     {
         private readonly WajbaUserAppService _WajbaUserAppService;
         private readonly IUnitOfWork _uow;
-      //  private readonly ISMS _SMS;
+        private readonly ISmsSenderService _SMS;
         private readonly IAuthenticateService _authService;
         private readonly ICheckUniqes _checkUniq;
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly IMapper _mapper;
-        private readonly IUserManagementService _UserManagementService;
-       // private readonly IMailService _mailService;
+        private readonly UserAppService.TokenAuthenticationService.IUserManagementService _UserManagementService;
+        private readonly IMailService _mailService;
 
         public WajbaUserController(WajbaUserAppService wajbaAppService)
         {
@@ -87,7 +87,7 @@ namespace Wajba.Controllers
 
 
         [HttpPut("update-WajbaUser")]
-        public async Task<ActionResult> UpdateWajbaUser(UpdateUserDto input)
+        public async Task<ActionResult> UpdateWajbaUser(UpdateWajbaUserDto input)
         {
             await _WajbaUserAppService.UpdateUserAsync(input);
             return Ok();

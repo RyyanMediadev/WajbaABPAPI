@@ -7,7 +7,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Reflection;
 using System.Security.Claims;
-using System.Web.Http.ModelBinding;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Uow;
 using Wajba.CustomIdentity;
@@ -146,7 +145,7 @@ namespace Wajba.CustomerAppService
         }
 
 
-        public async Task UpdateUserAsync(UpdateUserDto input)
+        public async Task UpdateUserAsync(UpdateWajbaUserDto input)
         {
             var user = await _WajbaUserRepository.FirstOrDefaultAsync(u => u.Id == input.Id);
             user.FullName = input.FullName;
@@ -166,7 +165,7 @@ namespace Wajba.CustomerAppService
         }
 
         // 4. Get User List
-        public async Task<PagedResultDto<GetUserDto>> GetUserListAsync(GetUserListDto input)
+        public async Task<PagedResultDto<WajbaUserDto>> GetUserListAsync(GetUserListDto input)
         {
             var query = await _WajbaUserRepository.GetQueryableAsync();  // This gives you IQueryable<APPUser>
 

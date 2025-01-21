@@ -195,12 +195,12 @@ public class OfferController : WajbaController
     {
         try
         {
-            await _offerAppService.deleteitems(offerid, itemid);
+         var p=   await _offerAppService.deleteitems(offerid, itemid);
             return Ok(new ApiResponse<object>
             {
                 Success = true,
                 Message = "Offeritems deleted successfully.",
-                Data = null
+                Data = p
             });
         }
         catch (EntityNotFoundException)

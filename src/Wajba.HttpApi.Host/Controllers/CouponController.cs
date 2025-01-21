@@ -111,7 +111,29 @@ public class CouponController : WajbaController
             });
         }
     }
-
+    [HttpPut("UpdateImage")]
+    public async Task<IActionResult> UpdateImage(UpdateImageCoupon coupon)
+    {
+        try
+        {
+            var updatedCoupon = await _couponAppService.Updateimage(coupon.Id, coupon.model);
+            return Ok(new ApiResponse<CouponDto>
+            {
+                Success = true,
+                Message = "Coupon updated successfully.",
+                Data = updatedCoupon
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ApiResponse<object>
+            {
+                Success = false,
+                Message = $"Error updating coupon: {ex.Message}",
+                Data = null
+            });
+        }
+    }
     // Delete Coupon
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteAsync(int id)

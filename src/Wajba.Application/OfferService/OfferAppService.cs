@@ -2,7 +2,7 @@ global using Microsoft.AspNetCore.SignalR;
 global using Wajba.Dtos.OffersContract;
 global using Wajba.Hubs;
 global using Wajba.Models.OfferDomain;
-using Microsoft.AspNetCore.Mvc;
+using Wajba.EntityFrameworkCore;
 
 namespace Wajba.OfferService;
 
@@ -26,7 +26,8 @@ public class OfferAppService : ApplicationService
         IRepository<Item, int> itemrepo,
         IRepository<OfferCategory, int> offercategory,
         IRepository<OfferItem, int> offeritems,
-        IHubContext<OfferHub> hubContext)
+        IHubContext<OfferHub> hubContext
+      )
     {
         _offerRepository = offerRepository;
         _fileUploadService = imageService;
@@ -69,7 +70,7 @@ public class OfferAppService : ApplicationService
                 Item item = await _itemrepo.FindAsync(i);
                 if (item == null)
                     throw new Exception("item not found");
-                offer.OfferItems.Add(new OfferItem() { Item = item, ItemId = i });
+                offer.OfferItems.Add(new OfferItem() { Item = item, ItemId = i, OfferId = offer.Id });
             }
         else
             foreach (var cat in input.CategoryIds)
@@ -77,7 +78,7 @@ public class OfferAppService : ApplicationService
                 Category category = await _categoryrepo.FindAsync(cat);
                 if (category == null)
                     throw new Exception("category not found");
-                offer.OfferCategories.Add(new OfferCategory() { Category = category });
+                offer.OfferCategories.Add(new OfferCategory() { Category = category, OfferId = offer.Id });
             }
         var imagebytes = Convert.FromBase64String(input.Model.Base64Content);
         using var ms = new MemoryStream(imagebytes);
@@ -109,51 +110,78 @@ public class OfferAppService : ApplicationService
         offer.EndDate = input.EndDate;
         offer.DiscountPercentage = input.DiscountPercentage;
         offer.discountType = (DiscountType)input.DiscountType;
+        //var p = await _offeritems.ToListAsync();
+        //foreach (var i in p)
+        //{
+        //    if (i.OfferId == offer.Id)
+        //        await _offeritems.DeleteAsync(i, true);
+        //}
+        //p = await _offeritems.ToListAsync();
+        //foreach (var i in p)
+        //{
+        //    if (i.OfferId == offer.Id)
+        //        await _offeritems.DeleteAsync(i, true);
+        //}
+        //var l = await _offercategory.ToListAsync();
+        //foreach (var i in l)
+        //{
+        //    if (i.OfferId == offer.Id)
+        //        await _offercategory.DeleteAsync(i, true);
+        //}
         if (input.ItemIds.Count == 0 && input.CategoryIds.Count() == 0)
             throw new Exception("Invalid data");
+        foreach (var i in offer.OfferItems.ToList())
+            await _offeritems.HardDeleteAsync(i, true);
+        foreach (var i in offer.OfferCategories.ToList())
+            await _offercategory.HardDeleteAsync(i, true);
         offer.OfferCategories.Clear();
         offer.OfferItems.Clear();
         //offer.OfferItems.RemoveAll(oi => !input.ItemIds.Contains(oi.ItemId));
         //offer.OfferCategories.RemoveAll(oi => !input.CategoryIds.Contains(oi.CategoryId));
         offer.OfferCategories = new List<OfferCategory>();
         offer.OfferItems = new List<OfferItem>();
-        //offer = await _offerRepository.UpdateAsync(offer, true);
+        var offer1 = await _offerRepository.UpdateAsync(offer, true);
+
+        var offerss = await _offerRepository.WithDetailsAsync(p => p.OfferCategories,
+         x => x.OfferItems).Result.Include(p => p.OfferCategories).ThenInclude(p => p.Category)
+         .Include(p => p.OfferItems).ThenInclude(p => p.Item).ToListAsync();
+        var offer2 = offerss.FirstOrDefault(p => p.Id == input.Id);
         if (input.ItemIds.Count > 0)
         {
             foreach (var i in input.ItemIds)
             {
-                var py = await _offeritems.FirstOrDefaultAsync(p => p.ItemId == i && p.OfferId == offer.Id);
+                var py = await _offeritems.FirstOrDefaultAsync(p => p.ItemId == i );
                 if (py == null)
                 {
                     Item item = await _itemrepo.FindAsync(i);
                     if (item == null)
                         throw new Exception("item not found");
-                    py = new OfferItem() { Item = item, ItemId = i, OfferId = offer.Id };
+                    py = new OfferItem() { Item = item, ItemId = i, OfferId = offer1.Id };
 
                 }
-                offer.OfferItems.Add(py);
+                offer1.OfferItems.Add(py);
             }
         }
         else
         {
             foreach (var cat in input.CategoryIds)
             {
-                var py = await _offercategory.FirstOrDefaultAsync(p => p.CategoryId == cat && p.OfferId == offer.Id);
+                var py = await _offercategory.FirstOrDefaultAsync(p => p.CategoryId == cat);
                 if (py == null)
                 {
                     Category category = await _categoryrepo.FindAsync(cat);
                     if (category == null)
                         throw new Exception("category not found");
-                    py = new OfferCategory() { Category = category, OfferId = offer.Id };
-                    offer.OfferCategories.Add(py);
+                    py = new OfferCategory() { Category = category, OfferId = offer1.Id };
+                    offer1.OfferCategories.Add(py);
                 }
             }
         }
         var imagebytes = Convert.FromBase64String(input.Model.Base64Content);
         using var ms = new MemoryStream(imagebytes);
-        offer.LastModificationTime = DateTime.UtcNow;
-        offer.ImageUrl = await _fileUploadService.UploadAsync(ms, input.Model.FileName);
-        var o = await _offerRepository.UpdateAsync(offer, true);
+        offer1.LastModificationTime = DateTime.UtcNow;
+        offer1.ImageUrl = await _fileUploadService.UploadAsync(ms, input.Model.FileName);
+        var o = await _offerRepository.UpdateAsync(offer1, true);
         return tooffedto(o);
     }
     public async Task<OfferDto> updateimage(int id, Base64ImageModel input)
@@ -214,10 +242,12 @@ public class OfferAppService : ApplicationService
         var o = offers.FirstOrDefault(p => p.Id == id);
         if (o == null)
             throw new Exception("Not found");
-            OfferItem offerItem = o.OfferItems.FirstOrDefault(p => p.ItemId == itemid);
+        OfferItem offerItem = o.OfferItems.FirstOrDefault(p => p.ItemId == itemid);
             if (offerItem == null)
                 throw new Exception("invalid data");
             o.OfferItems.Remove(offerItem);
+        await _offeritems.DeleteAsync(offerItem, true);
+        
         o.LastModificationTime = DateTime.UtcNow;
         o = await _offerRepository.UpdateAsync(o, true);
         return tooffedto(o);
@@ -235,15 +265,30 @@ public class OfferAppService : ApplicationService
             throw new Exception("invalid data");
         o.OfferCategories.Remove(offerCategory);
         o.LastModificationTime = DateTime.UtcNow;
+        await _offercategory.DeleteAsync(offerCategory, true);
         o = await _offerRepository.UpdateAsync(o, true);
         return tooffedto(o);
     }
     public async Task DeleteAsync(int id)
     {
-        var offer = await _offerRepository.GetAsync(id);
-        if (offer == null)
-            throw new Exception("Not found");
-        await _offerRepository.DeleteAsync(id, true);
+        //foreach (var i in await _offercategory.ToListAsync())
+        //    await _offercategory.DeleteAsync(i, true);
+        //foreach (var i in await _offeritems.ToListAsync())
+        //    await _offeritems.DeleteAsync(i, true);
+        //foreach (var i in await _offerRepository.ToListAsync())
+        //    await _offerRepository.DeleteAsync(i, true);
+        var offer = await _offerRepository.FirstOrDefaultAsync(p => p.Id == id);
+        await _offerRepository.HardDeleteAsync(offer, true);
+
+        //if (offer == null)
+        //    throw new Exception("Not found");
+        //var op = await _offeritems.GetListAsync(p => p.OfferId == id);
+        //foreach (var i in op)
+        //    await _offeritems.HardDeleteAsync(i, true);
+        //var l = await _offercategory.GetListAsync(p => p.OfferId == id);
+        //foreach (var i in l)
+        //    await _offercategory.HardDeleteAsync(i, true);
+        //await _offerRepository.HardDeleteAsync(offer, true);
     }
     public OfferDto tooffedto(Offer o)
     {

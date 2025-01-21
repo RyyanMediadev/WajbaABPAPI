@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace Wajba.Configurations;
+﻿namespace Wajba.Configurations;
 
 public class OfferConfiguration : IEntityTypeConfiguration<Offer>
 {

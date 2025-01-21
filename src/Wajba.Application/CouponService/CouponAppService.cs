@@ -27,8 +27,24 @@ public class CouponAppService : ApplicationService
             using var ms = new MemoryStream(imagebytes);
             imageUrl = await _imageService.UploadAsync(ms, input.Image.FileName);
         }
-     
-        var coupon = ObjectMapper.Map<CreateUpdateCouponDto, Coupon>(input);
+        if (input.StartDate > input.EndDate)
+            throw new Exception("Invalid data");
+        Coupon coupon = new Coupon()
+        {
+            Code = input.Code,
+            CountOfUsers = input.LimitPerUser,
+            LimitPerUser = input.LimitPerUser,
+            Description = input.Description,
+            Discount = input.Discount,
+            DiscountType = (DiscountType)input.DiscountType,
+            Name = input.Name,
+            EndDate = input.EndDate,
+            IsExpired = false,
+            StartDate = input.StartDate,
+            MaximumDiscount = input.MaximumDiscount,
+            MinimumOrderAmount = input.MinimumOrderAmount,
+        };
+        //var coupon = ObjectMapper.Map<CreateUpdateCouponDto, Coupon>(input);
         coupon.ImageUrl = imageUrl;
         await _couponRepository.InsertAsync(coupon, true);
         return ObjectMapper.Map<Coupon, CouponDto>(coupon);

@@ -63,7 +63,7 @@ namespace Wajba.WajbaUsersService
             List<string> MessageArEng = new List<string>();
 
 
-            var Email = _WajbaUserRepository.FirstOrDefaultAsync(a => a.Email == request.Email).Result;
+            var Email = _WajbaUserRepository.FirstOrDefaultAsync(a => a.Email == request.Email);
             var Mobil = _WajbaUserRepository.FirstOrDefaultAsync(a => a.Phone == request.Mobile);
 
             if (Email != null)

@@ -1,5 +1,6 @@
 ﻿global using Wajba.Dtos.DineInTableContract;
 global using Wajba.Services.QrCodeServices;
+using System.IO;
 using Wajba.Models.OfferDomain;
 
 namespace Wajba.DineIntableService;

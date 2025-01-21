@@ -2,7 +2,6 @@ global using Microsoft.AspNetCore.SignalR;
 global using Wajba.Dtos.OffersContract;
 global using Wajba.Hubs;
 global using Wajba.Models.OfferDomain;
-using System.IO;
 
 namespace Wajba.OfferService;
 
@@ -255,38 +254,6 @@ public class OfferAppService : ApplicationService
 
             }).ToList()
         };
-        offerDto.categoryDtos = new List<CategoryDto>();
-        offerDto.itemDtos = new List<ItemDto>();
-        foreach(var m in o.OfferItems)
-        {
-            ItemDto itemDto = new ItemDto()
-            {
-                Name = m.Item.Name,
-                status = m.Item.Status.ToString(),
-                imageUrl = m.Item.ImageUrl,
-                CategoryId = m.Item.CategoryId,
-                IsFeatured = m.Item.IsFeatured,
-                Description = m.Item.Description,
-                Id = m.Item.Id,
-                ItemType = m.Item.ItemType.ToString(),
-                Price = m.Item.Price,
-                TaxValue = m.Item.TaxValue,
-                Note = m.Item.Note,
-            };
-            offerDto.itemDtos.Add(itemDto);
-        }
-        foreach(var c in o.OfferCategories)
-        {
-            CategoryDto categoryDto = new CategoryDto()
-            {
-                Description = c.Category.Description,
-                ImageUrl = c.Category.ImageUrl,
-                Id = c.Category.Id,
-                status = (int)c.Category.Status,
-                name = c.Category.Name
-            };
-            offerDto.categoryDtos.Add(categoryDto);
-        }
         return offerDto;
     }
 

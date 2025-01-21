@@ -173,8 +173,6 @@ public class DineinTableAppServices : ApplicationService
     }
     public async Task DeleteAsync(int id)
     {
-        foreach (var i in await _repository.ToListAsync())
-      await      _repository.DeleteAsync(i,true);
         DineInTable dine = await _repository.GetAsync(id);
         if (dine == null) throw new Exception("NotFound DineTable");
         await _repository.DeleteAsync(id, true);

@@ -1,8 +1,13 @@
-﻿namespace Wajba.Dtos.CustomerContract;
+﻿global using Volo.Abp.Identity;
+using Microsoft.AspNetCore.Identity;
+using Wajba.Models.AddressDomain;
 
-public class CreateUserDto
+namespace Wajba.Models.UsersDomain;
+
+public class WajbaUser : FullAuditedEntity<int>
 {
-    public string? FullName { get; set; }
+
+    public string FullName { get; set; }
     public string Email { get; set; }
 
     public string Phone { get; set; }
@@ -10,8 +15,6 @@ public class CreateUserDto
     public Status status { get; set; }
     public UserTypes Type { get; set; }
     public string? ProfilePhoto { get; set; }
-    public int Points { get; set; } = 0;
     public string Password { get; set; }
-    public string ConfirmPassword { get; set; }
 
 }

@@ -66,6 +66,10 @@ AbpDbContext<WajbaDbContext>
     public DbSet<Notification> Notifications { get; set; }
     public DbSet<OTP> OTPs { get; set; }
     public DbSet<OrderSetup> OrderSetups { get; set; }
+    public DbSet<WajbaUser> WajbaUsers { get; set; }
+
+
+    
     #endregion
     public WajbaDbContext(DbContextOptions<WajbaDbContext> options)
         : base(options)

@@ -9,6 +9,7 @@ global using Volo.Abp.Domain.Repositories;
 global using Wajba.Dtos.Categories;
 global using Wajba.Models.CategoriesDomain;
 global using Wajba.Services.ImageService;
+using System.IO;
 
 namespace Wajba.Categories;
 
@@ -38,7 +39,7 @@ public class CategoryAppService : ApplicationService
             Status = (Status)input.status
         };
         var imagebytes = Convert.FromBase64String(input.Model.Base64Content);
-        using var ms = new MemoryStream(imagebytes);
+        using var ms = new System.IO.MemoryStream(imagebytes);
         category.ImageUrl = await _imageService.UploadAsync(ms, input.Model.FileName);
         var insertedCategory = await _categoryRepository.InsertAsync(category, true);
         return ObjectMapper.Map<Category, CategoryDto>(insertedCategory);

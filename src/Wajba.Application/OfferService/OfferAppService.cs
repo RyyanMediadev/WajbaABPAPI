@@ -1,7 +1,8 @@
-﻿global using Microsoft.AspNetCore.SignalR;
+global using Microsoft.AspNetCore.SignalR;
 global using Wajba.Dtos.OffersContract;
 global using Wajba.Hubs;
 global using Wajba.Models.OfferDomain;
+using System.IO;
 
 namespace Wajba.OfferService;
 
@@ -78,6 +79,7 @@ public class OfferAppService : ApplicationService
                     throw new Exception("category not found");
                 offer.OfferCategories.Add(new OfferCategory() { Category = category });
             }
+
         var imagebytes = Convert.FromBase64String(input.Model.Base64Content);
         using var ms = new MemoryStream(imagebytes);
         offer.ImageUrl = await _fileUploadService.UploadAsync(ms, input.Model.FileName);
@@ -86,6 +88,7 @@ public class OfferAppService : ApplicationService
         await _hubContext.Clients.All.SendAsync("ReceiveOffer", offerdto);
         return offerdto;
     }
+
 
     public async Task<OfferDto> UpdateAsync(int id, UpdateOfferdto input)
     {

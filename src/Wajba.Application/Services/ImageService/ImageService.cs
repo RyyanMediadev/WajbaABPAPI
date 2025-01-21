@@ -1,5 +1,6 @@
 ﻿global using CloudinaryDotNet;
 global using CloudinaryDotNet.Actions;
+using System.IO;
 
 namespace Wajba.Services.ImageService;
 

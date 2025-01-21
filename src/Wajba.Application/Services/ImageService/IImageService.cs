@@ -1,4 +1,5 @@
 ﻿global using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace Wajba.Services.ImageService;
 

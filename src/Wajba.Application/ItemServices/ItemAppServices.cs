@@ -1,10 +1,14 @@
-﻿global using Wajba.Dtos.ItemsDtos;
+global using Wajba.Dtos.ItemsDtos;
 global using Wajba.Enums;
 global using Wajba.Models.Items;
 global using Microsoft.EntityFrameworkCore;
+
+using System.IO;
+
 using Volo.Abp.ObjectMapping;
 using Wajba.Dtos.ItemVariationContract;
 using Wajba.Models.ItemVariationDomain;
+
 
 
 namespace Wajba.ItemServices;

@@ -1,8 +1,14 @@
-﻿global using Wajba.Dtos.ItemsDtos;
+global using Wajba.Dtos.ItemsDtos;
 global using Wajba.Enums;
 global using Wajba.Models.Items;
 global using Microsoft.EntityFrameworkCore;
+
 using System.IO;
+
+using Volo.Abp.ObjectMapping;
+using Wajba.Dtos.ItemVariationContract;
+using Wajba.Models.ItemVariationDomain;
+
 
 
 namespace Wajba.ItemServices;
@@ -56,18 +62,64 @@ public class ItemAppServices : ApplicationService
     public async Task<ItemDto> GetItemWithDetailsAsync(int id)
     {
         var queryable = await _repository.WithDetailsAsync(
-        x => x.ItemAddons,
-        x => x.ItemExtras,
-        x => x.ItemVariations,
-        x=>x.ItemBranches
-    );
+         x => x.ItemAddons,
+         x => x.ItemExtras,
+         x => x.ItemVariations,
+         x => x.ItemBranches
+     );
+
         var item = await queryable.FirstOrDefaultAsync(x => x.Id == id);
         if (item == null)
             throw new EntityNotFoundException(typeof(Item), id);
-        ItemDto itemDto = ObjectMapper.Map<Item, ItemDto>(item);
-        itemDto.Branchesids = new List<int>();
-        itemDto.Branchesids = item.ItemBranches.Select(p => p.BranchId).ToList();
+
+        //  map the main item to ItemDto
+        ItemDto itemDto = new ItemDto
+        {
+            Id = item.Id,
+            Name = item.Name,
+            Description = item.Description,
+            Note = item.Note,
+            status = item.Status.ToString(),
+            IsFeatured = item.IsFeatured,
+            imageUrl = item.ImageUrl,
+            Price = item.Price,
+            TaxValue = item.TaxValue,
+            CategoryId = item.CategoryId,
+            CategoryName = item.Category?.Name, 
+            ItemType = item.ItemType.ToString(),
+            IsDeleted = item.IsDeleted,
+            Branchesids = item.ItemBranches.Select(p => p.BranchId).ToList() 
+        };
+
+        //  map ItemAddons to ItemAddonDto
+        itemDto.ItemAddons = item.ItemAddons.Select(addon => new ItemAddonDto
+        {
+            Id = addon.Id,
+            AddonName = addon.AddonName,
+          
+            AdditionalPrice = addon.AdditionalPrice
+        }).ToList();
+
+        //  map ItemExtras to ItemExtraDto
+        itemDto.ItemExtras = item.ItemExtras.Select(extra => new ItemExtraDto
+        {
+            Id = extra.Id,
+            Name = extra.Name,
+           
+            AdditionalPrice = extra.AdditionalPrice
+        }).ToList();
+
+        // map ItemVariations to ItemVariationDto
+        itemDto.ItemVariations = item.ItemVariations.Select(variation => new ItemVariationDto
+        {
+            Id = variation.Id,
+            Name = variation.Name,
+            Note = variation.Note,
+            AdditionalPrice = variation.AdditionalPrice
+        }).ToList();
+
         return itemDto;
+       
     }
     public async Task<ItemDto> CreateAsync(CreateItemDto input)
     {

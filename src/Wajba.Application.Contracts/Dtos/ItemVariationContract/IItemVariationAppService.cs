@@ -13,7 +13,7 @@ namespace Wajba.Dtos.ItemVariationContract
         Task<List<ItemVariationDto>> GetListByItemAttributeIdAsync(int itemAttributeId);
         Task<List<ItemVariationDto>> GetListByItemIdAsync(int itemId);
         Task<ItemVariationDto> CreateAsync(CreateItemVariationDto input);
-        Task<ItemVariationDto> UpdateForSpecificItemAsync(int itemId, int variationId, UpdateItemVariationDto input);
+        Task<ItemVariationDto> UpdateForSpecificItemAsync( UpdateItemVariationDto input);
         Task DeleteForSpecificItemAsync(int itemId, int variationId);
     }
 }

@@ -12,7 +12,7 @@ public class OfferController : WajbaController
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateAsync([FromForm] CreateUpdateOfferDto input)
+    public async Task<IActionResult> CreateAsync([FromBody] CreateUpdateOfferDto input)
     {
         try
         {
@@ -34,10 +34,41 @@ public class OfferController : WajbaController
             });
         }
     }
+    [HttpPut("Editimage")]
+    public async Task<IActionResult> Updateimage(int id, Base64ImageModel model)
+    {
+        try
+        {
+            var updatedOffer = await _offerAppService.updateimage(id, model);
+            return Ok(new ApiResponse<OfferDto>
+            {
+                Success = true,
+                Message = "Offer updated successfully.",
+                Data = updatedOffer
+            });
+        }
+        catch (EntityNotFoundException)
+        {
+            return NotFound(new ApiResponse<object>
+            {
+                Success = false,
+                Message = "Offer not found.",
+                Data = null
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ApiResponse<object>
+            {
+                Success = false,
+                Message = $"Error updating offer: {ex.Message}",
+                Data = null
+            });
+        }
 
+    }
     [HttpPut]
-    public async Task<IActionResult> UpdateAsync([FromBody
-        ] UpdateOfferdto input)
+    public async Task<IActionResult> UpdateAsync([FromBody  ] UpdateOfferdto input)
     {
         try
         {

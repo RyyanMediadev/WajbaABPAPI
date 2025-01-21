@@ -12,7 +12,7 @@ public class CreateUpdateOfferDto
     public string Description { get; set; }
     public int BranchId { get; set; }
 
-    public List<int>? ItemIds { get; set; }
+    public List<int>? ItemIds { get; set; } = new List<int>();
 
-    public List<int>? CategoryIds { get; set; }
+    public List<int>? CategoryIds { get; set; } = new List<int>();
 }

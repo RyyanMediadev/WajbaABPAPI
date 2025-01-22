@@ -1,5 +1,6 @@
 ﻿global using Wajba.Dtos.CouponContract;
 global using Wajba.Models.CouponsDomain;
+using Wajba.Services;
 
 namespace Wajba.CouponService;
 
@@ -71,6 +72,16 @@ public class CouponAppService : ApplicationService
         .WhereIf(!string.IsNullOrEmpty(input.code), p => p.Code.ToString().ToLower() == input.code.ToLower())
         .WhereIf(input.discountype.HasValue, p => p.DiscountType == (DiscountType)input.discountype.Value)
         .WhereIf(input.isexpire.HasValue, p => p.IsExpired == input.isexpire.Value);
+        if (!string.IsNullOrEmpty(input.startdate))
+        {
+            var l = TimeManipulation.TryParseDate(input.startdate);
+            queryable = (IQueryable<Coupon>)queryable.WhereIf(true, p => p.StartDate >= l.Value).ToList();
+        }
+        if (!string.IsNullOrEmpty(input.enddate))
+        {
+            var l = TimeManipulation.TryParseDate(input.enddate);
+            queryable = (IQueryable<Coupon>)queryable.WhereIf(true, p => p.StartDate <= l.Value).ToList();
+        }
         var p = input.branchId.HasValue;
 
         var totalCount = await AsyncExecuter.CountAsync(queryable);

@@ -113,7 +113,7 @@ namespace Wajba.WajbaUsersService
         }
 
 
-        public async Task<WajbaUser> AuthenticateUser(LogInDto request)
+        public async Task<WajbaUser> AuthenticateUser(LogInWajbaUserDto request)
         {
 
             //token = string.Empty;

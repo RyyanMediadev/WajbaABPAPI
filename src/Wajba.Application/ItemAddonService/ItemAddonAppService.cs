@@ -40,7 +40,7 @@ public class ItemAddonAppService : ApplicationService,IItemAddonAppService
         {
             ItemId = input.ItemId,
             AdditionalPrice = input.AdditionalPrice,
-            AddonName = input.AddonName,
+            AddonName = item.Name,
         };
         await _itemAddonRepository.InsertAsync(itemAddon, true);
         return ObjectMapper.Map<ItemAddon, ItemAddonDto>(itemAddon);

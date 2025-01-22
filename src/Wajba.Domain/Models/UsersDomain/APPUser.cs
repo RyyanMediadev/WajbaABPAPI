@@ -18,7 +18,7 @@ public class APPUser : IdentityUser<Guid>, IEntity<Guid>
     public UserTypes Type { get; set; }
     public string? ProfilePhoto { get; set; }
     public int Points { get; set; } = 0;
-    public ICollection<Coupon> Coupons { get; set; } = new List<Coupon>();
+    //public ICollection<Coupon> Coupons { get; set; } = new List<Coupon>();
     public ICollection<UserAddress>? Addresses { get; set; } = new List<UserAddress>();
 
     //public ICollection<Branch> Branches { get; set; } = new List<Branch>();

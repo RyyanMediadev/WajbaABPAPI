@@ -1,5 +1,8 @@
 ﻿global using Wajba.Dtos.DineInTableContract;
 global using Wajba.Services.QrCodeServices;
+global using System.IO;
+global using Wajba.Models.OfferDomain;
+
 
 namespace Wajba.DineIntableService;
 
@@ -156,7 +159,7 @@ public class DineinTableAppServices : ApplicationService
         DineInTable dine = await _repository.GetAsync(id);
         if (dine == null)
             throw new Exception("Not Found");
-        Branch branch = await _branchrepo.GetAsync(id);
+        Branch branch = await _branchrepo.GetAsync(dine.BranchId);
         DiniINDto diniINDto = new DiniINDto()
         {
             Name = dine.Name,

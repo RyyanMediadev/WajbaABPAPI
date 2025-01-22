@@ -7,6 +7,9 @@ global using System.Collections.Generic;
 global using System.IO;
 global using System.Linq;
 global using Volo.Abp;
+global using Volo.Abp.Data;
+global using Volo.Abp.Domain.Entities;
+global using Volo.Abp.Domain.Repositories;
 global using Volo.Abp.Account;
 global using Volo.Abp.Account.Web;
 global using Volo.Abp.AspNetCore.MultiTenancy;
@@ -23,14 +26,9 @@ global using Volo.Abp.UI.Navigation.Urls;
 global using Volo.Abp.VirtualFileSystem;
 global using Wajba.CloudinaryConfigure;
 global using Wajba.MultiTenancy;
-using Microsoft.AspNetCore.Identity;
-
-using Wajba.CustomerAppService;
 using Wajba.Hubs;
 using Wajba.Middleware;
-using Wajba.Models.UsersDomain;
 using Wajba.SwaggerFilters;
-using static OpenIddict.Abstractions.OpenIddictConstants.Permissions;
 
 
 namespace Wajba;

@@ -1,4 +1,5 @@
-﻿namespace Wajba.Dtos.WajbaUsersContract;
+﻿
+namespace Wajba.Dtos.WajbaUsersContract;
 
 public class CreateUserDto
 {
@@ -14,4 +15,8 @@ public class CreateUserDto
     public string Password { get; set; }
     public string ConfirmPassword { get; set; }
 
+    //public static implicit operator CreateUserDto(Wajba.Models.WajbaUserDomain.WajbaUser v)
+    //{
+    //    throw new NotImplementedException();
+    //}
 }

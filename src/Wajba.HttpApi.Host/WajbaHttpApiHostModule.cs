@@ -26,8 +26,16 @@ global using Volo.Abp.UI.Navigation.Urls;
 global using Volo.Abp.VirtualFileSystem;
 global using Wajba.CloudinaryConfigure;
 global using Wajba.MultiTenancy;
+
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using System.Text;
+using Wajba.CustomerAppService;
 using Wajba.Hubs;
 using Wajba.Middleware;
+using Wajba.Models.UsersDomain;
+using Wajba.SharedTokenManagement;
+
 using Wajba.SwaggerFilters;
 
 
@@ -83,11 +91,43 @@ public class WajbaHttpApiHostModule : AbpModule
         //  .AddEntityFrameworkStores<WajbaDbContext>()
         //  .AddDefaultTokenProviders();
         // Register other necessary services for UserManager<APPUser>
-    //context.Services.AddTransient<IUserStore<APPUser>, UserStore<APPUser, IdentityRole, ApplicationDbContext>>();
+        //context.Services.AddTransient<IUserStore<APPUser>, UserStore<APPUser, IdentityRole, ApplicationDbContext>>();
 
         //context.Services.AddTransient<icustomuser, CustomUserAppService>();
         //context.Services.AddApplication<WajbaApplicationModule>();
+
         var configuration = context.Services.GetConfiguration();
+
+        // Bind TokenManagement settings
+        var token = configuration.GetSection("tokenManagement").Get<TokenManagement>();
+        context.Services.Configure<TokenManagement>(configuration.GetSection("tokenManagement"));
+
+        // Add Authentication
+        context.Services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer(options =>
+        {
+            options.RequireHttpsMetadata = false;
+            options.SaveToken = true;
+            options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(Encoding.ASCII.GetBytes(token.Secret)),
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero,
+                ValidIssuer = token.Issuer,
+                ValidAudience = token.Audience,
+            };
+        });
+
+
+
+
+      //  var configuration = context.Services.GetConfiguration();
         var hostingEnvironment = context.Services.GetHostingEnvironment();
 
         ConfigureAuthentication(context);

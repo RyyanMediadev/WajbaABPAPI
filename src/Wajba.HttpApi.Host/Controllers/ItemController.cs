@@ -13,7 +13,7 @@ public class ItemController : WajbaController
     }
 
     [HttpGet("by-category/{categoryId}")]
-    public async Task<List<ItemDto>> GetItemsByCategory(int categoryId)
+    public async Task<List<ItemDto>> GetItemsByCategory(int? categoryId)
     {
         return await _itemAppServices.GetItemsByCategoryAsync(categoryId);
     }
@@ -28,6 +28,23 @@ public class ItemController : WajbaController
     public async Task<ItemDto> GetItemWithDetails(int id)
     {
         return await _itemAppServices.GetItemWithDetailsAsync(id);
+    }
+    [HttpGet("{id}/details-transformed")]
+    public async Task<IActionResult> GetItemWithTransformedDetails(int id)
+    {
+        try
+        {
+            var item = await _itemAppServices.GetItemWithTransformedDetailsAsync(id);
+            return Ok(new { success = true, data = item });
+        }
+        catch (EntityNotFoundException ex)
+        {
+            return NotFound(new { success = false, message = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { success = false, message = ex.Message });
+        }
     }
 
     [HttpPost]

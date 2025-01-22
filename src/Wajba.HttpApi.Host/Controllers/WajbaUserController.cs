@@ -26,6 +26,7 @@ namespace Wajba.Controllers
         private readonly WajbaUsersAppservice _WajbaUsersAppService;
 
         //private readonly IUnitOfWork _uow;
+
         //private readonly ISmsSenderService _SMS;
         //private readonly IAuthenticateService _authService;
         //private readonly ICheckUniqes _checkUniq;
@@ -71,7 +72,7 @@ namespace Wajba.Controllers
                         Message = $"Error creating coupon: {ex.Message}",
                         Data = null
                     });
-                  //  return BadRequest(" Internal server error" + " " + ex.Message);
+                    //  return BadRequest(" Internal server error" + " " + ex.Message);
 
                 }
 
@@ -85,7 +86,7 @@ namespace Wajba.Controllers
 
 
         [HttpPost, Route("LogIn")]
-        public IActionResult LogIn(LogInDto LogInDto)
+        public async Task<IActionResult> LogInAsync(LogInWajbaUserDto LogInDto)
         {
             try
             {
@@ -94,7 +95,7 @@ namespace Wajba.Controllers
 
 
                 //    var user = _authService.AuthenticateUser(LogInDto, out string token);
-                var user = _WajbaUsersAppService.AuthenticateUser(LogInDto, out string token);
+                var user = await _WajbaUsersAppService.AuthenticateUser(LogInDto);
 
 
                 if (user == null)
@@ -105,18 +106,30 @@ namespace Wajba.Controllers
                 {
                     return BadRequest(new { MessageAr = " !الحساب غير مفعل توجه لبريدك الالكتروني للتفعيل", MessageEng = "Account is not Active ;Check Your E-mail to Activate !" });
                 }
+
+                var GenerateTokenAsync = _WajbaUsersAppService.GenerateTokenAsync(user);
+
                 if (user != null)
                 {
                     //Implement User Profiles
 
 
 
-                    user.Password = null;
+                    ////user.Password = null;
+
+
+                    //return Ok(new ApiResponse<UserInfoDTO>
+                    //{
+                    //    Success = true,
+                    //    Message = "User created successfully.",
+                    //    Data = user
+                    //});
+
                     return Ok(new
                     {
-                        user,
+                        WajbaUser = user,
 
-                        token
+                        GenerateToken = GenerateTokenAsync
                     });
                 }
                 return BadRequest(new { MessageAr = "خطأ في كلمة المرور او رقم الجوال", MessageEng = "Account is not Active ; Check Your E-mail to Activate" });
@@ -183,7 +196,7 @@ namespace Wajba.Controllers
             return Ok();
 
         }
-       
+
         [AllowAnonymous]
         [HttpPost, Route("ForgetPasswordPost")]
         public IActionResult ForgetPasswordPost([FromBody] ForgetPasswordDTO forgetPasswordDTO)

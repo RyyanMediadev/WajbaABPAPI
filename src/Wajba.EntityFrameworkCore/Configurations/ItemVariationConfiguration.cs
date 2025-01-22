@@ -16,7 +16,7 @@ public class ItemVariationConfiguration : IEntityTypeConfiguration<ItemVariation
             .HasForeignKey(e => e.ItemId);
 
         builder.HasOne(e => e.ItemAttributes)
-            .WithMany()
+            .WithMany(a => a.ItemVariations)
             .HasForeignKey(e => e.ItemAttributesId);
 
         builder.ToTable("ItemVariations");

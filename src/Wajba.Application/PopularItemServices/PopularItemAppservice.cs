@@ -60,10 +60,12 @@ public class PopularItemAppservice : ApplicationService
     }
     public async Task<PagedResultDto<Popularitemdto>> GetPopularItems(GetPopulariteminput input)
     {
-        var popularitems = await _popularitemrepo.GetQueryableAsync();
-        popularitems = popularitems.WhereIf(string.IsNullOrEmpty(input.Name), p => p.Name.ToLower() == input.Name.ToLower())
-            .WhereIf(input.status.HasValue, p => p.Status == (Status)input.status.Value);
-        int count = popularitems.Count();
+        var popularitems = await _popularitemrepo.WithDetailsAsync(p => p.Branch);
+        if (!string.IsNullOrEmpty(input.Name))
+            popularitems = popularitems.Where(p => p.Name.ToLower() == input.Name.ToLower());
+        if (input.status.HasValue)
+            popularitems = popularitems.Where(p => p.Status ==(Status) input.status);
+        int count =await popularitems.CountAsync();
         popularitems = popularitems.OrderBy(input.Sorting ?? nameof(PopularItem.Name)).PageBy(input.SkipCount, input.MaxResultCount);
         List<PopularItem> popularitemslist = await popularitems.ToListAsync();
         List<Popularitemdto> populartitemsdto = ObjectMapper.Map<List<PopularItem>, List<Popularitemdto>>(popularitemslist);

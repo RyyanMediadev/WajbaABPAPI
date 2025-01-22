@@ -24,8 +24,8 @@ namespace Wajba.Dtos.ItemsDtos.ItemDependencies
         public string ItemType { get; set; }
         public bool IsDeleted { get; set; }
         public List<int> BranchesIds { get; set; }
-        public List<ItemAddonDto> ItemAddons { get; set; }
-        public List<ItemExtraDto> ItemExtras { get; set; }
+        public List<ItemAddonDTO> ItemAddons { get; set; }
+        public List<ItemExtraDTO> ItemExtras { get; set; }
         public List<AttributeDto> Attributes { get; set; }
     }
     public class AttributeDto
@@ -48,6 +48,7 @@ namespace Wajba.Dtos.ItemsDtos.ItemDependencies
         public int Id { get; set; }
         public string Name { get; set; }
         public decimal AdditionalPrice { get; set; }
+        public string ImageUrl { get; set; }
     }
 
     public class ItemExtraDTO

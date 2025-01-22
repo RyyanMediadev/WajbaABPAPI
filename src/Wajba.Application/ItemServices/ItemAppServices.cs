@@ -164,19 +164,26 @@ public class ItemAppServices : ApplicationService
 
     public async Task<ItemWithDependenciesDto> GetItemWithTransformedDetailsAsync(int id)
     {
+        // Load item and related entities
         var queryable = await _repository.WithDetailsAsync(
             x => x.ItemAddons,
             x => x.ItemExtras,
-            x => x.ItemVariations,
-            x => x.ItemBranches
+            x => x.ItemVariations,  
+            x => x.ItemBranches ,
+            x => x.Category
         );
 
+        // Explicitly include nested navigation properties
+        queryable = queryable.Include(x => x.ItemVariations)
+                             .ThenInclude(v => v.ItemAttributes);
+
+        // Fetch the item
         var item = await queryable.FirstOrDefaultAsync(x => x.Id == id);
         if (item == null)
             throw new EntityNotFoundException(typeof(Item), id);
 
         // Map the main item to ItemDto
-        ItemWithDependenciesDto itemDto = new ItemWithDependenciesDto
+        var itemDto = new ItemWithDependenciesDto
         {
             Id = item.Id,
             Name = item.Name,
@@ -195,15 +202,17 @@ public class ItemAppServices : ApplicationService
         };
 
         // Map ItemAddons
-        itemDto.ItemAddons = item.ItemAddons.Select(addon => new ItemAddonDto
+        itemDto.ItemAddons = item.ItemAddons.Select(addon => new ItemAddonDTO
         {
             Id = addon.Id,
             Name = addon.AddonName,
-            AdditionalPrice = addon.AdditionalPrice
+            AdditionalPrice = addon.AdditionalPrice,
+
+            ImageUrl = addon.Item?.ImageUrl
         }).ToList();
 
         // Map ItemExtras
-        itemDto.ItemExtras = item.ItemExtras.Select(extra => new ItemExtraDto
+        itemDto.ItemExtras = item.ItemExtras.Select(extra => new ItemExtraDTO
         {
             Id = extra.Id,
             Name = extra.Name,
@@ -212,7 +221,8 @@ public class ItemAppServices : ApplicationService
 
         // Group and map ItemVariations
         itemDto.Attributes = item.ItemVariations
-            .GroupBy(v => v.ItemAttributes?.Name) // Group by Attribute Name
+            .Where(v => v.ItemAttributes != null) // Exclude variations without attributes
+            .GroupBy(v => v.ItemAttributes.Name)  // Group by Attribute Name
             .Select(group => new AttributeDto
             {
                 AttributeName = group.Key,

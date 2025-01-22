@@ -42,6 +42,7 @@ public class PopularItemAppservice : ApplicationService
             CurrentPrice = input.currentprice,
             Description = input.Description,
             CategoryName = category.Name,
+            BranchId = 1
         };
         popularitem.ImageUrl = null;
         if (input.Model != null)

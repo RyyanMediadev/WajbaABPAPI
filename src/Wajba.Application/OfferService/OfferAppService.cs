@@ -2,7 +2,7 @@ global using Microsoft.AspNetCore.SignalR;
 global using Wajba.Dtos.OffersContract;
 global using Wajba.Hubs;
 global using Wajba.Models.OfferDomain;
-using System.IO;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Wajba.OfferService;
 
@@ -14,8 +14,8 @@ public class OfferAppService : ApplicationService
     private readonly IRepository<Branch, int> _branchrepo;
     private readonly IRepository<Category, int> _categoryrepo;
     private readonly IRepository<Item, int> _itemrepo;
-    private readonly IRepository<OfferCategory,int> _offercategory;
-    private readonly IRepository<OfferItem,int> _offeritems;
+    private readonly IRepository<OfferCategory, int> _offercategory;
+    private readonly IRepository<OfferItem, int> _offeritems;
     private readonly IHubContext<OfferHub> _hubContext;
 
     public OfferAppService(
@@ -24,8 +24,8 @@ public class OfferAppService : ApplicationService
         IRepository<Branch, int> branchrepo,
         IRepository<Category, int> categoryrepo,
         IRepository<Item, int> itemrepo,
-        IRepository<OfferCategory,int> offercategory,
-        IRepository<OfferItem,int> offeritems,
+        IRepository<OfferCategory, int> offercategory,
+        IRepository<OfferItem, int> offeritems,
         IHubContext<OfferHub> hubContext)
     {
         _offerRepository = offerRepository;
@@ -79,12 +79,11 @@ public class OfferAppService : ApplicationService
                     throw new Exception("category not found");
                 offer.OfferCategories.Add(new OfferCategory() { Category = category });
             }
-
         var imagebytes = Convert.FromBase64String(input.Model.Base64Content);
         using var ms = new MemoryStream(imagebytes);
         offer.ImageUrl = await _fileUploadService.UploadAsync(ms, input.Model.FileName);
         var createdOffer = await _offerRepository.InsertAsync(offer, true);
-        var offerdto = ObjectMapper.Map<Offer, OfferDto>(createdOffer);
+        var offerdto = tooffedto(createdOffer);
         await _hubContext.Clients.All.SendAsync("ReceiveOffer", offerdto);
         return offerdto;
     }
@@ -129,7 +128,7 @@ public class OfferAppService : ApplicationService
                     Item item = await _itemrepo.FindAsync(i);
                     if (item == null)
                         throw new Exception("item not found");
-                    py = new OfferItem() { Item = item, ItemId = i , OfferId=offer.Id};
+                    py = new OfferItem() { Item = item, ItemId = i, OfferId = offer.Id };
 
                 }
                 offer.OfferItems.Add(py);
@@ -145,7 +144,7 @@ public class OfferAppService : ApplicationService
                     Category category = await _categoryrepo.FindAsync(cat);
                     if (category == null)
                         throw new Exception("category not found");
-                    py = new OfferCategory() { Category = category ,OfferId=offer.Id};
+                    py = new OfferCategory() { Category = category, OfferId = offer.Id };
                     offer.OfferCategories.Add(py);
                 }
             }
@@ -155,44 +154,7 @@ public class OfferAppService : ApplicationService
         offer.LastModificationTime = DateTime.UtcNow;
         offer.ImageUrl = await _fileUploadService.UploadAsync(ms, input.Model.FileName);
         var o = await _offerRepository.UpdateAsync(offer, true);
-        //return ObjectMapper.Map<Offer, OfferDto>(updatedOffer);
-        OfferDto offerDto = new OfferDto()
-        {
-            Id = o.Id,
-            Name = o.Name,
-            Description = o.Description,
-            Image = o.ImageUrl,
-            Status = (int)o.status,
-            DiscountType = (int)o.discountType,
-            StartDate = o.StartDate,
-            EndDate = o.EndDate,
-            BranchId=o.BranchId,
-            DiscountPercentage = o.DiscountPercentage,
-            categoryDtos = o.OfferCategories.Select(c => new CategoryDto()
-            {
-                Description = c.Category.Description,
-                ImageUrl = c.Category.ImageUrl,
-                Id = c.Category.Id,
-                status = (int)c.Category.Status,
-                name = c.Category.Name
-            }).ToList(),
-            itemDtos = o.OfferItems.Select(m => new ItemDto()
-            {
-                Name = m.Item.Name,
-                status = m.Item.Status.ToString(),
-                imageUrl = m.Item.ImageUrl,
-                CategoryId = m.Item.CategoryId,
-                IsFeatured = m.Item.IsFeatured,
-                Description = m.Item.Description,
-                Id = m.Item.Id,
-                ItemType = m.Item.ItemType.ToString(),
-                Price = m.Item.Price,
-                TaxValue = m.Item.TaxValue,
-                Note = m.Item.Note,
-
-            }).ToList()
-        };
-        return offerDto;
+        return tooffedto(o);
     }
     public async Task<OfferDto> updateimage(int id, Base64ImageModel input)
     {
@@ -213,12 +175,78 @@ public class OfferAppService : ApplicationService
         var offers = await _offerRepository.WithDetailsAsync(p => p.OfferCategories,
          x => x.OfferItems).Result.Include(p => p.OfferCategories).ThenInclude(p => p.Category)
          .Include(p => p.OfferItems).ThenInclude(p => p.Item).ToListAsync();
-        var o =  offers.FirstOrDefault(p => p.Id == id);
+        var o = offers.FirstOrDefault(p => p.Id == id);
         if (o == null)
             throw new Exception("Not found");
         int l = o.OfferCategories.Count;
         l = o.OfferItems.Count;
         //var pp = o.OfferCategories.FirstOrDefault().Category.Name;
+        return tooffedto(o);
+    }
+
+    public async Task<PagedResultDto<OfferDto>> GetListAsync(GetOfferInput input)
+    {
+        var offers = await _offerRepository.WithDetailsAsync(p => p.OfferCategories,
+            x => x.OfferItems).Result.Include(p => p.OfferCategories).ThenInclude(p => p.Category)
+            .Include(p => p.OfferItems).ThenInclude(p => p.Item).ToListAsync();
+        offers = (List<Offer>)offers.WhereIf(!string.IsNullOrEmpty(input.name), p => p.Name.ToLower() == input.name.ToLower())
+            .WhereIf(input.status.HasValue, p => p.status == (Status)input.status.Value)
+            .WhereIf(input.startDate.HasValue, p => p.StartDate.Value == input.startDate.Value)
+            .WhereIf(input.endDate.HasValue, p => p.EndDate.Value == input.endDate.Value).ToList();
+        var totalCount = offers.Count();
+        //offers = (IQueryable<Offer>)offers.PageResult(input.SkipCount, input.MaxResultCount);
+        //offers = offers.OrderBy(input.Sorting);
+        //List<Offer> offers1 = await offers.ToListAsync();
+        List < OfferDto > offersdto = offers.Select(o => tooffedto(o)).ToList();
+        //var offers = await _offerRepository.GetPagedListAsync(input.SkipCount, input.MaxResultCount, input.Sorting);
+        //var totalCount = await _offerRepository.GetCountAsync();
+        return new PagedResultDto<OfferDto>(
+            totalCount,
+           offersdto
+        );
+    }
+
+    public async Task<OfferDto> deleteitems(int id, int itemid)
+    {
+        var offers = await _offerRepository.WithDetailsAsync(p => p.OfferCategories,
+      x => x.OfferItems).Result.Include(p => p.OfferCategories).ThenInclude(p => p.Category)
+      .Include(p => p.OfferItems).ThenInclude(p => p.Item).ToListAsync();
+        var o = offers.FirstOrDefault(p => p.Id == id);
+        if (o == null)
+            throw new Exception("Not found");
+            OfferItem offerItem = o.OfferItems.FirstOrDefault(p => p.ItemId == itemid);
+            if (offerItem == null)
+                throw new Exception("invalid data");
+            o.OfferItems.Remove(offerItem);
+        o.LastModificationTime = DateTime.UtcNow;
+        o = await _offerRepository.UpdateAsync(o, true);
+        return tooffedto(o);
+    }
+    public async Task<OfferDto> deletecategory(int id, int categoryid)
+    {
+        var offers = await _offerRepository.WithDetailsAsync(p => p.OfferCategories,
+      x => x.OfferItems).Result.Include(p => p.OfferCategories).ThenInclude(p => p.Category)
+      .Include(p => p.OfferItems).ThenInclude(p => p.Item).ToListAsync();
+        var o = offers.FirstOrDefault(p => p.Id == id);
+        if (o == null)
+            throw new Exception("Not found");
+        OfferCategory offerCategory = o.OfferCategories.FirstOrDefault(p => p.CategoryId == categoryid);
+        if (offerCategory == null)
+            throw new Exception("invalid data");
+        o.OfferCategories.Remove(offerCategory);
+        o.LastModificationTime = DateTime.UtcNow;
+        o = await _offerRepository.UpdateAsync(o, true);
+        return tooffedto(o);
+    }
+    public async Task DeleteAsync(int id)
+    {
+        var offer = await _offerRepository.GetAsync(id);
+        if (offer == null)
+            throw new Exception("Not found");
+        await _offerRepository.DeleteAsync(id, true);
+    }
+    public OfferDto tooffedto(Offer o)
+    {
         OfferDto offerDto = new OfferDto()
         {
             Id = o.Id,
@@ -229,7 +257,7 @@ public class OfferAppService : ApplicationService
             DiscountType = (int)o.discountType,
             StartDate = o.StartDate,
             EndDate = o.EndDate,
-            BranchId=o.BranchId,
+            BranchId = o.BranchId,
             DiscountPercentage = o.DiscountPercentage,
             categoryDtos = o.OfferCategories.Select(c => new CategoryDto()
             {
@@ -252,106 +280,8 @@ public class OfferAppService : ApplicationService
                 Price = m.Item.Price,
                 TaxValue = m.Item.TaxValue,
                 Note = m.Item.Note,
-
             }).ToList()
         };
-        offerDto.categoryDtos = new List<CategoryDto>();
-        offerDto.itemDtos = new List<ItemDto>();
-        foreach(var m in o.OfferItems)
-        {
-            ItemDto itemDto = new ItemDto()
-            {
-                Name = m.Item.Name,
-                status = m.Item.Status.ToString(),
-                imageUrl = m.Item.ImageUrl,
-                CategoryId = m.Item.CategoryId,
-                IsFeatured = m.Item.IsFeatured,
-                Description = m.Item.Description,
-                Id = m.Item.Id,
-                ItemType = m.Item.ItemType.ToString(),
-                Price = m.Item.Price,
-                TaxValue = m.Item.TaxValue,
-                Note = m.Item.Note,
-            };
-            offerDto.itemDtos.Add(itemDto);
-        }
-        foreach(var c in o.OfferCategories)
-        {
-            CategoryDto categoryDto = new CategoryDto()
-            {
-                Description = c.Category.Description,
-                ImageUrl = c.Category.ImageUrl,
-                Id = c.Category.Id,
-                status = (int)c.Category.Status,
-                name = c.Category.Name
-            };
-            offerDto.categoryDtos.Add(categoryDto);
-        }
         return offerDto;
-    }
-
-    public async Task<PagedResultDto<OfferDto>> GetListAsync(GetOfferInput input)
-    {
-        var offers = await _offerRepository.WithDetailsAsync(p => p.OfferCategories,
-            x => x.OfferItems).Result.Include(p => p.OfferCategories).ThenInclude(p => p.Category)
-            .Include(p => p.OfferItems).ThenInclude(p => p.Item).ToListAsync(); 
-        offers = (List<Offer>)offers.WhereIf(!string.IsNullOrEmpty(input.name), p => p.Name.ToLower() == input.name.ToLower())
-            .WhereIf(input.status.HasValue, p => p.status == (Status)input.status.Value)
-            .WhereIf(input.startDate.HasValue, p => p.StartDate.Value == input.startDate.Value)
-            .WhereIf(input.endDate.HasValue, p => p.EndDate.Value == input.endDate.Value).ToList();
-        var totalCount = offers.Count();
-        //offers = (IQueryable<Offer>)offers.PageResult(input.SkipCount, input.MaxResultCount);
-        //offers = offers.OrderBy(input.Sorting);
-        //List<Offer> offers1 = await offers.ToListAsync();
-        List<OfferDto> offersdto =  offers.Select(o => new OfferDto()
-        {
-            Id = o.Id,
-            Name = o.Name,
-            Description = o.Description,
-            Image = o.ImageUrl,
-            Status = (int)o.status,
-            DiscountType = (int)o.discountType,
-            StartDate = o.StartDate,
-            BranchId=o.BranchId,
-            EndDate = o.EndDate,
-            DiscountPercentage = o.DiscountPercentage,
-            categoryDtos = o.OfferCategories.Select(c => new CategoryDto()
-            {
-                Description = c.Category.Description,
-                ImageUrl = c.Category.ImageUrl,
-                Id = c.Category.Id,
-                status = (int)c.Category.Status,
-                name = c.Category.Name
-            }).ToList(),
-            itemDtos = o.OfferItems.Select(m => new ItemDto()
-            {
-                Name = m.Item.Name,
-                status = m.Item.Status.ToString(),
-                imageUrl = m.Item.ImageUrl,
-                CategoryId = m.Item.CategoryId,
-                IsFeatured = m.Item.IsFeatured,
-                Description = m.Item.Description,
-                Id = m.Item.Id,
-                ItemType = m.Item.ItemType.ToString(),
-                Price = m.Item.Price,
-                TaxValue = m.Item.TaxValue,
-                Note = m.Item.Note,
-
-            }).ToList()
-        }).ToList();
-        //var offers = await _offerRepository.GetPagedListAsync(input.SkipCount, input.MaxResultCount, input.Sorting);
-        //var totalCount = await _offerRepository.GetCountAsync();
-        return new PagedResultDto<OfferDto>(
-            totalCount,
-           offersdto
-        );
-    }
-
-    public async Task DeleteAsync(int id)
-    {
-        var offer = await _offerRepository.GetAsync(id);
-        if (offer == null)
-            throw new Exception("Not found");
-        await _offerRepository.DeleteAsync(id,true);
     }
 }

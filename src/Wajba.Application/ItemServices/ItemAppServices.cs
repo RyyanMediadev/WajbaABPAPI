@@ -95,7 +95,7 @@ public class ItemAppServices : ApplicationService
         itemDto.ItemAddons = item.ItemAddons.Select(addon => new ItemAddonDto
         {
             Id = addon.Id,
-            AddonName = addon.AddonName,
+            Name = addon.AddonName,
           
             AdditionalPrice = addon.AdditionalPrice
         }).ToList();
@@ -159,6 +159,21 @@ public class ItemAppServices : ApplicationService
         await _repository.InsertAsync(item, true);
         return ObjectMapper.Map<Item, ItemDto>(item);
     }
+    public async Task<ItemDto> updateimage(int id, Base64ImageModel model)
+    {
+        Item item = await _repository.FindAsync(id);
+        if (item == null)
+            throw new Exception("Item not found");
+        if (model == null)
+            throw new Exception("Invalid data");
+        var imagebytes = Convert.FromBase64String(model.Base64Content);
+        using var ms = new MemoryStream(imagebytes);
+        item.ImageUrl = await _imageService.UploadAsync(ms, model.FileName);
+        item.LastModificationTime = DateTime.UtcNow;
+        var item1 = await _repository.UpdateAsync(item, true);
+        return ObjectMapper.Map<Item, ItemDto>(item1);
+    }
+
     public async Task<ItemDto> UpdateAsync(int id, UpdateItemDTO input)
     {
         Item item = await _repository.FindAsync(id);

@@ -14,6 +14,6 @@ public class OfferDto
     public int DiscountType { get; set; }
     public string Description { get; set; }
     public int BranchId { get; set; }
-    public List<ItemDto> itemDtos = new List<ItemDto>();
-    public List<CategoryDto> categoryDtos = new List<CategoryDto>();
+    public List<ItemDto> itemDtos { get; set; } = new List<ItemDto>();
+    public List<CategoryDto> categoryDtos { get; set; } = new List<CategoryDto>();
 }

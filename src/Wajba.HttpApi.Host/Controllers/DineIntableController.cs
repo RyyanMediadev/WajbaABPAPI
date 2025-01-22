@@ -16,7 +16,7 @@ public class DineIntableController : WajbaController
     {
         try
         {
-          DiniINDto diniINDto=  await _dineinTableAppServices.CreateAsync(input);
+            DiniINDto diniINDto = await _dineinTableAppServices.CreateAsync(input);
             return Ok(new ApiResponse<object>
             {
                 Success = true,
@@ -36,7 +36,7 @@ public class DineIntableController : WajbaController
     }
 
     [HttpPut]
-    public async Task<IActionResult> UpdateAsync( UpdateDinInTable input)
+    public async Task<IActionResult> UpdateAsync(UpdateDinInTable input)
     {
         try
         {
@@ -148,5 +148,4 @@ public class DineIntableController : WajbaController
             });
         }
     }
-
 }

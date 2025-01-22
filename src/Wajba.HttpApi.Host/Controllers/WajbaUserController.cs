@@ -26,6 +26,7 @@ namespace Wajba.Controllers
         private readonly WajbaUsersAppservice _WajbaUsersAppService;
 
         //private readonly IUnitOfWork _uow;
+
         //private readonly ISmsSenderService _SMS;
         //private readonly IAuthenticateService _authService;
         //private readonly ICheckUniqes _checkUniq;

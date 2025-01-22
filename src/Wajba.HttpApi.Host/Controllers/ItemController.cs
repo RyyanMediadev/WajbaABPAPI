@@ -13,7 +13,7 @@ public class ItemController : WajbaController
     }
 
     [HttpGet("by-category/{categoryId}")]
-    public async Task<List<ItemDto>> GetItemsByCategory(int categoryId)
+    public async Task<List<ItemDto>> GetItemsByCategory(int? categoryId)
     {
         return await _itemAppServices.GetItemsByCategoryAsync(categoryId);
     }

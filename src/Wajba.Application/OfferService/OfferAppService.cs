@@ -2,7 +2,6 @@ global using Microsoft.AspNetCore.SignalR;
 global using Wajba.Dtos.OffersContract;
 global using Wajba.Hubs;
 global using Wajba.Models.OfferDomain;
-using Wajba.EntityFrameworkCore;
 
 namespace Wajba.OfferService;
 
@@ -110,24 +109,6 @@ public class OfferAppService : ApplicationService
         offer.EndDate = input.EndDate;
         offer.DiscountPercentage = input.DiscountPercentage;
         offer.discountType = (DiscountType)input.DiscountType;
-        //var p = await _offeritems.ToListAsync();
-        //foreach (var i in p)
-        //{
-        //    if (i.OfferId == offer.Id)
-        //        await _offeritems.DeleteAsync(i, true);
-        //}
-        //p = await _offeritems.ToListAsync();
-        //foreach (var i in p)
-        //{
-        //    if (i.OfferId == offer.Id)
-        //        await _offeritems.DeleteAsync(i, true);
-        //}
-        //var l = await _offercategory.ToListAsync();
-        //foreach (var i in l)
-        //{
-        //    if (i.OfferId == offer.Id)
-        //        await _offercategory.DeleteAsync(i, true);
-        //}
         if (input.ItemIds.Count == 0 && input.CategoryIds.Count() == 0)
             throw new Exception("Invalid data");
         foreach (var i in offer.OfferItems.ToList())
@@ -136,21 +117,26 @@ public class OfferAppService : ApplicationService
             await _offercategory.HardDeleteAsync(i, true);
         offer.OfferCategories.Clear();
         offer.OfferItems.Clear();
+        //foreach (var i in await _offeritems.ToListAsync())
+        //{
+        //    if (i.OfferId == offer.Id)
+        //     await   _offeritems.HardDeleteAsync(i, true);
+        //}
+        //foreach (var i in await _offercategory.ToListAsync())
+        //{
+        //    if (i.OfferId == offer.Id)
+        //        await _offercategory.HardDeleteAsync(i, true);
+        //}
         //offer.OfferItems.RemoveAll(oi => !input.ItemIds.Contains(oi.ItemId));
         //offer.OfferCategories.RemoveAll(oi => !input.CategoryIds.Contains(oi.CategoryId));
         offer.OfferCategories = new List<OfferCategory>();
         offer.OfferItems = new List<OfferItem>();
         var offer1 = await _offerRepository.UpdateAsync(offer, true);
-
-        var offerss = await _offerRepository.WithDetailsAsync(p => p.OfferCategories,
-         x => x.OfferItems).Result.Include(p => p.OfferCategories).ThenInclude(p => p.Category)
-         .Include(p => p.OfferItems).ThenInclude(p => p.Item).ToListAsync();
-        var offer2 = offerss.FirstOrDefault(p => p.Id == input.Id);
         if (input.ItemIds.Count > 0)
         {
             foreach (var i in input.ItemIds)
             {
-                var py = await _offeritems.FirstOrDefaultAsync(p => p.ItemId == i );
+                var py = await _offeritems.FirstOrDefaultAsync(p => p.ItemId == i && p.OfferId == offer.Id);
                 if (py == null)
                 {
                     Item item = await _itemrepo.FindAsync(i);
@@ -166,7 +152,7 @@ public class OfferAppService : ApplicationService
         {
             foreach (var cat in input.CategoryIds)
             {
-                var py = await _offercategory.FirstOrDefaultAsync(p => p.CategoryId == cat);
+                var py = await _offercategory.FirstOrDefaultAsync(p => p.CategoryId == cat && p.OfferId == offer.Id);
                 if (py == null)
                 {
                     Category category = await _categoryrepo.FindAsync(cat);
@@ -245,9 +231,8 @@ public class OfferAppService : ApplicationService
         OfferItem offerItem = o.OfferItems.FirstOrDefault(p => p.ItemId == itemid);
             if (offerItem == null)
                 throw new Exception("invalid data");
-            o.OfferItems.Remove(offerItem);
-        await _offeritems.DeleteAsync(offerItem, true);
-        
+        await _offeritems.HardDeleteAsync(offerItem, true);
+        o.OfferItems.Remove(offerItem);
         o.LastModificationTime = DateTime.UtcNow;
         o = await _offerRepository.UpdateAsync(o, true);
         return tooffedto(o);
@@ -263,9 +248,9 @@ public class OfferAppService : ApplicationService
         OfferCategory offerCategory = o.OfferCategories.FirstOrDefault(p => p.CategoryId == categoryid);
         if (offerCategory == null)
             throw new Exception("invalid data");
+        await _offercategory.HardDeleteAsync(offerCategory, true);
         o.OfferCategories.Remove(offerCategory);
         o.LastModificationTime = DateTime.UtcNow;
-        await _offercategory.DeleteAsync(offerCategory, true);
         o = await _offerRepository.UpdateAsync(o, true);
         return tooffedto(o);
     }

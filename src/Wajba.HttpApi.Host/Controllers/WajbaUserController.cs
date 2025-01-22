@@ -88,7 +88,7 @@ namespace Wajba.Controllers
 
 
         [HttpPost, Route("LogIn")]
-        public async Task<IActionResult> LogInAsync(LogInDto LogInDto)
+        public async Task<IActionResult> LogInAsync(LogInWajbaUserDto LogInDto)
         {
             try
             {

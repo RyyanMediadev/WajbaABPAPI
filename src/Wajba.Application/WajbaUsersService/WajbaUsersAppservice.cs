@@ -164,12 +164,12 @@ namespace Wajba.WajbaUsersService
         public async Task<CreateUserDto> Register(CreateUserDto createuserdto)
         {
 
-            var MessageArEng = CheckUniqeValue(new UniqeDTO { Email = createuserdto.Email, Mobile = createuserdto.Phone });
-            if (MessageArEng.Count() > 0)
-            {
-                throw new UserFriendlyException("Exists Email or Phone" + MessageArEng);
+            //var MessageArEng = CheckUniqeValue(new UniqeDTO { Email = createuserdto.Email, Mobile = createuserdto.Phone });
+            //if (MessageArEng.Count() > 0)
+            //{
+            //    throw new UserFriendlyException("Exists Email or Phone" + MessageArEng);
 
-            }
+            //}
 
 
             if (createuserdto.Password != createuserdto.ConfirmPassword)

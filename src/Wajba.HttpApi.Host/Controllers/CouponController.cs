@@ -28,6 +28,7 @@ public class CouponController : WajbaController
         }
         catch (Exception ex)
         {
+
             return BadRequest(new ApiResponse<object>
             {
                 Success = false,

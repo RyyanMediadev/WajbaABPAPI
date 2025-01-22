@@ -1,6 +1,7 @@
 ﻿
 
 using AutoMapper;
+using CloudinaryDotNet;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -11,6 +12,7 @@ using Volo.Abp.Uow;
 using Wajba.Dtos.CustomerContract;
 using Wajba.Dtos.UserDTO;
 using Wajba.Dtos.WajbaUsersContract;
+using Wajba.Models.CouponsDomain;
 using Wajba.Models.WajbaUserDomain;
 using Wajba.UserAppService;
 using Wajba.UserManagment;
@@ -40,8 +42,42 @@ namespace Wajba.Controllers
         [HttpPost("Register")]
         public async Task<ActionResult> Register(CreateUserDto input)
         {
-            await _WajbaUsersAppService.Register(input);
-            return Ok();
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    // var MessageArEng = _checkUniq.CheckUniqeValue(new DLayer.DTOs.SharedDTO.UniqeDTO { Email = userDto.Email, Mobile = userDto.Phone });
+                    //if (MessageArEng.Count() > 0)
+                    //{
+                    //    return BadRequest("Exists Email or Phone");
+                    //}
+
+                    await _WajbaUsersAppService.Register(input);
+
+                    return Ok(new ApiResponse<CreateUserDto>
+                    {
+                        Success = true,
+                        Message = "User created successfully.",
+                        Data = input
+                    });
+
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(new ApiResponse<object>
+                    {
+                        Success = false,
+                        Message = $"Error creating coupon: {ex.Message}",
+                        Data = null
+                    });
+                  //  return BadRequest(" Internal server error" + " " + ex.Message);
+
+                }
+
+            }
+            return BadRequest(new { MessageAr = "إسم المستخدم أو الرقم السري غير صحيح !", MessageEng = "Invalid Username or Password !" });
+
         }
 
 

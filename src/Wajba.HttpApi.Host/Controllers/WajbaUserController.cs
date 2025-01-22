@@ -128,7 +128,7 @@ namespace Wajba.Controllers
                     {
                         WajbaUser = user,
 
-                        GenerateToken = GenerateTokenAsync
+                        //GenerateToken = null
                     });
                 }
                 return BadRequest(new { MessageAr = "خطأ في كلمة المرور او رقم الجوال", MessageEng = "Account is not Active ; Check Your E-mail to Activate" });

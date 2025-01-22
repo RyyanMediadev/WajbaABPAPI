@@ -20,10 +20,13 @@ using Wajba.Models.FaqsDomain;
 using Wajba.Models.UsersDomain;
 using Wajba.Models.WajbaUserDomain;
 using Wajba.Services.ImageService;
+using Wajba.SharedTokenManagement;
 using Wajba.UserAppService;
 using Wajba.UserManagment;
 using static Volo.Abp.Identity.Settings.IdentitySettingNames;
 using static Volo.Abp.UI.Navigation.DefaultMenuNames.Application;
+using static Wajba.UserManagment.TokenAuthenticationService;
+using TokenManagement = Wajba.SharedTokenManagement.TokenManagement;
 
 
 namespace Wajba.WajbaUsersService
@@ -32,6 +35,7 @@ namespace Wajba.WajbaUsersService
     public class WajbaUsersAppservice : ApplicationService
     {
         private readonly IRepository<WajbaUser, int> _WajbaUserRepository;
+        private readonly TokenManagement _tokenManagement;
 
         //private readonly IPasswordHasher<WajbaUser> _passwordHasher;
         //private readonly IObjectMapper _objectMapper;
@@ -45,15 +49,17 @@ namespace Wajba.WajbaUsersService
         //private readonly IMailService _mailService;
         public WajbaUsersAppservice(/*IObjectMapper objectMapper,  */
             IRepository<WajbaUser, int> WajbaUserRepository
-            /*ICheckUniqes checkUniqes, IPasswordHasher passwordHasher*/)
+            , IOptions<TokenManagement> tokenManagement)
         {
             //_passwordHasher = (IPasswordHasher<WajbaUser>?)passwordHasher;
             //_objectMapper = objectMapper;
 
             _WajbaUserRepository = WajbaUserRepository;
+            _tokenManagement = tokenManagement.Value;
+
             //_checkUniq = checkUniqes;
         }
-
+       
 
         public List<string> CheckUniqeValue(UniqeDTO request)
         {
@@ -146,24 +152,24 @@ namespace Wajba.WajbaUsersService
 
         }
 
-         public async Task<string> GenerateTokenAsync(string  Phone)
+         public async Task<string> GenerateTokenAsync(WajbaUser WajbaUser)
         {
 
           
 
 
-            if (Phone != null)
+            if (WajbaUser != null)
             {
-                var GetUserpers = _WajbaUserRepository.FirstOrDefaultAsync(a => a.Phone == Phone);
+                //var GetUserpers = _WajbaUserRepository.FirstOrDefaultAsync(a => a.Phone == Phone);
                 List<Claim> ClaimList = new List<Claim>();
 
 
                 //var profiletype = _unitOfWork.ProfileRepository.GetMany(a => a.Id == item.ProfileId).FirstOrDefault();
                 // string profiletype = GetUserpers.Type.ToString();
-                ClaimList.Add(new Claim(ClaimTypes.Role, GetUserpers.ToString()));
-                ClaimList.Add(new Claim(ClaimTypes.Name, Phone));
-                ClaimList.Add(new Claim(ClaimTypes.NameIdentifier, GetUserpers.Id.ToString()));
-                TokenManagement _tokenManagement = new TokenManagement();
+                ClaimList.Add(new Claim(ClaimTypes.Role, WajbaUser.Id.ToString()));
+                ClaimList.Add(new Claim(ClaimTypes.Name, WajbaUser.Phone));
+                ClaimList.Add(new Claim(ClaimTypes.NameIdentifier, WajbaUser.Id.ToString()));
+             //   TokenManagement _tokenManagement = new TokenManagement();
 
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_tokenManagement.Secret));
                 var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);

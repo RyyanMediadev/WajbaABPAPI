@@ -106,7 +106,7 @@ namespace Wajba.Controllers
                     return BadRequest(new { MessageAr = " !الحساب غير مفعل توجه لبريدك الالكتروني للتفعيل", MessageEng = "Account is not Active ;Check Your E-mail to Activate !" });
                 }
 
-                var GenerateTokenAsync = _WajbaUsersAppService.GenerateTokenAsync(LogInDto.Email);
+                var GenerateTokenAsync = _WajbaUsersAppService.GenerateTokenAsync(user);
 
                 if (user != null)
                 {
@@ -114,7 +114,7 @@ namespace Wajba.Controllers
 
 
 
-                    user.Password = null;
+                    ////user.Password = null;
 
 
                     //return Ok(new ApiResponse<UserInfoDTO>
@@ -128,7 +128,7 @@ namespace Wajba.Controllers
                     {
                         WajbaUser = user,
 
-                        //GenerateToken = null
+                        GenerateToken = GenerateTokenAsync
                     });
                 }
                 return BadRequest(new { MessageAr = "خطأ في كلمة المرور او رقم الجوال", MessageEng = "Account is not Active ; Check Your E-mail to Activate" });

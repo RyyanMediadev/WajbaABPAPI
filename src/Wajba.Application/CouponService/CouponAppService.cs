@@ -42,6 +42,7 @@ public class CouponAppService : ApplicationService
             MaximumDiscount = input.MaximumDiscount,
             MinimumOrderAmount = input.MinimumOrderAmount,
         };
+    
         //var coupon = ObjectMapper.Map<CreateUpdateCouponDto, Coupon>(input);
         coupon.ImageUrl = imageUrl;
         await _couponRepository.InsertAsync(coupon, true);

@@ -81,6 +81,7 @@ public class PopularItemsController : WajbaController
             });
         }
     }
+
     [HttpPut]
     public async Task<IActionResult> UpdateAsync([FromBody]UpdatePopularItemdto input)
     {
@@ -104,7 +105,38 @@ public class PopularItemsController : WajbaController
             });
         }
     }
-
+    [HttpPut("UpdateImage")]
+    public async Task<IActionResult> UpdateImage([FromBody] UpdateImage updateImage)
+    {
+        try
+        {
+            await _popularItemAppservice.Updateimage(updateImage.Id, updateImage.model);
+            return Ok(new ApiResponse<object>
+            {
+                Success = true,
+                Message = "Popular Itemiamge updated successfully.",
+                Data = null
+            });
+        }
+        catch (EntityNotFoundException)
+        {
+            return NotFound(new ApiResponse<object>
+            {
+                Success = false,
+                Message = "Popular Item not found.",
+                Data = null
+            });
+        }
+        catch (Exception ex)
+        {
+            return NotFound(new ApiResponse<object>
+            {
+                Success = false,
+                Message = $"Popular Item not found.{ex.Message}",
+                Data = null
+            });
+        }
+    }
     [HttpDelete]
     public async Task<IActionResult> DeleteAsync(int id)
     {

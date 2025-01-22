@@ -1,5 +1,5 @@
 ﻿global using Wajba.Models.PopularItemsDomain;
-using System.IO;
+using Volo.Abp.OpenIddict;
 
 namespace Wajba.PopularItemServices;
 
@@ -27,6 +27,8 @@ public class PopularItemAppservice : ApplicationService
 
     public async Task<Popularitemdto> CreateAsync(CreatePopularitem input)
     {
+        var p = await _itemrepo.GetListAsync(includeDetails: true);
+    var mn=    p.SelectMany(i => i.ItemBranches).Select(m => m.Branch).Distinct().ToList();
         var items = await _itemrepo.WithDetailsAsync(p => p.ItemBranches);
         Item item = await items.FirstOrDefaultAsync(p => p.Id == input.ItemId);
         if (item == null)
@@ -44,6 +46,7 @@ public class PopularItemAppservice : ApplicationService
             CategoryName = category.Name,
             BranchId = 1
         };
+        //popularitem.Branch = item.ItemBranches.Select(p => p.Branch).ToList();
         popularitem.ImageUrl = null;
         if (input.Model != null)
         {
@@ -52,13 +55,16 @@ public class PopularItemAppservice : ApplicationService
             popularitem.ImageUrl = await _imageService.UploadAsync(ms, input.Model.FileName);
         }
         popularitem = await _popularitemrepo.InsertAsync(popularitem, autoSave: true);
+
         return ObjectMapper.Map<PopularItem, Popularitemdto>(popularitem);
     }
     public async Task<PagedResultDto<Popularitemdto>> GetPopularItems(GetPopulariteminput input)
     {
         var popularitems = await _popularitemrepo.GetQueryableAsync();
+        popularitems = popularitems.WhereIf(string.IsNullOrEmpty(input.Name), p => p.Name.ToLower() == input.Name.ToLower())
+            .WhereIf(input.status.HasValue, p => p.Status == (Status)input.status.Value);
         int count = popularitems.Count();
-        popularitems = popularitems.OrderBy(input.Sorting?? nameof(PopularItem.Name)).PageBy(input.SkipCount, input.MaxResultCount);
+        popularitems = popularitems.OrderBy(input.Sorting ?? nameof(PopularItem.Name)).PageBy(input.SkipCount, input.MaxResultCount);
         List<PopularItem> popularitemslist = await popularitems.ToListAsync();
         List<Popularitemdto> populartitemsdto = ObjectMapper.Map<List<PopularItem>, List<Popularitemdto>>(popularitemslist);
         return new PagedResultDto<Popularitemdto>(count, populartitemsdto);
@@ -92,6 +98,7 @@ public class PopularItemAppservice : ApplicationService
         popularitem.CurrentPrice = input.currentprice;
         popularitem.Description = input.Description;
         popularitem.CategoryName = category.Name;
+        //popularitem.Branch = item.ItemBranches.Select(p => p.Branch).ToList();
         popularitem.LastModificationTime = DateTime.UtcNow;
         if (input.Model != null)
         {
@@ -101,6 +108,20 @@ public class PopularItemAppservice : ApplicationService
         }
         popularitem = await _popularitemrepo.UpdateAsync(popularitem, autoSave: true);
         return ObjectMapper.Map<PopularItem, Popularitemdto>(popularitem);
+    }
+    public async Task<Popularitemdto> Updateimage(int id, Base64ImageModel model)
+    {
+        PopularItem popularItem = await _popularitemrepo.GetAsync(id);
+        if (popularItem == null)
+            throw new Exception("Not found");
+        if (model == null)
+            throw new Exception("invalid data");
+        var url = Convert.FromBase64String(model.Base64Content);
+        using var ms = new MemoryStream(url);
+        popularItem.ImageUrl = await _imageService.UploadAsync(ms, model.FileName);
+        popularItem.LastModificationTime = DateTime.UtcNow;
+        popularItem = await _popularitemrepo.UpdateAsync(popularItem, true);
+        return ObjectMapper.Map<PopularItem, Popularitemdto>(popularItem);
     }
     public async Task DeleteAsync(int id)
     {

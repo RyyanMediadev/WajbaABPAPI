@@ -29,6 +29,23 @@ public class ItemController : WajbaController
     {
         return await _itemAppServices.GetItemWithDetailsAsync(id);
     }
+    [HttpGet("{id}/details-transformed")]
+    public async Task<IActionResult> GetItemWithTransformedDetails(int id)
+    {
+        try
+        {
+            var item = await _itemAppServices.GetItemWithTransformedDetailsAsync(id);
+            return Ok(new { success = true, data = item });
+        }
+        catch (EntityNotFoundException ex)
+        {
+            return NotFound(new { success = false, message = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { success = false, message = ex.Message });
+        }
+    }
 
     [HttpPost]
     public async Task<IActionResult> CreateAsync(CreateItemDto input)

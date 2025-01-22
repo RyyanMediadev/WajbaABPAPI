@@ -7,7 +7,7 @@ global using Volo.Abp.Modularity;
 global using Volo.Abp.PermissionManagement;
 global using Volo.Abp.SettingManagement;
 global using Volo.Abp.TenantManagement;
-using Wajba.CustomerAppService;
+
 using Wajba.CustomIdentityService;
 using Wajba.Dtos.TimeSlotsContract;
 using Wajba.Dtos.UserAddressContract;
@@ -42,7 +42,7 @@ public class WajbaApplicationModule : AbpModule
         context.Services.AddScoped<ITimeSlotAppService, TimeSlotsAppservice>();
         context.Services.AddScoped<INotificationService, NotificationAppService>();
         context.Services.AddScoped<IUserAddressAppService, UserAddressAppService>();
-        context.Services.AddTransient<CustomUserAppService>();
+        //context.Services.AddTransient<CustomUserAppService>();
 
 
         

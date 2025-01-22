@@ -98,7 +98,7 @@ namespace Wajba.UserManagment
         {
 
             token = string.Empty;
-            var user = _userManagementService.IsValidUser(request.Phone, request.Password);
+            var user = _userManagementService.IsValidUser(request.Email, request.Password);
 
             if (user != null)
             {
@@ -112,7 +112,7 @@ namespace Wajba.UserManagment
                     ClaimList.Add(new Claim(ClaimTypes.Role, GetUserpers.ToString()));
 
                 
-                ClaimList.Add(new Claim(ClaimTypes.Name, request.Phone));
+                ClaimList.Add(new Claim(ClaimTypes.Name, request.Email));
                 ClaimList.Add(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
 
 

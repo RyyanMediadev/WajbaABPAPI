@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Wajba.Dtos.CustomerContract;
+using Wajba.Dtos.WajbaUsersContract;
 using Wajba.Models.UsersDomain;
 using IObjectMapper = Volo.Abp.ObjectMapping.IObjectMapper;
 

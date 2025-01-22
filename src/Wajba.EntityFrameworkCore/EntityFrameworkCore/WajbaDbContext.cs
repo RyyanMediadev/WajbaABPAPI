@@ -9,6 +9,7 @@ global using Wajba.Models.OrderSetup;
 global using Wajba.Models.PopularItemsDomain;
 global using Wajba.Models.NotificationDomain;
 global using Wajba.Models.UsersDomain;
+using Wajba.Models.WajbaUserDomain;
 
 namespace Wajba.EntityFrameworkCore;
 

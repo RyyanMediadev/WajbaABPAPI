@@ -83,35 +83,85 @@ namespace Wajba.WajbaUsersService
             return MessageArEng;
         }
 
-        public WajbaUser IsValidUser(string Mobile, string password)
+        //public WajbaUser IsValidUser(string Mobile, string password)
+        //{
+        //    var user = _WajbaUserRepository.FirstOrDefaultAsync(ent => ent.Phone.ToLower() == Mobile.ToLower().Trim()
+        //    && ent.Password == EncryptANDDecrypt.EncryptText(password));
+        //    return user != null ? user : null;
+        //}
+
+        public async Task<WajbaUser> IsValidUserAsync(string Email, string password)
         {
-            var user = _WajbaUserRepository.FirstOrDefaultAsync(ent => ent.Phone.ToLower() == Mobile.ToLower().Trim()
-            && ent.Password == EncryptANDDecrypt.EncryptText(password)).Result;
-            return user != null ? user : null;
+            // Validate inputs
+            if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(password))
+            {
+                return null;
+            }
+
+            // Find the user based on mobile and encrypted password
+            var encryptedPassword = EncryptANDDecrypt.EncryptText(password);
+            var user = await _WajbaUserRepository.FirstOrDefaultAsync(
+                ent => ent.Email.ToLower() == Email && ent.Password == encryptedPassword);
+
+            return user;
         }
 
 
-
-
-        public WajbaUser AuthenticateUser(LogInDto request, out string token)
+        public async Task<WajbaUser> AuthenticateUser(LogInDto request)
         {
 
-            token = string.Empty;
-            var user = IsValidUser(request.Phone, request.Password);
+            //token = string.Empty;
+            var user = await IsValidUserAsync(request.Email, request.Password);
 
-            if (user != null)
+            //if (user != null)
+            //{
+            //    var GetUserpers = _WajbaUserRepository.FirstOrDefaultAsync(a => a.Id == user.Id).Result.Type;
+            //    List<Claim> ClaimList = new List<Claim>();
+
+
+            //    //var profiletype = _unitOfWork.ProfileRepository.GetMany(a => a.Id == item.ProfileId).FirstOrDefault();
+            //    // string profiletype = GetUserpers.Type.ToString();
+            //    ClaimList.Add(new Claim(ClaimTypes.Role, GetUserpers.ToString()));
+
+
+            //    ClaimList.Add(new Claim(ClaimTypes.Name, request.Phone));
+            //    ClaimList.Add(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
+            //    TokenManagement _tokenManagement = new TokenManagement();
+
+            //    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_tokenManagement.Secret));
+            //    var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+            //    var expireDate = DateTime.Now.AddMinutes(_tokenManagement.AccessExpiration);
+
+            //    var tokenDiscriptor = new SecurityTokenDescriptor
+            //    {
+            //        Subject = new ClaimsIdentity(ClaimList),
+            //        Expires = expireDate,
+            //        SigningCredentials = credentials
+            //    };
+            //    var tokenHandler = new JwtSecurityTokenHandler();
+            //    var tokenObj = tokenHandler.CreateToken(tokenDiscriptor);
+            //    token = tokenHandler.WriteToken(tokenObj);
+            //}
+            return user;
+
+        }
+
+         public async Task<string> GenerateTokenAsync(string  Phone)
+        {
+
+          
+
+            if (Phone != null)
             {
-                var GetUserpers = _WajbaUserRepository.FirstOrDefaultAsync(a => a.Id == user.Id).Result.Type;
+                var GetUserpers = _WajbaUserRepository.FirstOrDefaultAsync(a => a.Phone == Phone);
                 List<Claim> ClaimList = new List<Claim>();
 
 
                 //var profiletype = _unitOfWork.ProfileRepository.GetMany(a => a.Id == item.ProfileId).FirstOrDefault();
                 // string profiletype = GetUserpers.Type.ToString();
                 ClaimList.Add(new Claim(ClaimTypes.Role, GetUserpers.ToString()));
-
-
-                ClaimList.Add(new Claim(ClaimTypes.Name, request.Phone));
-                ClaimList.Add(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
+                ClaimList.Add(new Claim(ClaimTypes.Name, Phone));
+                ClaimList.Add(new Claim(ClaimTypes.NameIdentifier, GetUserpers.Id.ToString()));
                 TokenManagement _tokenManagement = new TokenManagement();
 
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_tokenManagement.Secret));
@@ -126,9 +176,10 @@ namespace Wajba.WajbaUsersService
                 };
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var tokenObj = tokenHandler.CreateToken(tokenDiscriptor);
-                token = tokenHandler.WriteToken(tokenObj);
+               string token = tokenHandler.WriteToken(tokenObj);
+                return token;
             }
-            return user;
+            return null;
 
         }
 

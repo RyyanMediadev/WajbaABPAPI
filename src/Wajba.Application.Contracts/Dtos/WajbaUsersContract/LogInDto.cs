@@ -1,6 +1,6 @@
 ﻿namespace Wajba.Dtos.WajbaUsersContract
 {
-    public class LogInDto
+    public class LogInWajbaUserDto
     {
 
         public string Email { get; set; }

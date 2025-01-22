@@ -87,35 +87,35 @@ public class Program
 
 
 
-            #region AddTokenManagment
+            //#region AddTokenManagment
 
 
-            TokenManagement token = new TokenManagement();
-            //builder.Services.Configure<TokenManagement>(Configuration.GetSection("tokenManagement"));
-            // var token = Configuration.GetSection("tokenManagement").Get<TokenManagement>();
-            builder.Services.AddAuthentication(jwtBearerDefaults =>
-            {
-                jwtBearerDefaults.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                jwtBearerDefaults.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(options =>
-            {
-                options.RequireHttpsMetadata = false;
-                options.SaveToken = true;
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(token.Secret)),
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
-                    ValidateLifetime = true,
-                    ClockSkew = TimeSpan.Zero,
-                    ValidIssuer = token.Issuer,
-                    ValidAudience = token.Audience,
+            //TokenManagement token = new TokenManagement();
+            ////builder.Services.Configure<TokenManagement>(Configuration.GetSection("tokenManagement"));
+            //// var token = Configuration.GetSection("tokenManagement").Get<TokenManagement>();
+            //builder.Services.AddAuthentication(jwtBearerDefaults =>
+            //{
+            //    jwtBearerDefaults.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            //    jwtBearerDefaults.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            //}).AddJwtBearer(options =>
+            //{
+            //    options.RequireHttpsMetadata = false;
+            //    options.SaveToken = true;
+            //    options.TokenValidationParameters = new TokenValidationParameters
+            //    {
+            //        ValidateIssuerSigningKey = true,
+            //        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(token.Secret)),
+            //        ValidateIssuer = false,
+            //        ValidateAudience = false,
+            //        ValidateLifetime = true,
+            //        ClockSkew = TimeSpan.Zero,
+            //        ValidIssuer = token.Issuer,
+            //        ValidAudience = token.Audience,
 
-                };
+            //    };
 
-            });
-            #endregion
+            //});
+            //#endregion
 
 
             var app = builder.Build();

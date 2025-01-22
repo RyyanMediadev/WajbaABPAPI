@@ -34,13 +34,15 @@ public class ItemAppServices : ApplicationService
         _imageService = imageService;
     }
 
-    public async Task<List<ItemDto>> GetItemsByCategoryAsync(int categoryId)
+    public async Task<List<ItemDto>> GetItemsByCategoryAsync(int? categoryId)
     {
         var items = await _repository.WithDetailsAsync(
             x => x.ItemAddons,
             x => x.ItemExtras,
             x => x.ItemVariations
         );
+        if (categoryId != null && categoryId.Value != 0)
+            items = (IQueryable<Item>)await items.Where(p => p.CategoryId == categoryId.Value).ToListAsync();
         var result = items.Where(x => x.CategoryId == categoryId)
                           .Select(item => ObjectMapper.Map<Item, ItemDto>(item))
                           .ToList();

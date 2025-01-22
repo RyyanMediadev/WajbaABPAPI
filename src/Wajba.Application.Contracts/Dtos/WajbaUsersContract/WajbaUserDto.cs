@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Wajba.Dtos.UserContract
+namespace Wajba.Dtos.WajbaUsersContract
 {
-    public class GetUserDto
+    public class WajbaUserDto
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         public string FullName { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }

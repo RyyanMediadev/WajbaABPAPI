@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Wajba.Dtos.CustomerContract
+namespace Wajba.Dtos.UserContract
 {
     public class WajbaUserDto
     {

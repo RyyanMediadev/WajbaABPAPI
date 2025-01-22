@@ -1,4 +1,4 @@
-﻿namespace Wajba.Dtos.CustomerContract;
+﻿namespace Wajba.Dtos.WajbaUsersContract;
 
 public class GetUserListDto
 {

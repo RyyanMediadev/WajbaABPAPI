@@ -164,12 +164,12 @@ namespace Wajba.WajbaUsersService
         public async Task<CreateUserDto> Register(CreateUserDto createuserdto)
         {
 
-            var MessageArEng = CheckUniqeValue(new UniqeDTO { Email = createuserdto.Email, Mobile = createuserdto.Phone });
-            if (MessageArEng.Count() > 0)
-            {
-                throw new UserFriendlyException("Exists Email or Phone" + MessageArEng);
+            //var MessageArEng = CheckUniqeValue(new UniqeDTO { Email = createuserdto.Email, Mobile = createuserdto.Phone });
+            //if (MessageArEng.Count() > 0)
+            //{
+            //    throw new UserFriendlyException("Exists Email or Phone" + MessageArEng);
 
-            }
+            //}
 
 
             if (createuserdto.Password != createuserdto.ConfirmPassword)
@@ -269,58 +269,58 @@ namespace Wajba.WajbaUsersService
             await _WajbaUserRepository.UpdateAsync(user);
         }
 
-        //// 3. Get User
-        //public async Task<GetUserDto> GetUserAsync(int id)
-        //{
-        //    var user = await _WajbaUserRepository.FirstOrDefaultAsync(u => u.Id == id);
-        //    return ObjectMapper.Map<WajbaUser, GetUserDto>(user);
-        //}
+        // 3. Get User
+        public async Task<GetUserDto> GetUserAsync(int id)
+        {
+            var user = await _WajbaUserRepository.FirstOrDefaultAsync(u => u.Id == id);
+            return ObjectMapper.Map<WajbaUser, GetUserDto>(user);
+        }
 
-        //// 4. Get User List
-        //public async Task<PagedResultDto<WajbaUserDto>> GetUserListAsync(GetUserListDto input)
-        //{
-        //    var query = await _WajbaUserRepository.GetQueryableAsync();  // This gives you IQueryable<APPUser>
+        // 4. Get User List
+        public async Task<PagedResultDto<WajbaUserDto>> GetUserListAsync(GetUserListDto input)
+        {
+            var query = await _WajbaUserRepository.GetQueryableAsync();  // This gives you IQueryable<APPUser>
 
-        //    // Apply filters
-        //    if (!string.IsNullOrEmpty(input.FullName))
-        //    {
-        //        query = query.Where(u => u.FullName.Contains(input.FullName));
-        //    }
+            // Apply filters
+            if (!string.IsNullOrEmpty(input.FullName))
+            {
+                query = query.Where(u => u.FullName.Contains(input.FullName));
+            }
 
-        //    if (input.Type.HasValue)
-        //    {
-        //        query = query.Where(u => u.Type == (UserTypes)input.Type);
-        //    }
+            if (input.Type.HasValue)
+            {
+                query = query.Where(u => u.Type == (UserTypes)input.Type);
+            }
 
-        //    if (input.Status.HasValue)
-        //    {
-        //        query = query.Where(u => u.status == (Status)input.Status);
-        //    }
+            if (input.Status.HasValue)
+            {
+                query = query.Where(u => u.status == (Status)input.Status);
+            }
 
-        //    // Apply pagination (Skip and Take)
-        //    var totalCount = await query.CountAsync(); // Get total count for pagination
-        //    var users = await query.Skip(input.SkipCount).Take(input.MaxResultCount).ToListAsync(); // Get paginated users
-        //                                                                                            // Map the list of users (use 'users' instead of 'user')
-        //    var userDtos = users.Select(user => new WajbaUserDto
-        //    {
-        //        Id = user.Id,
-        //        FullName = user.FullName,
-        //        Email = user.Email,
-        //        Phone = user.Phone,
-        //        Type = (int)user.Type,
-        //        Status = (int)user.status
+            // Apply pagination (Skip and Take)
+            var totalCount = await query.CountAsync(); // Get total count for pagination
+            var users = await query.Skip(input.SkipCount).Take(input.MaxResultCount).ToListAsync(); // Get paginated users
+                                                                                                    // Map the list of users (use 'users' instead of 'user')
+            var userDtos = users.Select(user => new WajbaUserDto
+            {
+                Id = user.Id,
+                FullName = user.FullName,
+                Email = user.Email,
+                Phone = user.Phone,
+                Type = (int)user.Type,
+                Status = (int)user.status
 
-        //    }).ToList();
+            }).ToList();
 
-        //    // Return the result in PagedResultDto
-        //    return new PagedResultDto<WajbaUserDto>(totalCount, userDtos);
-        //}
+            // Return the result in PagedResultDto
+            return new PagedResultDto<WajbaUserDto>(totalCount, userDtos);
+        }
 
-        //// 5. Delete User
-        //public async Task DeleteUserAsync(int id)
-        //{
-        //    var user = await _WajbaUserRepository.FirstOrDefaultAsync(u => u.Id == id);
-        //    await _WajbaUserRepository.DeleteAsync(user);
-        //}
+        // 5. Delete User
+        public async Task DeleteUserAsync(int id)
+        {
+            var user = await _WajbaUserRepository.FirstOrDefaultAsync(u => u.Id == id);
+            await _WajbaUserRepository.DeleteAsync(user);
+        }
     }
 }

@@ -1,7 +1,6 @@
 ﻿global using Wajba.Dtos.CouponContract;
 global using Wajba.Models.CouponsDomain;
-using System.IO;
-using System.Linq;
+using Wajba.Services;
 
 namespace Wajba.CouponService;
 
@@ -44,6 +43,7 @@ public class CouponAppService : ApplicationService
             MaximumDiscount = input.MaximumDiscount,
             MinimumOrderAmount = input.MinimumOrderAmount,
         };
+    
         //var coupon = ObjectMapper.Map<CreateUpdateCouponDto, Coupon>(input);
         coupon.ImageUrl = imageUrl;
         await _couponRepository.InsertAsync(coupon, true);
@@ -72,6 +72,16 @@ public class CouponAppService : ApplicationService
         .WhereIf(!string.IsNullOrEmpty(input.code), p => p.Code.ToString().ToLower() == input.code.ToLower())
         .WhereIf(input.discountype.HasValue, p => p.DiscountType == (DiscountType)input.discountype.Value)
         .WhereIf(input.isexpire.HasValue, p => p.IsExpired == input.isexpire.Value);
+        if (!string.IsNullOrEmpty(input.startdate))
+        {
+            var l = TimeManipulation.TryParseDate(input.startdate);
+            queryable = (IQueryable<Coupon>)queryable.WhereIf(true, p => p.StartDate >= l.Value).ToList();
+        }
+        if (!string.IsNullOrEmpty(input.enddate))
+        {
+            var l = TimeManipulation.TryParseDate(input.enddate);
+            queryable = (IQueryable<Coupon>)queryable.WhereIf(true, p => p.StartDate <= l.Value).ToList();
+        }
         var p = input.branchId.HasValue;
 
         var totalCount = await AsyncExecuter.CountAsync(queryable);
@@ -118,6 +128,22 @@ public class CouponAppService : ApplicationService
         ObjectMapper.Map(input, coupon);
         await _couponRepository.UpdateAsync(coupon, true);
         return ObjectMapper.Map<Coupon, CouponDto>(coupon);
+    }
+    public async Task<CouponDto> Updateimage(int id, Base64ImageModel model)
+    {
+        var coupon = await _couponRepository.GetAsync(id);
+        if (coupon == null)
+            throw new EntityNotFoundException(typeof(Coupon), id);
+        if (model != null)
+        {
+            var imagebytes = Convert.FromBase64String(model.Base64Content);
+            using var ms = new MemoryStream(imagebytes);
+            coupon.ImageUrl = await _imageService.UploadAsync(ms, model.FileName);
+        }
+        coupon.LastModificationTime = DateTime.UtcNow;
+        await _couponRepository.UpdateAsync(coupon, true);
+        return ObjectMapper.Map<Coupon, CouponDto>(coupon);
+
     }
 
     // Delete Coupon

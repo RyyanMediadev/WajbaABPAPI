@@ -7,14 +7,28 @@ global using Serilog.Events;
 global using System;
 global using System.Threading.Tasks;
 global using Wajba.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Configuration;
+using System.Text;
+using Wajba.SharedTokenManagement;
 
 
 
 namespace Wajba;
 public class Program
 {
+    public Program(IConfiguration configuration)
+    {
+        Configuration = configuration;
+    }
+
+    public IConfiguration Configuration { get; }
+
     public async static Task<int> Main(string[] args)
     {
+        
+
         Log.Logger = new LoggerConfiguration()
 #if DEBUG
             .MinimumLevel.Debug()
@@ -70,6 +84,39 @@ public class Program
                 //           .AllowCredentials();
                 //});
             });
+
+
+
+            #region AddTokenManagment
+
+
+            TokenManagement token = new TokenManagement();
+            //builder.Services.Configure<TokenManagement>(Configuration.GetSection("tokenManagement"));
+            // var token = Configuration.GetSection("tokenManagement").Get<TokenManagement>();
+            builder.Services.AddAuthentication(jwtBearerDefaults =>
+            {
+                jwtBearerDefaults.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                jwtBearerDefaults.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(token.Secret)),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero,
+                    ValidIssuer = token.Issuer,
+                    ValidAudience = token.Audience,
+
+                };
+
+            });
+            #endregion
+
 
             var app = builder.Build();
             await app.InitializeApplicationAsync();

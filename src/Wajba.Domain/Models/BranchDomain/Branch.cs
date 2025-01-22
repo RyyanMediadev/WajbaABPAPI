@@ -4,6 +4,7 @@ global using Wajba.Models.OfferDomain;
 
 namespace Wajba.Models.BranchDomain;
 
+[DisableSoftDelete] // هذا التعليق يعطل Soft Delete
 public class Branch : FullAuditedEntity<int>
 {
 

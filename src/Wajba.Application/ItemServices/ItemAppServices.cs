@@ -8,6 +8,8 @@ using System.IO;
 using Volo.Abp.ObjectMapping;
 using Wajba.Dtos.ItemVariationContract;
 using Wajba.Models.ItemVariationDomain;
+using Org.BouncyCastle.Asn1.Cms;
+using Wajba.Dtos.ItemsDtos.ItemDependencies;
 
 
 
@@ -159,6 +161,75 @@ public class ItemAppServices : ApplicationService
         await _repository.InsertAsync(item, true);
         return ObjectMapper.Map<Item, ItemDto>(item);
     }
+
+    public async Task<ItemWithDependenciesDto> GetItemWithTransformedDetailsAsync(int id)
+    {
+        var queryable = await _repository.WithDetailsAsync(
+            x => x.ItemAddons,
+            x => x.ItemExtras,
+            x => x.ItemVariations,
+            x => x.ItemBranches
+        );
+
+        var item = await queryable.FirstOrDefaultAsync(x => x.Id == id);
+        if (item == null)
+            throw new EntityNotFoundException(typeof(Item), id);
+
+        // Map the main item to ItemDto
+        ItemWithDependenciesDto itemDto = new ItemWithDependenciesDto
+        {
+            Id = item.Id,
+            Name = item.Name,
+            Description = item.Description,
+            Note = item.Note,
+            Status = item.Status.ToString(),
+            IsFeatured = item.IsFeatured,
+            ImageUrl = item.ImageUrl,
+            Price = item.Price,
+            TaxValue = (decimal)item.TaxValue,
+            CategoryId = item.CategoryId,
+            CategoryName = item.Category?.Name,
+            ItemType = item.ItemType.ToString(),
+            IsDeleted = item.IsDeleted,
+            BranchesIds = item.ItemBranches.Select(p => p.BranchId).ToList()
+        };
+
+        // Map ItemAddons
+        itemDto.ItemAddons = item.ItemAddons.Select(addon => new ItemAddonDto
+        {
+            Id = addon.Id,
+            Name = addon.AddonName,
+            AdditionalPrice = addon.AdditionalPrice
+        }).ToList();
+
+        // Map ItemExtras
+        itemDto.ItemExtras = item.ItemExtras.Select(extra => new ItemExtraDto
+        {
+            Id = extra.Id,
+            Name = extra.Name,
+            AdditionalPrice = extra.AdditionalPrice
+        }).ToList();
+
+        // Group and map ItemVariations
+        itemDto.Attributes = item.ItemVariations
+            .GroupBy(v => v.ItemAttributes?.Name) // Group by Attribute Name
+            .Select(group => new AttributeDto
+            {
+                AttributeName = group.Key,
+                Variations = group.Select(v => new VariationDTO
+                {
+                    Id = v.Id,
+                    Name = v.Name,
+                    Note = v.Note,
+                    AdditionalPrice = v.AdditionalPrice,
+                    ItemAttributesId = v.ItemAttributesId
+                }).ToList()
+            }).ToList();
+
+        return itemDto;
+    }
+
+
     public async Task<ItemDto> updateimage(int id, Base64ImageModel model)
     {
         Item item = await _repository.FindAsync(id);

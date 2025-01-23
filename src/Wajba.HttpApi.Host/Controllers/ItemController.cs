@@ -12,10 +12,28 @@ public class ItemController : WajbaController
         _itemAppServices = itemAppServices;
     }
 
-    [HttpGet("by-category/{categoryId}")]
-    public async Task<List<ItemDto>> GetItemsByCategory(int? categoryId,string? name)
+    [HttpGet("by-category/{categoryId?}")]
+    public async Task <ActionResult<ApiResponse<List<ItemDto>>>> GetItemsByCategory(int? categoryId,string? name)
     {
-        return await _itemAppServices.GetItemsByCategoryAsync(categoryId,name);
+        try
+        {
+            var itemDto = await _itemAppServices.GetItemsByCategoryAsync(categoryId, name);
+            return Ok(new ApiResponse<List<ItemDto>>
+            {
+                Success = true,
+                Message = "Item created successfully.",
+                Data = itemDto
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ApiResponse<object>
+            {
+                Success = false,
+                Message = $"Error creating item: {ex.Message}",
+                Data = null
+            });
+        }
 
     }
 
@@ -54,7 +72,7 @@ public class ItemController : WajbaController
         try
         {
             ItemDto itemDto = await _itemAppServices.CreateAsync(input);
-            return Ok(new ApiResponse<object>
+            return Ok(new ApiResponse<ItemDto>
             {
                 Success = true,
                 Message = "Item created successfully.",

@@ -34,8 +34,10 @@ public class ItemAppServices : ApplicationService
             x => x.ItemExtras,
             x => x.ItemVariations
         );
-        if (categoryId != null && categoryId.Value != 0)
-            items = (IQueryable<Item>)await items.Where(p => p.CategoryId == categoryId.Value).ToListAsync();
+        items = (IQueryable<Item>)await items.ToListAsync();
+
+        if (categoryId != null && categoryId.Value != 0) ;
+            //var p = items.Where(p => p./*CategoryId*/ == categoryId.Value);
         if (!string.IsNullOrEmpty(name))
             items = (IQueryable<Item>)await items.Where(p => p.Name.ToLower() == name.ToLower()).ToListAsync();
         var result = items.Where(x => x.CategoryId == categoryId)

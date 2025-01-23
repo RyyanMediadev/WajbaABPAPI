@@ -182,7 +182,7 @@ public class OfferAppService : ApplicationService
         offer.LastModificationTime = DateTime.UtcNow;
         offer.ImageUrl = await _fileUploadService.UploadAsync(ms, input.FileName);
         var o = await _offerRepository.UpdateAsync(offer, true);
-        return new OfferDto();
+        return tooffedto(o);
     }
     public async Task<OfferDto> GetAsync(int id)
     {
@@ -194,7 +194,6 @@ public class OfferAppService : ApplicationService
             throw new Exception("Not found");
         int l = o.OfferCategories.Count;
         l = o.OfferItems.Count;
-        //var pp = o.OfferCategories.FirstOrDefault().Category.Name;
         return tooffedto(o);
     }
 

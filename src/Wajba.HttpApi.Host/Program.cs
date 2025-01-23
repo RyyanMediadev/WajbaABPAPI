@@ -7,11 +7,6 @@ global using Serilog.Events;
 global using System;
 global using System.Threading.Tasks;
 global using Wajba.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Configuration;
-using System.Text;
-using Wajba.SharedTokenManagement;
 
 
 

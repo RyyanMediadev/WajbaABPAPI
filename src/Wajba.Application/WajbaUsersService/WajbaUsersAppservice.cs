@@ -218,7 +218,7 @@ namespace Wajba.WajbaUsersService
                 Email = createuserdto.Email,
                 Phone = createuserdto.Phone,
                 FullName = createuserdto.FullName,
-                Type = createuserdto.Type,
+                Type = (UserTypes)createuserdto.Type,
                 status = Status.Active,
                 Password = EncryptANDDecrypt.EncryptText(createuserdto.Password),
             };
@@ -228,7 +228,7 @@ namespace Wajba.WajbaUsersService
 
             #region ApplyRoles
 
-            if (createuserdto.Type == UserTypes.Admin)
+            if (createuserdto.Type ==1/* UserTypes.Admin*/)
             {
                 //AdminProfile
 
@@ -246,7 +246,7 @@ namespace Wajba.WajbaUsersService
                 }
 
             }
-            if (createuserdto.Type == UserTypes.Employee)
+            if (createuserdto.Type ==2/* UserTypes.Employee*/)
             {
                 //DeliveryboyProfile
 
@@ -264,7 +264,7 @@ namespace Wajba.WajbaUsersService
 
             }
 
-            if (createuserdto.Type == UserTypes.Deliveryboy)
+            if (createuserdto.Type ==3 /*UserTypes.Deliveryboy*/)
             {
                 //DeliveryboyProfile
                 //var getPermission = _uow.ProfileRepository.GetMany(a => a.NameEn == RoleConstant.StaffMemberProfile).FirstOrDefault();
@@ -275,7 +275,7 @@ namespace Wajba.WajbaUsersService
             }
 
 
-            if (createuserdto.Type == UserTypes.Customer)
+            if (createuserdto.Type ==4/* UserTypes.Customer*/)
             {
                 //CustomerProfile
 

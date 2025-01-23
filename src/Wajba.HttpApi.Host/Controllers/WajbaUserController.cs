@@ -18,7 +18,6 @@ using Wajba.UserAppService;
 using Wajba.UserManagment;
 using Wajba.WajbaUsersService;
 using GetUserDto = Wajba.Dtos.WajbaUsersContract.GetUserDto;
-using WajbaUserDto = Wajba.Dtos.CustomerContract.WajbaUserDto;
 
 namespace Wajba.Controllers
 {

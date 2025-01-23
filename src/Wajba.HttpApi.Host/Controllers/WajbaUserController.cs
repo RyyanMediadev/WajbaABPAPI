@@ -42,7 +42,7 @@ namespace Wajba.Controllers
         }
         //[IgnoreAntiforgeryToken]
         [HttpPost("Register")]
-        public async Task<ActionResult> Register(CreateUserDto input)
+        public async Task<IActionResult> Register(CreateUserDto input)
         {
 
             if (ModelState.IsValid)
@@ -144,7 +144,7 @@ namespace Wajba.Controllers
 
 
         [HttpPut("update-WajbaUser")]
-        public async Task<ActionResult> UpdateWajbaUser(UpdateWajbaUserDto input)
+        public async Task<IActionResult> UpdateWajbaUser(UpdateWajbaUserDto input)
         {
             await _WajbaUsersAppService.UpdateUserAsync(input);
             return Ok();
@@ -179,6 +179,8 @@ namespace Wajba.Controllers
             //    return BadRequest("Code time is expired");
 
             //}
+
+
             return BadRequest("Code is not exist");
 
         }
@@ -269,7 +271,7 @@ namespace Wajba.Controllers
 
         // 5. Delete User
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteWajbaUser(int id)
+        public async Task<IActionResult> DeleteWajbaUser(int id)
         {
             await _WajbaUsersAppService.DeleteUserAsync(id);
             return Ok();

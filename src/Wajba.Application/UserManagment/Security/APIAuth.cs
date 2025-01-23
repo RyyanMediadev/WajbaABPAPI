@@ -16,7 +16,7 @@ namespace Wajba.UserManagment
     public interface IAuthenticateService
     {
 
-        //WajbaUser AuthenticateUser(LogInDto request, out string token);
+        WajbaUser AuthenticateUser(LogInDto request, out string token);
     }
     public interface ICheckUniqes
     {
@@ -88,8 +88,8 @@ namespace Wajba.UserManagment
 
 
 
-        //public WajbaUser AuthenticateUser(LogInDto request, out string token)
-        //{
+        public WajbaUser AuthenticateUser(LogInDto request, out string token)
+        {
 
         //    token = string.Empty;
         //    var user = _userManagementService.IsValidUser(request.Email, request.Password);
@@ -126,7 +126,7 @@ namespace Wajba.UserManagment
         //    }
         //    return user;
 
-        //}
+        }
 
         public interface IUserManagementService
         {

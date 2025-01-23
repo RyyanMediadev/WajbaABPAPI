@@ -103,7 +103,7 @@ namespace Wajba.Controllers
                 {
                     return BadRequest(new { MessageAr = "! خطأ في كلمة المرور او رقم الجوال", MessageEng = "Incorrect Email or Password  !" });
                 }
-                if (user.status == Enums.Status.Active)
+                if (user.status == Enums.Status.InActive)
                 {
                     return BadRequest(new { MessageAr = " !الحساب غير مفعل توجه لبريدك الالكتروني للتفعيل", MessageEng = "Account is not Active ;Check Your E-mail to Activate !" });
                 }

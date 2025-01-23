@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Wajba.Dtos.UserAddressContract;
+﻿global using Wajba.Dtos.UserAddressContract;
 
 namespace Wajba.Controllers
 {
@@ -15,7 +13,7 @@ namespace Wajba.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateAsync( CreateUserAddressDto input)
+        public async Task<IActionResult> CreateAsync(CreateUserAddressDto input)
         {
             try
             {
@@ -39,7 +37,7 @@ namespace Wajba.Controllers
         }
 
         [HttpPut]
-        public async   Task<IActionResult> UpdateAsync(UpdateUserAddressDto input)
+        public async Task<IActionResult> UpdateAsync(UpdateUserAddressDto input)
         {
             try
             {
@@ -63,7 +61,7 @@ namespace Wajba.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult>  DeleteAsync(int id)
+        public async Task<IActionResult> DeleteAsync(int id)
         {
             try
             {
@@ -111,28 +109,29 @@ namespace Wajba.Controllers
         }
 
         //public async Task<IActionResult>
-       [HttpGet("{id}")]
-         public async Task<IActionResult> GetByIdAsync(int id)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetByIdAsync(int id)
         {
-        {
-            try
             {
-                var result = await _userAddressAppService.GetByIdAsync(id);
-                return Ok(new ApiResponse<UserAddressDto>
+                try
                 {
-                    Success = true,
-                    Message = "User address retrieved successfully.",
-                    Data = result
-                });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ApiResponse<UserAddressDto>
+                    var result = await _userAddressAppService.GetByIdAsync(id);
+                    return Ok(new ApiResponse<UserAddressDto>
+                    {
+                        Success = true,
+                        Message = "User address retrieved successfully.",
+                        Data = result
+                    });
+                }
+                catch (Exception ex)
                 {
-                    Success = false,
-                    Message = $"Error retrieving user address: {ex.Message}",
-                    Data = null
-                });
+                    return BadRequest(new ApiResponse<UserAddressDto>
+                    {
+                        Success = false,
+                        Message = $"Error retrieving user address: {ex.Message}",
+                        Data = null
+                    });
+                }
             }
         }
     }

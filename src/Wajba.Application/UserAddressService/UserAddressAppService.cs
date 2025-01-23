@@ -50,7 +50,7 @@ namespace Wajba.UserAddressService
                 ApartmentNumber = userAddress.ApartmentNumber,
                 Floor = userAddress.Floor,
                 AddressLabel = userAddress.AddressLabel,
-                AddressType = userAddress.AddressType
+                AddressType = (int)userAddress.AddressType
             };
 
             return userAddressDto;
@@ -69,7 +69,7 @@ namespace Wajba.UserAddressService
             userAddress.ApartmentNumber = input.ApartmentNumber;
             userAddress.Floor = input.Floor;
             userAddress.AddressLabel = input.AddressLabel;
-            userAddress.AddressType = input.AddressType;
+            userAddress.AddressType = (int)(EmployeeAddressType)input.AddressType;
 
             await _repository.UpdateAsync(userAddress);
 
@@ -86,7 +86,7 @@ namespace Wajba.UserAddressService
                 ApartmentNumber = userAddress.ApartmentNumber,
                 Floor = userAddress.Floor,
                 AddressLabel = userAddress.AddressLabel,
-                AddressType = userAddress.AddressType
+                AddressType = (int)userAddress.AddressType
             };
 
             return userAddressDto;
@@ -115,7 +115,7 @@ namespace Wajba.UserAddressService
                 ApartmentNumber = userAddress.ApartmentNumber,
                 Floor = userAddress.Floor,
                 AddressLabel = userAddress.AddressLabel,
-                AddressType = userAddress.AddressType
+                AddressType = (int)userAddress.AddressType
             }).ToList();
 
             return userAddressDtos;
@@ -138,7 +138,7 @@ namespace Wajba.UserAddressService
                 ApartmentNumber = userAddress.ApartmentNumber,
                 Floor = userAddress.Floor,
                 AddressLabel = userAddress.AddressLabel,
-                AddressType = userAddress.AddressType
+                AddressType = (int)userAddress.AddressType
             };
 
             return userAddressDto;

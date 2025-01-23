@@ -1,5 +1,4 @@
 ﻿global using Wajba.Models.PopularItemsDomain;
-using Volo.Abp.OpenIddict;
 
 namespace Wajba.PopularItemServices;
 
@@ -27,8 +26,6 @@ public class PopularItemAppservice : ApplicationService
 
     public async Task<Popularitemdto> CreateAsync(CreatePopularitem input)
     {
-        var p = await _itemrepo.GetListAsync(includeDetails: true);
-    var mn=    p.SelectMany(i => i.ItemBranches).Select(m => m.Branch).Distinct().ToList();
         var items = await _itemrepo.WithDetailsAsync(p => p.ItemBranches);
         Item item = await items.FirstOrDefaultAsync(p => p.Id == input.ItemId);
         if (item == null)

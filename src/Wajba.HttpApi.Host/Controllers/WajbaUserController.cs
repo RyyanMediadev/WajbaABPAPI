@@ -28,13 +28,13 @@ namespace Wajba.Controllers
 
         //private readonly IUnitOfWork _uow;
 
-        //private readonly ISmsSenderService _SMS;
+        // private readonly ISmsSenderService _SMS;
         //private readonly IAuthenticateService _authService;
         //private readonly ICheckUniqes _checkUniq;
         //private readonly IHostingEnvironment _hostingEnvironment;
         //private readonly IMapper _mapper;
         //private readonly UserManagment.TokenAuthenticationService.IUserManagementService _UserManagementService;
-        //private readonly IMailService _mailService;
+        ///private readonly IMailService _mailService;
 
         public WajbaUserController(WajbaUsersAppservice wajbaAppService)
         {
@@ -114,7 +114,7 @@ namespace Wajba.Controllers
                 {
                     //Implement User Profiles
 
-                                        ////user.Password = null;
+                    ////user.Password = null;
 
 
                     //return Ok(new ApiResponse<UserInfoDTO>
@@ -143,6 +143,56 @@ namespace Wajba.Controllers
 
 
 
+      
+
+
+        [AllowAnonymous]
+        [HttpPost, Route("VerifyOTPCode")]
+        public async Task<IActionResult> VerifyOTPCode(int VerifyOTPCode)
+        {
+            //VerifyCodeHelper VCode = new VerifyCodeHelper(_uow, _SMS, _mailService);
+
+            var GtResult = _WajbaUsersAppService.ActivateOTP(VerifyOTPCode);
+
+            if (GtResult)
+            {
+
+                return Ok(GtResult);
+            }
+
+            return BadRequest("Activation Error ... ");
+
+        }
+
+
+        [AllowAnonymous]
+        [HttpPost, Route("SendOTPCode")]
+        public async Task<IActionResult> SendOTPCode(string UserPhone)
+        {
+
+
+            var ExistUSer = await _WajbaUsersAppService.ValidateOtpUser(UserPhone);
+            if (ExistUSer != null)
+            {
+                try
+                {
+                    //VerifyCodeHelper verifyCodeHelper = new VerifyCodeHelper(_uow, _SMS, _mailService);
+                    _WajbaUsersAppService.SendOTP(ExistUSer.Phone, ExistUSer.Id, ExistUSer.Email);
+
+                    return Ok(new { Status = "Sent" });
+                }
+                catch (Exception ex)
+                {
+
+                    return BadRequest(new { erorr = ex });
+
+                }
+            }
+
+            return BadRequest("User Details Not Found ,,Wrong Data !");
+
+        }
+
         [HttpPut("update-WajbaUser")]
         public async Task<IActionResult> UpdateWajbaUser(UpdateWajbaUserDto input)
         {
@@ -150,40 +200,37 @@ namespace Wajba.Controllers
             return Ok();
         }
 
-
-
         [AllowAnonymous]
-        [HttpPost, Route("ForgetPasswordOTP")]
-        public async Task<IActionResult> ForgetPasswordOTP([FromBody] int OTPCode)
+        [HttpPost, Route("ResendActivation")]
+        public IActionResult ResendActivation(string Phone)
         {
-            //var VC = _uow.VerifyCodeRepository.GetMany(a => a.VirfeyCode == OTPCode).FirstOrDefault();
-            //if (VC != null)
-            //{
-            //    int res = DateTime.Compare(VC.Date, DateTime.Now);
-            //    if (res > 0)
-            //    {
-            //        var User = _uow.UserRepository.GetMany(a => a.Id == VC.UserId).FirstOrDefault();
-            //        if (User != null)
-            //        {
-            //            var EncUserId = EncryptANDDecrypt.EncryptText(User.Id.ToString());
-            //            _uow.VerifyCodeRepository.Delete(VC.Id);
-            //            _uow.Save();
+            if (Phone != null)
+            {
+                //// var User = _uow.UserRepository.GetMany(a => a.Phone == Phone).FirstOrDefault();
+                // if (User != null)
+                // {
 
-            //            return Ok(new { User });
-            //        }
-            //        return BadRequest("This code is not related to any user");
+                //     VerifyCodeHelper VerifyCodeHelper = new VerifyCodeHelper(_uow, (ISMS)_SMS, _mailService);
+                //     VerifyCodeHelper.SendOTP(User.Phone, User.Id, User.Email);
 
 
-            //    }
 
-            //    return BadRequest("Code time is expired");
+                //     return Ok(new { MessageEng = "Activation   is Sent to your Phone " });
+                // }
 
-            //}
+                return BadRequest("Email Is not Found");
 
+            }
+            else
+            {
+                return BadRequest("Invalid Data ,,Enter Your Email");
+            }
 
-            return BadRequest("Code is not exist");
 
         }
+
+
+
         [AllowAnonymous]
         [HttpPost, Route("getAllOtpCodes")]
 

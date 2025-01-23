@@ -13,9 +13,27 @@ public class ItemController : WajbaController
     }
 
     [HttpGet("by-category/{categoryId}")]
-    public async Task<List<ItemDto>> GetItemsByCategory(int? categoryId)
+    public async Task<ActionResult<ApiResponse<List<ItemDto>>>> GetItemsByCategory(int? categoryId)
     {
-        return await _itemAppServices.GetItemsByCategoryAsync(categoryId);
+        try
+        {
+            List<ItemDto> itemDto = await _itemAppServices.GetItemsByCategoryAsync(categoryId);
+            return Ok(new ApiResponse<object>
+            {
+                Success = true,
+                Message = "Items retrived successfully.",
+                Data = itemDto
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ApiResponse<object>
+            {
+                Success = false,
+                Message = $"Error retrive item: {ex.Message}",
+                Data = null
+            });
+        }
     }
 
     [HttpGet("by-branch/{branchId}")]
@@ -71,7 +89,7 @@ public class ItemController : WajbaController
         }
     }
     [HttpPut]
-    public async Task<IActionResult> UpdateAsync(  UpdateItemDTO input)
+    public async Task<IActionResult> UpdateAsync(UpdateItemDTO input)
     {
         try
         {

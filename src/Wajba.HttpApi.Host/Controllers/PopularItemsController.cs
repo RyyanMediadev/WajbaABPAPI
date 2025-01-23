@@ -17,12 +17,12 @@ public class PopularItemsController : WajbaController
     {
         try
         {
-            await _popularItemAppservice.CreateAsync(input);
-            return Ok(new ApiResponse<object>
+         var p=   await _popularItemAppservice.CreateAsync(input);
+            return Ok(new ApiResponse<Popularitemdto>
             {
                 Success = true,
                 Message = "Popular Item created successfully.",
-                Data = null
+                Data = p
             });
         }
         catch (Exception ex)
@@ -59,12 +59,12 @@ public class PopularItemsController : WajbaController
         }
     }
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetByIdAsync(int id)
+    public async Task<ActionResult<ApiResponse<Popularitemdto>>> GetByIdAsync(int id)
     {
         try
         {
             Popularitemdto popularItem = await _popularItemAppservice.GetPopularItemById(id);
-            return Ok(new ApiResponse<object>
+            return Ok(new ApiResponse<Popularitemdto>
             {
                 Success = true,
                 Message = "Popular Item retrieved successfully.",
@@ -88,7 +88,7 @@ public class PopularItemsController : WajbaController
         try
         {
             Popularitemdto popularItemDto = await _popularItemAppservice.UpdateAsync(input.Id, input);
-            return Ok(new ApiResponse<object>
+            return Ok(new ApiResponse<Popularitemdto>
             {
                 Success = true,
                 Message = "Popular Item updated successfully.",
@@ -110,12 +110,12 @@ public class PopularItemsController : WajbaController
     {
         try
         {
-            await _popularItemAppservice.Updateimage(updateImage.Id, updateImage.model);
-            return Ok(new ApiResponse<object>
+          var p=  await _popularItemAppservice.Updateimage(updateImage.Id, updateImage.model);
+            return Ok(new ApiResponse<Popularitemdto>
             {
                 Success = true,
                 Message = "Popular Itemiamge updated successfully.",
-                Data = null
+                Data = p
             });
         }
         catch (EntityNotFoundException)

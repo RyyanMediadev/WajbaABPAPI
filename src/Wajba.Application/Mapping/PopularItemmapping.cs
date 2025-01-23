@@ -12,6 +12,7 @@ public class PopularItemmapping:Profile
             .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
             .ForMember(dest => dest.PrePrice, opt => opt.MapFrom(src => src.PrePrice))
             .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.ImageUrl))
+            .ForMember(p=>p.Status , o=>o.MapFrom(p=>p.Status))
             .ReverseMap();
     }
 }

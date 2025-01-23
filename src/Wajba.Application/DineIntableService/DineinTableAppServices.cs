@@ -18,7 +18,7 @@ public class DineinTableAppServices : ApplicationService
         _branchrepo = branchrepo;
         _imageService = imageService;
     }
-    public async Task<DiniINDto> CreateAsync(CreateDineIntable input)
+    public async Task<DiniINTableDto> CreateAsync(CreateDineIntable input)
     {
         if (await _branchrepo.FindAsync(input.BranchId) == null)
             throw new Exception("NotFound branch");
@@ -51,7 +51,7 @@ public class DineinTableAppServices : ApplicationService
         };
         Branch branch = await _branchrepo.FindAsync(input.BranchId);
         DineInTable dineInTable1 = await _repository.InsertAsync(dineInTable, true);
-        DiniINDto diniINDto = new DiniINDto()
+        DiniINTableDto diniINDto = new DiniINTableDto()
         {
             BranchId = dineInTable1.BranchId,
             Id = dineInTable1.Id,
@@ -65,7 +65,7 @@ public class DineinTableAppServices : ApplicationService
         };
         return diniINDto;
     }
-    public async Task<DiniINDto> UpdateAsync(int id, CreateDineIntable dineIntable)
+    public async Task<DiniINTableDto> UpdateAsync(int id, CreateDineIntable dineIntable)
     {
         if (await _branchrepo.FindAsync(dineIntable.BranchId) == null)
             throw new Exception("NotFound branch");
@@ -99,7 +99,7 @@ public class DineinTableAppServices : ApplicationService
         dineInTable1.LastModificationTime = DateTime.UtcNow;
         DineInTable dineInTable3 = await _repository.UpdateAsync(dineInTable1, true);
         Branch branch = await _branchrepo.FindAsync(dineIntable.BranchId);
-        DiniINDto diniINDto = new DiniINDto()
+        DiniINTableDto diniINDto = new DiniINTableDto()
         {
             BranchId = dineInTable3.BranchId,
             Id = dineInTable3.Id,
@@ -113,7 +113,7 @@ public class DineinTableAppServices : ApplicationService
         };
         return diniINDto;
     }
-    public async Task<PagedResultDto<DiniINDto>> GetListAsync(GetDiniTableInput input)
+    public async Task<PagedResultDto<DiniINTableDto>> GetListAsync(GetDiniTableInput input)
     {
         var queryable = await _repository.WithDetailsAsync(p => p.Branch);
         //var queryable = await _repository.GetQueryableAsync();
@@ -128,10 +128,10 @@ public class DineinTableAppServices : ApplicationService
         var dineInTables = await AsyncExecuter.ToListAsync(queryable
             .OrderBy(p => p.Name)
               .PageBy(input.SkipCount, input.MaxResultCount));
-        List<DiniINDto> diniINDtos = new List<DiniINDto>();
+        List<DiniINTableDto> diniINDtos = new List<DiniINTableDto>();
         foreach (var i in dineInTables)
         {
-            DiniINDto diniINDto = new DiniINDto()
+            DiniINTableDto diniINDto = new DiniINTableDto()
             {
                 Address = i.Branch.Address,
                 BranchName = i.Branch.Name,
@@ -145,18 +145,18 @@ public class DineinTableAppServices : ApplicationService
             };
             diniINDtos.Add(diniINDto);
         }
-        return new PagedResultDto<DiniINDto>(
+        return new PagedResultDto<DiniINTableDto>(
       totalCount,
      diniINDtos
   );
     }
-    public async Task<DiniINDto> GetByIdAsync(int id)
+    public async Task<DiniINTableDto> GetByIdAsync(int id)
     {
         DineInTable dine = await _repository.GetAsync(id);
         if (dine == null)
             throw new Exception("Not Found");
         Branch branch = await _branchrepo.GetAsync(dine.BranchId);
-        DiniINDto diniINDto = new DiniINDto()
+        DiniINTableDto diniINDto = new DiniINTableDto()
         {
             Name = dine.Name,
             Status = (int)dine.Status,

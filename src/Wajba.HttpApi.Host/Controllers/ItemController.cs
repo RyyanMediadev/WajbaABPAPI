@@ -13,9 +13,9 @@ public class ItemController : WajbaController
     }
 
     [HttpGet("by-category/{categoryId}")]
-    public async Task<List<ItemDto>> GetItemsByCategory(int? categoryId)
+    public async Task<List<ItemDto>> GetItemsByCategory(int? categoryId,string? name)
     {
-        return await _itemAppServices.GetItemsByCategoryAsync(categoryId);
+        return await _itemAppServices.GetItemsByCategoryAsync(categoryId,name);
 
     }
 
@@ -72,7 +72,7 @@ public class ItemController : WajbaController
         }
     }
     [HttpPut]
-    public async Task<IActionResult> UpdateAsync(  UpdateItemDTO input)
+    public async Task<IActionResult> UpdateAsync(UpdateItemDTO input)
     {
         try
         {

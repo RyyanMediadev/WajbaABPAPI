@@ -4,7 +4,7 @@ public class DineTableMapping:Profile
 {
     public DineTableMapping()
     {
-        CreateMap<DineInTable, DiniINDto>()
+        CreateMap<DineInTable, DiniINTableDto>()
             .ForMember(p => p.Name, p => p.MapFrom(p => p.Name))
             .ForMember(p => p.BranchId, p => p.MapFrom(p => p.BranchId))
             .ForMember(p => p.Status, p => p.MapFrom(p => p.Status))

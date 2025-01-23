@@ -1,6 +1,5 @@
 ﻿global using Microsoft.AspNetCore.Mvc;
 global using Volo.Abp.Application.Dtos;
-global using Volo.Abp.Domain.Entities;
 global using Wajba.APIResponse;
 global using Wajba.Categories;
 global using Wajba.Dtos.Categories;

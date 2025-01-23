@@ -15,7 +15,7 @@ namespace Wajba.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ApiResponse<UserAddressDto>>> CreateAsync([FromBody] CreateUserAddressDto input)
+        public async Task<IActionResult> CreateAsync( CreateUserAddressDto input)
         {
             try
             {
@@ -39,7 +39,7 @@ namespace Wajba.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult<ApiResponse<UserAddressDto>>> UpdateAsync([FromBody] UpdateUserAddressDto input)
+        public async   Task<IActionResult> UpdateAsync(UpdateUserAddressDto input)
         {
             try
             {
@@ -63,7 +63,7 @@ namespace Wajba.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<ApiResponse<object>>> DeleteAsync(int id)
+        public async Task<IActionResult>  DeleteAsync(int id)
         {
             try
             {
@@ -87,7 +87,7 @@ namespace Wajba.Controllers
         }
 
         [HttpGet("customer/{customerId}")]
-        public async Task<ActionResult<ApiResponse<List<UserAddressDto>>>> GetAllByCustomerAsync(string customerId)
+        public async Task<IActionResult> GetAllByCustomerAsync(string customerId)
         {
             try
             {
@@ -110,8 +110,10 @@ namespace Wajba.Controllers
             }
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<ApiResponse<UserAddressDto>>> GetByIdAsync(int id)
+        //public async Task<IActionResult>
+       [HttpGet("{id}")]
+         public async Task<IActionResult> GetByIdAsync(int id)
+        {
         {
             try
             {

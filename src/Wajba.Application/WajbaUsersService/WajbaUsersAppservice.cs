@@ -25,8 +25,8 @@ using Wajba.UserAppService;
 using Wajba.UserManagment;
 using static Volo.Abp.Identity.Settings.IdentitySettingNames;
 using static Volo.Abp.UI.Navigation.DefaultMenuNames.Application;
-using static Wajba.UserManagment.TokenAuthenticationService;
 using TokenManagement = Wajba.SharedTokenManagement.TokenManagement;
+
 
 
 namespace Wajba.WajbaUsersService
@@ -36,7 +36,6 @@ namespace Wajba.WajbaUsersService
     {
         private readonly IRepository<WajbaUser, int> _WajbaUserRepository;
         private readonly TokenManagement _tokenManagement;
-
         //private readonly IPasswordHasher<WajbaUser> _passwordHasher;
         //private readonly IObjectMapper _objectMapper;
         //private readonly IUnitOfWork _uow;
@@ -96,10 +95,10 @@ namespace Wajba.WajbaUsersService
         //    return user != null ? user : null;
         //}
 
-        public async Task<WajbaUser> IsValidUserAsync(string Email, string password)
+        public async Task<WajbaUser> IsValidUserAsync(string Phone, string password)
         {
             // Validate inputs
-            if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(password))
+            if (string.IsNullOrWhiteSpace(Phone) || string.IsNullOrWhiteSpace(password))
             {
                 return null;
             }
@@ -107,7 +106,7 @@ namespace Wajba.WajbaUsersService
             // Find the user based on mobile and encrypted password
             var encryptedPassword = EncryptANDDecrypt.EncryptText(password);
             var user = await _WajbaUserRepository.FirstOrDefaultAsync(
-                ent => ent.Email.ToLower() == Email && ent.Password == encryptedPassword);
+                ent => ent.Phone.ToLower() == Phone && ent.Password == encryptedPassword);
 
             return user;
         }
@@ -117,7 +116,7 @@ namespace Wajba.WajbaUsersService
         {
 
             //token = string.Empty;
-            var user = await IsValidUserAsync(request.Email, request.Password);
+            var user = await IsValidUserAsync(request.Phone, request.Password);
 
             //if (user != null)
             //{
@@ -169,7 +168,6 @@ namespace Wajba.WajbaUsersService
                 ClaimList.Add(new Claim(ClaimTypes.Role, WajbaUser.Id.ToString()));
                 ClaimList.Add(new Claim(ClaimTypes.Name, WajbaUser.Phone));
                 ClaimList.Add(new Claim(ClaimTypes.NameIdentifier, WajbaUser.Id.ToString()));
-             //   TokenManagement _tokenManagement = new TokenManagement();
 
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_tokenManagement.Secret));
                 var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
@@ -218,7 +216,7 @@ namespace Wajba.WajbaUsersService
                 Email = createuserdto.Email,
                 Phone = createuserdto.Phone,
                 FullName = createuserdto.FullName,
-                Type = createuserdto.Type,
+                Type = (UserTypes)createuserdto.Type,
                 status = Status.Active,
                 Password = EncryptANDDecrypt.EncryptText(createuserdto.Password),
             };
@@ -228,7 +226,7 @@ namespace Wajba.WajbaUsersService
 
             #region ApplyRoles
 
-            if (createuserdto.Type == UserTypes.Admin)
+            if (createuserdto.Type ==1/* UserTypes.Admin*/)
             {
                 //AdminProfile
 
@@ -246,7 +244,7 @@ namespace Wajba.WajbaUsersService
                 }
 
             }
-            if (createuserdto.Type == UserTypes.Employee)
+            if (createuserdto.Type ==2/* UserTypes.Employee*/)
             {
                 //DeliveryboyProfile
 
@@ -264,7 +262,7 @@ namespace Wajba.WajbaUsersService
 
             }
 
-            if (createuserdto.Type == UserTypes.Deliveryboy)
+            if (createuserdto.Type ==3 /*UserTypes.Deliveryboy*/)
             {
                 //DeliveryboyProfile
                 //var getPermission = _uow.ProfileRepository.GetMany(a => a.NameEn == RoleConstant.StaffMemberProfile).FirstOrDefault();
@@ -275,7 +273,7 @@ namespace Wajba.WajbaUsersService
             }
 
 
-            if (createuserdto.Type == UserTypes.Customer)
+            if (createuserdto.Type ==4/* UserTypes.Customer*/)
             {
                 //CustomerProfile
 

@@ -17,6 +17,7 @@ using Wajba.Models.WajbaUserDomain;
 using Wajba.UserAppService;
 using Wajba.UserManagment;
 using Wajba.WajbaUsersService;
+using GetUserDto = Wajba.Dtos.WajbaUsersContract.GetUserDto;
 
 namespace Wajba.Controllers
 {
@@ -41,7 +42,7 @@ namespace Wajba.Controllers
         }
         //[IgnoreAntiforgeryToken]
         [HttpPost("Register")]
-        public async Task<ActionResult> Register(CreateUserDto input)
+        public async Task<IActionResult> Register(CreateUserDto input)
         {
 
             if (ModelState.IsValid)
@@ -102,7 +103,7 @@ namespace Wajba.Controllers
                 {
                     return BadRequest(new { MessageAr = "! خطأ في كلمة المرور او رقم الجوال", MessageEng = "Incorrect Email or Password  !" });
                 }
-                if (user.status == Enums.Status.Active)
+                if (user.status == Enums.Status.InActive)
                 {
                     return BadRequest(new { MessageAr = " !الحساب غير مفعل توجه لبريدك الالكتروني للتفعيل", MessageEng = "Account is not Active ;Check Your E-mail to Activate !" });
                 }
@@ -113,9 +114,7 @@ namespace Wajba.Controllers
                 {
                     //Implement User Profiles
 
-
-
-                    ////user.Password = null;
+                                        ////user.Password = null;
 
 
                     //return Ok(new ApiResponse<UserInfoDTO>
@@ -145,7 +144,7 @@ namespace Wajba.Controllers
 
 
         [HttpPut("update-WajbaUser")]
-        public async Task<ActionResult> UpdateWajbaUser(UpdateWajbaUserDto input)
+        public async Task<IActionResult> UpdateWajbaUser(UpdateWajbaUserDto input)
         {
             await _WajbaUsersAppService.UpdateUserAsync(input);
             return Ok();
@@ -155,7 +154,7 @@ namespace Wajba.Controllers
 
         [AllowAnonymous]
         [HttpPost, Route("ForgetPasswordOTP")]
-        public IActionResult ForgetPasswordOTP([FromBody] int OTPCode)
+        public async Task<IActionResult> ForgetPasswordOTP([FromBody] int OTPCode)
         {
             //var VC = _uow.VerifyCodeRepository.GetMany(a => a.VirfeyCode == OTPCode).FirstOrDefault();
             //if (VC != null)
@@ -180,13 +179,15 @@ namespace Wajba.Controllers
             //    return BadRequest("Code time is expired");
 
             //}
+
+
             return BadRequest("Code is not exist");
 
         }
         [AllowAnonymous]
         [HttpPost, Route("getAllOtpCodes")]
 
-        public IActionResult getAllOtpCodes()
+        public async Task<IActionResult> getAllOtpCodes()
         {
             //var AllCodes = _uow.VerifyCodeRepository.GetAll().OrderByDescending(i => i.Id);
 
@@ -199,7 +200,7 @@ namespace Wajba.Controllers
 
         [AllowAnonymous]
         [HttpPost, Route("ForgetPasswordPost")]
-        public IActionResult ForgetPasswordPost([FromBody] ForgetPasswordDTO forgetPasswordDTO)
+        public async Task<IActionResult> ForgetPasswordPost([FromBody] ForgetPasswordDTO forgetPasswordDTO)
         {
 
             //var User = _uow.UserRepository.GetById(forgetPasswordDTO.UserId);
@@ -215,7 +216,7 @@ namespace Wajba.Controllers
         }
         [AllowAnonymous]
         [HttpGet, Route("ActivateAccountOTP")]
-        public IActionResult ActivateViaCode(int getCode)
+        public async Task<IActionResult> ActivateViaCode(int getCode)
         {
             //VerifyCodeHelper VCode = new VerifyCodeHelper(_uow, _SMS, _mailService);
             //var GtResult = VCode.ActivateOTP(getCode);
@@ -231,7 +232,7 @@ namespace Wajba.Controllers
         }
         [AllowAnonymous]
         [HttpPost, Route("ActivateEmailAccount")]
-        public IActionResult ActivateAccount(string Phone)
+        public async Task<IActionResult> ActivateAccount(string Phone)
         {
             try
             {
@@ -270,7 +271,7 @@ namespace Wajba.Controllers
 
         // 5. Delete User
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteWajbaUser(int id)
+        public async Task<IActionResult> DeleteWajbaUser(int id)
         {
             await _WajbaUsersAppService.DeleteUserAsync(id);
             return Ok();

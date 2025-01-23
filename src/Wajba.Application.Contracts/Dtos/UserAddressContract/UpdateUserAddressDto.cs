@@ -18,6 +18,6 @@ namespace Wajba.Dtos.UserAddressContract
         public string? ApartmentNumber { get; set; }
         public string? Floor { get; set; }
         public string? AddressLabel { get; set; }
-        public EmployeeAddressType AddressType { get; set; }
+        public int AddressType { get; set; }
     }
 }

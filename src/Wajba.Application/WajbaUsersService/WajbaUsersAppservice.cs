@@ -25,7 +25,6 @@ using Wajba.UserAppService;
 using Wajba.UserManagment;
 using static Volo.Abp.Identity.Settings.IdentitySettingNames;
 using static Volo.Abp.UI.Navigation.DefaultMenuNames.Application;
-using static Wajba.UserManagment.TokenAuthenticationService;
 using TokenManagement = Wajba.SharedTokenManagement.TokenManagement;
 
 

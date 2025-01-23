@@ -1,8 +1,5 @@
 ﻿global using Wajba.Dtos.DineInTableContract;
 global using Wajba.Services.QrCodeServices;
-global using System.IO;
-global using Wajba.Models.OfferDomain;
-
 
 namespace Wajba.DineIntableService;
 
@@ -19,7 +16,7 @@ public class DineinTableAppServices : ApplicationService
     {
         _repository = repository;
         _branchrepo = branchrepo;
-     _imageService = imageService;
+        _imageService = imageService;
     }
     public async Task<DiniINDto> CreateAsync(CreateDineIntable input)
     {
@@ -51,9 +48,8 @@ public class DineinTableAppServices : ApplicationService
             Size = input.Size,
             Status = (Status)input.status,
             QrCode = url,
-            
         };
-        Branch branch =await _branchrepo.FindAsync(input.BranchId);
+        Branch branch = await _branchrepo.FindAsync(input.BranchId);
         DineInTable dineInTable1 = await _repository.InsertAsync(dineInTable, true);
         DiniINDto diniINDto = new DiniINDto()
         {
@@ -113,7 +109,7 @@ public class DineinTableAppServices : ApplicationService
             Address = branch.Address,
             Phone = branch.Phone,
             BranchName = branch.Name,
-            url=dineInTable3.QrCode
+            url = dineInTable3.QrCode
         };
         return diniINDto;
     }
@@ -130,10 +126,10 @@ public class DineinTableAppServices : ApplicationService
             .WhereIf(input.BranchId.HasValue, p => p.BranchId == input.BranchId.Value);
         var totalCount = await AsyncExecuter.CountAsync(queryable);
         var dineInTables = await AsyncExecuter.ToListAsync(queryable
-            .OrderBy(p=>p.Name)
+            .OrderBy(p => p.Name)
               .PageBy(input.SkipCount, input.MaxResultCount));
         List<DiniINDto> diniINDtos = new List<DiniINDto>();
-        foreach(var i in dineInTables)
+        foreach (var i in dineInTables)
         {
             DiniINDto diniINDto = new DiniINDto()
             {

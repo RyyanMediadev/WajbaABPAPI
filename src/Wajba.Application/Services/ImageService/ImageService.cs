@@ -37,7 +37,8 @@ public class ImageService : IImageService
         var uploadParams = new ImageUploadParams
         {
             File = new FileDescription(fileName, stream),
-            Folder = "categories"
+            Folder = "categories",
+            Format="png"
         };
         var uploadResult = _cloudinary.Upload(uploadParams);
         if (uploadResult.StatusCode != System.Net.HttpStatusCode.OK)

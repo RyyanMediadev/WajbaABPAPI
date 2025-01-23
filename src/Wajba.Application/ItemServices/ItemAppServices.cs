@@ -1,14 +1,9 @@
+global using Microsoft.EntityFrameworkCore;
 global using Wajba.Dtos.ItemsDtos;
 global using Wajba.Enums;
 global using Wajba.Models.Items;
-global using Microsoft.EntityFrameworkCore;
-
-using System.IO;
-
-using Volo.Abp.ObjectMapping;
-using Wajba.Dtos.ItemVariationContract;
-using Wajba.Models.ItemVariationDomain;
-
+global using Wajba.Dtos.ItemsDtos.ItemDependencies;
+global using Wajba.Dtos.ItemVariationContract;
 
 
 namespace Wajba.ItemServices;
@@ -32,13 +27,15 @@ public class ItemAppServices : ApplicationService
         _imageService = imageService;
     }
 
-    public async Task<List<ItemDto>> GetItemsByCategoryAsync(int categoryId)
+    public async Task<List<ItemDto>> GetItemsByCategoryAsync(int? categoryId)
     {
         var items = await _repository.WithDetailsAsync(
             x => x.ItemAddons,
             x => x.ItemExtras,
             x => x.ItemVariations
         );
+        if (categoryId != null && categoryId.Value != 0)
+            items = (IQueryable<Item>)await items.Where(p => p.CategoryId == categoryId.Value).ToListAsync();
         var result = items.Where(x => x.CategoryId == categoryId)
                           .Select(item => ObjectMapper.Map<Item, ItemDto>(item))
                           .ToList();
@@ -159,6 +156,85 @@ public class ItemAppServices : ApplicationService
         await _repository.InsertAsync(item, true);
         return ObjectMapper.Map<Item, ItemDto>(item);
     }
+
+    public async Task<ItemWithDependenciesDto> GetItemWithTransformedDetailsAsync(int id)
+    {
+        // Load item and related entities
+        var queryable = await _repository.WithDetailsAsync(
+            x => x.ItemAddons,
+            x => x.ItemExtras,
+            x => x.ItemVariations,  
+            x => x.ItemBranches ,
+            x => x.Category
+        );
+
+        // Explicitly include nested navigation properties
+        queryable = queryable.Include(x => x.ItemVariations)
+                             .ThenInclude(v => v.ItemAttributes);
+
+        // Fetch the item
+        var item = await queryable.FirstOrDefaultAsync(x => x.Id == id);
+        if (item == null)
+            throw new EntityNotFoundException(typeof(Item), id);
+
+        // Map the main item to ItemDto
+        var itemDto = new ItemWithDependenciesDto
+        {
+            Id = item.Id,
+            Name = item.Name,
+            Description = item.Description,
+            Note = item.Note,
+            Status = item.Status.ToString(),
+            IsFeatured = item.IsFeatured,
+            ImageUrl = item.ImageUrl,
+            Price = item.Price,
+            TaxValue = (decimal)item.TaxValue,
+            CategoryId = item.CategoryId,
+            CategoryName = item.Category?.Name,
+            ItemType = item.ItemType.ToString(),
+            IsDeleted = item.IsDeleted,
+            BranchesIds = item.ItemBranches.Select(p => p.BranchId).ToList()
+        };
+
+        // Map ItemAddons
+        itemDto.ItemAddons = item.ItemAddons.Select(addon => new ItemAddonDTO
+        {
+            Id = addon.Id,
+            Name = addon.AddonName,
+            AdditionalPrice = addon.AdditionalPrice,
+
+            ImageUrl = addon.Item?.ImageUrl
+        }).ToList();
+
+        // Map ItemExtras
+        itemDto.ItemExtras = item.ItemExtras.Select(extra => new ItemExtraDTO
+        {
+            Id = extra.Id,
+            Name = extra.Name,
+            AdditionalPrice = extra.AdditionalPrice
+        }).ToList();
+
+        // Group and map ItemVariations
+        itemDto.Attributes = item.ItemVariations
+            .Where(v => v.ItemAttributes != null) // Exclude variations without attributes
+            .GroupBy(v => v.ItemAttributes.Name)  // Group by Attribute Name
+            .Select(group => new AttributeDto
+            {
+                AttributeName = group.Key,
+                Variations = group.Select(v => new VariationDTO
+                {
+                    Id = v.Id,
+                    Name = v.Name,
+                    Note = v.Note,
+                    AdditionalPrice = v.AdditionalPrice,
+                    ItemAttributesId = v.ItemAttributesId
+                }).ToList()
+            }).ToList();
+
+        return itemDto;
+    }
+
+
     public async Task<ItemDto> updateimage(int id, Base64ImageModel model)
     {
         Item item = await _repository.FindAsync(id);

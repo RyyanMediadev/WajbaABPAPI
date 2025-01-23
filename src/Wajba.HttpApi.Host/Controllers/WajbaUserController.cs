@@ -17,6 +17,7 @@ using Wajba.Models.WajbaUserDomain;
 using Wajba.UserAppService;
 using Wajba.UserManagment;
 using Wajba.WajbaUsersService;
+using GetUserDto = Wajba.Dtos.WajbaUsersContract.GetUserDto;
 
 namespace Wajba.Controllers
 {
@@ -113,9 +114,7 @@ namespace Wajba.Controllers
                 {
                     //Implement User Profiles
 
-
-
-                    ////user.Password = null;
+                                        ////user.Password = null;
 
 
                     //return Ok(new ApiResponse<UserInfoDTO>

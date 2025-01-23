@@ -35,7 +35,6 @@ namespace Wajba.WajbaUsersService
     {
         private readonly IRepository<WajbaUser, int> _WajbaUserRepository;
         private readonly TokenManagement _tokenManagement;
-
         //private readonly IPasswordHasher<WajbaUser> _passwordHasher;
         //private readonly IObjectMapper _objectMapper;
         //private readonly IUnitOfWork _uow;
@@ -244,7 +243,7 @@ namespace Wajba.WajbaUsersService
                 }
 
             }
-            if (createuserdto.Type == 2/*UserTypes.Employee*/)
+            if (createuserdto.Type ==2/* UserTypes.Employee*/)
             {
                 //DeliveryboyProfile
 
@@ -262,7 +261,7 @@ namespace Wajba.WajbaUsersService
 
             }
 
-            if (createuserdto.Type == 3/*UserTypes.Deliveryboy*/)
+            if (createuserdto.Type ==3 /*UserTypes.Deliveryboy*/)
             {
                 //DeliveryboyProfile
                 //var getPermission = _uow.ProfileRepository.GetMany(a => a.NameEn == RoleConstant.StaffMemberProfile).FirstOrDefault();
@@ -273,7 +272,7 @@ namespace Wajba.WajbaUsersService
             }
 
 
-            if (createuserdto.Type == 4/*UserTypes.Customer*/)
+            if (createuserdto.Type ==4/* UserTypes.Customer*/)
             {
                 //CustomerProfile
 

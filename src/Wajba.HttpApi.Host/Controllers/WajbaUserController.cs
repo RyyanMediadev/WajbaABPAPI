@@ -154,7 +154,7 @@ namespace Wajba.Controllers
 
         [AllowAnonymous]
         [HttpPost, Route("ForgetPasswordOTP")]
-        public IActionResult ForgetPasswordOTP([FromBody] int OTPCode)
+        public async Task<IActionResult> ForgetPasswordOTP([FromBody] int OTPCode)
         {
             //var VC = _uow.VerifyCodeRepository.GetMany(a => a.VirfeyCode == OTPCode).FirstOrDefault();
             //if (VC != null)
@@ -187,7 +187,7 @@ namespace Wajba.Controllers
         [AllowAnonymous]
         [HttpPost, Route("getAllOtpCodes")]
 
-        public IActionResult getAllOtpCodes()
+        public async Task<IActionResult> getAllOtpCodes()
         {
             //var AllCodes = _uow.VerifyCodeRepository.GetAll().OrderByDescending(i => i.Id);
 
@@ -200,7 +200,7 @@ namespace Wajba.Controllers
 
         [AllowAnonymous]
         [HttpPost, Route("ForgetPasswordPost")]
-        public IActionResult ForgetPasswordPost([FromBody] ForgetPasswordDTO forgetPasswordDTO)
+        public async Task<IActionResult> ForgetPasswordPost([FromBody] ForgetPasswordDTO forgetPasswordDTO)
         {
 
             //var User = _uow.UserRepository.GetById(forgetPasswordDTO.UserId);
@@ -216,7 +216,7 @@ namespace Wajba.Controllers
         }
         [AllowAnonymous]
         [HttpGet, Route("ActivateAccountOTP")]
-        public IActionResult ActivateViaCode(int getCode)
+        public async Task<IActionResult> ActivateViaCode(int getCode)
         {
             //VerifyCodeHelper VCode = new VerifyCodeHelper(_uow, _SMS, _mailService);
             //var GtResult = VCode.ActivateOTP(getCode);
@@ -232,7 +232,7 @@ namespace Wajba.Controllers
         }
         [AllowAnonymous]
         [HttpPost, Route("ActivateEmailAccount")]
-        public IActionResult ActivateAccount(string Phone)
+        public async Task<IActionResult> ActivateAccount(string Phone)
         {
             try
             {

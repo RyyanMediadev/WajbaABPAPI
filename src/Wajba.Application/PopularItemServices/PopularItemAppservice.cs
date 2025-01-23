@@ -36,11 +36,11 @@ public class PopularItemAppservice : ApplicationService
         PopularItem popularitem = new PopularItem()
         {
             ItemId = input.ItemId,
-            Name = item.Name,
+            Name = input.name,
             PrePrice = input.preprice,
             CurrentPrice = input.currentprice,
             Description = input.Description,
-            CategoryName = category.Name,
+            CategoryName = input.categoryname,
             BranchId = 1
         };
         //popularitem.Branch = item.ItemBranches.Select(p => p.Branch).ToList();
@@ -91,7 +91,7 @@ public class PopularItemAppservice : ApplicationService
             throw new EntityNotFoundException(typeof(Item), input.ItemId);
         //if (input.ImgFile == null)
         //    throw new Exception("Image is required");
-      popularitem.ItemId = input.ItemId;
+        popularitem.ItemId = input.ItemId;
         popularitem.Name = item.Name;
         popularitem.PrePrice = input.preprice;
         popularitem.CurrentPrice = input.currentprice;

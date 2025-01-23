@@ -16,7 +16,7 @@
 //    public interface IAuthenticateService
 //    {
 
-//        WajbaUser AuthenticateUser(LogInDto request, out string token);
+//        WajbaUser AuthenticateUser(LogInWajbaUserDto request, out string token);
 //    }
 //    public interface ICheckUniqes
 //    {
@@ -33,7 +33,7 @@
 //        private readonly IRepository<WajbaUser> _WajbaUserRepository;
 
 
-//        public ChekUniqeSer( IUserManagementService service, IOptions<TokenManagement> tokenManagement, IRepository<WajbaUser> wajbaUserRepository)
+//        public ChekUniqeSer(IUserManagementService service, IOptions<TokenManagement> tokenManagement, IRepository<WajbaUser> wajbaUserRepository)
 //        {
 //            _userManagementService = service;
 //            _tokenManagement = tokenManagement.Value;
@@ -88,45 +88,45 @@
 
 
 
-        //public WajbaUser AuthenticateUser(LogInDto request, out string token)
-        //{
+//        //public WajbaUser AuthenticateUser(LogInWajbaUserDto request, out string token)
+//        //{
 
-        ////    token = string.Empty;
-        ////    var user = _userManagementService.IsValidUser(request.Email, request.Password);
+//            ////    token = string.Empty;
+//            ////    var user = _userManagementService.IsValidUser(request.Email, request.Password);
 
-        //    if (user != null)
-        //    {
-        //        var GetUserpers = _WajbaUserRepository.FirstOrDefaultAsync(a => a.Id == user.Id).Result.Type;
-        //        List<Claim> ClaimList = new List<Claim>();
-                
-
-        //            //var profiletype = _unitOfWork.ProfileRepository.GetMany(a => a.Id == item.ProfileId).FirstOrDefault();
-
-        //           // string profiletype = GetUserpers.Type.ToString();
-        //            ClaimList.Add(new Claim(ClaimTypes.Role, GetUserpers.ToString()));
-
-                
-        //        ClaimList.Add(new Claim(ClaimTypes.Name, request.Email));
-        //        ClaimList.Add(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
+//            //if (user != null)
+//            //{
+//            //    var GetUserpers = _WajbaUserRepository.FirstOrDefaultAsync(a => a.Id == user.Id).Result.Type;
+//            //    List<Claim> ClaimList = new List<Claim>();
 
 
-        //        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_tokenManagement.Secret));
-        //        var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-        //        var expireDate = DateTime.Now.AddMinutes(_tokenManagement.AccessExpiration);
+//            //    //var profiletype = _unitOfWork.ProfileRepository.GetMany(a => a.Id == item.ProfileId).FirstOrDefault();
 
-        //        var tokenDiscriptor = new SecurityTokenDescriptor
-        //        {
-        //            Subject = new ClaimsIdentity(ClaimList),
-        //            Expires = expireDate,
-        //            SigningCredentials = credentials
-        //        };
-        //        var tokenHandler = new JwtSecurityTokenHandler();
-        //        var tokenObj = tokenHandler.CreateToken(tokenDiscriptor);
-        //        token = tokenHandler.WriteToken(tokenObj);
-        //    }
-        //    return user;
+//            //    // string profiletype = GetUserpers.Type.ToString();
+//            //    ClaimList.Add(new Claim(ClaimTypes.Role, GetUserpers.ToString()));
 
-//        }
+
+//            //    ClaimList.Add(new Claim(ClaimTypes.Name, request.Email));
+//            //    ClaimList.Add(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
+
+
+//            //    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_tokenManagement.Secret));
+//            //    var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+//            //    var expireDate = DateTime.Now.AddMinutes(_tokenManagement.AccessExpiration);
+
+//            //    var tokenDiscriptor = new SecurityTokenDescriptor
+//            //    {
+//            //        Subject = new ClaimsIdentity(ClaimList),
+//            //        Expires = expireDate,
+//            //        SigningCredentials = credentials
+//            //    };
+//            //    var tokenHandler = new JwtSecurityTokenHandler();
+//            //    var tokenObj = tokenHandler.CreateToken(tokenDiscriptor);
+//            //    token = tokenHandler.WriteToken(tokenObj);
+//            //}
+//            //return user;
+
+//        //}
 
 //        public interface IUserManagementService
 //        {
@@ -145,16 +145,16 @@
 //            {
 //                var user = _WajbaUserRepository.FirstOrDefaultAsync(ent => ent.Phone.ToLower() == Mobile.ToLower().Trim()
 //                && ent.Password == EncryptANDDecrypt.EncryptText(password)).Result;
-//                return user!= null ? user: null;
+//                return user != null ? user : null;
 //            }
 
-//            public int? getUserId(string Phone,string Email)
+//            public int? getUserId(string Phone, string Email)
 
 //            {
 //                // Get user id by name 
 //                WajbaUser user = _WajbaUserRepository.FirstOrDefaultAsync(ent => ent.Phone.ToLower() == Phone.ToLower().Trim()
 //                || ent.Email.ToLower() == Email.ToLower().Trim()).Result;
-//                return user!= null ? user.Id : null;
+//                return user != null ? user.Id : null;
 //            }
 
 //        }

@@ -25,7 +25,6 @@ using Wajba.UserAppService;
 using Wajba.UserManagment;
 using static Volo.Abp.Identity.Settings.IdentitySettingNames;
 using static Volo.Abp.UI.Navigation.DefaultMenuNames.Application;
-using static Wajba.UserManagment.TokenAuthenticationService;
 using TokenManagement = Wajba.SharedTokenManagement.TokenManagement;
 
 
@@ -169,7 +168,6 @@ namespace Wajba.WajbaUsersService
                 ClaimList.Add(new Claim(ClaimTypes.Role, WajbaUser.Id.ToString()));
                 ClaimList.Add(new Claim(ClaimTypes.Name, WajbaUser.Phone));
                 ClaimList.Add(new Claim(ClaimTypes.NameIdentifier, WajbaUser.Id.ToString()));
-             //   TokenManagement _tokenManagement = new TokenManagement();
 
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_tokenManagement.Secret));
                 var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);

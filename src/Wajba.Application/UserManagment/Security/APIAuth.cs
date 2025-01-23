@@ -88,44 +88,43 @@
 
 
 
-//        public WajbaUser AuthenticateUser(LogInWajbaUserDto request, out string token)
-//        {
+        public WajbaUser AuthenticateUser(LogInDto request, out string token)
+        {
 
-//            token = string.Empty;
-//            var user = _userManagementService.IsValidUser(request.Email, request.Password);
+        //    token = string.Empty;
+        //    var user = _userManagementService.IsValidUser(request.Email, request.Password);
 
-//            if (user != null)
-//            {
-//                var GetUserpers = _WajbaUserRepository.FirstOrDefaultAsync(a => a.Id == user.Id).Result.Type;
-//                List<Claim> ClaimList = new List<Claim>();
+        //    if (user != null)
+        //    {
+        //        var GetUserpers = _WajbaUserRepository.FirstOrDefaultAsync(a => a.Id == user.Id).Result.Type;
+        //        List<Claim> ClaimList = new List<Claim>();
+                
+
+        //            //var profiletype = _unitOfWork.ProfileRepository.GetMany(a => a.Id == item.ProfileId).FirstOrDefault();
+
+        //           // string profiletype = GetUserpers.Type.ToString();
+        //            ClaimList.Add(new Claim(ClaimTypes.Role, GetUserpers.ToString()));
+
+                
+        //        ClaimList.Add(new Claim(ClaimTypes.Name, request.Email));
+        //        ClaimList.Add(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
 
 
-//                //var profiletype = _unitOfWork.ProfileRepository.GetMany(a => a.Id == item.ProfileId).FirstOrDefault();
+        //        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_tokenManagement.Secret));
+        //        var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+        //        var expireDate = DateTime.Now.AddMinutes(_tokenManagement.AccessExpiration);
 
-//                // string profiletype = GetUserpers.Type.ToString();
-//                ClaimList.Add(new Claim(ClaimTypes.Role, GetUserpers.ToString()));
-
-
-//                ClaimList.Add(new Claim(ClaimTypes.Name, request.Email));
-//                ClaimList.Add(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
-
-
-//                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_tokenManagement.Secret));
-//                var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-//                var expireDate = DateTime.Now.AddMinutes(_tokenManagement.AccessExpiration);
-
-//                var tokenDiscriptor = new SecurityTokenDescriptor
-//                {
-//                    Subject = new ClaimsIdentity(ClaimList),
-//                    Expires = expireDate,
-//                    SigningCredentials = credentials
-//                };
-//                var tokenHandler = new JwtSecurityTokenHandler();
-//                var tokenObj = tokenHandler.CreateToken(tokenDiscriptor);
-//             string   token = tokenHandler.WriteToken(tokenObj);
-//                return token
-//            }
-//            return null;
+        //        var tokenDiscriptor = new SecurityTokenDescriptor
+        //        {
+        //            Subject = new ClaimsIdentity(ClaimList),
+        //            Expires = expireDate,
+        //            SigningCredentials = credentials
+        //        };
+        //        var tokenHandler = new JwtSecurityTokenHandler();
+        //        var tokenObj = tokenHandler.CreateToken(tokenDiscriptor);
+        //        token = tokenHandler.WriteToken(tokenObj);
+        //    }
+        //    return user;
 
 //        }
 

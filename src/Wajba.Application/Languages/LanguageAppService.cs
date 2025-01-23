@@ -1,6 +1,5 @@
 ﻿global using Wajba.Dtos.Languages;
 global using Wajba.Models.LanguageDomain;
-using System.IO;
 
 namespace Wajba.Languages;
 

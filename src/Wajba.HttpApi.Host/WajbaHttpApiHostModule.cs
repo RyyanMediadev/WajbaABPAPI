@@ -7,9 +7,6 @@ global using System.Collections.Generic;
 global using System.IO;
 global using System.Linq;
 global using Volo.Abp;
-global using Volo.Abp.Data;
-global using Volo.Abp.Domain.Entities;
-global using Volo.Abp.Domain.Repositories;
 global using Volo.Abp.Account;
 global using Volo.Abp.Account.Web;
 global using Volo.Abp.AspNetCore.MultiTenancy;
@@ -19,6 +16,7 @@ global using Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonXLite.Bundling;
 global using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared;
 global using Volo.Abp.AspNetCore.Serilog;
 global using Volo.Abp.Autofac;
+global using Volo.Abp.Domain.Entities;
 global using Volo.Abp.Modularity;
 global using Volo.Abp.Security.Claims;
 global using Volo.Abp.Swashbuckle;
@@ -26,16 +24,12 @@ global using Volo.Abp.UI.Navigation.Urls;
 global using Volo.Abp.VirtualFileSystem;
 global using Wajba.CloudinaryConfigure;
 global using Wajba.MultiTenancy;
-
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using System.Text;
-using Wajba.CustomerAppService;
+//using Wajba.CustomerAppService;
 using Wajba.Hubs;
 using Wajba.Middleware;
-using Wajba.Models.UsersDomain;
 using Wajba.SharedTokenManagement;
-
 using Wajba.SwaggerFilters;
 
 

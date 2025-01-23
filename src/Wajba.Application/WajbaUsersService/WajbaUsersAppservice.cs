@@ -35,7 +35,6 @@ namespace Wajba.WajbaUsersService
     {
         private readonly IRepository<WajbaUser, int> _WajbaUserRepository;
         private readonly TokenManagement _tokenManagement;
-
         //private readonly IPasswordHasher<WajbaUser> _passwordHasher;
         //private readonly IObjectMapper _objectMapper;
         //private readonly IUnitOfWork _uow;

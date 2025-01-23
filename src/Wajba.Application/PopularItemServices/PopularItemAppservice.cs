@@ -36,11 +36,11 @@ public class PopularItemAppservice : ApplicationService
         PopularItem popularitem = new PopularItem()
         {
             ItemId = input.ItemId,
-            Name = input.name,
+            Name = item.Name,
             PrePrice = input.preprice,
             CurrentPrice = input.currentprice,
             Description = input.Description,
-            CategoryName = input.categoryname,
+            CategoryName = category.Name,
             BranchId = 1
         };
         //popularitem.Branch = item.ItemBranches.Select(p => p.Branch).ToList();

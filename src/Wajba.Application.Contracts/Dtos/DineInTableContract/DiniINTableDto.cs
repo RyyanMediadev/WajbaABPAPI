@@ -1,6 +1,6 @@
 ﻿namespace Wajba.Dtos.DineInTableContract;
 
-public class DiniINDto:EntityDto<int>
+public class DiniINTableDto:EntityDto<int>
 {
     public string Name { get; set; }
     public byte Size { get; set; }

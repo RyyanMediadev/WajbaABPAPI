@@ -40,7 +40,7 @@ public class CouponController : WajbaController
 
     // Get Coupon by ID
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetByIdAsync(int id)
+    public async Task<ActionResult<ApiResponse<CouponDto>>> GetByIdAsync(int id)
     {
         try
         {

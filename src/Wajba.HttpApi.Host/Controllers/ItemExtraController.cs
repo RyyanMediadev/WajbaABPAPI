@@ -13,12 +13,11 @@ namespace Wajba.Controllers
         }
 
         [HttpGet("item/{itemId}/extra/{extraId}")]
-        public async Task<IActionResult> GetAsync(int itemId,int extraId)
+        public async Task<ActionResult<ApiResponse<ItemExtraDto>>> GetAsync(int itemId,int extraId)
         {
             try
             {
                 var itemExtra = await _appService.GetAsync(itemId, extraId);
-
                 return Ok(new ApiResponse<ItemExtraDto>
                 {
                     Success = true,

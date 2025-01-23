@@ -17,7 +17,7 @@ public class FaqController : WajbaController
         try
         {
             await _faqAppService.CreateAsync(input);
-            return Ok(new ApiResponse<object>
+            return Ok(new ApiResponse<FaqDto>
             {
                 Success = true,
                 Message = "Faq created successfully.",
@@ -41,7 +41,7 @@ public class FaqController : WajbaController
         try
         {
             FaqDto faqDto = await _faqAppService.UpdateAsync(input.Id, input);
-            return Ok(new ApiResponse<object>
+            return Ok(new ApiResponse<FaqDto>
             {
                 Success = true,
                 Message = "Faq updated successfully.",
@@ -59,13 +59,13 @@ public class FaqController : WajbaController
         }
     }
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetByIdAsync(int id)
+    public async Task<ActionResult<ApiResponse<FaqDto>>> GetByIdAsync(int id)
     {
         try
         {
             FaqDto faqDto = await _faqAppService.GetByIdAsync(id);
 
-            return Ok(new ApiResponse<object>
+            return Ok(new ApiResponse<FaqDto>
             {
                 Success = true,
                 Message = "faq retrieved successfully.",

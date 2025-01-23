@@ -12,7 +12,7 @@ public class ItemVariationController : WajbaController
     }
 
     [HttpGet("item/{itemId}/variation/{variationId}")]
-    public async Task<IActionResult> GetAsync(int itemId,int variationId)
+    public async Task<ActionResult<ApiResponse<ItemVariationDto>>> GetAsync(int itemId,int variationId)
     {
         try
         {

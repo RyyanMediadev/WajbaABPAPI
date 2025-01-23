@@ -41,6 +41,7 @@ public class PopularItemAppservice : ApplicationService
             CurrentPrice = input.currentprice,
             Description = input.Description,
             CategoryName = category.Name,
+            Status = item.Status,
             BranchId = 1
         };
         //popularitem.Branch = item.ItemBranches.Select(p => p.Branch).ToList();

@@ -16,8 +16,8 @@ public class DineIntableController : WajbaController
     {
         try
         {
-            DiniINDto diniINDto = await _dineinTableAppServices.CreateAsync(input);
-            return Ok(new ApiResponse<object>
+            DiniINTableDto diniINDto = await _dineinTableAppServices.CreateAsync(input);
+            return Ok(new ApiResponse<DiniINTableDto>
             {
                 Success = true,
                 Message = "DineTable created successfully.",
@@ -40,8 +40,8 @@ public class DineIntableController : WajbaController
     {
         try
         {
-            DiniINDto dineInTable = await _dineinTableAppServices.UpdateAsync(input.Id, input);
-            return Ok(new ApiResponse<object>
+            DiniINTableDto dineInTable = await _dineinTableAppServices.UpdateAsync(input.Id, input);
+            return Ok(new ApiResponse<DiniINTableDto>
             {
                 Success = true,
                 Message = "dineInTable updated successfully.",
@@ -59,17 +59,17 @@ public class DineIntableController : WajbaController
         }
     }
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetByIdAsync(int id)
+    public async Task<ActionResult<ApiResponse<DiniINTableDto>>> GetByIdAsync(int id)
     {
         try
         {
-            var category = await _dineinTableAppServices.GetByIdAsync(id);
+            DiniINTableDto dini = await _dineinTableAppServices.GetByIdAsync(id);
 
-            return Ok(new ApiResponse<object>
+            return Ok(new ApiResponse<DiniINTableDto>
             {
                 Success = true,
                 Message = "dineInTable retrieved successfully.",
-                Data = category
+                Data = dini
             });
         }
         catch (EntityNotFoundException)
@@ -99,7 +99,7 @@ public class DineIntableController : WajbaController
         try
         {
             var dto = await _dineinTableAppServices.GetListAsync(input);
-            return Ok(new ApiResponse<PagedResultDto<DiniINDto>>
+            return Ok(new ApiResponse<PagedResultDto<DiniINTableDto>>
             {
                 Success = true,
                 Message = "dinetables retrieved successfully.",

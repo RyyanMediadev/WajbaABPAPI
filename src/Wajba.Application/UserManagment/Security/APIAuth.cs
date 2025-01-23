@@ -88,11 +88,11 @@
 
 
 
-        public WajbaUser AuthenticateUser(LogInDto request, out string token)
-        {
+        //public WajbaUser AuthenticateUser(LogInDto request, out string token)
+        //{
 
-        //    token = string.Empty;
-        //    var user = _userManagementService.IsValidUser(request.Email, request.Password);
+        ////    token = string.Empty;
+        ////    var user = _userManagementService.IsValidUser(request.Email, request.Password);
 
         //    if (user != null)
         //    {

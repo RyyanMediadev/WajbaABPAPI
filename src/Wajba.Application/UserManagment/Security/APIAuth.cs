@@ -40,8 +40,8 @@
 //            _WajbaUserRepository = wajbaUserRepository;
 //        }
 //        public List<string> CheckUniqeValue(UniqeDTO request)
-//        {
 
+//        {
 
 
 //            List<string> MessageArEng = new List<string>();
@@ -88,8 +88,8 @@
 
 
 
-        public WajbaUser AuthenticateUser(LogInDto request, out string token)
-        {
+      //  public WajbaUser AuthenticateUser(LogInDto request, out string token)
+       // {
 
         //    token = string.Empty;
         //    var user = _userManagementService.IsValidUser(request.Email, request.Password);

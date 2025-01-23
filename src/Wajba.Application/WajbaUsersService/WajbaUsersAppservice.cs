@@ -168,7 +168,6 @@ namespace Wajba.WajbaUsersService
                 ClaimList.Add(new Claim(ClaimTypes.Role, WajbaUser.Id.ToString()));
                 ClaimList.Add(new Claim(ClaimTypes.Name, WajbaUser.Phone));
                 ClaimList.Add(new Claim(ClaimTypes.NameIdentifier, WajbaUser.Id.ToString()));
-             //   TokenManagement _tokenManagement = new TokenManagement();
 
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_tokenManagement.Secret));
                 var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);

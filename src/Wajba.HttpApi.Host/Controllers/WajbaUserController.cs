@@ -17,6 +17,7 @@ using Wajba.Models.WajbaUserDomain;
 using Wajba.UserAppService;
 using Wajba.UserManagment;
 using Wajba.WajbaUsersService;
+using GetUserDto = Wajba.Dtos.WajbaUsersContract.GetUserDto;
 
 namespace Wajba.Controllers
 {
@@ -102,7 +103,7 @@ namespace Wajba.Controllers
                 {
                     return BadRequest(new { MessageAr = "! خطأ في كلمة المرور او رقم الجوال", MessageEng = "Incorrect Email or Password  !" });
                 }
-                if (user.status == Enums.Status.Active)
+                if (user.status == Enums.Status.InActive)
                 {
                     return BadRequest(new { MessageAr = " !الحساب غير مفعل توجه لبريدك الالكتروني للتفعيل", MessageEng = "Account is not Active ;Check Your E-mail to Activate !" });
                 }
@@ -113,9 +114,7 @@ namespace Wajba.Controllers
                 {
                     //Implement User Profiles
 
-
-
-                    ////user.Password = null;
+                                        ////user.Password = null;
 
 
                     //return Ok(new ApiResponse<UserInfoDTO>

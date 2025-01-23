@@ -25,7 +25,6 @@ using Wajba.UserAppService;
 using Wajba.UserManagment;
 using static Volo.Abp.Identity.Settings.IdentitySettingNames;
 using static Volo.Abp.UI.Navigation.DefaultMenuNames.Application;
-using static Wajba.UserManagment.TokenAuthenticationService;
 using TokenManagement = Wajba.SharedTokenManagement.TokenManagement;
 
 
@@ -36,7 +35,6 @@ namespace Wajba.WajbaUsersService
     {
         private readonly IRepository<WajbaUser, int> _WajbaUserRepository;
         private readonly TokenManagement _tokenManagement;
-
         //private readonly IPasswordHasher<WajbaUser> _passwordHasher;
         //private readonly IObjectMapper _objectMapper;
         //private readonly IUnitOfWork _uow;
@@ -169,7 +167,6 @@ namespace Wajba.WajbaUsersService
                 ClaimList.Add(new Claim(ClaimTypes.Role, WajbaUser.Id.ToString()));
                 ClaimList.Add(new Claim(ClaimTypes.Name, WajbaUser.Phone));
                 ClaimList.Add(new Claim(ClaimTypes.NameIdentifier, WajbaUser.Id.ToString()));
-             //   TokenManagement _tokenManagement = new TokenManagement();
 
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_tokenManagement.Secret));
                 var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
@@ -246,7 +243,7 @@ namespace Wajba.WajbaUsersService
                 }
 
             }
-            if (createuserdto.Type == 2/*UserTypes.Employee*/)
+            if (createuserdto.Type ==2/* UserTypes.Employee*/)
             {
                 //DeliveryboyProfile
 
@@ -264,7 +261,7 @@ namespace Wajba.WajbaUsersService
 
             }
 
-            if (createuserdto.Type == 3/*UserTypes.Deliveryboy*/)
+            if (createuserdto.Type ==3 /*UserTypes.Deliveryboy*/)
             {
                 //DeliveryboyProfile
                 //var getPermission = _uow.ProfileRepository.GetMany(a => a.NameEn == RoleConstant.StaffMemberProfile).FirstOrDefault();
@@ -275,7 +272,7 @@ namespace Wajba.WajbaUsersService
             }
 
 
-            if (createuserdto.Type == 4/*UserTypes.Customer*/)
+            if (createuserdto.Type ==4/* UserTypes.Customer*/)
             {
                 //CustomerProfile
 

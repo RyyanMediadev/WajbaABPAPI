@@ -1,90 +1,90 @@
 ﻿
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using Volo.Abp.Uow;
-using Wajba.Dtos.WajbaUsersContract;
-using Wajba.Models.WajbaUserDomain;
-using Wajba.UserAppService;
-using static Wajba.UserManagment.TokenAuthenticationService;
+//using Microsoft.Extensions.Options;
+//using Microsoft.IdentityModel.Tokens;
+//using System.IdentityModel.Tokens.Jwt;
+//using System.Security.Claims;
+//using System.Text;
+//using Volo.Abp.Uow;
+//using Wajba.Dtos.WajbaUsersContract;
+//using Wajba.Models.WajbaUserDomain;
+//using Wajba.UserAppService;
+//using static Wajba.UserManagment.TokenAuthenticationService;
 
-namespace Wajba.UserManagment
-{
+//namespace Wajba.UserManagment
+//{
 
-    public interface IAuthenticateService
-    {
+//    public interface IAuthenticateService
+//    {
 
-        WajbaUser AuthenticateUser(LogInDto request, out string token);
-    }
-    public interface ICheckUniqes
-    {
-        List<string> CheckUniqeValue(UniqeDTO request);
-
-
-    }
+//        WajbaUser AuthenticateUser(LogInDto request, out string token);
+//    }
+//    public interface ICheckUniqes
+//    {
+//        List<string> CheckUniqeValue(UniqeDTO request);
 
 
-    public class ChekUniqeSer : ICheckUniqes
-    {
-        private readonly TokenAuthenticationService.IUserManagementService _userManagementService;
-        private readonly TokenManagement _tokenManagement;
-        private readonly IRepository<WajbaUser> _WajbaUserRepository;
+//    }
 
 
-        public ChekUniqeSer( IUserManagementService service, IOptions<TokenManagement> tokenManagement, IRepository<WajbaUser> wajbaUserRepository)
-        {
-            _userManagementService = service;
-            _tokenManagement = tokenManagement.Value;
-            _WajbaUserRepository = wajbaUserRepository;
-        }
-        public List<string> CheckUniqeValue(UniqeDTO request)
-        {
+//    public class ChekUniqeSer : ICheckUniqes
+//    {
+//        private readonly TokenAuthenticationService.IUserManagementService _userManagementService;
+//        private readonly TokenManagement _tokenManagement;
+//        private readonly IRepository<WajbaUser> _WajbaUserRepository;
 
 
-
-            List<string> MessageArEng = new List<string>();
-
-
-            var Email = _WajbaUserRepository.FirstOrDefaultAsync(a => a.Email == request.Email);
-            var Mobil = _WajbaUserRepository.FirstOrDefaultAsync(a => a.Phone == request.Mobile);
-
-            if (Email != null)
-            {
-                MessageArEng.Add("Email Already Exist !");
-                MessageArEng.Add("البريد الإلكتروني موجود مسبقاً ");
-
-            }
-
-            if (Mobil != null)
-            {
-                MessageArEng.Add("Mobile Already Exist !");
-                MessageArEng.Add("الهاتف موجود مسبقاً");
-
-            }
-
-            return MessageArEng;
-        }
+//        public ChekUniqeSer( IUserManagementService service, IOptions<TokenManagement> tokenManagement, IRepository<WajbaUser> wajbaUserRepository)
+//        {
+//            _userManagementService = service;
+//            _tokenManagement = tokenManagement.Value;
+//            _WajbaUserRepository = wajbaUserRepository;
+//        }
+//        public List<string> CheckUniqeValue(UniqeDTO request)
+//        {
 
 
 
-    }
-    public class TokenAuthenticationService : IAuthenticateService
-    {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IUserManagementService _userManagementService;
-        private readonly TokenManagement _tokenManagement;
-        private readonly IRepository<WajbaUser> _WajbaUserRepository;
+//            List<string> MessageArEng = new List<string>();
 
 
-        public TokenAuthenticationService(IUnitOfWork unitOfWork, IUserManagementService service, IOptions<TokenManagement> tokenManagement, IRepository<WajbaUser> wajbaUserRepository)
-        {
-            _userManagementService = service;
-            _tokenManagement = tokenManagement.Value;
-            _unitOfWork = unitOfWork;
-            _WajbaUserRepository = wajbaUserRepository;
-        }
+//            var Email = _WajbaUserRepository.FirstOrDefaultAsync(a => a.Email == request.Email);
+//            var Mobil = _WajbaUserRepository.FirstOrDefaultAsync(a => a.Phone == request.Mobile);
+
+//            if (Email != null)
+//            {
+//                MessageArEng.Add("Email Already Exist !");
+//                MessageArEng.Add("البريد الإلكتروني موجود مسبقاً ");
+
+//            }
+
+//            if (Mobil != null)
+//            {
+//                MessageArEng.Add("Mobile Already Exist !");
+//                MessageArEng.Add("الهاتف موجود مسبقاً");
+
+//            }
+
+//            return MessageArEng;
+//        }
+
+
+
+//    }
+//    public class TokenAuthenticationService : IAuthenticateService
+//    {
+//        private readonly IUnitOfWork _unitOfWork;
+//        private readonly IUserManagementService _userManagementService;
+//        private readonly TokenManagement _tokenManagement;
+//        private readonly IRepository<WajbaUser> _WajbaUserRepository;
+
+
+//        public TokenAuthenticationService(IUnitOfWork unitOfWork, IUserManagementService service, IOptions<TokenManagement> tokenManagement, IRepository<WajbaUser> wajbaUserRepository)
+//        {
+//            _userManagementService = service;
+//            _tokenManagement = tokenManagement.Value;
+//            _unitOfWork = unitOfWork;
+//            _WajbaUserRepository = wajbaUserRepository;
+//        }
 
 
 
@@ -126,38 +126,38 @@ namespace Wajba.UserManagment
         //    }
         //    return user;
 
-        //}
+//        }
 
-        public interface IUserManagementService
-        {
-            WajbaUser IsValidUser(string username, string password);
-            int? getUserId(string Phone, string Email);
-        }
+//        public interface IUserManagementService
+//        {
+//            WajbaUser IsValidUser(string username, string password);
+//            int? getUserId(string Phone, string Email);
+//        }
 
-        public class UserManagementService : IUserManagementService
-        {
-            private readonly IUnitOfWork _uow;
-            private readonly IRepository<WajbaUser> _WajbaUserRepository;
+//        public class UserManagementService : IUserManagementService
+//        {
+//            private readonly IUnitOfWork _uow;
+//            private readonly IRepository<WajbaUser> _WajbaUserRepository;
 
-            public UserManagementService(IUnitOfWork uow) { _uow = uow; }
+//            public UserManagementService(IUnitOfWork uow) { _uow = uow; }
 
-            public WajbaUser IsValidUser(string Mobile, string password)
-            {
-                var user = _WajbaUserRepository.FirstOrDefaultAsync(ent => ent.Phone.ToLower() == Mobile.ToLower().Trim()
-                && ent.Password == EncryptANDDecrypt.EncryptText(password)).Result;
-                return user!= null ? user: null;
-            }
+//            public WajbaUser IsValidUser(string Mobile, string password)
+//            {
+//                var user = _WajbaUserRepository.FirstOrDefaultAsync(ent => ent.Phone.ToLower() == Mobile.ToLower().Trim()
+//                && ent.Password == EncryptANDDecrypt.EncryptText(password)).Result;
+//                return user!= null ? user: null;
+//            }
 
-            public int? getUserId(string Phone,string Email)
+//            public int? getUserId(string Phone,string Email)
 
-            {
-                // Get user id by name 
-                WajbaUser user = _WajbaUserRepository.FirstOrDefaultAsync(ent => ent.Phone.ToLower() == Phone.ToLower().Trim()
-                || ent.Email.ToLower() == Email.ToLower().Trim()).Result;
-                return user!= null ? user.Id : null;
-            }
+//            {
+//                // Get user id by name 
+//                WajbaUser user = _WajbaUserRepository.FirstOrDefaultAsync(ent => ent.Phone.ToLower() == Phone.ToLower().Trim()
+//                || ent.Email.ToLower() == Email.ToLower().Trim()).Result;
+//                return user!= null ? user.Id : null;
+//            }
 
-        }
+//        }
 
-    }
-}
+//    }
+//}

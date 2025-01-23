@@ -16,6 +16,7 @@ public class ItemController : WajbaController
     public async Task<List<ItemDto>> GetItemsByCategory(int? categoryId)
     {
         return await _itemAppServices.GetItemsByCategoryAsync(categoryId);
+
     }
 
     [HttpGet("by-branch/{branchId}")]

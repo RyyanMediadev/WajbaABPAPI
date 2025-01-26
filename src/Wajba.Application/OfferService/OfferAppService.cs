@@ -299,13 +299,13 @@ public class OfferAppService : ApplicationService
             itemDtos = o.OfferItems.Select(m => new ItemDto()
             {
                 Name = m.Item.Name,
-                status = m.Item.Status.ToString(),
+                status = (int)m.Item.Status,
                 imageUrl = m.Item.ImageUrl,
                 CategoryId = m.Item.CategoryId,
                 IsFeatured = m.Item.IsFeatured,
                 Description = m.Item.Description,
                 Id = m.Item.Id,
-                ItemType = m.Item.ItemType.ToString(),
+                ItemType = (int)m.Item.ItemType,
                 Price = m.Item.Price,
                 TaxValue = m.Item.TaxValue,
                 Note = m.Item.Note,

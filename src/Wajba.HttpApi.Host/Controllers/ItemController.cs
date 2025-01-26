@@ -1,5 +1,6 @@
 ﻿global using Wajba.Dtos.ItemsDtos;
 global using Wajba.ItemServices;
+global using Wajba.Dtos.ItemsDtos.ItemDependencies;
 
 namespace Wajba.Controllers;
 
@@ -13,13 +14,13 @@ public class ItemController : WajbaController
     }
 
     [HttpGet("name/categoryid")]
-    public async Task<ActionResult<ApiResponse<List<ItemDto>>>> GetItemsByCategory([FromQuery] int? categoryId, [FromQuery] string? name)
+    public async Task<ActionResult<ApiResponse<PagedResultDto<ItemDto>>>> GetItemsByCategory([FromQuery] int? categoryId, [FromQuery] string? name)
     {
 
         try
         {
             var itemDto = await _itemAppServices.GetItemsByCategoryAsync(categoryId, name);
-            return Ok(new ApiResponse<List<ItemDto>>
+            return Ok(new ApiResponse<PagedResultDto<ItemDto>>
             {
                 Success = true,
                 Message = "Item created successfully.",
@@ -49,7 +50,7 @@ public class ItemController : WajbaController
         return await _itemAppServices.GetItemWithDetailsAsync(id);
     }
     [HttpGet("{id}/details-transformed")]
-    public async Task<IActionResult> GetItemWithTransformedDetails(int id)
+    public async Task<ActionResult<ApiResponse<ItemWithDependenciesDto>>> GetItemWithTransformedDetails(int id)
     {
         try
         {

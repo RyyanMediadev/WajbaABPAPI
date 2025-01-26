@@ -27,21 +27,19 @@ public class ItemAppServices : ApplicationService
         _imageService = imageService;
     }
 
-    public async Task<List<ItemDto>> GetItemsByCategoryAsync(int? categoryId,string? name)
+    public async Task<List<ItemDto>> GetItemsByCategoryAsync(int? categoryId, string? name)
     {
         var items = await _repository.WithDetailsAsync(
             x => x.ItemAddons,
             x => x.ItemExtras,
             x => x.ItemVariations
         );
-        items = (IQueryable<Item>)await items.ToListAsync();
 
-        if (categoryId != null && categoryId.Value != 0) ;
-            //var p = items.Where(p => p./*CategoryId*/ == categoryId.Value);
+        if (categoryId != null && categoryId.Value != 0)
+            items = items.Where(p => p.CategoryId == categoryId.Value);
         if (!string.IsNullOrEmpty(name))
-            items = (IQueryable<Item>)await items.Where(p => p.Name.ToLower() == name.ToLower()).ToListAsync();
-        var result = items.Where(x => x.CategoryId == categoryId)
-                          .Select(item => ObjectMapper.Map<Item, ItemDto>(item))
+            items = items.Where(p => p.Name.ToLower() == name.ToLower());
+        var result = items.Select(item => ObjectMapper.Map<Item, ItemDto>(item))
                           .ToList();
         return result;
     }

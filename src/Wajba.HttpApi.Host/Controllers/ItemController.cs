@@ -12,8 +12,8 @@ public class ItemController : WajbaController
         _itemAppServices = itemAppServices;
     }
 
-    [HttpGet("by-category/{categoryId?}")]
-    public async Task <ActionResult<ApiResponse<List<ItemDto>>>> GetItemsByCategory(int? categoryId,string? name)
+    [HttpGet("name/categoryid")]
+    public async Task<ActionResult<ApiResponse<List<ItemDto>>>> GetItemsByCategory([FromQuery] int? categoryId, [FromQuery] string? name)
     {
         try
         {
@@ -34,7 +34,6 @@ public class ItemController : WajbaController
                 Data = null
             });
         }
-
     }
 
     [HttpGet("by-branch/{branchId}")]

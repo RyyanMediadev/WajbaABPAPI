@@ -15,6 +15,7 @@ public class ItemController : WajbaController
     [HttpGet("name/categoryid")]
     public async Task<ActionResult<ApiResponse<List<ItemDto>>>> GetItemsByCategory([FromQuery] int? categoryId, [FromQuery] string? name)
     {
+
         try
         {
             var itemDto = await _itemAppServices.GetItemsByCategoryAsync(categoryId, name);

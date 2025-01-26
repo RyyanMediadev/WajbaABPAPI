@@ -97,18 +97,18 @@ namespace Wajba.WajbaUsersService
         //    return user != null ? user : null;
         //}
 
-        public async Task<WajbaUser> IsValidUserAsync(string Phone, string password)
+        public async Task<WajbaUser> IsValidUserAsync(string Phone)
         {
             // Validate inputs
-            if (string.IsNullOrWhiteSpace(Phone) || string.IsNullOrWhiteSpace(password))
+            if (string.IsNullOrWhiteSpace(Phone) )
             {
                 return null;
             }
 
             // Find the user based on mobile and encrypted password
-            var encryptedPassword = EncryptANDDecrypt.EncryptText(password);
+            //var encryptedPassword = EncryptANDDecrypt.EncryptText(password);
             var user = await _WajbaUserRepository.FirstOrDefaultAsync(
-                ent => ent.Phone.ToLower() == Phone && ent.Password == encryptedPassword);
+                ent => ent.Phone.ToLower() == Phone);
 
             return user;
         }
@@ -265,7 +265,7 @@ namespace Wajba.WajbaUsersService
         {
 
             //token = string.Empty;
-            var user = await IsValidUserAsync(request.Phone, request.Password);
+            var user = await IsValidUserAsync(request.Phone);
 
             //if (user != null)
             //{
@@ -483,8 +483,19 @@ namespace Wajba.WajbaUsersService
                 query = query.Where(u => u.status == (Status)input.Status);
             }
 
-            // Apply pagination (Skip and Take)
-            var totalCount = await query.CountAsync(); // Get total count for pagination
+			if (!string.IsNullOrEmpty(input.Email))
+			{
+				query = query.Where(u => u.Email == input.Email);
+			}
+
+			if (!string.IsNullOrEmpty(input.Phone))
+			{
+				query = query.Where(u => u.Phone == input.Phone);
+			}
+			
+
+			// Apply pagination (Skip and Take)
+			var totalCount = await query.CountAsync(); // Get total count for pagination
             var users = await query.Skip(input.SkipCount).Take(input.MaxResultCount).ToListAsync(); // Get paginated users
                                                                                                     // Map the list of users (use 'users' instead of 'user')
             var userDtos = users.Select(user => new WajbaUserDto

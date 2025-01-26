@@ -15,8 +15,11 @@ public class CreateUserDto
     public string Password { get; set; }
     public string ConfirmPassword { get; set; }
 
-    //public static implicit operator CreateUserDto(Wajba.Models.WajbaUserDomain.WajbaUser v)
-    //{
-    //    throw new NotImplementedException();
-    //}
+	public List<int?> BranchList { get; set; } = new List<int?>();
+	public List<int?> CustomerRoleList { get; set; } = new List<int?>();
+
+	//public static implicit operator CreateUserDto(Wajba.Models.WajbaUserDomain.WajbaUser v)
+	//{
+	//    throw new NotImplementedException();
+	//}
 }

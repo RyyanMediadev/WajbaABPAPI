@@ -36,6 +36,7 @@ namespace Wajba.Controllers
 		//private readonly IMapper _mapper;
 		//private readonly UserManagment.TokenAuthenticationService.IUserManagementService _UserManagementService;
 		///private readonly IMailService _mailService;
+		//Confirm Uploads
 
 		public WajbaUserController(WajbaUsersAppservice wajbaAppService)
 		{

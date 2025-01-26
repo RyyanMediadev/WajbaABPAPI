@@ -14,5 +14,8 @@ namespace Wajba.Dtos.WajbaUsersContract
         public string Phone { get; set; }
         public int Type { get; set; }
         public int Status { get; set; }
-    }
+
+		public List<int?> BranchList { get; set; } = new List<int?>();
+		public List<int?> CustomerRoleList { get; set; } = new List<int?>();
+	}
 }

@@ -318,7 +318,6 @@ public class ItemAppServices : ApplicationService
             items = items.Where(p => p.Id == input.ItemId.Value);
         if (!string.IsNullOrEmpty(input.Name))
             items = items.Where(p => p.Name.ToLower() == input.Name.ToLower());
-        
         items = items.OrderBy(input.Sorting ?? nameof(Item.Name));
         List<Item> items1 =await items.ToListAsync();
         var itemss = ObjectMapper.Map<List<Item>, List<ItemDto>>(items1);

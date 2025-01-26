@@ -2,7 +2,7 @@
 
 public class GetItemInput : PagedAndSortedResultRequestDto
 {
-    public string? Filter { get; set; }
+    public string? Name { get; set; }
     public int? CategoryId { get; set; }
     public int? ItemType { get; set; }
     public bool? IsFeatured { get; set; }

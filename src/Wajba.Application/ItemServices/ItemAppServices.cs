@@ -4,6 +4,7 @@ global using Wajba.Enums;
 global using Wajba.Models.Items;
 global using Wajba.Dtos.ItemsDtos.ItemDependencies;
 global using Wajba.Dtos.ItemVariationContract;
+using Volo.Abp.ObjectMapping;
 
 
 namespace Wajba.ItemServices;
@@ -27,7 +28,7 @@ public class ItemAppServices : ApplicationService
         _imageService = imageService;
     }
 
-    public async Task<List<ItemDto>> GetItemsByCategoryAsync(int? categoryId, string? name)
+    public async Task<PagedResultDto<ItemDto>> GetItemsByCategoryAsync(int? categoryId, string? name)
     {
         var items = await _repository.WithDetailsAsync(
             x => x.ItemAddons,
@@ -41,7 +42,11 @@ public class ItemAppServices : ApplicationService
             items = items.Where(p => p.Name.ToLower() == name.ToLower());
         var result = items.Select(item => ObjectMapper.Map<Item, ItemDto>(item))
                           .ToList();
-        return result;
+        return new PagedResultDto<ItemDto>()
+        {
+            Items = result,
+            TotalCount = result.Count
+        };
     }
 
     public async Task<List<ItemDto>> GetItemsByBranchAsync(int branchId)
@@ -295,70 +300,88 @@ public class ItemAppServices : ApplicationService
     }
     public async Task<PagedResultDto<ItemDto>> GetListAsync(GetItemInput input)
     {
-        IQueryable<Item> queryable = await _repository.GetQueryableAsync();
-        var items = _repository.WithDetailsAsync(p => p.Category
-        , p => p.ItemBranches
-        ).Result.ToList();
-        IQueryable<Category> categoryQueryable = await _repository1.GetQueryableAsync();
+        var items = await _repository.WithDetailsAsync(p => p.Category
+        , p => p.ItemBranches,
+        p => p.ItemAddons,
+        p => p.ItemExtras,
+        p => p.ItemVariations
+        );
+        if (input.CategoryId.HasValue)
+            items = items.Where(p => p.CategoryId == input.CategoryId.Value);
+        if (input.ItemType.HasValue)
+            items = items.Where(p => p.ItemType == (ItemType)input.ItemType.Value);
+        if (input.Status.HasValue)
+            items = items.Where(p => p.Status == (Status)input.Status.Value);
+        if (input.IsFeatured.HasValue)
+            items = items.Where(p => p.IsFeatured == input.IsFeatured.Value);
+        if (input.ItemId.HasValue)
+            items = items.Where(p => p.Id == input.ItemId.Value);
+        if (!string.IsNullOrEmpty(input.Name))
+            items = items.Where(p => p.Name.ToLower() == input.Name.ToLower());
+        items = items.OrderBy(input.Sorting ?? nameof(Item.Name));
+        List<Item> items1 =await items.ToListAsync();
+        var itemss = ObjectMapper.Map<List<Item>, List<ItemDto>>(items1);
+
+        //IQueryable<Category> categoryQueryable = await _repository1.GetQueryableAsync();
 
         // Join query to include category name
-        var query = from item in queryable
-                    join category in categoryQueryable
-                    on item.CategoryId equals category.Id into categoryGroup
-                    from category in categoryGroup.DefaultIfEmpty()
-                    select new
-                    {
-                        item.Id,
-                        item.Name,
-                        item.Description,
-                        item.Price,
-                        item.ItemType,
-                        item.Status,
-                        item.IsFeatured,
-                        item.TaxValue,
-                        item.Note,
-                        item.CategoryId,
-                        CategoryName = category != null ? category.Name : null
-                    };
+        //var query = from item in queryable
+        //            join category in categoryQueryable
+        //            on item.CategoryId equals category.Id into categoryGroup
+        //            from category in categoryGroup.DefaultIfEmpty()
+        //            select new
+        //            {
+        //                item.Id,
+        //                item.Name,
+        //                item.Description,
+        //                item.Price,
+        //                item.ItemType,
+        //                item.Status,
+        //                item.IsFeatured,
+        //                item.TaxValue,
+        //                item.Note,
+        //                item.CategoryId,
+        //                CategoryName = category != null ? category.Name : null
+        //            };
 
         // Apply filters
-        query = query.WhereIf(!string.IsNullOrWhiteSpace(input.Filter),
-            c => c.Name.ToLower() == input.Filter.ToLower())
-        .WhereIf(input.ItemType.HasValue, c => c.ItemType == (ItemType)input.ItemType.Value)
-        .WhereIf(input.Status.HasValue, c => c.Status == (Status)input.Status)
-        .WhereIf(input.CategoryId.HasValue, c => c.CategoryId == input.CategoryId)
-        .WhereIf(input.MaxPrice.HasValue, c => c.Price <= input.MaxPrice.Value)
-        .WhereIf(input.IsFeatured.HasValue, c => c.IsFeatured == input.IsFeatured.Value);
+        //query = query.WhereIf(!string.IsNullOrWhiteSpace(input.Name),
+        //    c => c.Name.ToLower() == input.Name.ToLower())
+        //.WhereIf(input.ItemType.HasValue, c => c.ItemType == (ItemType)input.ItemType.Value)
+        //.WhereIf(input.Status.HasValue, c => c.Status == (Status)input.Status)
+        //.WhereIf(input.CategoryId.HasValue, c => c.CategoryId == input.CategoryId)
+        //.WhereIf(input.MaxPrice.HasValue, c => c.Price <= input.MaxPrice.Value)
+        //.WhereIf(input.IsFeatured.HasValue, c => c.IsFeatured == input.IsFeatured.Value);
 
         // Count total items after filtering
-        var totalCount = await AsyncExecuter.CountAsync(query);
+        //var totalCount = await AsyncExecuter.CountAsync(query);
 
         // Fetch the filtered and paginated items
-        var itemsWithCategory = await AsyncExecuter.ToListAsync(
-            query.OrderBy(input.Sorting ?? nameof(Item.Name))
-                 .PageBy(input.SkipCount, input.MaxResultCount)
-        );
+        //var itemsWithCategory = await AsyncExecuter.ToListAsync(
+        //    query.OrderBy(input.Sorting ?? nameof(Item.Name))
+        //         .PageBy(input.SkipCount, input.MaxResultCount)
+        //);
 
         // Map to ItemDto
-        var itemDtos = itemsWithCategory.Select(x => new ItemDto
-        {
-            Id = x.Id,
-            Name = x.Name,
-            Description = x.Description,
-            Price = x.Price,
-            ItemType = (int)x.ItemType,
-            status = (int)x.Status,
-            IsFeatured = x.IsFeatured,
-            CategoryId = x.CategoryId,
-            TaxValue=x.TaxValue,
-            Note=x.Note,
-            CategoryName = x.CategoryName,
+        //var itemDtos = itemsWithCategory.Select(x => new ItemDto
+        //{
+        //    Id = x.Id,
+        //    Name = x.Name,
+        //    Description = x.Description,
+        //    Price = x.Price,
+        //    ItemType = (int)x.ItemType,
+        //    status = (int)x.Status,
+        //    IsFeatured = x.IsFeatured,
+        //    CategoryId = x.CategoryId,
+        //    TaxValue=x.TaxValue,
+        //    Note=x.Note,
+        //    CategoryName = x.CategoryName,
        
-        }).ToList();
+        //}).ToList();
 
         return new PagedResultDto<ItemDto>(
-            totalCount,
-            itemDtos
+            itemss.Count,
+            itemss
         );
     }
     public async Task<PagedResultDto<ItemDto>> GetByname(string name)

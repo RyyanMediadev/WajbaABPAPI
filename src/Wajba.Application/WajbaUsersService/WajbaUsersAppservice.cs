@@ -97,18 +97,18 @@ namespace Wajba.WajbaUsersService
         //    return user != null ? user : null;
         //}
 
-        public async Task<WajbaUser> IsValidUserAsync(string Phone, string password)
+        public async Task<WajbaUser> IsValidUserAsync(string Phone)
         {
             // Validate inputs
-            if (string.IsNullOrWhiteSpace(Phone) || string.IsNullOrWhiteSpace(password))
+            if (string.IsNullOrWhiteSpace(Phone) )
             {
                 return null;
             }
 
             // Find the user based on mobile and encrypted password
-            var encryptedPassword = EncryptANDDecrypt.EncryptText(password);
+            //var encryptedPassword = EncryptANDDecrypt.EncryptText(password);
             var user = await _WajbaUserRepository.FirstOrDefaultAsync(
-                ent => ent.Phone.ToLower() == Phone && ent.Password == encryptedPassword);
+                ent => ent.Phone.ToLower() == Phone);
 
             return user;
         }
@@ -265,7 +265,7 @@ namespace Wajba.WajbaUsersService
         {
 
             //token = string.Empty;
-            var user = await IsValidUserAsync(request.Phone, request.Password);
+            var user = await IsValidUserAsync(request.Phone);
 
             //if (user != null)
             //{

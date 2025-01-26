@@ -16,6 +16,7 @@ public class CreateUserDto
     public string ConfirmPassword { get; set; }
 
 	public List<int?> BranchList { get; set; } = new List<int?>();
+
 	public List<int?> CustomerRoleList { get; set; } = new List<int?>();
 
 	//public static implicit operator CreateUserDto(Wajba.Models.WajbaUserDomain.WajbaUser v)

@@ -9,6 +9,7 @@ global using Wajba.Models.OrderSetup;
 global using Wajba.Models.PopularItemsDomain;
 global using Wajba.Models.NotificationDomain;
 global using Wajba.Models.UsersDomain;
+using Wajba.Models.WajbaUserRoleDomain;
 using Wajba.Models.WajbaUserDomain;
 
 namespace Wajba.EntityFrameworkCore;
@@ -68,11 +69,16 @@ AbpDbContext<WajbaDbContext>
     public DbSet<OTP> OTPs { get; set; }
     public DbSet<OrderSetup> OrderSetups { get; set; }
     public DbSet<WajbaUser> WajbaUsers { get; set; }
+	public DbSet<WajbaUserRole> WajbaUserRoles { get; set; }
+
+	public DbSet<WajbaUserBranch> WajbaUserBranches { get; set; }
 
 
-    
-    #endregion
-    public WajbaDbContext(DbContextOptions<WajbaDbContext> options)
+
+
+
+	#endregion
+	public WajbaDbContext(DbContextOptions<WajbaDbContext> options)
         : base(options)
     {
 

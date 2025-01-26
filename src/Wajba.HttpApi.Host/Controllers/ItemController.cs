@@ -13,7 +13,7 @@ public class ItemController : WajbaController
         _itemAppServices = itemAppServices;
     }
 
-    [HttpGet("name/categoryid")]
+    [HttpGet("nameandcategoryid")]
     public async Task<ActionResult<ApiResponse<PagedResultDto<ItemDto>>>> GetItemsByCategory([FromQuery] int? categoryId, [FromQuery] string? name)
     {
 

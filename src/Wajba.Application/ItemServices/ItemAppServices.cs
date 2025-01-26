@@ -321,7 +321,54 @@ public class ItemAppServices : ApplicationService
         items = items.OrderBy(input.Sorting ?? nameof(Item.Name));
         List<Item> items1 =await items.ToListAsync();
         var itemss = ObjectMapper.Map<List<Item>, List<ItemDto>>(items1);
+        List<ItemDto> itemDtos = new List<ItemDto>();
+        foreach (var i in items)
+        {
+            ItemDto itemDto = new ItemDto()
+            {
+                CategoryId = i.CategoryId,
+                CategoryName = i.Category.Name,
+                Name = i.Name,
+                Description = i.Description,
+                imageUrl = i.ImageUrl,
+                IsFeatured = i.IsFeatured,
+                TaxValue = i.TaxValue,
+                status = (int)i.Status,
+                Id = i.Id,
+                Price = i.Price,
+                Note = i.Note,
+                ItemType = (int)i.ItemType,
+                ItemAddons = i.ItemAddons.Select(p => new ItemAddonDto()
+                {
+                    Id = p.Id,
+                    AdditionalPrice = p.AdditionalPrice,
+                    Name = p.AddonName,
+                    ItemId = p.ItemId
+                }).ToList(),
+                ItemExtras = i.ItemExtras.Select(p => new ItemExtraDto()
+                {
+                    ItemId = p.ItemId,
+                    Name = p.Name,
+                    AdditionalPrice = p.AdditionalPrice,
+                    Id = p.Id,
+                    Status = (int)p.Status
 
+                }).ToList(),
+                ItemVariations = i.ItemVariations.Select(p => new ItemVariationDto()
+                {
+                    Status = (int)p.Status,
+                    AdditionalPrice = p.AdditionalPrice,
+                    ItemAttributesId = p.ItemAttributesId,
+                    Id = p.Id,
+                    ItemId = p.ItemId,
+                    Name = p.Name,
+                    Note = p.Note
+                }).ToList(),
+                IsDeleted = i.IsDeleted,
+                Branchesids = i.ItemBranches.Select(p => p.BranchId).ToList()
+            };
+            itemDtos.Add(itemDto);
+        }
         //IQueryable<Category> categoryQueryable = await _repository1.GetQueryableAsync();
 
         // Join query to include category name
@@ -381,7 +428,7 @@ public class ItemAppServices : ApplicationService
 
         return new PagedResultDto<ItemDto>(
             itemss.Count,
-            itemss
+            itemDtos
         );
     }
     public async Task<PagedResultDto<ItemDto>> GetByname(string name)

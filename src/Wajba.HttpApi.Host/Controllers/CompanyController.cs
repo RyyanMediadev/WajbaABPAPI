@@ -18,12 +18,12 @@ public class CompanyController : WajbaController
             return BadRequest("Data is not valid");
         try
         {
-            await _companyAppService.CreateAsync(input);
-            return Ok(new ApiResponse<object>
+       CompanyDto companyDto=      await _companyAppService.CreateAsync(input);
+            return Ok(new ApiResponse<CompanyDto>
             {
                 Success = true,
                 Message = "Company created successfully.",
-                Data = null
+                Data = companyDto
             });
         }
         catch (Exception ex)
@@ -44,7 +44,7 @@ public class CompanyController : WajbaController
         try
         {
             CompanyDto companyDto = await _companyAppService.UpdateAsync(input);
-            return Ok(new ApiResponse<object>
+            return Ok(new ApiResponse<CompanyDto>
             {
                 Success = true,
                 Message = "companyDto updated successfully.",
@@ -62,13 +62,12 @@ public class CompanyController : WajbaController
         }
     }
     [HttpGet]
-    public async Task<IActionResult> GetByIdAsync()
+    public async Task<ActionResult<ApiResponse<CompanyDto>>> GetByIdAsync()
     {
         try
         {
             CompanyDto companyDto = await _companyAppService.GetByIdAsync();
-
-            return Ok(new ApiResponse<object>
+            return Ok(new ApiResponse<CompanyDto>
             {
                 Success = true,
                 Message = "companyDto retrieved successfully.",

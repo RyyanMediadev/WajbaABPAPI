@@ -37,7 +37,7 @@ public class ItemAddonController : WajbaController
     }
 
     [HttpGet("item/{itemId}/addon/{addonId}")]
-    public async Task<IActionResult> GetByIdAsync(int itemId,int addonId)
+    public async Task<ActionResult<ApiResponse<ItemAddonDto>>> GetByIdAsync(int itemId,int addonId)
     {
         try
         {

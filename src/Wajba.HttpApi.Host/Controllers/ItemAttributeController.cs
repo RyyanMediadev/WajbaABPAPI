@@ -38,7 +38,7 @@ public class ItemAttributeController : WajbaController
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetAsync(int id)
+    public async Task<ActionResult<ApiResponse<ItemAttributeDto>> >GetAsync(int id)
     {
         try
         {

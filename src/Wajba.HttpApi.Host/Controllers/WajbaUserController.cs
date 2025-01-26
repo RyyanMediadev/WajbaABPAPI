@@ -304,9 +304,43 @@ namespace Wajba.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<GetUserDto>> GetWajbaUser(int id)
         {
-            var result = await _WajbaUsersAppService.GetUserAsync(id);
-            return Ok(result);
+           // return Ok(result);
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                   
+
+                    var result = await _WajbaUsersAppService.GetUserAsync(id);
+
+                    return Ok(new ApiResponse<GetUserDto>
+                    {
+                        Success = true,
+                        Message = "User Retrived successfully.",
+                        Data = result
+                    });
+
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(new ApiResponse<object>
+                    {
+                        Success = false,
+                        Message = $"Error Retrived User: {ex.Message}",
+                        Data = null
+                    });
+                    //  return BadRequest(" Internal server error" + " " + ex.Message);
+
+                }
+
+            }
+            return BadRequest(new { MessageAr = "مستخدم غير موجود", MessageEng = "Invalid User !" });
+
         }
+
+
+        
 
         // 4. Get User List
         [HttpGet("listWajbaUser")]

@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Wajba.Dtos.UserAddressContract;
+﻿global using Wajba.Dtos.UserAddressContract;
 
 namespace Wajba.Controllers
 {

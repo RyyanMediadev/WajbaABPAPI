@@ -37,7 +37,7 @@ public class ItemTaxController : WajbaController
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetAsync(int id)
+    public async Task<ActionResult<ApiResponse<ItemTaxDto>>> GetAsync(int id)
     {
         try
         {

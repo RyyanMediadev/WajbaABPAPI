@@ -17,12 +17,12 @@ public class CurrenciesController : WajbaController
     {
         try
         {
-            await _currenciesAppService.CreateAsync(input);
-            return Ok(new ApiResponse<object>
+          CurrenciesDto currenciesDto=  await _currenciesAppService.CreateAsync(input);
+            return Ok(new ApiResponse<CurrenciesDto>
             {
                 Success = true,
                 Message = "Currencies created successfully.",
-                Data = null
+                Data = currenciesDto
             });
         }
         catch (Exception ex)
@@ -68,7 +68,7 @@ public class CurrenciesController : WajbaController
         }
     }
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetByIdAsync(int id)
+    public async Task<ActionResult<ApiResponse<CurrenciesDto>>> GetByIdAsync(int id)
     {
         try
         {

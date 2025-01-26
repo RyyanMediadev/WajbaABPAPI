@@ -27,19 +27,19 @@ public class ItemAppServices : ApplicationService
         _imageService = imageService;
     }
 
-    public async Task<List<ItemDto>> GetItemsByCategoryAsync(int? categoryId,string? name)
+    public async Task<List<ItemDto>> GetItemsByCategoryAsync(int? categoryId, string? name)
     {
         var items = await _repository.WithDetailsAsync(
             x => x.ItemAddons,
             x => x.ItemExtras,
             x => x.ItemVariations
         );
+
         if (categoryId != null && categoryId.Value != 0)
-            items = (IQueryable<Item>)await items.Where(p => p.CategoryId == categoryId.Value).ToListAsync();
+            items = items.Where(p => p.CategoryId == categoryId.Value);
         if (!string.IsNullOrEmpty(name))
-            items = (IQueryable<Item>)await items.Where(p => p.Name.ToLower() == name.ToLower()).ToListAsync();
-        var result = items.Where(x => x.CategoryId == categoryId)
-                          .Select(item => ObjectMapper.Map<Item, ItemDto>(item))
+            items = items.Where(p => p.Name.ToLower() == name.ToLower());
+        var result = items.Select(item => ObjectMapper.Map<Item, ItemDto>(item))
                           .ToList();
         return result;
     }
@@ -78,14 +78,14 @@ public class ItemAppServices : ApplicationService
             Name = item.Name,
             Description = item.Description,
             Note = item.Note,
-            status = item.Status.ToString(),
+            status = (int)item.Status,
             IsFeatured = item.IsFeatured,
             imageUrl = item.ImageUrl,
             Price = item.Price,
             TaxValue = item.TaxValue,
             CategoryId = item.CategoryId,
             CategoryName = item.Category?.Name, 
-            ItemType = item.ItemType.ToString(),
+            ItemType = (int)item.ItemType,
             IsDeleted = item.IsDeleted,
             Branchesids = item.ItemBranches.Select(p => p.BranchId).ToList() 
         };
@@ -95,7 +95,6 @@ public class ItemAppServices : ApplicationService
         {
             Id = addon.Id,
             Name = addon.AddonName,
-          
             AdditionalPrice = addon.AdditionalPrice
         }).ToList();
 
@@ -104,7 +103,6 @@ public class ItemAppServices : ApplicationService
         {
             Id = extra.Id,
             Name = extra.Name,
-           
             AdditionalPrice = extra.AdditionalPrice
         }).ToList();
 
@@ -186,14 +184,14 @@ public class ItemAppServices : ApplicationService
             Name = item.Name,
             Description = item.Description,
             Note = item.Note,
-            Status = item.Status.ToString(),
+            Status = (int)item.Status,
             IsFeatured = item.IsFeatured,
             ImageUrl = item.ImageUrl,
             Price = item.Price,
             TaxValue = (decimal)item.TaxValue,
             CategoryId = item.CategoryId,
             CategoryName = item.Category?.Name,
-            ItemType = item.ItemType.ToString(),
+            ItemType = (int)item.ItemType,
             IsDeleted = item.IsDeleted,
             BranchesIds = item.ItemBranches.Select(p => p.BranchId).ToList()
         };
@@ -298,7 +296,9 @@ public class ItemAppServices : ApplicationService
     public async Task<PagedResultDto<ItemDto>> GetListAsync(GetItemInput input)
     {
         IQueryable<Item> queryable = await _repository.GetQueryableAsync();
-        var items = _repository.WithDetailsAsync(p => p.Category).Result.ToList();
+        var items = _repository.WithDetailsAsync(p => p.Category
+        , p => p.ItemBranches
+        ).Result.ToList();
         IQueryable<Category> categoryQueryable = await _repository1.GetQueryableAsync();
 
         // Join query to include category name
@@ -315,6 +315,8 @@ public class ItemAppServices : ApplicationService
                         item.ItemType,
                         item.Status,
                         item.IsFeatured,
+                        item.TaxValue,
+                        item.Note,
                         item.CategoryId,
                         CategoryName = category != null ? category.Name : null
                     };
@@ -344,11 +346,14 @@ public class ItemAppServices : ApplicationService
             Name = x.Name,
             Description = x.Description,
             Price = x.Price,
-            ItemType = x.ItemType.ToString(),
-            status = x.Status.ToString(),
+            ItemType = (int)x.ItemType,
+            status = (int)x.Status,
             IsFeatured = x.IsFeatured,
             CategoryId = x.CategoryId,
-            CategoryName = x.CategoryName
+            TaxValue=x.TaxValue,
+            Note=x.Note,
+            CategoryName = x.CategoryName,
+       
         }).ToList();
 
         return new PagedResultDto<ItemDto>(
@@ -391,6 +396,6 @@ public class ItemAppServices : ApplicationService
         Item item = await _repository.GetAsync(id);
         if (item == null)
             throw new EntityNotFoundException(typeof(Item), id);
-        await _repository.DeleteAsync(id);
+        await _repository.HardDeleteAsync(item, true);
     }
 }

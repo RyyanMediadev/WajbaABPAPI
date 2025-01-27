@@ -13,8 +13,8 @@ using Wajba.EntityFrameworkCore;
 namespace Wajba.Migrations
 {
     [DbContext(typeof(WajbaDbContext))]
-    [Migration("20250126103305_userrolesandbranches")]
-    partial class userrolesandbranches
+    [Migration("20250127121712_initialroles")]
+    partial class initialroles
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -3643,6 +3643,9 @@ namespace Wajba.Migrations
                     b.Property<string>("ProfilePhoto")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("Role")
+                        .HasColumnType("int");
+
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
@@ -3654,7 +3657,7 @@ namespace Wajba.Migrations
                     b.ToTable("WajbaUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Wajba.Models.WajbaUserDomain.WajbaUserRole", b =>
+            modelBuilder.Entity("Wajba.Models.WajbaUserRoleDomain.WajbaUserRole", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -4150,7 +4153,7 @@ namespace Wajba.Migrations
                     b.Navigation("Language");
                 });
 
-            modelBuilder.Entity("Wajba.Models.WajbaUserDomain.WajbaUserRole", b =>
+            modelBuilder.Entity("Wajba.Models.WajbaUserRoleDomain.WajbaUserRole", b =>
                 {
                     b.HasOne("Wajba.Models.WajbaUserDomain.WajbaUser", "WajbaUser")
                         .WithMany()

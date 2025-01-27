@@ -56,8 +56,7 @@ public class PopularItemAppservice : ApplicationService
             popularitem.ImageUrl = await _imageService.UploadAsync(ms, input.Model.FileName);
         }
         popularitem = await _popularitemrepo.InsertAsync(popularitem, autoSave: true);
-
-        return ObjectMapper.Map<PopularItem, Popularitemdto>(popularitem);
+        return topopularitemdto(popularitem);
     }
     public async Task<PagedResultDto<Popularitemdto>> GetPopularItems(GetPopulariteminput input)
     {
@@ -79,7 +78,7 @@ public class PopularItemAppservice : ApplicationService
         var popularitem = await _popularitemrepo.GetAsync(id);
         if (popularitem == null)
             throw new EntityNotFoundException(typeof(PopularItem), id);
-        return ObjectMapper.Map<PopularItem, Popularitemdto>(popularitem);
+        return topopularitemdto(popularitem);
     }
     public async Task<Popularitemdto> UpdateAsync(int id, UpdatePopularItemdto input)
     {
@@ -93,8 +92,8 @@ public class PopularItemAppservice : ApplicationService
         Category category = await _categoryrepo.GetAsync(item.CategoryId);
         if (category == null)
             throw new EntityNotFoundException(typeof(Category), item.CategoryId);
-        if (popularitem.ItemId != input.ItemId)
-            throw new EntityNotFoundException(typeof(Item), input.ItemId);
+        //if (popularitem.ItemId != input.ItemId)
+        //    throw new EntityNotFoundException(typeof(Item), input.ItemId);
         //if (input.ImgFile == null)
         //    throw new Exception("Image is required");
         foreach (var i in await _popularitemsbranches.ToListAsync())
@@ -119,7 +118,7 @@ public class PopularItemAppservice : ApplicationService
             popularitem.ImageUrl = await _imageService.UploadAsync(ms, input.Model.FileName);
         }
         popularitem = await _popularitemrepo.UpdateAsync(popularitem, autoSave: true);
-        return ObjectMapper.Map<PopularItem, Popularitemdto>(popularitem);
+        return topopularitemdto(popularitem);
     }
     public async Task<Popularitemdto> Updateimage(int id, Base64ImageModel model)
     {
@@ -133,7 +132,7 @@ public class PopularItemAppservice : ApplicationService
         popularItem.ImageUrl = await _imageService.UploadAsync(ms, model.FileName);
         popularItem.LastModificationTime = DateTime.UtcNow;
         popularItem = await _popularitemrepo.UpdateAsync(popularItem, true);
-        return ObjectMapper.Map<PopularItem, Popularitemdto>(popularItem);
+        return topopularitemdto(popularItem);
     }
     public async Task DeleteAsync(int id)
     {

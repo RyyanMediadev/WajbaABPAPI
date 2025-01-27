@@ -30,5 +30,19 @@ public class Item : FullAuditedEntity<int>
     {
         
     }
-    
+
+    //public static implicit operator Item(Wajba.Dtos.ItemsDtos.ItemDto v)
+    //{
+    //    throw new NotImplementedException();
+    //}
+
+    //public static implicit operator Item(Wajba.Dtos.ItemsDtos.ItemDto v)
+    //{
+    //    throw new NotImplementedException();
+    //}
+
+    //public static implicit operator Item(Wajba.Dtos.ItemsDtos.ItemDto v)
+    //{
+    //    throw new NotImplementedException();
+    //}
 }

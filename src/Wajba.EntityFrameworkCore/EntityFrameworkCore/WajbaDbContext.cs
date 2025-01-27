@@ -46,6 +46,7 @@ AbpDbContext<WajbaDbContext>
     //public DbSet<address> addresses { get; set; }
     public DbSet<ItemVariation> ItemVariations { get; set; }
   public DbSet<PopularItem> PopularItems { get; set; }
+    public DbSet<PopulartItemBranches> PopulartItemBranches { get; set; }
     public DbSet<ItemAddon> ItemAddons { get; set; }
     public DbSet<ItemExtra> ItemExtras { get; set; }
     public DbSet<ItemAttribute> ItemAttributes { get; set; }
@@ -98,7 +99,10 @@ AbpDbContext<WajbaDbContext>
         builder.ConfigureOpenIddict();
         builder.ConfigureFeatureManagement();
         builder.ConfigureTenantManagement();
-
+        builder.Entity<ItemBranch>()
+.HasKey(p => new { p.BranchId, p.ItemId });
+        builder.Entity<PopulartItemBranches>()
+            .HasKey(p => new { p.BranchId, p.PopularItemId });
         /* Configure your own tables/entities inside here */
 
         builder.ApplyConfigurationsFromAssembly(typeof(WajbaDbContext).Assembly);

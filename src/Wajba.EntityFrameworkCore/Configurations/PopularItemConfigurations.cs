@@ -9,7 +9,8 @@ public class PopularItemConfigurations : IEntityTypeConfiguration<PopularItem>
 
         builder.Property(d => d.CurrentPrice)
         .HasColumnType("decimal(18, 2)");
-
+        builder.HasMany(p => p.PopulartItemBranches)
+            .WithOne(p => p.PopularItem);
 
         builder.Property(e => e.PrePrice)
             .HasColumnType("decimal(18, 2)");

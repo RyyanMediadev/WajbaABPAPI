@@ -14,16 +14,19 @@ public class ItemAppServices : ApplicationService
     private readonly IRepository<Item, int> _repository;
     private readonly IRepository<Category, int> _repository1;
     private readonly IRepository<Branch, int> _repositoryBranch;
+    private readonly IRepository<ItemBranch, int> _itembranches;
     private readonly IImageService _imageService;
 
     public ItemAppServices(IRepository<Item, int> repository,
         IRepository<Category, int> repository1,
         IRepository<Branch, int> repositoryBranch,
+        IRepository<ItemBranch, int> itembranches,
         IImageService imageService)
     {
         _repository = repository;
         _repository1 = repository1;
         _repositoryBranch = repositoryBranch;
+        _itembranches = itembranches;
         _imageService = imageService;
     }
 
@@ -32,18 +35,23 @@ public class ItemAppServices : ApplicationService
         var items = await _repository.WithDetailsAsync(
             x => x.ItemAddons,
             x => x.ItemExtras,
-            x => x.ItemVariations
+            x => x.ItemVariations,
+            x=>x.ItemBranches,
+            x=>x.Category
         );
 
         if (categoryId != null && categoryId.Value != 0)
             items = items.Where(p => p.CategoryId == categoryId.Value);
         if (!string.IsNullOrEmpty(name))
             items = items.Where(p => p.Name.ToLower() == name.ToLower());
+        List<ItemDto> itemDtos = new List<ItemDto>();
+        foreach (var i in items)
+            itemDtos.Add(toitemdto(i));
         var result = items.Select(item => ObjectMapper.Map<Item, ItemDto>(item))
                           .ToList();
         return new PagedResultDto<ItemDto>()
         {
-            Items = result,
+            Items = itemDtos,
             TotalCount = result.Count
         };
     }
@@ -263,6 +271,12 @@ public class ItemAppServices : ApplicationService
         //    throw new Exception("Image is required");
         if (await _repository1.FindAsync(input.CategoryId) == null)
             throw new Exception("Category not found");
+        item.ItemBranches = new List<ItemBranch>();
+        foreach (var i in await _itembranches.ToListAsync())
+        {
+            if (i.ItemId == item.Id)
+                await _itembranches.HardDeleteAsync(i, true);
+        }
         List<ItemBranch> itemBranches = new List<ItemBranch>();
         foreach (var branchId in input.BranchIds)
         {
@@ -287,7 +301,7 @@ public class ItemAppServices : ApplicationService
         item.Note = input.Note;
         item.Status = (Enums.Status)input.status;
         item.ItemBranches = itemBranches;
-        item.LastModificationTime = DateTime.UtcNow;
+        //item.LastModificationTime = DateTime.UtcNow;
         Item item1 = await _repository.UpdateAsync(item, true);
         return ObjectMapper.Map<Item, ItemDto>(item1);
     }
@@ -466,5 +480,50 @@ public class ItemAppServices : ApplicationService
         if (item == null)
             throw new EntityNotFoundException(typeof(Item), id);
         await _repository.HardDeleteAsync(item, true);
+    }
+    private static ItemDto toitemdto(Item item)
+    {
+        return new ItemDto()
+        {
+            CategoryId = item.CategoryId,
+            Id = item.Id,
+            CategoryName = item.Category.Name,
+            Name = item.Name,
+            Note = item.Note,
+            Price = item.Price,
+            Description = item.Description,
+            imageUrl = item.ImageUrl,
+            IsDeleted = item.IsDeleted,
+            IsFeatured = item.IsFeatured,
+            ItemType = (int)item.ItemType,
+            status = (int)item.Status,
+            TaxValue = item.TaxValue,
+            ItemAddons = item.ItemAddons.Select(p => new ItemAddonDto()
+            {
+                AdditionalPrice = p.AdditionalPrice,
+                Id = p.Id,
+                ItemId = p.ItemId,
+                Name = p.AddonName,
+            }).ToList(),
+            ItemExtras = item.ItemExtras.Select(p => new ItemExtraDto()
+            {
+                Name = p.Name,
+                AdditionalPrice = p.AdditionalPrice,
+                Id = p.Id,
+                ItemId = p.ItemId,
+                Status = (int)p.Status,
+            }).ToList(),
+            ItemVariations = item.ItemVariations.Select(p => new ItemVariationDto()
+            {
+                AdditionalPrice = p.AdditionalPrice,
+                Note = p.Note,
+                Status = (int)p.Status,
+                Id = p.Id,
+                ItemAttributesId = p.ItemAttributesId,
+                ItemId = p.ItemId,
+                Name = p.Name
+            }).ToList(),
+            BranchesIds = item.ItemBranches.Select(p => p.BranchId).ToList()
+        };
     }
 }

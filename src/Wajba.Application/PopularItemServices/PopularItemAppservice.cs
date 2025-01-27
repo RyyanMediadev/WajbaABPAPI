@@ -9,18 +9,21 @@ public class PopularItemAppservice : ApplicationService
     private readonly IRepository<Item, int> _itemrepo;
     private readonly IRepository<Branch, int> _branchrepo;
     private readonly IRepository<Category, int> _categoryrepo;
+    private readonly IRepository<PopulartItemBranches, int> _popularitemsbranches;
     private readonly IImageService _imageService;
 
     public PopularItemAppservice(IRepository<PopularItem, int> popularitemrepo,
         IRepository<Item, int> itemrepo,
         IRepository<Branch, int> branchrepo,
         IRepository<Category, int> categoryrepo,
+        IRepository<PopulartItemBranches, int> popularitemsbranches,
         IImageService imageService)
     {
         _popularitemrepo = popularitemrepo;
         _itemrepo = itemrepo;
         _branchrepo = branchrepo;
         _categoryrepo = categoryrepo;
+        _popularitemsbranches = popularitemsbranches;
         _imageService = imageService;
     }
 
@@ -42,9 +45,9 @@ public class PopularItemAppservice : ApplicationService
             Description = input.Description,
             CategoryName = category.Name,
             Status = item.Status,
-            BranchId = 1
         };
-        //popularitem.Branch = item.ItemBranches.Select(p => p.Branch).ToList();
+        foreach (var i in item.ItemBranches)
+            popularitem.PopulartItemBranches.Add(new PopulartItemBranches() { BranchId = i.BranchId, Branch = i.Branch });
         popularitem.ImageUrl = null;
         if (input.Model != null)
         {
@@ -58,16 +61,18 @@ public class PopularItemAppservice : ApplicationService
     }
     public async Task<PagedResultDto<Popularitemdto>> GetPopularItems(GetPopulariteminput input)
     {
-        var popularitems = await _popularitemrepo.WithDetailsAsync(p => p.Branch);
+        var popularitems = await _popularitemrepo.WithDetailsAsync(p => p.PopulartItemBranches);
         if (!string.IsNullOrEmpty(input.Name))
             popularitems = popularitems.Where(p => p.Name.ToLower() == input.Name.ToLower());
         if (input.status.HasValue)
             popularitems = popularitems.Where(p => p.Status ==(Status) input.status);
-        int count =await popularitems.CountAsync();
+        //int count =await popularitems.CountAsync();
         popularitems = popularitems.OrderBy(input.Sorting ?? nameof(PopularItem.Name)).PageBy(input.SkipCount, input.MaxResultCount);
         List<PopularItem> popularitemslist = await popularitems.ToListAsync();
-        List<Popularitemdto> populartitemsdto = ObjectMapper.Map<List<PopularItem>, List<Popularitemdto>>(popularitemslist);
-        return new PagedResultDto<Popularitemdto>(count, populartitemsdto);
+        List<Popularitemdto> populartitemsdto = new List<Popularitemdto>();
+        foreach (var i in popularitemslist)
+            populartitemsdto.Add(topopularitemdto(i));
+        return new PagedResultDto<Popularitemdto>(10, populartitemsdto);
     }
     public async Task<Popularitemdto> GetPopularItemById(int id)
     {
@@ -92,13 +97,20 @@ public class PopularItemAppservice : ApplicationService
             throw new EntityNotFoundException(typeof(Item), input.ItemId);
         //if (input.ImgFile == null)
         //    throw new Exception("Image is required");
+        foreach (var i in await _popularitemsbranches.ToListAsync())
+        {
+            if (i.PopularItemId == popularitem.Id)
+                await _popularitemsbranches.HardDeleteAsync(i, true);
+        }
+        popularitem.PopulartItemBranches = new List<PopulartItemBranches>();
         popularitem.ItemId = input.ItemId;
         popularitem.Name = item.Name;
         popularitem.PrePrice = input.preprice;
         popularitem.CurrentPrice = input.currentprice;
         popularitem.Description = input.Description;
         popularitem.CategoryName = category.Name;
-        //popularitem.Branch = item.ItemBranches.Select(p => p.Branch).ToList();
+        foreach (var i in item.ItemBranches)
+            popularitem.PopulartItemBranches.Add(new PopulartItemBranches() { BranchId = i.BranchId, Branch = i.Branch });
         popularitem.LastModificationTime = DateTime.UtcNow;
         if (input.Model != null)
         {
@@ -128,6 +140,22 @@ public class PopularItemAppservice : ApplicationService
         var popularitem = await _popularitemrepo.GetAsync(id);
         if (popularitem == null)
             throw new EntityNotFoundException(typeof(PopularItem), id);
-        await _popularitemrepo.DeleteAsync(id, autoSave: true);
+        await _popularitemrepo.HardDeleteAsync(popularitem, autoSave: true);
+    }
+    private static Popularitemdto topopularitemdto(PopularItem popularItem)
+    {
+        return new Popularitemdto()
+        {
+            CategoryName = popularItem.CategoryName,
+            Description = popularItem.Description,
+            Id = popularItem.Id,
+            ImageUrl = popularItem.ImageUrl,
+            Status = (int)popularItem.Status,
+            CurrentPrice = popularItem.CurrentPrice,
+            ItemId = popularItem.ItemId,
+            Name = popularItem.Name,
+            PrePrice = popularItem.PrePrice,
+            BranchId = popularItem.PopulartItemBranches.Select(p => p.BranchId).ToList()
+        };
     }
 }

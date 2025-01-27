@@ -9,9 +9,7 @@ public class PopularItem : FullAuditedEntity<int>
     public Status Status { get; set; }
     public string Description { get; set; }
     public string CategoryName { get; set; }
-    [ForeignKey(nameof(Branch))]
-    public int BranchId { get; set; }
-    public Branch Branch { get; set; }
+    public ICollection<PopulartItemBranches> PopulartItemBranches { get; set; } = new List<PopulartItemBranches>();
     public Item Item { get; set; }
     [ForeignKey(nameof(Item))]
     public int ItemId { get; set; }

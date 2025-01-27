@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Volo.Abp.EntityFrameworkCore;
 using Wajba.EntityFrameworkCore;
@@ -12,9 +13,11 @@ using Wajba.EntityFrameworkCore;
 namespace Wajba.Migrations
 {
     [DbContext(typeof(WajbaDbContext))]
-    partial class WajbaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250127125439_editpopulardsds")]
+    partial class editpopulardsds
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -4191,7 +4194,7 @@ namespace Wajba.Migrations
                         .IsRequired();
 
                     b.HasOne("Wajba.Models.PopularItemsDomain.PopularItem", "PopularItem")
-                        .WithMany("PopulartItemBranches")
+                        .WithMany()
                         .HasForeignKey("PopularItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -4347,11 +4350,6 @@ namespace Wajba.Migrations
                     b.Navigation("OfferCategories");
 
                     b.Navigation("OfferItems");
-                });
-
-            modelBuilder.Entity("Wajba.Models.PopularItemsDomain.PopularItem", b =>
-                {
-                    b.Navigation("PopulartItemBranches");
                 });
 
             modelBuilder.Entity("Wajba.Models.UsersDomain.APPUser", b =>

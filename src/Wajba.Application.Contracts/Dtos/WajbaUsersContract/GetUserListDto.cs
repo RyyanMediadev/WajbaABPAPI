@@ -7,9 +7,10 @@ public class GetUserListDto
     public int? Status { get; set; }
 	public string? Email { get; set; }
 	public string? Phone { get; set; }
+    public int? Role { get; set; }
 
 
 
-	public int MaxResultCount { get; set; } = 10;
+    public int MaxResultCount { get; set; } = 10;
     public int SkipCount { get; set; } = 0;
 }

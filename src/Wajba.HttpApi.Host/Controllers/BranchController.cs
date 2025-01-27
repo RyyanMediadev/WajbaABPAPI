@@ -6,7 +6,7 @@ namespace Wajba.Controllers;
 public class BranchController : WajbaController
 {
     private readonly BranchAppService _branchAppService;
-
+    
     public BranchController(BranchAppService branchAppService)
     {
         _branchAppService = branchAppService;

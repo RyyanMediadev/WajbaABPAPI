@@ -6,460 +6,839 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Wajba.Migrations
 {
     /// <inheritdoc />
-    public partial class _2101 : Migration
+    public partial class initialroles : Migration
     {
+
+        //protected override void Up(MigrationBuilder migrationBuilder) { }
+
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            //migrationBuilder.CreateTable(
-            //    name: "AbpAuditLogs",
-            //    columns: table => new
-            //    {
-            //        Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-            //        ApplicationName = table.Column<string>(type: "nvarchar(96)", maxLength: 96, nullable: true),
-            //        UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-            //        TenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        TenantName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-            //        ImpersonatorUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        ImpersonatorUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-            //        ImpersonatorTenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        ImpersonatorTenantName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-            //        ExecutionTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-            //        ExecutionDuration = table.Column<int>(type: "int", nullable: false),
-            //        ClientIpAddress = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-            //        ClientName = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: true),
-            //        ClientId = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-            //        CorrelationId = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-            //        BrowserInfo = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
-            //        HttpMethod = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: true),
-            //        Url = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-            //        Exceptions = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        Comments = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-            //        HttpStatusCode = table.Column<int>(type: "int", nullable: true),
-            //        ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: false),
-            //        ConcurrencyStamp = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false)
-            //    },
-            //    constraints: table =>
-            //    {
-            //        table.PrimaryKey("PK_AbpAuditLogs", x => x.Id);
-            //    });
+            //    migrationBuilder.CreateTable(
+            //        name: "AbpAuditLogs",
+            //        columns: table => new
+            //        {
+            //            Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+            //            ApplicationName = table.Column<string>(type: "nvarchar(96)", maxLength: 96, nullable: true),
+            //            UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+            //            TenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            TenantName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+            //            ImpersonatorUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            ImpersonatorUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+            //            ImpersonatorTenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            ImpersonatorTenantName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+            //            ExecutionTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+            //            ExecutionDuration = table.Column<int>(type: "int", nullable: false),
+            //            ClientIpAddress = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+            //            ClientName = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: true),
+            //            ClientId = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+            //            CorrelationId = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+            //            BrowserInfo = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
+            //            HttpMethod = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: true),
+            //            Url = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+            //            Exceptions = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            Comments = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+            //            HttpStatusCode = table.Column<int>(type: "int", nullable: true),
+            //            ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: false),
+            //            ConcurrencyStamp = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false)
+            //        },
+            //        constraints: table =>
+            //        {
+            //            table.PrimaryKey("PK_AbpAuditLogs", x => x.Id);
+            //        });
+
+            //    migrationBuilder.CreateTable(
+            //        name: "AbpBackgroundJobs",
+            //        columns: table => new
+            //        {
+            //            Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+            //            JobName = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+            //            JobArgs = table.Column<string>(type: "nvarchar(max)", maxLength: 1048576, nullable: false),
+            //            TryCount = table.Column<short>(type: "smallint", nullable: false, defaultValue: (short)0),
+            //            CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+            //            NextTryTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+            //            LastTryTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+            //            IsAbandoned = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+            //            Priority = table.Column<byte>(type: "tinyint", nullable: false, defaultValue: (byte)15),
+            //            ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: false),
+            //            ConcurrencyStamp = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false)
+            //        },
+            //        constraints: table =>
+            //        {
+            //            table.PrimaryKey("PK_AbpBackgroundJobs", x => x.Id);
+            //        });
+
+            //    migrationBuilder.CreateTable(
+            //        name: "AbpClaimTypes",
+            //        columns: table => new
+            //        {
+            //            Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+            //            Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+            //            Required = table.Column<bool>(type: "bit", nullable: false),
+            //            IsStatic = table.Column<bool>(type: "bit", nullable: false),
+            //            Regex = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
+            //            RegexDescription = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: true),
+            //            Description = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+            //            ValueType = table.Column<int>(type: "int", nullable: false),
+            //            ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: false),
+            //            ConcurrencyStamp = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false)
+            //        },
+            //        constraints: table =>
+            //        {
+            //            table.PrimaryKey("PK_AbpClaimTypes", x => x.Id);
+            //        });
+
+            //    migrationBuilder.CreateTable(
+            //        name: "AbpFeatureGroups",
+            //        columns: table => new
+            //        {
+            //            Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+            //            Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+            //            DisplayName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+            //            ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: true)
+            //        },
+            //        constraints: table =>
+            //        {
+            //            table.PrimaryKey("PK_AbpFeatureGroups", x => x.Id);
+            //        });
+
+            //    migrationBuilder.CreateTable(
+            //        name: "AbpFeatures",
+            //        columns: table => new
+            //        {
+            //            Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+            //            GroupName = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+            //            Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+            //            ParentName = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: true),
+            //            DisplayName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+            //            Description = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+            //            DefaultValue = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+            //            IsVisibleToClients = table.Column<bool>(type: "bit", nullable: false),
+            //            IsAvailableToHost = table.Column<bool>(type: "bit", nullable: false),
+            //            AllowedProviders = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+            //            ValueType = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: true),
+            //            ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: true)
+            //        },
+            //        constraints: table =>
+            //        {
+            //            table.PrimaryKey("PK_AbpFeatures", x => x.Id);
+            //        });
+
+            //    migrationBuilder.CreateTable(
+            //        name: "AbpFeatureValues",
+            //        columns: table => new
+            //        {
+            //            Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+            //            Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+            //            Value = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+            //            ProviderName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+            //            ProviderKey = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true)
+            //        },
+            //        constraints: table =>
+            //        {
+            //            table.PrimaryKey("PK_AbpFeatureValues", x => x.Id);
+            //        });
+
+            //    migrationBuilder.CreateTable(
+            //        name: "AbpLinkUsers",
+            //        columns: table => new
+            //        {
+            //            Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+            //            SourceUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+            //            SourceTenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            TargetUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+            //            TargetTenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+            //        },
+            //        constraints: table =>
+            //        {
+            //            table.PrimaryKey("PK_AbpLinkUsers", x => x.Id);
+            //        });
+
+            //    migrationBuilder.CreateTable(
+            //        name: "AbpOrganizationUnits",
+            //        columns: table => new
+            //        {
+            //            Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+            //            TenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            ParentId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            Code = table.Column<string>(type: "nvarchar(95)", maxLength: 95, nullable: false),
+            //            DisplayName = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+            //            EntityVersion = table.Column<int>(type: "int", nullable: false),
+            //            ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: false),
+            //            ConcurrencyStamp = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
+            //            CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+            //            CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+            //            LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+            //            DeleterId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true)
+            //        },
+            //        constraints: table =>
+            //        {
+            //            table.PrimaryKey("PK_AbpOrganizationUnits", x => x.Id);
+            //            table.ForeignKey(
+            //                name: "FK_AbpOrganizationUnits_AbpOrganizationUnits_ParentId",
+            //                column: x => x.ParentId,
+            //                principalTable: "AbpOrganizationUnits",
+            //                principalColumn: "Id");
+            //        });
+
+            //    migrationBuilder.CreateTable(
+            //        name: "AbpPermissionGrants",
+            //        columns: table => new
+            //        {
+            //            Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+            //            TenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+            //            ProviderName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+            //            ProviderKey = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false)
+            //        },
+            //        constraints: table =>
+            //        {
+            //            table.PrimaryKey("PK_AbpPermissionGrants", x => x.Id);
+            //        });
+
+            //    migrationBuilder.CreateTable(
+            //        name: "AbpPermissionGroups",
+            //        columns: table => new
+            //        {
+            //            Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+            //            Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+            //            DisplayName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+            //            ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: true)
+            //        },
+            //        constraints: table =>
+            //        {
+            //            table.PrimaryKey("PK_AbpPermissionGroups", x => x.Id);
+            //        });
+
+            //    migrationBuilder.CreateTable(
+            //        name: "AbpPermissions",
+            //        columns: table => new
+            //        {
+            //            Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+            //            GroupName = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+            //            Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+            //            ParentName = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: true),
+            //            DisplayName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+            //            IsEnabled = table.Column<bool>(type: "bit", nullable: false),
+            //            MultiTenancySide = table.Column<byte>(type: "tinyint", nullable: false),
+            //            Providers = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: true),
+            //            StateCheckers = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+            //            ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: true)
+            //        },
+            //        constraints: table =>
+            //        {
+            //            table.PrimaryKey("PK_AbpPermissions", x => x.Id);
+            //        });
+
+            //    migrationBuilder.CreateTable(
+            //        name: "AbpRoles",
+            //        columns: table => new
+            //        {
+            //            Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+            //            TenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+            //            NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+            //            IsDefault = table.Column<bool>(type: "bit", nullable: false),
+            //            IsStatic = table.Column<bool>(type: "bit", nullable: false),
+            //            IsPublic = table.Column<bool>(type: "bit", nullable: false),
+            //            EntityVersion = table.Column<int>(type: "int", nullable: false),
+            //            ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: false),
+            //            ConcurrencyStamp = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false)
+            //        },
+            //        constraints: table =>
+            //        {
+            //            table.PrimaryKey("PK_AbpRoles", x => x.Id);
+            //        });
+
+            //    migrationBuilder.CreateTable(
+            //        name: "AbpSecurityLogs",
+            //        columns: table => new
+            //        {
+            //            Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+            //            TenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            ApplicationName = table.Column<string>(type: "nvarchar(96)", maxLength: 96, nullable: true),
+            //            Identity = table.Column<string>(type: "nvarchar(96)", maxLength: 96, nullable: true),
+            //            Action = table.Column<string>(type: "nvarchar(96)", maxLength: 96, nullable: true),
+            //            UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+            //            TenantName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+            //            ClientId = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+            //            CorrelationId = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+            //            ClientIpAddress = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+            //            BrowserInfo = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
+            //            CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+            //            ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: false),
+            //            ConcurrencyStamp = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false)
+            //        },
+            //        constraints: table =>
+            //        {
+            //            table.PrimaryKey("PK_AbpSecurityLogs", x => x.Id);
+            //        });
+
+            //    migrationBuilder.CreateTable(
+            //        name: "AbpSessions",
+            //        columns: table => new
+            //        {
+            //            Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+            //            SessionId = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+            //            Device = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+            //            DeviceInfo = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+            //            TenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+            //            ClientId = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+            //            IpAddresses = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: true),
+            //            SignedIn = table.Column<DateTime>(type: "datetime2", nullable: false),
+            //            LastAccessed = table.Column<DateTime>(type: "datetime2", nullable: true),
+            //            ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: true)
+            //        },
+            //        constraints: table =>
+            //        {
+            //            table.PrimaryKey("PK_AbpSessions", x => x.Id);
+            //        });
+
+            //    migrationBuilder.CreateTable(
+            //        name: "AbpSettingDefinitions",
+            //        columns: table => new
+            //        {
+            //            Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+            //            Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+            //            DisplayName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+            //            Description = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
+            //            DefaultValue = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: true),
+            //            IsVisibleToClients = table.Column<bool>(type: "bit", nullable: false),
+            //            Providers = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: true),
+            //            IsInherited = table.Column<bool>(type: "bit", nullable: false),
+            //            IsEncrypted = table.Column<bool>(type: "bit", nullable: false),
+            //            ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: true)
+            //        },
+            //        constraints: table =>
+            //        {
+            //            table.PrimaryKey("PK_AbpSettingDefinitions", x => x.Id);
+            //        });
+
+            //    migrationBuilder.CreateTable(
+            //        name: "AbpSettings",
+            //        columns: table => new
+            //        {
+            //            Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+            //            Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+            //            Value = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: false),
+            //            ProviderName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+            //            ProviderKey = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true)
+            //        },
+            //        constraints: table =>
+            //        {
+            //            table.PrimaryKey("PK_AbpSettings", x => x.Id);
+            //        });
+
+            //    migrationBuilder.CreateTable(
+            //        name: "AbpTenants",
+            //        columns: table => new
+            //        {
+            //            Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+            //            Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+            //            NormalizedName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+            //            EntityVersion = table.Column<int>(type: "int", nullable: false),
+            //            ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: false),
+            //            ConcurrencyStamp = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
+            //            CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+            //            CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+            //            LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+            //            DeleterId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true)
+            //        },
+            //        constraints: table =>
+            //        {
+            //            table.PrimaryKey("PK_AbpTenants", x => x.Id);
+            //        });
+
+            //    migrationBuilder.CreateTable(
+            //        name: "AbpUserDelegations",
+            //        columns: table => new
+            //        {
+            //            Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+            //            TenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            SourceUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+            //            TargetUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+            //            StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+            //            EndTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+            //        },
+            //        constraints: table =>
+            //        {
+            //            table.PrimaryKey("PK_AbpUserDelegations", x => x.Id);
+            //        });
+
+            //    migrationBuilder.CreateTable(
+            //        name: "AbpUsers",
+            //        columns: table => new
+            //        {
+            //            Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+            //            TenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+            //            NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+            //            Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+            //            Surname = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+            //            Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+            //            NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+            //            EmailConfirmed = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+            //            PasswordHash = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+            //            SecurityStamp = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+            //            IsExternal = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+            //            PhoneNumber = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: true),
+            //            PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+            //            IsActive = table.Column<bool>(type: "bit", nullable: false),
+            //            TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+            //            LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+            //            LockoutEnabled = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+            //            AccessFailedCount = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
+            //            ShouldChangePasswordOnNextLogin = table.Column<bool>(type: "bit", nullable: false),
+            //            EntityVersion = table.Column<int>(type: "int", nullable: false),
+            //            LastPasswordChangeTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+            //            ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: false),
+            //            ConcurrencyStamp = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
+            //            CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+            //            CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+            //            LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+            //            DeleterId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true)
+            //        },
+            //        constraints: table =>
+            //        {
+            //            table.PrimaryKey("PK_AbpUsers", x => x.Id);
+            //        });
+
+            //    migrationBuilder.CreateTable(
+            //        name: "APPUser",
+            //        columns: table => new
+            //        {
+            //            Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+            //            FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            status = table.Column<int>(type: "int", nullable: false),
+            //            Type = table.Column<int>(type: "int", nullable: false),
+            //            ProfilePhoto = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            Points = table.Column<int>(type: "int", nullable: false),
+            //            UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            NormalizedUserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            NormalizedEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
+            //            PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
+            //            TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
+            //            LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+            //            LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
+            //            AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+            //        },
+            //        constraints: table =>
+            //        {
+            //            table.PrimaryKey("PK_APPUser", x => x.Id);
+            //        });
+
+            //    migrationBuilder.CreateTable(
+            //        name: "Branches",
+            //        columns: table => new
+            //        {
+            //            Id = table.Column<int>(type: "int", nullable: false)
+            //                .Annotation("SqlServer:Identity", "1, 1"),
+            //            Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            Longitude = table.Column<double>(type: "float", nullable: false),
+            //            Latitude = table.Column<double>(type: "float", nullable: false),
+            //            Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            Phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            City = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            State = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            ZipCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            Status = table.Column<int>(type: "int", nullable: false),
+            //            CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+            //            CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+            //            LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+            //            DeleterId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true)
+            //        },
+            //        constraints: table =>
+            //        {
+            //            table.PrimaryKey("PK_Branches", x => x.Id);
+            //        });
+
+            //    migrationBuilder.CreateTable(
+            //        name: "categories",
+            //        columns: table => new
+            //        {
+            //            Id = table.Column<int>(type: "int", nullable: false)
+            //                .Annotation("SqlServer:Identity", "1, 1"),
+            //            Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            Status = table.Column<int>(type: "int", nullable: false),
+            //            CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+            //            CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+            //            LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+            //            DeleterId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true)
+            //        },
+            //        constraints: table =>
+            //        {
+            //            table.PrimaryKey("PK_categories", x => x.Id);
+            //        });
+
+            //    migrationBuilder.CreateTable(
+            //        name: "Companies",
+            //        columns: table => new
+            //        {
+            //            Id = table.Column<int>(type: "int", nullable: false)
+            //                .Annotation("SqlServer:Identity", "1, 1"),
+            //            Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            Phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            WebsiteURL = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            City = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            State = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            CountryCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            ZipCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+            //            CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+            //            LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+            //            DeleterId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true)
+            //        },
+            //        constraints: table =>
+            //        {
+            //            table.PrimaryKey("PK_Companies", x => x.Id);
+            //        });
+
+            //    migrationBuilder.CreateTable(
+            //        name: "Currencies",
+            //        columns: table => new
+            //        {
+            //            Id = table.Column<int>(type: "int", nullable: false)
+            //                .Annotation("SqlServer:Identity", "1, 1"),
+            //            Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            Symbol = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            Code = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            ExchangeRate = table.Column<double>(type: "float", nullable: false),
+            //            IsCryptoCurrency = table.Column<bool>(type: "bit", nullable: false),
+            //            CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+            //            CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+            //            LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+            //            DeleterId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true)
+            //        },
+            //        constraints: table =>
+            //        {
+            //            table.PrimaryKey("PK_Currencies", x => x.Id);
+            //        });
+
+            //    migrationBuilder.CreateTable(
+            //        name: "FAQs",
+            //        columns: table => new
+            //        {
+            //            Id = table.Column<int>(type: "int", nullable: false)
+            //                .Annotation("SqlServer:Identity", "1, 1"),
+            //            Question = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            Answer = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+            //            CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+            //            LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+            //            DeleterId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true)
+            //        },
+            //        constraints: table =>
+            //        {
+            //            table.PrimaryKey("PK_FAQs", x => x.Id);
+            //        });
+
+            //    migrationBuilder.CreateTable(
+            //        name: "ItemAttributes",
+            //        columns: table => new
+            //        {
+            //            Id = table.Column<int>(type: "int", nullable: false)
+            //                .Annotation("SqlServer:Identity", "1, 1"),
+            //            Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            Status = table.Column<int>(type: "int", nullable: false),
+            //            CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+            //            CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+            //            LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+            //            DeleterId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true)
+            //        },
+            //        constraints: table =>
+            //        {
+            //            table.PrimaryKey("PK_ItemAttributes", x => x.Id);
+            //        });
+
+            //    migrationBuilder.CreateTable(
+            //        name: "ItemTaxes",
+            //        columns: table => new
+            //        {
+            //            Id = table.Column<int>(type: "int", nullable: false)
+            //                .Annotation("SqlServer:Identity", "1, 1"),
+            //            Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            Code = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+            //            TaxRate = table.Column<int>(type: "int", nullable: false),
+            //            Status = table.Column<int>(type: "int", nullable: false),
+            //            CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+            //            CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+            //            LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+            //            DeleterId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true)
+            //        },
+            //        constraints: table =>
+            //        {
+            //            table.PrimaryKey("PK_ItemTaxes", x => x.Id);
+            //        });
+
+            //    migrationBuilder.CreateTable(
+            //        name: "Languages",
+            //        columns: table => new
+            //        {
+            //            Id = table.Column<int>(type: "int", nullable: false)
+            //                .Annotation("SqlServer:Identity", "1, 1"),
+            //            Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            Code = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            Status = table.Column<int>(type: "int", nullable: false),
+            //            CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+            //            CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+            //            LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+            //            DeleterId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true)
+            //        },
+            //        constraints: table =>
+            //        {
+            //            table.PrimaryKey("PK_Languages", x => x.Id);
+            //        });
+
+            //    migrationBuilder.CreateTable(
+            //        name: "Notifications",
+            //        columns: table => new
+            //        {
+            //            Id = table.Column<int>(type: "int", nullable: false)
+            //                .Annotation("SqlServer:Identity", "1, 1"),
+            //            FireBasePublicVapidKey = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            FireBaseAPIKey = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            FireBaseProjectId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            FireBaseAuthDomain = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            FireBaseStorageBucket = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            FireBaseMessageSenderId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            FireBaseAppId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            FireBaseMeasurementId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+            //            CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+            //            LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+            //            DeleterId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true)
+            //        },
+            //        constraints: table =>
+            //        {
+            //            table.PrimaryKey("PK_Notifications", x => x.Id);
+            //        });
+
+            //    migrationBuilder.CreateTable(
+            //        name: "OpenIddictApplications",
+            //        columns: table => new
+            //        {
+            //            Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+            //            ApplicationType = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+            //            ClientId = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+            //            ClientSecret = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            ClientType = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+            //            ConsentType = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+            //            DisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            DisplayNames = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            JsonWebKeySet = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            Permissions = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            PostLogoutRedirectUris = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            Properties = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            RedirectUris = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            Requirements = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            Settings = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            ClientUri = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            LogoUri = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: false),
+            //            ConcurrencyStamp = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
+            //            CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+            //            CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+            //            LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+            //            DeleterId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true)
+            //        },
+            //        constraints: table =>
+            //        {
+            //            table.PrimaryKey("PK_OpenIddictApplications", x => x.Id);
+            //        });
+
+            //    migrationBuilder.CreateTable(
+            //        name: "OpenIddictScopes",
+            //        columns: table => new
+            //        {
+            //            Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+            //            Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            Descriptions = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            DisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            DisplayNames = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+            //            Properties = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            Resources = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: false),
+            //            ConcurrencyStamp = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
+            //            CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+            //            CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+            //            LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+            //            DeleterId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true)
+            //        },
+            //        constraints: table =>
+            //        {
+            //            table.PrimaryKey("PK_OpenIddictScopes", x => x.Id);
+            //        });
+
+            //    migrationBuilder.CreateTable(
+            //        name: "OrderSetups",
+            //        columns: table => new
+            //        {
+            //            Id = table.Column<int>(type: "int", nullable: false)
+            //                .Annotation("SqlServer:Identity", "1, 1"),
+            //            FoodPreparationTime = table.Column<int>(type: "int", nullable: false),
+            //            ScheduleOrderSlotDuration = table.Column<int>(type: "int", nullable: false),
+            //            FreeDeliveryKilometer = table.Column<int>(type: "int", nullable: false),
+            //            BasicDeliveryCharge = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+            //            ChargePerKilo = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+            //            IsTakeawayEnabled = table.Column<bool>(type: "bit", nullable: false),
+            //            IsDeliveryEnabled = table.Column<bool>(type: "bit", nullable: false),
+            //            Ontime = table.Column<string>(type: "nvarchar(max)", nullable: false),
+            //            Warning = table.Column<string>(type: "nvarchar(max)", nullable: false),
+            //            DelayTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
+            //            CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+            //            CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+            //            LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+            //            DeleterId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true)
+            //        },
+            //        constraints: table =>
+            //        {
+            //            table.PrimaryKey("PK_OrderSetups", x => x.Id);
+            //        });
+
+            //    migrationBuilder.CreateTable(
+            //        name: "OTPs",
+            //        columns: table => new
+            //        {
+            //            Id = table.Column<int>(type: "int", nullable: false)
+            //                .Annotation("SqlServer:Identity", "1, 1"),
+            //            Type = table.Column<int>(type: "int", nullable: false),
+            //            DigitLimit = table.Column<int>(type: "int", nullable: false),
+            //            ExpiryTimeInMinutes = table.Column<int>(type: "int", nullable: false),
+            //            CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+            //            CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+            //            LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+            //            DeleterId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true)
+            //        },
+            //        constraints: table =>
+            //        {
+            //            table.PrimaryKey("PK_OTPs", x => x.Id);
+            //        });
+
+            //    migrationBuilder.CreateTable(
+            //        name: "Themes",
+            //        columns: table => new
+            //        {
+            //            Id = table.Column<int>(type: "int", nullable: false)
+            //                .Annotation("SqlServer:Identity", "1, 1"),
+            //            LogoUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            BrowserTabIconUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            FooterLogoUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //            CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+            //            CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+            //            LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+            //            DeleterId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true)
+            //        },
+            //        constraints: table =>
+            //        {
+            //            table.PrimaryKey("PK_Themes", x => x.Id);
+            //        });
+
+            //    migrationBuilder.CreateTable(
+            //        name: "TimeSlots",
+            //        columns: table => new
+            //        {
+            //            Id = table.Column<int>(type: "int", nullable: false)
+            //                .Annotation("SqlServer:Identity", "1, 1"),
+            //            WeekDay = table.Column<int>(type: "int", nullable: false),
+            //            OpeningTime = table.Column<TimeSpan>(type: "time", nullable: false),
+            //            ClosingTime = table.Column<TimeSpan>(type: "time", nullable: false),
+            //            CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+            //            CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+            //            LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+            //            DeleterId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true)
+            //        },
+            //        constraints: table =>
+            //        {
+            //            table.PrimaryKey("PK_TimeSlots", x => x.Id);
+            //        });
 
             //migrationBuilder.CreateTable(
-            //    name: "AbpBackgroundJobs",
+            //name: "WajbaUsers",
             //    columns: table => new
             //    {
-            //        Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-            //        JobName = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-            //        JobArgs = table.Column<string>(type: "nvarchar(max)", maxLength: 1048576, nullable: false),
-            //        TryCount = table.Column<short>(type: "smallint", nullable: false, defaultValue: (short)0),
-            //        CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-            //        NextTryTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-            //        LastTryTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-            //        IsAbandoned = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-            //        Priority = table.Column<byte>(type: "tinyint", nullable: false, defaultValue: (byte)15),
-            //        ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: false),
-            //        ConcurrencyStamp = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false)
-            //    },
-            //    constraints: table =>
-            //    {
-            //        table.PrimaryKey("PK_AbpBackgroundJobs", x => x.Id);
-            //    });
-
-            //migrationBuilder.CreateTable(
-            //    name: "AbpClaimTypes",
-            //    columns: table => new
-            //    {
-            //        Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-            //        Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-            //        Required = table.Column<bool>(type: "bit", nullable: false),
-            //        IsStatic = table.Column<bool>(type: "bit", nullable: false),
-            //        Regex = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
-            //        RegexDescription = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: true),
-            //        Description = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-            //        ValueType = table.Column<int>(type: "int", nullable: false),
-            //        ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: false),
-            //        ConcurrencyStamp = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false)
-            //    },
-            //    constraints: table =>
-            //    {
-            //        table.PrimaryKey("PK_AbpClaimTypes", x => x.Id);
-            //    });
-
-            //migrationBuilder.CreateTable(
-            //    name: "AbpFeatureGroups",
-            //    columns: table => new
-            //    {
-            //        Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-            //        Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-            //        DisplayName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-            //        ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: true)
-            //    },
-            //    constraints: table =>
-            //    {
-            //        table.PrimaryKey("PK_AbpFeatureGroups", x => x.Id);
-            //    });
-
-            //migrationBuilder.CreateTable(
-            //    name: "AbpFeatures",
-            //    columns: table => new
-            //    {
-            //        Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-            //        GroupName = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-            //        Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-            //        ParentName = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: true),
-            //        DisplayName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-            //        Description = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-            //        DefaultValue = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-            //        IsVisibleToClients = table.Column<bool>(type: "bit", nullable: false),
-            //        IsAvailableToHost = table.Column<bool>(type: "bit", nullable: false),
-            //        AllowedProviders = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-            //        ValueType = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: true),
-            //        ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: true)
-            //    },
-            //    constraints: table =>
-            //    {
-            //        table.PrimaryKey("PK_AbpFeatures", x => x.Id);
-            //    });
-
-            //migrationBuilder.CreateTable(
-            //    name: "AbpFeatureValues",
-            //    columns: table => new
-            //    {
-            //        Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-            //        Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-            //        Value = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-            //        ProviderName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-            //        ProviderKey = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true)
-            //    },
-            //    constraints: table =>
-            //    {
-            //        table.PrimaryKey("PK_AbpFeatureValues", x => x.Id);
-            //    });
-
-            //migrationBuilder.CreateTable(
-            //    name: "AbpLinkUsers",
-            //    columns: table => new
-            //    {
-            //        Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-            //        SourceUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-            //        SourceTenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        TargetUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-            //        TargetTenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
-            //    },
-            //    constraints: table =>
-            //    {
-            //        table.PrimaryKey("PK_AbpLinkUsers", x => x.Id);
-            //    });
-
-            //migrationBuilder.CreateTable(
-            //    name: "AbpOrganizationUnits",
-            //    columns: table => new
-            //    {
-            //        Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-            //        TenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        ParentId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        Code = table.Column<string>(type: "nvarchar(95)", maxLength: 95, nullable: false),
-            //        DisplayName = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-            //        EntityVersion = table.Column<int>(type: "int", nullable: false),
-            //        ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: false),
-            //        ConcurrencyStamp = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
-            //        CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-            //        CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-            //        LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-            //        DeleterId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true)
-            //    },
-            //    constraints: table =>
-            //    {
-            //        table.PrimaryKey("PK_AbpOrganizationUnits", x => x.Id);
-            //        table.ForeignKey(
-            //            name: "FK_AbpOrganizationUnits_AbpOrganizationUnits_ParentId",
-            //            column: x => x.ParentId,
-            //            principalTable: "AbpOrganizationUnits",
-            //            principalColumn: "Id");
-            //    });
-
-            //migrationBuilder.CreateTable(
-            //    name: "AbpPermissionGrants",
-            //    columns: table => new
-            //    {
-            //        Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-            //        TenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-            //        ProviderName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-            //        ProviderKey = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false)
-            //    },
-            //    constraints: table =>
-            //    {
-            //        table.PrimaryKey("PK_AbpPermissionGrants", x => x.Id);
-            //    });
-
-            //migrationBuilder.CreateTable(
-            //    name: "AbpPermissionGroups",
-            //    columns: table => new
-            //    {
-            //        Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-            //        Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-            //        DisplayName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-            //        ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: true)
-            //    },
-            //    constraints: table =>
-            //    {
-            //        table.PrimaryKey("PK_AbpPermissionGroups", x => x.Id);
-            //    });
-
-            //migrationBuilder.CreateTable(
-            //    name: "AbpPermissions",
-            //    columns: table => new
-            //    {
-            //        Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-            //        GroupName = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-            //        Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-            //        ParentName = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: true),
-            //        DisplayName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-            //        IsEnabled = table.Column<bool>(type: "bit", nullable: false),
-            //        MultiTenancySide = table.Column<byte>(type: "tinyint", nullable: false),
-            //        Providers = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: true),
-            //        StateCheckers = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-            //        ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: true)
-            //    },
-            //    constraints: table =>
-            //    {
-            //        table.PrimaryKey("PK_AbpPermissions", x => x.Id);
-            //    });
-
-            //migrationBuilder.CreateTable(
-            //    name: "AbpRoles",
-            //    columns: table => new
-            //    {
-            //        Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-            //        TenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-            //        NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-            //        IsDefault = table.Column<bool>(type: "bit", nullable: false),
-            //        IsStatic = table.Column<bool>(type: "bit", nullable: false),
-            //        IsPublic = table.Column<bool>(type: "bit", nullable: false),
-            //        EntityVersion = table.Column<int>(type: "int", nullable: false),
-            //        ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: false),
-            //        ConcurrencyStamp = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false)
-            //    },
-            //    constraints: table =>
-            //    {
-            //        table.PrimaryKey("PK_AbpRoles", x => x.Id);
-            //    });
-
-            //migrationBuilder.CreateTable(
-            //    name: "AbpSecurityLogs",
-            //    columns: table => new
-            //    {
-            //        Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-            //        TenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        ApplicationName = table.Column<string>(type: "nvarchar(96)", maxLength: 96, nullable: true),
-            //        Identity = table.Column<string>(type: "nvarchar(96)", maxLength: 96, nullable: true),
-            //        Action = table.Column<string>(type: "nvarchar(96)", maxLength: 96, nullable: true),
-            //        UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-            //        TenantName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-            //        ClientId = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-            //        CorrelationId = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-            //        ClientIpAddress = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-            //        BrowserInfo = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
-            //        CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-            //        ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: false),
-            //        ConcurrencyStamp = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false)
-            //    },
-            //    constraints: table =>
-            //    {
-            //        table.PrimaryKey("PK_AbpSecurityLogs", x => x.Id);
-            //    });
-
-            //migrationBuilder.CreateTable(
-            //    name: "AbpSessions",
-            //    columns: table => new
-            //    {
-            //        Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-            //        SessionId = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-            //        Device = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-            //        DeviceInfo = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-            //        TenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-            //        ClientId = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-            //        IpAddresses = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: true),
-            //        SignedIn = table.Column<DateTime>(type: "datetime2", nullable: false),
-            //        LastAccessed = table.Column<DateTime>(type: "datetime2", nullable: true),
-            //        ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: true)
-            //    },
-            //    constraints: table =>
-            //    {
-            //        table.PrimaryKey("PK_AbpSessions", x => x.Id);
-            //    });
-
-            //migrationBuilder.CreateTable(
-            //    name: "AbpSettingDefinitions",
-            //    columns: table => new
-            //    {
-            //        Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-            //        Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-            //        DisplayName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-            //        Description = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
-            //        DefaultValue = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: true),
-            //        IsVisibleToClients = table.Column<bool>(type: "bit", nullable: false),
-            //        Providers = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: true),
-            //        IsInherited = table.Column<bool>(type: "bit", nullable: false),
-            //        IsEncrypted = table.Column<bool>(type: "bit", nullable: false),
-            //        ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: true)
-            //    },
-            //    constraints: table =>
-            //    {
-            //        table.PrimaryKey("PK_AbpSettingDefinitions", x => x.Id);
-            //    });
-
-            //migrationBuilder.CreateTable(
-            //    name: "AbpSettings",
-            //    columns: table => new
-            //    {
-            //        Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-            //        Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-            //        Value = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: false),
-            //        ProviderName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-            //        ProviderKey = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true)
-            //    },
-            //    constraints: table =>
-            //    {
-            //        table.PrimaryKey("PK_AbpSettings", x => x.Id);
-            //    });
-
-            //migrationBuilder.CreateTable(
-            //    name: "AbpTenants",
-            //    columns: table => new
-            //    {
-            //        Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-            //        Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-            //        NormalizedName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-            //        EntityVersion = table.Column<int>(type: "int", nullable: false),
-            //        ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: false),
-            //        ConcurrencyStamp = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
-            //        CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-            //        CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-            //        LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-            //        DeleterId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true)
-            //    },
-            //    constraints: table =>
-            //    {
-            //        table.PrimaryKey("PK_AbpTenants", x => x.Id);
-            //    });
-
-            //migrationBuilder.CreateTable(
-            //    name: "AbpUserDelegations",
-            //    columns: table => new
-            //    {
-            //        Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-            //        TenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        SourceUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-            //        TargetUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-            //        StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-            //        EndTime = table.Column<DateTime>(type: "datetime2", nullable: false)
-            //    },
-            //    constraints: table =>
-            //    {
-            //        table.PrimaryKey("PK_AbpUserDelegations", x => x.Id);
-            //    });
-
-            //migrationBuilder.CreateTable(
-            //    name: "AbpUsers",
-            //    columns: table => new
-            //    {
-            //        Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-            //        TenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-            //        NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-            //        Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-            //        Surname = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-            //        Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-            //        NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-            //        EmailConfirmed = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-            //        PasswordHash = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-            //        SecurityStamp = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-            //        IsExternal = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-            //        PhoneNumber = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: true),
-            //        PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-            //        IsActive = table.Column<bool>(type: "bit", nullable: false),
-            //        TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-            //        LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-            //        LockoutEnabled = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-            //        AccessFailedCount = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
-            //        ShouldChangePasswordOnNextLogin = table.Column<bool>(type: "bit", nullable: false),
-            //        EntityVersion = table.Column<int>(type: "int", nullable: false),
-            //        LastPasswordChangeTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-            //        ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: false),
-            //        ConcurrencyStamp = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
-            //        CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-            //        CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-            //        LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-            //        DeleterId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true)
-            //    },
-            //    constraints: table =>
-            //    {
-            //        table.PrimaryKey("PK_AbpUsers", x => x.Id);
-            //    });
-
-            //migrationBuilder.CreateTable(
-            //    name: "APPUser",
-            //    columns: table => new
-            //    {
-            //        Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-            //        FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //        Id = table.Column<int>(type: "int", nullable: false)
+            //            .Annotation("SqlServer:Identity", "1, 1"),
             //        FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //        Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //        Phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
             //        status = table.Column<int>(type: "int", nullable: false),
             //        Type = table.Column<int>(type: "int", nullable: false),
             //        ProfilePhoto = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        Points = table.Column<int>(type: "int", nullable: false),
-            //        UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        NormalizedUserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        NormalizedEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
-            //        PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
-            //        TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
-            //        LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-            //        LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
-            //        AccessFailedCount = table.Column<int>(type: "int", nullable: false)
-            //    },
-            //    constraints: table =>
-            //    {
-            //        table.PrimaryKey("PK_APPUser", x => x.Id);
-            //    });
-
-            //migrationBuilder.CreateTable(
-            //    name: "Branches",
-            //    columns: table => new
-            //    {
-            //        Id = table.Column<int>(type: "int", nullable: false)
-            //            .Annotation("SqlServer:Identity", "1, 1"),
-            //        Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        Longitude = table.Column<double>(type: "float", nullable: false),
-            //        Latitude = table.Column<double>(type: "float", nullable: false),
-            //        Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        Phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        City = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        State = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        ZipCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        Status = table.Column<int>(type: "int", nullable: false),
+            //        Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
+            //        Role = table.Column<int>(type: "int", nullable: true),
             //        CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
             //        CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
             //        LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -470,383 +849,8 @@ namespace Wajba.Migrations
             //    },
             //    constraints: table =>
             //    {
-            //        table.PrimaryKey("PK_Branches", x => x.Id);
+            //        table.PrimaryKey("PK_WajbaUsers", x => x.Id);
             //    });
-
-            //migrationBuilder.CreateTable(
-            //    name: "categories",
-            //    columns: table => new
-            //    {
-            //        Id = table.Column<int>(type: "int", nullable: false)
-            //            .Annotation("SqlServer:Identity", "1, 1"),
-            //        Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        Status = table.Column<int>(type: "int", nullable: false),
-            //        CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-            //        CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-            //        LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-            //        DeleterId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true)
-            //    },
-            //    constraints: table =>
-            //    {
-            //        table.PrimaryKey("PK_categories", x => x.Id);
-            //    });
-
-            //migrationBuilder.CreateTable(
-            //    name: "Companies",
-            //    columns: table => new
-            //    {
-            //        Id = table.Column<int>(type: "int", nullable: false)
-            //            .Annotation("SqlServer:Identity", "1, 1"),
-            //        Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        Phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        WebsiteURL = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        City = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        State = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        CountryCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        ZipCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-            //        CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-            //        LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-            //        DeleterId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true)
-            //    },
-            //    constraints: table =>
-            //    {
-            //        table.PrimaryKey("PK_Companies", x => x.Id);
-            //    });
-
-            //migrationBuilder.CreateTable(
-            //    name: "Currencies",
-            //    columns: table => new
-            //    {
-            //        Id = table.Column<int>(type: "int", nullable: false)
-            //            .Annotation("SqlServer:Identity", "1, 1"),
-            //        Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        Symbol = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        Code = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        ExchangeRate = table.Column<double>(type: "float", nullable: false),
-            //        IsCryptoCurrency = table.Column<bool>(type: "bit", nullable: false),
-            //        CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-            //        CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-            //        LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-            //        DeleterId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true)
-            //    },
-            //    constraints: table =>
-            //    {
-            //        table.PrimaryKey("PK_Currencies", x => x.Id);
-            //    });
-
-            //migrationBuilder.CreateTable(
-            //    name: "FAQs",
-            //    columns: table => new
-            //    {
-            //        Id = table.Column<int>(type: "int", nullable: false)
-            //            .Annotation("SqlServer:Identity", "1, 1"),
-            //        Question = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        Answer = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-            //        CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-            //        LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-            //        DeleterId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true)
-            //    },
-            //    constraints: table =>
-            //    {
-            //        table.PrimaryKey("PK_FAQs", x => x.Id);
-            //    });
-
-            //migrationBuilder.CreateTable(
-            //    name: "ItemAttributes",
-            //    columns: table => new
-            //    {
-            //        Id = table.Column<int>(type: "int", nullable: false)
-            //            .Annotation("SqlServer:Identity", "1, 1"),
-            //        Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        Status = table.Column<int>(type: "int", nullable: false),
-            //        CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-            //        CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-            //        LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-            //        DeleterId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true)
-            //    },
-            //    constraints: table =>
-            //    {
-            //        table.PrimaryKey("PK_ItemAttributes", x => x.Id);
-            //    });
-
-            //migrationBuilder.CreateTable(
-            //    name: "ItemTaxes",
-            //    columns: table => new
-            //    {
-            //        Id = table.Column<int>(type: "int", nullable: false)
-            //            .Annotation("SqlServer:Identity", "1, 1"),
-            //        Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        Code = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-            //        TaxRate = table.Column<int>(type: "int", nullable: false),
-            //        Status = table.Column<int>(type: "int", nullable: false),
-            //        CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-            //        CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-            //        LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-            //        DeleterId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true)
-            //    },
-            //    constraints: table =>
-            //    {
-            //        table.PrimaryKey("PK_ItemTaxes", x => x.Id);
-            //    });
-
-            //migrationBuilder.CreateTable(
-            //    name: "Languages",
-            //    columns: table => new
-            //    {
-            //        Id = table.Column<int>(type: "int", nullable: false)
-            //            .Annotation("SqlServer:Identity", "1, 1"),
-            //        Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        Code = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        Status = table.Column<int>(type: "int", nullable: false),
-            //        CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-            //        CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-            //        LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-            //        DeleterId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true)
-            //    },
-            //    constraints: table =>
-            //    {
-            //        table.PrimaryKey("PK_Languages", x => x.Id);
-            //    });
-
-            //migrationBuilder.CreateTable(
-            //    name: "Notifications",
-            //    columns: table => new
-            //    {
-            //        Id = table.Column<int>(type: "int", nullable: false)
-            //            .Annotation("SqlServer:Identity", "1, 1"),
-            //        FireBasePublicVapidKey = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        FireBaseAPIKey = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        FireBaseProjectId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        FireBaseAuthDomain = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        FireBaseStorageBucket = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        FireBaseMessageSenderId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        FireBaseAppId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        FireBaseMeasurementId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-            //        CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-            //        LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-            //        DeleterId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true)
-            //    },
-            //    constraints: table =>
-            //    {
-            //        table.PrimaryKey("PK_Notifications", x => x.Id);
-            //    });
-
-            //migrationBuilder.CreateTable(
-            //    name: "OpenIddictApplications",
-            //    columns: table => new
-            //    {
-            //        Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-            //        ApplicationType = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-            //        ClientId = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-            //        ClientSecret = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        ClientType = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-            //        ConsentType = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-            //        DisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        DisplayNames = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        JsonWebKeySet = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        Permissions = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        PostLogoutRedirectUris = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        Properties = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        RedirectUris = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        Requirements = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        Settings = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        ClientUri = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        LogoUri = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: false),
-            //        ConcurrencyStamp = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
-            //        CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-            //        CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-            //        LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-            //        DeleterId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true)
-            //    },
-            //    constraints: table =>
-            //    {
-            //        table.PrimaryKey("PK_OpenIddictApplications", x => x.Id);
-            //    });
-
-            //migrationBuilder.CreateTable(
-            //    name: "OpenIddictScopes",
-            //    columns: table => new
-            //    {
-            //        Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-            //        Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        Descriptions = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        DisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        DisplayNames = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-            //        Properties = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        Resources = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: false),
-            //        ConcurrencyStamp = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
-            //        CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-            //        CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-            //        LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-            //        DeleterId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true)
-            //    },
-            //    constraints: table =>
-            //    {
-            //        table.PrimaryKey("PK_OpenIddictScopes", x => x.Id);
-            //    });
-
-            //migrationBuilder.CreateTable(
-            //    name: "OrderSetups",
-            //    columns: table => new
-            //    {
-            //        Id = table.Column<int>(type: "int", nullable: false)
-            //            .Annotation("SqlServer:Identity", "1, 1"),
-            //        FoodPreparationTime = table.Column<int>(type: "int", nullable: false),
-            //        ScheduleOrderSlotDuration = table.Column<int>(type: "int", nullable: false),
-            //        FreeDeliveryKilometer = table.Column<int>(type: "int", nullable: false),
-            //        BasicDeliveryCharge = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-            //        ChargePerKilo = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-            //        IsTakeawayEnabled = table.Column<bool>(type: "bit", nullable: false),
-            //        IsDeliveryEnabled = table.Column<bool>(type: "bit", nullable: false),
-            //        Ontime = table.Column<string>(type: "nvarchar(max)", nullable: false),
-            //        Warning = table.Column<string>(type: "nvarchar(max)", nullable: false),
-            //        DelayTime = table.Column<string>(type: "nvarchar(max)", nullable: false),
-            //        CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-            //        CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-            //        LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-            //        DeleterId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true)
-            //    },
-            //    constraints: table =>
-            //    {
-            //        table.PrimaryKey("PK_OrderSetups", x => x.Id);
-            //    });
-
-            //migrationBuilder.CreateTable(
-            //    name: "OTPs",
-            //    columns: table => new
-            //    {
-            //        Id = table.Column<int>(type: "int", nullable: false)
-            //            .Annotation("SqlServer:Identity", "1, 1"),
-            //        Type = table.Column<int>(type: "int", nullable: false),
-            //        DigitLimit = table.Column<int>(type: "int", nullable: false),
-            //        ExpiryTimeInMinutes = table.Column<int>(type: "int", nullable: false),
-            //        CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-            //        CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-            //        LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-            //        DeleterId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true)
-            //    },
-            //    constraints: table =>
-            //    {
-            //        table.PrimaryKey("PK_OTPs", x => x.Id);
-            //    });
-
-            //migrationBuilder.CreateTable(
-            //    name: "Themes",
-            //    columns: table => new
-            //    {
-            //        Id = table.Column<int>(type: "int", nullable: false)
-            //            .Annotation("SqlServer:Identity", "1, 1"),
-            //        LogoUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        BrowserTabIconUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        FooterLogoUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //        CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-            //        CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-            //        LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-            //        DeleterId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true)
-            //    },
-            //    constraints: table =>
-            //    {
-            //        table.PrimaryKey("PK_Themes", x => x.Id);
-            //    });
-
-            //migrationBuilder.CreateTable(
-            //    name: "TimeSlots",
-            //    columns: table => new
-            //    {
-            //        Id = table.Column<int>(type: "int", nullable: false)
-            //            .Annotation("SqlServer:Identity", "1, 1"),
-            //        WeekDay = table.Column<int>(type: "int", nullable: false),
-            //        OpeningTime = table.Column<TimeSpan>(type: "time", nullable: false),
-            //        ClosingTime = table.Column<TimeSpan>(type: "time", nullable: false),
-            //        CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-            //        CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-            //        LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-            //        DeleterId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-            //        DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true)
-            //    },
-            //    constraints: table =>
-            //    {
-            //        table.PrimaryKey("PK_TimeSlots", x => x.Id);
-            //    });
-
-            migrationBuilder.CreateTable(
-                name: "WajbaUser",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    status = table.Column<int>(type: "int", nullable: false),
-                    Type = table.Column<int>(type: "int", nullable: false),
-                    ProfilePhoto = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    DeleterId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_WajbaUser", x => x.Id);
-                });
 
             //    migrationBuilder.CreateTable(
             //        name: "AbpAuditLogActions",
@@ -1123,20 +1127,20 @@ namespace Wajba.Migrations
             //            Longitude = table.Column<double>(type: "float", nullable: false),
             //            Latitude = table.Column<double>(type: "float", nullable: false),
             //            CustomerId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //            CustomerId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
             //            BuildingName = table.Column<string>(type: "nvarchar(max)", nullable: true),
             //            Street = table.Column<string>(type: "nvarchar(max)", nullable: true),
             //            ApartmentNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
             //            Floor = table.Column<string>(type: "nvarchar(max)", nullable: true),
             //            AddressLabel = table.Column<string>(type: "nvarchar(max)", nullable: true),
-            //            AddressType = table.Column<int>(type: "int", nullable: false)
+            //            AddressType = table.Column<int>(type: "int", nullable: false),
+            //            APPUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
             //        },
             //        constraints: table =>
             //        {
             //            table.PrimaryKey("PK_UserAddress", x => x.Id);
             //            table.ForeignKey(
-            //                name: "FK_UserAddress_APPUser_CustomerId1",
-            //                column: x => x.CustomerId1,
+            //                name: "FK_UserAddress_APPUser_APPUserId",
+            //                column: x => x.APPUserId,
             //                principalTable: "APPUser",
             //                principalColumn: "Id");
             //        });
@@ -1160,7 +1164,6 @@ namespace Wajba.Migrations
             //            ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
             //            Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
             //            IsExpired = table.Column<bool>(type: "bit", nullable: false),
-            //            APPUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
             //            BranchId = table.Column<int>(type: "int", nullable: true),
             //            CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
             //            CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
@@ -1173,11 +1176,6 @@ namespace Wajba.Migrations
             //        constraints: table =>
             //        {
             //            table.PrimaryKey("PK_coupons", x => x.Id);
-            //            table.ForeignKey(
-            //                name: "FK_coupons_APPUser_APPUserId",
-            //                column: x => x.APPUserId,
-            //                principalTable: "APPUser",
-            //                principalColumn: "Id");
             //            table.ForeignKey(
             //                name: "FK_coupons_Branches_BranchId",
             //                column: x => x.BranchId,
@@ -1356,6 +1354,65 @@ namespace Wajba.Migrations
             //                column: x => x.ApplicationId,
             //                principalTable: "OpenIddictApplications",
             //                principalColumn: "Id");
+            //        });
+
+            migrationBuilder.CreateTable(
+                name: "WajbaUserBranches",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    WajbaUserId = table.Column<int>(type: "int", nullable: false),
+                    BranchId = table.Column<int>(type: "int", nullable: true),
+                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    DeleterId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WajbaUserBranches", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_WajbaUserBranches_Branches_BranchId",
+                        column: x => x.BranchId,
+                        principalTable: "Branches",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_WajbaUserBranches_WajbaUsers_WajbaUserId",
+                        column: x => x.WajbaUserId,
+                        principalTable: "WajbaUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            //    migrationBuilder.CreateTable(
+            //        name: "WajbaUserRoles",
+            //        columns: table => new
+            //        {
+            //            Id = table.Column<int>(type: "int", nullable: false)
+            //                .Annotation("SqlServer:Identity", "1, 1"),
+            //            WajbaUserId = table.Column<int>(type: "int", nullable: false),
+            //            RoleId = table.Column<int>(type: "int", nullable: true),
+            //            CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+            //            CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+            //            LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+            //            DeleterId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+            //            DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true)
+            //        },
+            //        constraints: table =>
+            //        {
+            //            table.PrimaryKey("PK_WajbaUserRoles", x => x.Id);
+            //            table.ForeignKey(
+            //                name: "FK_WajbaUserRoles_WajbaUsers_WajbaUserId",
+            //                column: x => x.WajbaUserId,
+            //                principalTable: "WajbaUsers",
+            //                principalColumn: "Id",
+            //                onDelete: ReferentialAction.Cascade);
             //        });
 
             //    migrationBuilder.CreateTable(
@@ -1539,7 +1596,6 @@ namespace Wajba.Migrations
             //            AdditionalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
             //            ItemAttributesId = table.Column<int>(type: "int", nullable: false),
             //            ItemId = table.Column<int>(type: "int", nullable: false),
-            //            ItemAttributeId = table.Column<int>(type: "int", nullable: true),
             //            CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
             //            CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
             //            LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -1551,11 +1607,6 @@ namespace Wajba.Migrations
             //        constraints: table =>
             //        {
             //            table.PrimaryKey("PK_ItemVariations", x => x.Id);
-            //            table.ForeignKey(
-            //                name: "FK_ItemVariations_ItemAttributes_ItemAttributeId",
-            //                column: x => x.ItemAttributeId,
-            //                principalTable: "ItemAttributes",
-            //                principalColumn: "Id");
             //            table.ForeignKey(
             //                name: "FK_ItemVariations_ItemAttributes_ItemAttributesId",
             //                column: x => x.ItemAttributesId,
@@ -1989,11 +2040,6 @@ namespace Wajba.Migrations
             //        column: "CartItemId");
 
             //    migrationBuilder.CreateIndex(
-            //        name: "IX_coupons_APPUserId",
-            //        table: "coupons",
-            //        column: "APPUserId");
-
-            //    migrationBuilder.CreateIndex(
             //        name: "IX_coupons_BranchId",
             //        table: "coupons",
             //        column: "BranchId");
@@ -2027,11 +2073,6 @@ namespace Wajba.Migrations
             //        name: "IX_Items_CategoryId",
             //        table: "Items",
             //        column: "CategoryId");
-
-            //    migrationBuilder.CreateIndex(
-            //        name: "IX_ItemVariations_ItemAttributeId",
-            //        table: "ItemVariations",
-            //        column: "ItemAttributeId");
 
             //    migrationBuilder.CreateIndex(
             //        name: "IX_ItemVariations_ItemAttributesId",
@@ -2114,9 +2155,24 @@ namespace Wajba.Migrations
             //        column: "LanguageId");
 
             //    migrationBuilder.CreateIndex(
-            //        name: "IX_UserAddress_CustomerId1",
+            //        name: "IX_UserAddress_APPUserId",
             //        table: "UserAddress",
-            //        column: "CustomerId1");
+            //        column: "APPUserId");
+
+            migrationBuilder.CreateIndex(
+    name: "IX_WajbaUserBranches_BranchId",
+    table: "WajbaUserBranches",
+    column: "BranchId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WajbaUserBranches_WajbaUserId",
+                table: "WajbaUserBranches",
+                column: "WajbaUserId");
+
+            //migrationBuilder.CreateIndex(
+            //    name: "IX_WajbaUserRoles_WajbaUserId",
+            //    table: "WajbaUserRoles",
+            //    column: "WajbaUserId");
         }
 
         /// <inheritdoc />
@@ -2267,7 +2323,10 @@ namespace Wajba.Migrations
                 name: "UserAddress");
 
             migrationBuilder.DropTable(
-                name: "WajbaUser");
+                name: "WajbaUserBranches");
+
+            migrationBuilder.DropTable(
+                name: "WajbaUserRoles");
 
             migrationBuilder.DropTable(
                 name: "AbpEntityChanges");
@@ -2301,6 +2360,9 @@ namespace Wajba.Migrations
 
             migrationBuilder.DropTable(
                 name: "Languages");
+
+            migrationBuilder.DropTable(
+                name: "WajbaUsers");
 
             migrationBuilder.DropTable(
                 name: "AbpAuditLogs");

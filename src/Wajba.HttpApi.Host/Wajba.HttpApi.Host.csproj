@@ -49,4 +49,8 @@
     <None Remove="Logs\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Controllers\WajbaUserController.cs" />
+  </ItemGroup>
+
 </Project>

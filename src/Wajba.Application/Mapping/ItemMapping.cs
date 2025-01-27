@@ -18,7 +18,7 @@ public class ItemMapping : Profile
                 .ForMember(p => p.Note, opt => opt.MapFrom(x => x.Note))
                 .ForMember(p => p.status, opt => opt.MapFrom(x => x.Status))
                 .ForMember(p => p.IsDeleted, opt => opt.MapFrom(x => x.IsDeleted))
-                .ForMember(p => p.Branchesids, opt => opt.Ignore())
+                .ForMember(p => p.BranchesIds, opt => opt.Ignore())
                 .ReverseMap();
     }
 }

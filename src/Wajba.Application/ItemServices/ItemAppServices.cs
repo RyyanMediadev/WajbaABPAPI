@@ -1,10 +1,9 @@
 global using Microsoft.EntityFrameworkCore;
 global using Wajba.Dtos.ItemsDtos;
-global using Wajba.Enums;
-global using Wajba.Models.Items;
 global using Wajba.Dtos.ItemsDtos.ItemDependencies;
 global using Wajba.Dtos.ItemVariationContract;
-using Volo.Abp.ObjectMapping;
+global using Wajba.Enums;
+global using Wajba.Models.Items;
 
 
 namespace Wajba.ItemServices;
@@ -92,7 +91,7 @@ public class ItemAppServices : ApplicationService
             CategoryName = item.Category?.Name, 
             ItemType = (int)item.ItemType,
             IsDeleted = item.IsDeleted,
-            Branchesids = item.ItemBranches.Select(p => p.BranchId).ToList() 
+            BranchesIds = item.ItemBranches.Select(p => p.BranchId).ToList() 
         };
 
         //  map ItemAddons to ItemAddonDto
@@ -365,7 +364,7 @@ public class ItemAppServices : ApplicationService
                     Note = p.Note
                 }).ToList(),
                 IsDeleted = i.IsDeleted,
-                Branchesids = i.ItemBranches.Select(p => p.BranchId).ToList()
+                BranchesIds = i.ItemBranches.Select(p => p.BranchId).ToList()
             };
             itemDtos.Add(itemDto);
         }

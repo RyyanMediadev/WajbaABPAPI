@@ -1,6 +1,5 @@
 ﻿global using CloudinaryDotNet;
 global using CloudinaryDotNet.Actions;
-using System.IO;
 
 namespace Wajba.Services.ImageService;
 
@@ -47,4 +46,6 @@ public class ImageService : IImageService
         }
         return Task.FromResult(uploadResult.SecureUrl.ToString());
     }
+
+  
 }

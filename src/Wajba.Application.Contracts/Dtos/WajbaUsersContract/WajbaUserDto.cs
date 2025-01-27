@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Wajba.Dtos.BranchContract;
 
 namespace Wajba.Dtos.WajbaUsersContract
 {
@@ -15,6 +16,8 @@ namespace Wajba.Dtos.WajbaUsersContract
         public int Type { get; set; }
         public int Status { get; set; }
         public int? Role { get; set; }
+
+        public List<BranchDto> BranchList { get; set; } = new List<BranchDto>();
 
 
     }

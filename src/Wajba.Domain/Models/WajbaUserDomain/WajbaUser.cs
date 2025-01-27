@@ -16,7 +16,7 @@ public class WajbaUser : FullAuditedEntity<int>
     public UserTypes Type { get; set; }
     public string? ProfilePhoto { get; set; }
     public string Password { get; set; }
-    public int? Role { get; set; }
+    public int? CustomerRole { get; set; }
 
     public WajbaUser()
     {

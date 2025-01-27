@@ -2,7 +2,7 @@
 
 namespace Wajba.Models.Items;
 
-public class ItemBranch : Entity<int>
+public class ItemBranch:FullAuditedEntity<int>
 {
     public int ItemId { get; set; }
     public Item Item { get; set; }

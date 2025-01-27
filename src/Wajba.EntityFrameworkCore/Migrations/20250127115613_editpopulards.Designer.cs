@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Volo.Abp.EntityFrameworkCore;
 using Wajba.EntityFrameworkCore;
@@ -12,9 +13,11 @@ using Wajba.EntityFrameworkCore;
 namespace Wajba.Migrations
 {
     [DbContext(typeof(WajbaDbContext))]
-    partial class WajbaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250127115613_editpopulards")]
+    partial class editpopulards
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -3281,6 +3284,9 @@ namespace Wajba.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("BranchId")
+                        .HasColumnType("int");
+
                     b.Property<string>("CategoryName")
                         .HasColumnType("nvarchar(max)");
 
@@ -3337,57 +3343,11 @@ namespace Wajba.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BranchId");
+
                     b.HasIndex("ItemId");
 
                     b.ToTable("PopularItems", (string)null);
-                });
-
-            modelBuilder.Entity("Wajba.Models.PopularItemsDomain.PopulartItemBranches", b =>
-                {
-                    b.Property<int>("BranchId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PopularItemId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("CreationTime");
-
-                    b.Property<Guid?>("CreatorId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("CreatorId");
-
-                    b.Property<Guid?>("DeleterId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("DeleterId");
-
-                    b.Property<DateTime?>("DeletionTime")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("DeletionTime");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false)
-                        .HasColumnName("IsDeleted");
-
-                    b.Property<DateTime?>("LastModificationTime")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("LastModificationTime");
-
-                    b.Property<Guid?>("LastModifierId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("LastModifierId");
-
-                    b.HasKey("BranchId", "PopularItemId");
-
-                    b.HasIndex("PopularItemId");
-
-                    b.ToTable("PopulartItemBranches");
                 });
 
             modelBuilder.Entity("Wajba.Models.SiteDomain.Site", b =>
@@ -3670,9 +3630,6 @@ namespace Wajba.Migrations
                     b.Property<Guid?>("CreatorId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("CreatorId");
-
-                    b.Property<int?>("CustomerRole")
-                        .HasColumnType("int");
 
                     b.Property<Guid?>("DeleterId")
                         .HasColumnType("uniqueidentifier")
@@ -4176,32 +4133,21 @@ namespace Wajba.Migrations
 
             modelBuilder.Entity("Wajba.Models.PopularItemsDomain.PopularItem", b =>
                 {
-                    b.HasOne("Wajba.Models.Items.Item", "Item")
-                        .WithMany()
-                        .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Item");
-                });
-
-            modelBuilder.Entity("Wajba.Models.PopularItemsDomain.PopulartItemBranches", b =>
-                {
                     b.HasOne("Wajba.Models.BranchDomain.Branch", "Branch")
                         .WithMany()
                         .HasForeignKey("BranchId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Wajba.Models.PopularItemsDomain.PopularItem", "PopularItem")
-                        .WithMany("PopulartItemBranches")
-                        .HasForeignKey("PopularItemId")
+                    b.HasOne("Wajba.Models.Items.Item", "Item")
+                        .WithMany()
+                        .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Branch");
 
-                    b.Navigation("PopularItem");
+                    b.Navigation("Item");
                 });
 
             modelBuilder.Entity("Wajba.Models.SiteDomain.Site", b =>
@@ -4350,11 +4296,6 @@ namespace Wajba.Migrations
                     b.Navigation("OfferCategories");
 
                     b.Navigation("OfferItems");
-                });
-
-            modelBuilder.Entity("Wajba.Models.PopularItemsDomain.PopularItem", b =>
-                {
-                    b.Navigation("PopulartItemBranches");
                 });
 
             modelBuilder.Entity("Wajba.Models.UsersDomain.APPUser", b =>

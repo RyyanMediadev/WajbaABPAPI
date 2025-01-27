@@ -1,6 +1,7 @@
 ﻿global using Wajba.Models.CouponsDomain;
 global using Wajba.Models.Items;
 global using Wajba.Models.OfferDomain;
+global using Wajba.Models.PopularItemsDomain;
 
 namespace Wajba.Models.BranchDomain;
 
@@ -23,6 +24,8 @@ public class Branch : FullAuditedEntity<int>
     // public int CompanyId { get; set; }
     // public virtual Company? Company { get; set; }
     public virtual ICollection<ItemBranch> ItemBranches { get; set; } = new List<ItemBranch>();
+    public ICollection<PopulartItemBranches> PopulartItemBranches { get; set; } = new List<PopulartItemBranches>();
+
     //  public ICollection<UserBranch> UserBranches { get; set; } = new List<UserBranch>();
     public ICollection<Offer> Offers { get; set; }
     public ICollection<Coupon> Coupons { get; set; }

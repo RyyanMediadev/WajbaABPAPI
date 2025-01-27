@@ -18,10 +18,11 @@ public class CreateUserDto
 
 
     public List<int?> BranchList { get; set; } = new List<int?>();
-	//public List<int?> CustomerRoleList { get; set; } = new List<int?>();
 
-	//public static implicit operator CreateUserDto(Wajba.Models.WajbaUserDomain.WajbaUser v)
-	//{
-	//    throw new NotImplementedException();
-	//}
+    //public List<int?> CustomerRoleList { get; set; } = new List<int?>();
+
+    //public static implicit operator CreateUserDto(Wajba.Models.WajbaUserDomain.WajbaUser v)
+    //{
+    //    throw new NotImplementedException();
+    //}
 }

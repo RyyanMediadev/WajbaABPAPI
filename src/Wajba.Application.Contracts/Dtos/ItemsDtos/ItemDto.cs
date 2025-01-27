@@ -20,7 +20,7 @@ public class ItemDto: EntityDto<int>
     public string CategoryName { get; set; }
     public int ItemType { get; set; }
     public bool IsDeleted { get; set; }
-    public List<int> Branchesids {  get; set; }
+    public List<int> BranchesIds {  get; set; }
     //public List<BranchesDTO> Branches { get; set; } = new List<BranchesDTO>();
     public List<ItemAddonDto> ItemAddons { get; set; } = new List<ItemAddonDto>();
     public List<ItemExtraDto> ItemExtras { get; set; } = new List<ItemExtraDto>();

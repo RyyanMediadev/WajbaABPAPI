@@ -380,8 +380,11 @@ namespace Wajba.Controllers
 
 		}
 
-
-
+		//[HttpGet("getby token")]
+		//public async Task<ActionResult> Getuserbytoken(string token)
+		//{
+		//	return Ok(await _WajbaUsersAppService.Decodetoken(token));
+		//}
 
 		// 4. Get User List
 		[HttpGet("listWajbaUser")]

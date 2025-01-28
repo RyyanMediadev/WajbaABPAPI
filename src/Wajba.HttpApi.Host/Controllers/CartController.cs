@@ -226,6 +226,7 @@ public class CartController : WajbaController
                     existingItem.SelectedAddons.Add(addon);
                 }
             }
+
             //existingItem.SelectedExtras.Clear();
             if (i.SelectedExtras != null)
             {

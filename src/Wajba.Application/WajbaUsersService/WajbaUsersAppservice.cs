@@ -302,39 +302,39 @@ namespace Wajba.WajbaUsersService
 
          public async Task<string> GenerateTokenAsync(WajbaUser WajbaUser)
         {
-
-          
-
-
             if (WajbaUser != null)
             {
-                //var GetUserpers = _WajbaUserRepository.FirstOrDefaultAsync(a => a.Phone == Phone);
                 List<Claim> ClaimList = new List<Claim>();
-
-
-                //var profiletype = _unitOfWork.ProfileRepository.GetMany(a => a.Id == item.ProfileId).FirstOrDefault();
-                // string profiletype = GetUserpers.Type.ToString();
                 ClaimList.Add(new Claim(ClaimTypes.Role, WajbaUser.Id.ToString()));
                 ClaimList.Add(new Claim(ClaimTypes.Name, WajbaUser.Phone));
                 ClaimList.Add(new Claim(ClaimTypes.NameIdentifier, WajbaUser.Id.ToString()));
-
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_tokenManagement.Secret));
                 var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
                 var expireDate = DateTime.Now.AddMinutes(_tokenManagement.AccessExpiration);
-
                 var tokenDiscriptor = new SecurityTokenDescriptor
                 {
                     Subject = new ClaimsIdentity(ClaimList),
                     Expires = expireDate,
-                    SigningCredentials = credentials
+                    SigningCredentials = credentials,
+                    Issuer=_tokenManagement.Issuer,
+                    Audience=_tokenManagement.Audience,
                 };
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var tokenObj = tokenHandler.CreateToken(tokenDiscriptor);
-               string token = tokenHandler.WriteToken(tokenObj);
+                string token = tokenHandler.WriteToken(tokenObj);
                 return token;
             }
             return null;
 
+        }
+        public async Task<WajbaUser> Decodetoken(string token)
+        {
+            var tokenhandler = new JwtSecurityTokenHandler();
+            var jwttoken = tokenhandler.ReadJwtToken(token);
+            if (jwttoken == null)
+                throw new Exception("Invalid token");
+            var usercliam = jwttoken.Claims.FirstOrDefault(p => p.Type == ClaimTypes.NameIdentifier);
+            return await _WajbaUserRepository.FirstOrDefaultAsync(p => p.Id == int.Parse(usercliam.Value));
         }
 
         public int? getUserId(string Phone, string Email)

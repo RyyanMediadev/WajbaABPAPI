@@ -126,7 +126,6 @@ public class ItemAppServices : ApplicationService
             Note = variation.Note,
             AdditionalPrice = variation.AdditionalPrice
         }).ToList();
-
         return itemDto;
        
     }

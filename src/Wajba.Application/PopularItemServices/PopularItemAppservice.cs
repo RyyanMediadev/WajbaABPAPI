@@ -65,13 +65,13 @@ public class PopularItemAppservice : ApplicationService
             popularitems = popularitems.Where(p => p.Name.ToLower() == input.Name.ToLower());
         if (input.status.HasValue)
             popularitems = popularitems.Where(p => p.Status ==(Status) input.status);
-        //int count =await popularitems.CountAsync();
         popularitems = popularitems.OrderBy(input.Sorting ?? nameof(PopularItem.Name)).PageBy(input.SkipCount, input.MaxResultCount);
         List<PopularItem> popularitemslist = await popularitems.ToListAsync();
+        int count = popularitemslist.Count();
         List<Popularitemdto> populartitemsdto = new List<Popularitemdto>();
         foreach (var i in popularitemslist)
             populartitemsdto.Add(topopularitemdto(i));
-        return new PagedResultDto<Popularitemdto>(10, populartitemsdto);
+        return new PagedResultDto<Popularitemdto>(count, populartitemsdto);
     }
     public async Task<Popularitemdto> GetPopularItemById(int id)
     {
@@ -92,8 +92,6 @@ public class PopularItemAppservice : ApplicationService
         Category category = await _categoryrepo.GetAsync(item.CategoryId);
         if (category == null)
             throw new EntityNotFoundException(typeof(Category), item.CategoryId);
-        //if (popularitem.ItemId != input.ItemId)
-        //    throw new EntityNotFoundException(typeof(Item), input.ItemId);
         //if (input.ImgFile == null)
         //    throw new Exception("Image is required");
         foreach (var i in await _popularitemsbranches.ToListAsync())

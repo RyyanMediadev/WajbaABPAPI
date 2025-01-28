@@ -1,4 +1,5 @@
 ﻿using Wajba.Dtos.CustomerContract;
+using Wajba.Dtos.UserAddressContract;
 using Wajba.Dtos.WajbaUsersContract;
 using Wajba.Models.WajbaUserDomain;
 
@@ -12,8 +13,9 @@ public class WajbaUserMapping : Profile
         CreateMap<WajbaUserDto, WajbaUser>();
         CreateMap<WajbaUser, CreateUserDto> ();
         CreateMap<WajbaUser, GetUserDto>();
+        CreateMap<WajbaUser, UserAddressDto>();
 
-
+        
 
     }
 }

@@ -1,6 +1,7 @@
 ﻿
 
 
+using Wajba.Models.BranchDomain;
 using Wajba.Models.WajbaUserDomain;
 
 public class WajbaUserBranch : FullAuditedEntity<int>

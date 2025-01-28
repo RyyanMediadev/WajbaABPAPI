@@ -15,6 +15,8 @@ namespace Wajba.Dtos.WajbaUsersContract
         public int Type { get; set; }
         public int Status { get; set; }
         public int? Role { get; set; }
+        public int? GenderType { get; set; }
+
 
     }
 }

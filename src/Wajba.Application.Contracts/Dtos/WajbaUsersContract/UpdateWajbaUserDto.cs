@@ -13,10 +13,13 @@ namespace Wajba.Dtos.WajbaUsersContract
         public string Email { get; set; }
         public string Phone { get; set; }
         public int Type { get; set; }
+        //public string? Password { get; set; }
+
         public int Status { get; set; }
         public int? Role { get; set; }
+        public int? GenderType { get; set; }
 
-        public List<int?> BranchList { get; set; } = new List<int?>();
+        //public List<int?> BranchList { get; set; } = new List<int?>();
 
 		//public List<> CustomerRoleList { get; set; } = new List<int?>();
 	}

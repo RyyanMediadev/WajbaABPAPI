@@ -10,8 +10,8 @@ namespace Wajba.Dtos.UserAddressContract
     {
         public int Id { get; set; }
         public string Title { get; set; }
-        public double Longitude { get; set; }
-        public double Latitude { get; set; }
+        public double? Longitude { get; set; }
+        public double? Latitude { get; set; }
         public int? wajbaUserId { get; set; }
         public string? BuildingName { get; set; }
         public string? Street { get; set; }

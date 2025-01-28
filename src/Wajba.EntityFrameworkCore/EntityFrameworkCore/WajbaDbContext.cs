@@ -74,12 +74,12 @@ AbpDbContext<WajbaDbContext>
 
 	public DbSet<WajbaUserBranch> WajbaUserBranches { get; set; }
 
+    public DbSet<WajbaUserAddress> WajbaUserAddresses { get; set; }
 
+   
 
-
-
-	#endregion
-	public WajbaDbContext(DbContextOptions<WajbaDbContext> options)
+    #endregion
+    public WajbaDbContext(DbContextOptions<WajbaDbContext> options)
         : base(options)
     {
 

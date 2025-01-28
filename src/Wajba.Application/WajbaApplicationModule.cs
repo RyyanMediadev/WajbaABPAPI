@@ -41,7 +41,7 @@ public class WajbaApplicationModule : AbpModule
         context.Services.AddTransient<IImageService, ImageService>();
         context.Services.AddScoped<ITimeSlotAppService, TimeSlotsAppservice>();
         context.Services.AddScoped<INotificationService, NotificationAppService>();
-        context.Services.AddScoped<IUserAddressAppService, UserAddressAppService>();
+        //context.Services.AddScoped<IUserAddressAppService, UserAddressAppService>();
         //context.Services.AddTransient<CustomUserAppService>();
 
 

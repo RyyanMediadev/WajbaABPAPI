@@ -1,95 +1,72 @@
-﻿using AutoMapper.Internal.Mappers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+
 using Wajba.Dtos.UserAddressContract;
 using Wajba.Models.AddressDomain;
+using Wajba.Models.CompanyDomain;
 
-namespace Wajba.UserAddressService
+namespace Wajba.UserAddressService;
+
+public class WajbaUserAddressAppService : ApplicationService
 {
-    public class UserAddressAppService : IUserAddressAppService
-    {
-        private readonly IRepository<UserAddress, int> _repository;
+        private readonly IRepository<WajbaUserAddress, int> _repository;
 
-        public UserAddressAppService(IRepository<UserAddress, int> repository)
+        public WajbaUserAddressAppService(IRepository<WajbaUserAddress, int> repository)
         {
-            _repository = repository;
+            _repository = (IRepository<WajbaUserAddress, int>?)repository;
         }
 
-        public async Task<UserAddressDto> CreateAsync(CreateUserAddressDto input)
+        public async Task<CreateUserAddressDto> CreateAsync(CreateUserAddressDto input)
         {
             // Manually map CreateUserAddressDto to UserAddress
-            var userAddress = new UserAddress
+            var userAddress = new WajbaUserAddress
             {
                 Title = input.Title,
                 Longitude = input.Longitude,
                 Latitude = input.Latitude,
-                CustomerId = input.CustomerId,
+                WajbaUserId = input.WajbaUserId,
                 BuildingName = input.BuildingName,
                 Street = input.Street,
                 ApartmentNumber = input.ApartmentNumber,
                 Floor = input.Floor,
                 AddressLabel = input.AddressLabel,
-                AddressType = input.AddressType
+                AddressType = (EmployeeAddressType)input.AddressType
             };
 
-            await _repository.InsertAsync(userAddress);
-
-            // Manually map UserAddress to UserAddressDto
-            var userAddressDto = new UserAddressDto
-            {
-                Id = userAddress.Id,
-                Title = userAddress.Title,
-                Longitude = userAddress.Longitude,
-                Latitude = userAddress.Latitude,
-                CustomerId = userAddress.CustomerId,
-                BuildingName = userAddress.BuildingName,
-                Street = userAddress.Street,
-                ApartmentNumber = userAddress.ApartmentNumber,
-                Floor = userAddress.Floor,
-                AddressLabel = userAddress.AddressLabel,
-                AddressType = (int)userAddress.AddressType
-            };
-
-            return userAddressDto;
+         
+            
+        WajbaUserAddress WajbaUserAddress1 = await _repository.InsertAsync(userAddress, true);
+        return ObjectMapper.Map<WajbaUserAddress, CreateUserAddressDto>(WajbaUserAddress1);
+        //return userAddressDto;
         }
         public async Task<UserAddressDto> UpdateAsync(UpdateUserAddressDto input)
         {
-            var userAddress = await _repository.GetAsync(input.Id);
+        WajbaUserAddress userAddress = await _repository.GetAsync(input.Id);
 
-            // Manually map UpdateUserAddressDto to UserAddress (only the fields that need to be updated)
-            userAddress.Title = input.Title;
+
+        if (userAddress == null)
+            throw new Exception("Not found");
+       
+   
+
+
+        // Manually map UpdateUserAddressDto to UserAddress (only the fields that need to be updated)
+        userAddress.Title = input.Title;
             userAddress.Longitude = input.Longitude;
             userAddress.Latitude = input.Latitude;
-            userAddress.CustomerId = input.CustomerId;
+            userAddress.WajbaUserId = input.wajbaUserId;
             userAddress.BuildingName = input.BuildingName;
             userAddress.Street = input.Street;
             userAddress.ApartmentNumber = input.ApartmentNumber;
             userAddress.Floor = input.Floor;
             userAddress.AddressLabel = input.AddressLabel;
-            userAddress.AddressType = (int)(EmployeeAddressType)input.AddressType;
+            userAddress.AddressType = (EmployeeAddressType)input.AddressType;
 
-            await _repository.UpdateAsync(userAddress);
+          WajbaUserAddress wus =  await _repository.UpdateAsync(userAddress);
 
-            // Manually map UserAddress to UserAddressDto
-            var userAddressDto = new UserAddressDto
-            {
-                Id = userAddress.Id,
-                Title = userAddress.Title,
-                Longitude = userAddress.Longitude,
-                Latitude = userAddress.Latitude,
-                CustomerId = userAddress.CustomerId,
-                BuildingName = userAddress.BuildingName,
-                Street = userAddress.Street,
-                ApartmentNumber = userAddress.ApartmentNumber,
-                Floor = userAddress.Floor,
-                AddressLabel = userAddress.AddressLabel,
-                AddressType = (int)userAddress.AddressType
-            };
+         
+            
+        return ObjectMapper.Map<WajbaUserAddress, UserAddressDto>(wus);
 
-            return userAddressDto;
         }
 
         public async Task DeleteAsync(int id)
@@ -98,9 +75,9 @@ namespace Wajba.UserAddressService
             await _repository.DeleteAsync(userAddress);
         }
 
-        public async Task<List<UserAddressDto>> GetAllByCustomerAsync(string customerId)
+        public async Task<List<UserAddressDto>> GetAllByWajbaUserAsync(int WajbaUserId)
         {
-            var userAddresses = await _repository.GetListAsync(x => x.CustomerId == customerId);
+            var userAddresses = await _repository.GetListAsync(x => x.WajbaUserId == WajbaUserId);
 
             // Manually map list of UserAddress to list of UserAddressDto
             var userAddressDtos = userAddresses.Select(userAddress => new UserAddressDto
@@ -109,7 +86,7 @@ namespace Wajba.UserAddressService
                 Title = userAddress.Title,
                 Longitude = userAddress.Longitude,
                 Latitude = userAddress.Latitude,
-                CustomerId = userAddress.CustomerId,
+                WajbaUserId = userAddress.WajbaUserId,
                 BuildingName = userAddress.BuildingName,
                 Street = userAddress.Street,
                 ApartmentNumber = userAddress.ApartmentNumber,
@@ -123,25 +100,10 @@ namespace Wajba.UserAddressService
 
         public async Task<UserAddressDto> GetByIdAsync(int id)
         {
-            var userAddress = await _repository.GetAsync(id);
-
-            // Manually map UserAddress to UserAddressDto
-            var userAddressDto = new UserAddressDto
-            {
-                Id = userAddress.Id,
-                Title = userAddress.Title,
-                Longitude = userAddress.Longitude,
-                Latitude = userAddress.Latitude,
-                CustomerId = userAddress.CustomerId,
-                BuildingName = userAddress.BuildingName,
-                Street = userAddress.Street,
-                ApartmentNumber = userAddress.ApartmentNumber,
-                Floor = userAddress.Floor,
-                AddressLabel = userAddress.AddressLabel,
-                AddressType = (int)userAddress.AddressType
-            };
-
-            return userAddressDto;
-        }
+        WajbaUserAddress WajbaUserAddress = await _repository.GetAsync(id);
+        if (WajbaUserAddress == null)
+            throw new Exception("Not found");
+        return ObjectMapper.Map<WajbaUserAddress, UserAddressDto>(WajbaUserAddress);
     }
-}
+    }
+

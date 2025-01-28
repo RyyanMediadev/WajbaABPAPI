@@ -1,13 +1,14 @@
 ﻿global using Wajba.Dtos.UserAddressContract;
+using Wajba.UserAddressService;
 
-namespace Wajba.Controllers
-{
+namespace Wajba.Controllers;
+
 
     public class UserAddressController : WajbaController
     {
-        private readonly IUserAddressAppService _userAddressAppService;
+        private readonly WajbaUserAddressAppService _userAddressAppService;
 
-        public UserAddressController(IUserAddressAppService userAddressAppService)
+        public UserAddressController(WajbaUserAddressAppService userAddressAppService)
         {
             _userAddressAppService = userAddressAppService;
         }
@@ -18,7 +19,7 @@ namespace Wajba.Controllers
             try
             {
                 var result = await _userAddressAppService.CreateAsync(input);
-                return Ok(new ApiResponse<UserAddressDto>
+                return Ok(new ApiResponse<CreateUserAddressDto>
                 {
                     Success = true,
                     Message = "User address created successfully.",
@@ -85,11 +86,11 @@ namespace Wajba.Controllers
         }
 
         [HttpGet("customer/{customerId}")]
-        public async Task<IActionResult> GetAllByCustomerAsync(string customerId)
+        public async Task<IActionResult> GetAllByWajbaUserAsync(int WajbaUserId )
         {
             try
             {
-                var result = await _userAddressAppService.GetAllByCustomerAsync(customerId);
+                var result = await _userAddressAppService.GetAllByWajbaUserAsync(WajbaUserId);
                 return Ok(new ApiResponse<List<UserAddressDto>>
                 {
                     Success = true,
@@ -135,4 +136,3 @@ namespace Wajba.Controllers
             }
         }
     }
-}

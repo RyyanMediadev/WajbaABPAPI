@@ -155,4 +155,9 @@ public class PopularItemAppservice : ApplicationService
             BranchId = popularItem.PopulartItemBranches.Select(p => p.BranchId).ToList()
         };
     }
+
+    public async Task<PopularItem> GetpopItemByitemId(int id)
+    {
+        throw new NotImplementedException();
+    }
 }

@@ -10,7 +10,7 @@ public class CartItemVariation
     // Foreign key to CartItem
     public int CartItemId { get; set; }
     public virtual CartItem? CartItem { get; set; }
-    public CartItemVariation()
+    public CartItemVariation( )
     {
 
     }

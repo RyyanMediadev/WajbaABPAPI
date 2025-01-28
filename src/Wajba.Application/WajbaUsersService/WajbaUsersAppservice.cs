@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Reflection;
@@ -367,6 +368,8 @@ namespace Wajba.WajbaUsersService
                 FullName = createuserdto.FullName,
                 Type = (UserTypes)createuserdto.Type,
                 status = Status.Active,
+                GenderType = (GenderType)createuserdto.GenderType,
+
                 Password = EncryptANDDecrypt.EncryptText(createuserdto.Password),
             };
 
@@ -441,7 +444,7 @@ namespace Wajba.WajbaUsersService
         }
 
 
-        public async Task UpdateUserAsync(UpdateWajbaUserDto input)
+        public async Task<UpdateWajbaUserDto> UpdateUserAsync(UpdateWajbaUserDto input)
         {
             var user = await _WajbaUserRepository.FirstOrDefaultAsync(u => u.Id == input.Id);
             user.FullName = input.FullName;
@@ -449,14 +452,19 @@ namespace Wajba.WajbaUsersService
             user.Phone = input.Phone;
             user.status = (Status)input.Status;
             user.Type = (UserTypes)input.Type;
+            user.GenderType = (GenderType)input.GenderType;
+            //user.Password = user.Password;
 
-            await _WajbaUserRepository.UpdateAsync(user);
 
+            WajbaUser ws  =await _WajbaUserRepository.UpdateAsync(user);
+            ws.Password = null;
+
+            return ObjectMapper.Map<WajbaUser, UpdateWajbaUserDto>(ws);
 
         }
 
         // 3. Get User
-        public async Task<GetUserDto> GetUserAsync(int id)
+        public async Task<GetUserDto> AccountInfoGetByWajbaUserId(int id)
         {
             var user = await _WajbaUserRepository.FirstOrDefaultAsync(u => u.Id == id);
             return ObjectMapper.Map<WajbaUser, GetUserDto>(user);
@@ -492,10 +500,14 @@ namespace Wajba.WajbaUsersService
 			{
 				query = query.Where(u => u.Phone == input.Phone);
 			}
-			
+            if (input.GenderType.HasValue)
+            {
+                query = query.Where(u => u.GenderType.ToString() == input.GenderType.ToString());
+            }
 
-			// Apply pagination (Skip and Take)
-			var totalCount = await query.CountAsync(); // Get total count for pagination
+
+            // Apply pagination (Skip and Take)
+            var totalCount = await query.CountAsync(); // Get total count for pagination
             var users = await query.Skip(input.SkipCount).Take(input.MaxResultCount).ToListAsync(); // Get paginated users
                                                                                                     // Map the list of users (use 'users' instead of 'user')
             var userDtos = users.Select(user => new WajbaUserDto
@@ -518,6 +530,25 @@ namespace Wajba.WajbaUsersService
         {
             var user = await _WajbaUserRepository.FirstOrDefaultAsync(u => u.Id == id);
             await _WajbaUserRepository.DeleteAsync(user);
+        }
+
+        public async Task<AccountInfoEditByWajbaUserId> AccountInfoEdit(AccountInfoEditByWajbaUserId AccountInfoEditByWajbaUserId)
+        {
+
+            var user = await _WajbaUserRepository.FirstOrDefaultAsync(u => u.Id == AccountInfoEditByWajbaUserId.Id);
+            user.FullName = AccountInfoEditByWajbaUserId.FullName;
+            user.Email = AccountInfoEditByWajbaUserId.Email;
+            user.Phone = AccountInfoEditByWajbaUserId.Phone;
+            user.status = (Status)AccountInfoEditByWajbaUserId.Status;
+            user.Type = (UserTypes)AccountInfoEditByWajbaUserId.Type;
+            user.GenderType = (GenderType)AccountInfoEditByWajbaUserId.GenderType;
+            //user.Password = user.Password;
+
+
+            WajbaUser ws = await _WajbaUserRepository.UpdateAsync(user);
+            //ws.Password = null;
+
+            return ObjectMapper.Map<WajbaUser, AccountInfoEditByWajbaUserId>(ws);
         }
     }
 }

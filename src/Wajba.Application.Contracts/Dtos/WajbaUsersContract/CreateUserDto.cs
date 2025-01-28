@@ -15,6 +15,7 @@ public class CreateUserDto
     public string Password { get; set; }
     public string ConfirmPassword { get; set; }
     public int? Role { get; set; }
+    public int? GenderType { get; set; }
 
 
     public List<int?> BranchList { get; set; } = new List<int?>();

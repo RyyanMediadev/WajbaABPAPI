@@ -14,8 +14,12 @@ public class WajbaUserMapping : Profile
         CreateMap<WajbaUser, CreateUserDto> ();
         CreateMap<WajbaUser, GetUserDto>();
         CreateMap<WajbaUser, UserAddressDto>();
+        CreateMap<WajbaUser, UpdateWajbaUserDto>();
+        CreateMap<WajbaUser, AccountInfoEditByWajbaUserId>();
 
-        
+
+
+
 
     }
 }

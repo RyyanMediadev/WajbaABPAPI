@@ -19,7 +19,7 @@ public class WajbaUser : FullAuditedEntity<int>
     public string? ProfilePhoto { get; set; }
     public string Password { get; set; }
     public int? CustomerRole { get; set; }
-
+    public ICollection<Coupon> Coupons { get; set; } = new List<Coupon>();
     public WajbaUser()
     {
 

@@ -11,7 +11,7 @@ public class DeliveryOrder : FullAuditedEntity<int>
     [Required]
     public DateTime ApproximateTime { get; set; }
     public string? DeliveryBoyId { get; set; }  // Foreign key to DeliveryBoy
-    public virtual APPUser? DeliveryBoy { get; set; }
+    public virtual WajbaUser? DeliveryBoy { get; set; }
     public int? OrderId { get; set; }
     public virtual Order? Order { get; set; }
     public DeliveryOrder()

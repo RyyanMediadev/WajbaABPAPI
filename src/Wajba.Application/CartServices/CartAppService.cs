@@ -165,8 +165,10 @@ public class CartAppService : ApplicationService
         await _CartRepository.InsertAsync(cart, true);
 
     }
-    public async Task<IEnumerable<CartItem>> GetCartItemsByCustomerIdAsync(string customerId)
+    public async Task<IEnumerable<CartItem>> GetCartItemsByCustomerIdAsync(int customerId)
     {
+        var carts = await _CartRepository.WithDetailsAsync(p => p.CartItems);
+
         return await _cartitemrepo.GetListAsync();           //.Include(ci => ci.cart)
     }
     //public async Task<CartItem> GetCartItemByCustomerAndItemIdAsync(int customerId, int cartItemId)

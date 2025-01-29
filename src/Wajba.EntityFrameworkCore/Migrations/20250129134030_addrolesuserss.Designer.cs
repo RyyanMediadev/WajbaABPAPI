@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Volo.Abp.EntityFrameworkCore;
 using Wajba.EntityFrameworkCore;
@@ -12,9 +13,11 @@ using Wajba.EntityFrameworkCore;
 namespace Wajba.Migrations
 {
     [DbContext(typeof(WajbaDbContext))]
-    partial class WajbaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250129134030_addrolesuserss")]
+    partial class addrolesuserss
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -3868,59 +3871,6 @@ namespace Wajba.Migrations
                     b.ToTable("UserRoles");
                 });
 
-            modelBuilder.Entity("Wajba.Models.WajbaUserRoleDomain.WajbaUserRoles", b =>
-                {
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("WajbaUserId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("CreationTime");
-
-                    b.Property<Guid?>("CreatorId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("CreatorId");
-
-                    b.Property<Guid?>("DeleterId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("DeleterId");
-
-                    b.Property<DateTime?>("DeletionTime")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("DeletionTime");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false)
-                        .HasColumnName("IsDeleted");
-
-                    b.Property<DateTime?>("LastModificationTime")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("LastModificationTime");
-
-                    b.Property<Guid?>("LastModifierId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("LastModifierId");
-
-                    b.Property<int?>("UserRoleId")
-                        .HasColumnType("int");
-
-                    b.HasKey("RoleId", "WajbaUserId");
-
-                    b.HasIndex("UserRoleId");
-
-                    b.HasIndex("WajbaUserId");
-
-                    b.ToTable("WajbaUserRoles");
-                });
-
             modelBuilder.Entity("WajbaUserAddress", b =>
                 {
                     b.Property<int>("Id")
@@ -4472,23 +4422,6 @@ namespace Wajba.Migrations
                     b.HasOne("Wajba.Models.WajbaUserRoleDomain.UserRole", null)
                         .WithMany("UserRoles")
                         .HasForeignKey("UserRoleId");
-                });
-
-            modelBuilder.Entity("Wajba.Models.WajbaUserRoleDomain.WajbaUserRoles", b =>
-                {
-                    b.HasOne("Wajba.Models.WajbaUserRoleDomain.UserRole", "UserRole")
-                        .WithMany()
-                        .HasForeignKey("UserRoleId");
-
-                    b.HasOne("Wajba.Models.WajbaUserDomain.WajbaUser", "WajbaUser")
-                        .WithMany()
-                        .HasForeignKey("WajbaUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("UserRole");
-
-                    b.Navigation("WajbaUser");
                 });
 
             modelBuilder.Entity("WajbaUserAddress", b =>

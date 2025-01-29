@@ -72,8 +72,8 @@ AbpDbContext<WajbaDbContext>
     public DbSet<OTP> OTPs { get; set; }
     public DbSet<OrderSetup> OrderSetups { get; set; }
     public DbSet<WajbaUser> WajbaUsers { get; set; }
-	public DbSet<WajbaUserRole> WajbaUserRoles { get; set; }
-
+    public DbSet<WajbaUserRoles> WajbaUserRoles { get; set; }
+    public DbSet<UserRole> UserRoles { get; set; }
 	public DbSet<WajbaUserBranch> WajbaUserBranches { get; set; }
 
     public DbSet<WajbaUserAddress> WajbaUserAddresses { get; set; }
@@ -105,6 +105,8 @@ AbpDbContext<WajbaDbContext>
 .HasKey(p => new { p.BranchId, p.ItemId });
         builder.Entity<PopulartItemBranches>()
             .HasKey(p => new { p.BranchId, p.PopularItemId });
+        builder.Entity<WajbaUserRoles>()
+            .HasKey(p => new { p.RoleId, p.WajbaUserId });
         /* Configure your own tables/entities inside here */
 
         builder.ApplyConfigurationsFromAssembly(typeof(WajbaDbContext).Assembly);

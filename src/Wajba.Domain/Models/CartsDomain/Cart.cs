@@ -8,6 +8,7 @@ public class Cart: FullAuditedEntity<int>
     {
 
     }
+    [ForeignKey(nameof(Customer))]
     public int? CustomerId { get; set; }
     public virtual WajbaUser Customer { get; set; }
     public ICollection<CartItem> CartItems { get; set; } = new List<CartItem>();

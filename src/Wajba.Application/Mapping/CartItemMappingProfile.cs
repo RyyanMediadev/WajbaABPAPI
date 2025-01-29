@@ -4,8 +4,8 @@
     {
         public CartItemMappingProfile()
         {
-            CreateMap<CartItem, CartItemDto>();
-            CreateMap<CartItemDto, CartItem>();
+            //CreateMap<CartItem, CartItemDto>();
+            //CreateMap<CartItemDto, CartItem>();
 
         }
     }

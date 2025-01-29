@@ -9,7 +9,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Dtos\OrderContact\**" />
+    <EmbeddedResource Remove="Dtos\OrderContact\**" />
+    <None Remove="Dtos\OrderContact\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Wajba.Domain.Shared\Wajba.Domain.Shared.csproj" />
+    <ProjectReference Include="..\Wajba.Domain\Wajba.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,7 +36,6 @@
 
   <ItemGroup>
     <Folder Include="Dtos\CartContract\" />
-    <Folder Include="Dtos\OrderContact\" />
   </ItemGroup>
 
 </Project>

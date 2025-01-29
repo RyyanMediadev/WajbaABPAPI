@@ -12,6 +12,8 @@ global using Wajba.Models.UsersDomain;
 global using Wajba.Models.WajbaUserRoleDomain;
 global using Wajba.Models.WajbaUserDomain;
 global using Wajba.Models.PushNotificationDomains;
+using Wajba.Models.OrdersDomain;
+using Wajba.Models.Orders;
 
 namespace Wajba.EntityFrameworkCore;
 
@@ -78,7 +80,16 @@ AbpDbContext<WajbaDbContext>
 
     public DbSet<WajbaUserAddress> WajbaUserAddresses { get; set; }
 
-   
+
+
+    public DbSet<PosOrder> PosOrders { get; set; }
+    public DbSet<PosDeliveryOrder> PosDeliveryOrders { get; set; }
+    public DbSet<Order> Order { get; set; }
+    public DbSet<DineInOrder> DineInOrders { get; set; }
+    public DbSet<DeliveryOrder> Deliveries { get; set; }
+    public DbSet<DriveThruOrder> DriveThruOrders { get; set; }
+    public DbSet<PickUpOrder> PickUpOrders { get; set; }
+
 
     #endregion
     public WajbaDbContext(DbContextOptions<WajbaDbContext> options)

@@ -1,63 +1,73 @@
 ﻿global using Wajba.Dtos.OTPContract;
 global using Wajba.Models.OTPDomain;
 global using Volo.Abp.Domain.Entities;
+using Wajba.Models.Orders;
+using Wajba.Models.OrdersDomain;
 
 namespace Wajba.OTPService;
 
 [RemoteService(false)]
-public class OTPAppService : ApplicationService
+public class POSOrderAPPService : ApplicationService
 {
-    private readonly IRepository<OTP, int> _repository;
+    private readonly IRepository<Order, int> _Orderrepository;
 
-    public OTPAppService(IRepository<OTP, int> repository)
+    public POSOrderAPPService(IRepository<Order, int> repository)
     {
-        _repository = repository;
+        _Orderrepository = repository;
     }
-    public async Task<OTPDto> CreateAsync(CreateUpdateOTPDto input)
+
+    public async Task AddAsync(Order order)
     {
-        OTP oTP =await _repository.FirstOrDefaultAsync();
-        if (oTP != null)
-            throw new Exception("OTP already exists");
-        OTP otp = new OTP
-        {
-            DigitLimit = input.DigitLimit,
-            ExpiryTimeInMinutes = input.ExpiryTimeInMinutes,
-        };
-        var insertedOTP = await _repository.InsertAsync(otp, true);
-        return ObjectMapper.Map<OTP, OTPDto>(insertedOTP);
+        throw new NotImplementedException();
     }
-    public async Task<OTPDto> UpdateAsync(UpdateOtpDto input)
+
+    public async Task AddAsync(DineInOrder dineInOrder)
     {
-        var otp = await _repository.FirstOrDefaultAsync();
-        if (otp == null)
-            throw new Exception("Not found");
-        otp.DigitLimit = input.DigitLimit;
-        otp.ExpiryTimeInMinutes = input.ExpiryTimeInMinutes;
-        otp.LastModificationTime = DateTime.UtcNow;
-        OTP updatedOTP = await _repository.UpdateAsync(otp, true);
-        return ObjectMapper.Map<OTP, OTPDto>(updatedOTP);
+        throw new NotImplementedException();
     }
-    public async Task<OTPDto> GetByIdAsync()
+
+    public async Task AddAsync(PickUpOrder pickupOrder)
     {
-        OTP otp = await _repository.FirstOrDefaultAsync();
-        if (otp == null)
-            throw new EntityNotFoundException(typeof(OTP));
-        return ObjectMapper.Map<OTP, OTPDto>(otp);
+        throw new NotImplementedException();
     }
-    public async Task<PagedResultDto<OTPDto>> GetList(GetOtpInput input)
+
+    public async Task AddAsync(DriveThruOrder driveThruOrder)
     {
-        var otps = await _repository.GetListAsync();
-        return new PagedResultDto<OTPDto>
-        {
-            TotalCount = otps.Count,
-            Items = ObjectMapper.Map<List<OTP>, List<OTPDto>>(otps)
-        };
+        throw new NotImplementedException();
     }
-    public async Task DeleteAsync()
+
+    public async Task AddAsync(PosOrder posOrder)
     {
-        OTP otp = await _repository.FirstOrDefaultAsync();
-        if (otp == null)
-            throw new EntityNotFoundException(typeof(OTP));
-        await _repository.DeleteAsync(otp);
+        throw new NotImplementedException();
+    }
+
+    public async Task AddAsync(PosDeliveryOrder posDeliveryOrder)
+    {
+        throw new NotImplementedException();
+    }
+
+    public double CountPOSOrdersAsync(POSOrderSpecification orderSpec)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IEnumerable<Order> GetAllPOSOrdersAsync(POSOrderSpecification orderSpec)
+    {
+        throw new NotImplementedException();
+    }
+
+    public object GetCartByEmployeeIdAsync(object id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Order GetOrderByIdAsync(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task ValidateTokenAndGetUser(string token)
+    {
+        throw new NotImplementedException();
     }
 }

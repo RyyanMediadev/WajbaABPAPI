@@ -13,6 +13,7 @@ public class DriveThruOrder
     public int? OrderId { get; set; }
 
     // Navigation property to Order
+
     public virtual Order? Order { get; set; }
 
 

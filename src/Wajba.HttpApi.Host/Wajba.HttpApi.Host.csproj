@@ -38,6 +38,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Wajba.Application\Wajba.Application.csproj" />
+    <ProjectReference Include="..\Wajba.Domain.Shared\Wajba.Domain.Shared.csproj" />
     <ProjectReference Include="..\Wajba.EntityFrameworkCore\Wajba.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\Wajba.HttpApi\Wajba.HttpApi.csproj" />
   </ItemGroup>

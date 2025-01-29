@@ -81,7 +81,8 @@ AbpDbContext<WajbaDbContext>
     public DbSet<WajbaUserAddress> WajbaUserAddresses { get; set; }
 
 
-
+    public DbSet<Cart> Carts { get; set; }
+    public DbSet<CartItem> CartItems { get; set; }
     public DbSet<PosOrder> PosOrders { get; set; }
     public DbSet<PosDeliveryOrder> PosDeliveryOrders { get; set; }
     public DbSet<Order> Order { get; set; }

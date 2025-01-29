@@ -11,7 +11,6 @@ global using Volo.Abp.TenantManagement;
 using Wajba.CustomIdentityService;
 using Wajba.Dtos.TimeSlotsContract;
 using Wajba.Dtos.UserAddressContract;
-using Wajba.EntityFrameworkCore;
 using Wajba.Models.UsersDomain;
 using Wajba.NotificationService;
 using Wajba.TimeSlotsServices;

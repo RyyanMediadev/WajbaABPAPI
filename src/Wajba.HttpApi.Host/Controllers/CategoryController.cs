@@ -3,6 +3,7 @@ global using Volo.Abp.Application.Dtos;
 global using Wajba.APIResponse;
 global using Wajba.Categories;
 global using Wajba.Dtos.Categories;
+using Wajba.APIResponse;
 
 namespace Wajba.Controllers;
 

@@ -188,8 +188,12 @@ namespace Wajba.Controllers
                     }
 
                 }
-
-                return BadRequest("User Details Not Found ,,Wrong Data !");
+                return BadRequest(new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = $"User Details Not Found ,,Wrong Data !",
+                    Data = null
+                });
 
 
 

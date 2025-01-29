@@ -25,7 +25,7 @@ public class Order:FullAuditedEntity<int>
     public string? CustomerId { get; set; }
 
     // Navigation property to Customer
-    public virtual APPUser Customer { get; set; } = new APPUser();
+    public virtual WajbaUser Customer { get; set; } = new WajbaUser();
     public virtual PickUpOrder PickUpOrder { get; set; } = new PickUpOrder();
     public virtual DeliveryOrder DeliveryOrder { get; set; } = new DeliveryOrder();
     public virtual DriveThruOrder DriveThruOrder { get; set; } = new DriveThruOrder();

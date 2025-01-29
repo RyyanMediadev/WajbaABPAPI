@@ -1,63 +1,129 @@
 ﻿global using Wajba.Dtos.OTPContract;
 global using Wajba.Models.OTPDomain;
 global using Volo.Abp.Domain.Entities;
+using Wajba.Models.Orders;
+using Wajba.Models.OrdersDomain;
+using Wajba.Models.Carts;
 
 namespace Wajba.OTPService;
 
 [RemoteService(false)]
-public class OTPAppService : ApplicationService
+public class POSOrderAPPService : ApplicationService
 {
-    private readonly IRepository<OTP, int> _repository;
+    private readonly IRepository<Order, int> _OrderRepository;
+    private readonly IRepository<Cart, int> _CartRepository;
 
-    public OTPAppService(IRepository<OTP, int> repository)
+
+    public POSOrderAPPService(IRepository<Order, int> repository)
     {
-        _repository = repository;
+        _OrderRepository = repository;
     }
-    public async Task<OTPDto> CreateAsync(CreateUpdateOTPDto input)
+    //public async Task<Cart> GetCartByCustomeridAsync(string customerId)
+    //{
+    //    return await _CartRepository
+    //                .FirstOrDefaultAsync(c => c.CustomerId == customerId);
+    //}
+    //public async Task<Cart> GetCartByUseridAsync(int UserId)
+    //{
+    //    return await _CartRepository
+    //                        .FirstOrDefaultAsync(c => c.userId == UserId);
+    //}
+    //public async Task<Cart> GetCartByCustomerIdAsync(string customerId)
+    //{
+    //    var cart = await _CartRepository
+    //   .Include(c => c.CartItems)
+    //         .ThenInclude(i => i.SelectedVariations)
+    //   .Include(c => c.CartItems)
+    //         .ThenInclude(i => i.SelectedAddons)
+    //   .Include(c => c.CartItems)
+    //         .ThenInclude(i => i.SelectedExtras)
+    //   .FirstOrDefaultAsync(c => c.CustomerId == customerId);
+    //    if (cart == null || !cart.CartItems.Any())
+    //    {
+    //        return null;
+    //    }
+    //    return cart;
+    //}
+    public async Task<Cart> GetCartByEmployeeIdAsync(int userId)
     {
-        OTP oTP =await _repository.FirstOrDefaultAsync();
-        if (oTP != null)
-            throw new Exception("OTP already exists");
-        OTP otp = new OTP
+        var cart = await _CartRepository//.Include(c => c.CartItems)
+       //      .ThenInclude(i => i.SelectedVariations)
+       //.Include(c => c.CartItems)
+       //      .ThenInclude(i => i.SelectedAddons)
+       //.Include(c => c.CartItems)
+       //      .ThenInclude(i => i.SelectedExtras)
+       .FirstOrDefaultAsync(c => c.Id == userId);
+        if (cart == null || !cart.CartItems.Any())
         {
-            DigitLimit = input.DigitLimit,
-            ExpiryTimeInMinutes = input.ExpiryTimeInMinutes,
-        };
-        var insertedOTP = await _repository.InsertAsync(otp, true);
-        return ObjectMapper.Map<OTP, OTPDto>(insertedOTP);
+            return null;
+        }
+        return cart;
     }
-    public async Task<OTPDto> UpdateAsync(UpdateOtpDto input)
+    public async Task UpdateCartAsync(Cart cart)
     {
-        var otp = await _repository.FirstOrDefaultAsync();
-        if (otp == null)
-            throw new Exception("Not found");
-        otp.DigitLimit = input.DigitLimit;
-        otp.ExpiryTimeInMinutes = input.ExpiryTimeInMinutes;
-        otp.LastModificationTime = DateTime.UtcNow;
-        OTP updatedOTP = await _repository.UpdateAsync(otp, true);
-        return ObjectMapper.Map<OTP, OTPDto>(updatedOTP);
+        _CartRepository.UpdateAsync(cart);
+        //await _context.SaveChangesAsync();
     }
-    public async Task<OTPDto> GetByIdAsync()
+    public async Task AddAsync(Order order)
     {
-        OTP otp = await _repository.FirstOrDefaultAsync();
-        if (otp == null)
-            throw new EntityNotFoundException(typeof(OTP));
-        return ObjectMapper.Map<OTP, OTPDto>(otp);
+        throw new NotImplementedException();
     }
-    public async Task<PagedResultDto<OTPDto>> GetList(GetOtpInput input)
+
+    public async Task AddAsync(DineInOrder dineInOrder)
     {
-        var otps = await _repository.GetListAsync();
-        return new PagedResultDto<OTPDto>
-        {
-            TotalCount = otps.Count,
-            Items = ObjectMapper.Map<List<OTP>, List<OTPDto>>(otps)
-        };
+        throw new NotImplementedException();
     }
-    public async Task DeleteAsync()
+
+    public async Task AddAsync(PickUpOrder pickupOrder)
     {
-        OTP otp = await _repository.FirstOrDefaultAsync();
-        if (otp == null)
-            throw new EntityNotFoundException(typeof(OTP));
-        await _repository.DeleteAsync(otp);
+        throw new NotImplementedException();
+    }
+
+    public async Task AddAsync(DriveThruOrder driveThruOrder)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task AddAsync(PosOrder posOrder)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task AddAsync(PosDeliveryOrder posDeliveryOrder)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task AddAsync(DeliveryOrder deliveryOrder)
+    {
+        throw new NotImplementedException();
+    }
+
+    public double CountPOSOrdersAsync(POSOrderSpecification orderSpec)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IEnumerable<Order> GetAllPOSOrdersAsync(POSOrderSpecification orderSpec)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<CartItem> GetCartByEmployeeIdAsync(object id)
+    {
+        throw new NotImplementedException();
+
+        return null;
+    }
+
+    public async Task<Order> GetOrderByIdAsync(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<WajbaUser> ValidateTokenAndGetUser(string token)
+    {
+        throw new NotImplementedException();
+        return null;
     }
 }

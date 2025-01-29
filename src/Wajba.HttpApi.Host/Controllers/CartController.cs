@@ -572,126 +572,126 @@ public class CartController : WajbaController
         return Ok(new { success = true, data = cartDto });
     }
 
-    [HttpPut("update-item/{cartItemId}")]
-    public async Task<IActionResult> UpdateCartItem(int cartItemId, [FromBody] UpdateCartItemDto cartItemDto)
-    {
-        if (!ModelState.IsValid)
-            return Ok(ModelState);
-        var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-        if (string.IsNullOrEmpty(token))
-        {
-            return Ok(new { success = false, message = "Token is required" });
-        }
-        //var customer = await ValidateTokenAndGetUser(token);
-        //if (customer == null)
-        //{
-        //    return Ok(new { success = false, message = "Invalid token or customer not found" });
-        //}
-        // Get the cart associated with the customer
-        var cart = await _CartAppService.GetCartByCustomerIdAsync(customerId);
-        if (cart == null)
-        {
-            return Ok(new { success = false, message = "Cart not found", data = cart });
-        }
+    //[HttpPut("update-item/{cartItemId}")]
+    //public async Task<IActionResult> UpdateCartItem(int cartItemId, [FromBody] UpdateCartItemDto cartItemDto)
+    //{
+    //    if (!ModelState.IsValid)
+    //        return Ok(ModelState);
+    //    var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+    //    if (string.IsNullOrEmpty(token))
+    //    {
+    //        return Ok(new { success = false, message = "Token is required" });
+    //    }
+    //    //var customer = await ValidateTokenAndGetUser(token);
+    //    //if (customer == null)
+    //    //{
+    //    //    return Ok(new { success = false, message = "Invalid token or customer not found" });
+    //    //}
+    //    // Get the cart associated with the customer
+    //    var cart = await _CartAppService.GetCartByCustomerIdAsync(customerId);
+    //    if (cart == null)
+    //    {
+    //        return Ok(new { success = false, message = "Cart not found", data = cart });
+    //    }
 
-        // Find the cart item to update
-        var cartItem = cart.CartItems.FirstOrDefault(ci => ci.Id == cartItemId);
-        if (cartItem == null)
-        {
-            return Ok(new { success = false, message = "Cart item not found in the cart" });
-        }
+    //    // Find the cart item to update
+    //    var cartItem = cart.CartItems.FirstOrDefault(ci => ci.Id == cartItemId);
+    //    if (cartItem == null)
+    //    {
+    //        return Ok(new { success = false, message = "Cart item not found in the cart" });
+    //    }
 
-        // Update the cart item properties
-        cartItem.ItemId = cartItemDto.ItemId;
-        cartItem.ItemName = cartItemDto.ItemName;
-        cartItem.ImgUrl = cartItemDto.ImgUrl;
-        cartItem.Quantity = cartItemDto.Quantity;
-        cartItem.Notes = cartItemDto.Notes;
-        cartItem.price = cartItemDto.price;
+    //    // Update the cart item properties
+    //    cartItem.ItemId = cartItemDto.ItemId;
+    //    cartItem.ItemName = cartItemDto.ItemName;
+    //    cartItem.ImgUrl = cartItemDto.ImgUrl;
+    //    cartItem.Quantity = cartItemDto.Quantity;
+    //    cartItem.Notes = cartItemDto.Notes;
+    //    cartItem.price = cartItemDto.price;
 
-        // Update variations
-        cartItem.SelectedVariations.Clear();
-        if (cartItemDto.Variations != null)
-        {
-            foreach (var variationDto in cartItemDto.Variations)
-            {
-                var variation = new CartItemVariation()
-                {
-                };
-                cartItem.SelectedVariations.Add(variation);
-            }
-        }
-        // Update addons
-        cartItem.SelectedAddons.Clear();
-        if (cartItemDto.Addons != null)
-        {
-            foreach (var addonDto in cartItemDto.Addons)
-            {
-                var addon = new CartItemAddon()
-                {
-                };
-                cartItem.SelectedAddons.Add(addon);
-            }
-        }
-        // Update extras
-        cartItem.SelectedExtras.Clear();
-        if (cartItemDto.Extras != null)
-        {
-            foreach (var extraDto in cartItemDto.Extras)
-            {
-                var extra = new CartItemExtra()
-                {
-                };
-                cartItem.SelectedExtras.Add(extra);
-            }
-        }
-        //  await _unitOfWork.CompleteAsync();
-        var updatedCartItemDto = new ReturnCartItemDto()
-        {
-            Variations = cartItem.SelectedVariations.Select(v => new ReturnCartItemVariationDto()
-            {
-            }).ToList(),
-            Addons = cartItem.SelectedAddons.Select(a => new ReturnCartItemAddonDto()
-            {
-            }).ToList(),
-            Extras = cartItem.SelectedExtras.Select(e => new ReturnExtraDto()
-            {
-            }).ToList()
-        };
-        return Ok(new { success = true, message = "Cart item updated successfully", data = updatedCartItemDto });
-    }
+    //    // Update variations
+    //    cartItem.SelectedVariations.Clear();
+    //    if (cartItemDto.Variations != null)
+    //    {
+    //        foreach (var variationDto in cartItemDto.Variations)
+    //        {
+    //            var variation = new CartItemVariation()
+    //            {
+    //            };
+    //            cartItem.SelectedVariations.Add(variation);
+    //        }
+    //    }
+    //    // Update addons
+    //    cartItem.SelectedAddons.Clear();
+    //    if (cartItemDto.Addons != null)
+    //    {
+    //        foreach (var addonDto in cartItemDto.Addons)
+    //        {
+    //            var addon = new CartItemAddon()
+    //            {
+    //            };
+    //            cartItem.SelectedAddons.Add(addon);
+    //        }
+    //    }
+    //    // Update extras
+    //    cartItem.SelectedExtras.Clear();
+    //    if (cartItemDto.Extras != null)
+    //    {
+    //        foreach (var extraDto in cartItemDto.Extras)
+    //        {
+    //            var extra = new CartItemExtra()
+    //            {
+    //            };
+    //            cartItem.SelectedExtras.Add(extra);
+    //        }
+    //    }
+    //    //  await _unitOfWork.CompleteAsync();
+    //    var updatedCartItemDto = new ReturnCartItemDto()
+    //    {
+    //        Variations = cartItem.SelectedVariations.Select(v => new ReturnCartItemVariationDto()
+    //        {
+    //        }).ToList(),
+    //        Addons = cartItem.SelectedAddons.Select(a => new ReturnCartItemAddonDto()
+    //        {
+    //        }).ToList(),
+    //        Extras = cartItem.SelectedExtras.Select(e => new ReturnExtraDto()
+    //        {
+    //        }).ToList()
+    //    };
+    //    return Ok(new { success = true, message = "Cart item updated successfully", data = updatedCartItemDto });
+    //}
 
-    [HttpDelete("delete-item-from-cart/{cartItemId}")]
-    public async Task<IActionResult> DeleteCartItem(int cartItemId)
-    {
-        var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-        if (string.IsNullOrEmpty(token))
-        {
-            return Ok(new { success = false, message = "Token is required" });
-        }
-        //var customer = await ValidateTokenAndGetUser(token);
-        //if (customer == null)
-        //{
-        //    return Ok(new { success = false, message = "Invalid token or customer not found" });
-        //}
-        var cartItem = await _CartAppService.GetCartItemByCustomerAndItemIdAsync(customerId, cartItemId);
-        if (cartItem == null)
-        {
-            return Ok(new { success = false, message = "Cart item not found in your cart." });
-        }
-        var amountOfDeletedItem = cartItem.Quantity * cartItem.price;
-        await _CartAppService.RemoveAsync(cartItem);
-        var cart = await _CartAppService.GetCartByCustomerIdAsync(customerId);
-        if (cart == null)
-        {
-            return Ok(new { success = false, message = "Cart not found for this customer.", data = cart });
-        }
-        cart.SubTotal -= amountOfDeletedItem;
-        cart.TotalAmount -= amountOfDeletedItem;
-        await _CartAppService.UpdateCartAsync(cart);
-        //await _unitOfWork.CompleteAsync();
-        return Ok(new { success = true, message = "Item removed from cart successfully" });
-    }
+    //[HttpDelete("delete-item-from-cart/{cartItemId}")]
+    //public async Task<IActionResult> DeleteCartItem(int cartItemId)
+    //{
+    //    var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+    //    if (string.IsNullOrEmpty(token))
+    //    {
+    //        return Ok(new { success = false, message = "Token is required" });
+    //    }
+    //    //var customer = await ValidateTokenAndGetUser(token);
+    //    //if (customer == null)
+    //    //{
+    //    //    return Ok(new { success = false, message = "Invalid token or customer not found" });
+    //    //}
+    //    var cartItem = await _CartAppService.GetCartItemByCustomerAndItemIdAsync(customerId, cartItemId);
+    //    if (cartItem == null)
+    //    {
+    //        return Ok(new { success = false, message = "Cart item not found in your cart." });
+    //    }
+    //    var amountOfDeletedItem = cartItem.Quantity * cartItem.price;
+    //    await _CartAppService.RemoveAsync(cartItem);
+    //    var cart = await _CartAppService.GetCartByCustomerIdAsync(customerId);
+    //    if (cart == null)
+    //    {
+    //        return Ok(new { success = false, message = "Cart not found for this customer.", data = cart });
+    //    }
+    //    cart.SubTotal -= amountOfDeletedItem;
+    //    cart.TotalAmount -= amountOfDeletedItem;
+    //    await _CartAppService.UpdateCartAsync(cart);
+    //    //await _unitOfWork.CompleteAsync();
+    //    return Ok(new { success = true, message = "Item removed from cart successfully" });
+    //}
 
     [HttpDelete("clear-cart")]
     public async Task<IActionResult> ClearCart()

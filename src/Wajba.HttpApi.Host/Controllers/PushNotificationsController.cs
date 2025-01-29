@@ -35,28 +35,28 @@ public class PushNotificationsController : WajbaController
             });
         }
     }
-    [HttpPut]
-    public async Task<ActionResult<PushNotificationDto>> Update(UpdatePushNotificationDto dto)
-    {
-        try
-        {
-            PushNotificationDto dto = await _pushNotification.(pushNotificationDto);
-            return Ok(new ApiResponse<PushNotificationDto>
-            {
-                Success = true,
-                Message = "Site created successfully.",
-                Data = dto
-            });
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(new ApiResponse<object>
-            {
-                Success = false,
-                Message = $"Error creating site: {ex.Message}",
-                Data = null
-            });
-        }
+    //[HttpPut]
+    //public async Task<ActionResult<PushNotificationDto>> Update(UpdatePushNotificationDto dto)
+    //{
+    //    try
+    //    {
+    //        PushNotificationDto notificationDto = await _pushNotification.(pushNotificationDto);
+    //        return Ok(new ApiResponse<PushNotificationDto>
+    //        {
+    //            Success = true,
+    //            Message = "Site created successfully.",
+    //            Data = dto
+    //        });
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        return BadRequest(new ApiResponse<object>
+    //        {
+    //            Success = false,
+    //            Message = $"Error creating site: {ex.Message}",
+    //            Data = null
+    //        });
+    //    }
 
-    }
+    //}
 }

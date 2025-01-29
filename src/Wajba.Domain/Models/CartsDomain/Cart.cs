@@ -8,8 +8,8 @@ public class Cart: FullAuditedEntity<int>
     {
 
     }
-    public string? CustomerId { get; set; }
-    public virtual APPUser Customer { get; set; }
+    public int? CustomerId { get; set; }
+    public virtual WajbaUser Customer { get; set; }
     public ICollection<CartItem> CartItems { get; set; } = new List<CartItem>();
     public decimal? TotalAmount { get; set; }
     public decimal? SubTotal { get; set; }

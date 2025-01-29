@@ -9,8 +9,9 @@ global using Wajba.Models.OrderSetup;
 global using Wajba.Models.PopularItemsDomain;
 global using Wajba.Models.NotificationDomain;
 global using Wajba.Models.UsersDomain;
-using Wajba.Models.WajbaUserRoleDomain;
-using Wajba.Models.WajbaUserDomain;
+global using Wajba.Models.WajbaUserRoleDomain;
+global using Wajba.Models.WajbaUserDomain;
+global using Wajba.Models.PushNotificationDomains;
 
 namespace Wajba.EntityFrameworkCore;
 
@@ -67,6 +68,7 @@ AbpDbContext<WajbaDbContext>
     public DbSet<Company> Companies { get; set; }
     public DbSet<FAQs> FAQs { get; set; }
     public DbSet<Notification> Notifications { get; set; }
+    public DbSet<PushNotification> PushNotifications { get; set; }
     public DbSet<OTP> OTPs { get; set; }
     public DbSet<OrderSetup> OrderSetups { get; set; }
     public DbSet<WajbaUser> WajbaUsers { get; set; }

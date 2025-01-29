@@ -9,12 +9,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Dtos\OrderContact\**" />
+    <EmbeddedResource Remove="Dtos\OrderContact\**" />
+    <None Remove="Dtos\OrderContact\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Wajba.Domain.Shared\Wajba.Domain.Shared.csproj" />
+    <ProjectReference Include="..\Wajba.Domain\Wajba.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="EntityFramework" Version="6.5.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="3.1.32" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.0.4" />
     <PackageReference Include="MimeKit" Version="4.9.0" />
     <PackageReference Include="Volo.Abp.AspNetCore.SignalR" Version="9.0.0" />
@@ -29,7 +35,6 @@
 
   <ItemGroup>
     <Folder Include="Dtos\CartContract\" />
-    <Folder Include="Dtos\OrderContact\" />
   </ItemGroup>
 
 </Project>

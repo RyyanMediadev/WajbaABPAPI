@@ -22,7 +22,7 @@ public class CategoryController : WajbaController
         {
             // Call the service to create the category
             await _categoryAppService.CreateAsync(input);
-            return Ok(new ApiResponse<CreateUserAddressDto>
+            return Ok(new ApiResponse<CategoryDto>
             {
                 Success = true,
                 Message = "Category created successfully.",

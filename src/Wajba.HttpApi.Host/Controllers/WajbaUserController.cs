@@ -446,46 +446,46 @@ namespace Wajba.Controllers
             }
         }
 
-      
-
-        //// 3. Get User
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<GetUserDto>> GetWajbaUser(int id)
-        //{
-        //    // return Ok(result);
-
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
 
 
-        //            var result = await _WajbaUsersAppService.AccountInfoGetByWajbaUserId(id);
+        // 3. Get User
+        [HttpGet("{id}")]
+        public async Task<ActionResult<GetUserDto>> GetWajbaUser(int id)
+        {
+            // return Ok(result);
 
-        //            return Ok(new ApiResponse<GetUserDto>
-        //            {
-        //                Success = true,
-        //                Message = "User Retrived successfully.",
-        //                Data = result
-        //            });
+            if (ModelState.IsValid)
+            {
+                try
+                {
 
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            return BadRequest(new ApiResponse<object>
-        //            {
-        //                Success = false,
-        //                Message = $"Error Retrived User: {ex.Message}",
-        //                Data = null
-        //            });
-        //            //  return BadRequest(" Internal server error" + " " + ex.Message);
 
-        //        }
+                    var result = await _WajbaUsersAppService.AccountInfoGetByWajbaUserId(id);
 
-        //    }
-        //    return BadRequest(new { MessageAr = "مستخدم غير موجود", MessageEng = "Invalid User !" });
+                    return Ok(new ApiResponse<GetUserDto>
+                    {
+                        Success = true,
+                        Message = "User Retrived successfully.",
+                        Data = result
+                    });
 
-        //}
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(new ApiResponse<object>
+                    {
+                        Success = false,
+                        Message = $"Error Retrived User: {ex.Message}",
+                        Data = null
+                    });
+                    //  return BadRequest(" Internal server error" + " " + ex.Message);
+
+                }
+
+            }
+            return BadRequest(new { MessageAr = "مستخدم غير موجود", MessageEng = "Invalid User !" });
+
+        }
 
         //[HttpGet("getby token")]
         //public async Task<ActionResult> Getuserbytoken(string token)

@@ -1809,7 +1809,7 @@ namespace Wajba.Migrations
 
                     b.HasIndex("APPUserId");
 
-                    b.ToTable("UserAddress");
+                    b.ToTable("UserAddress", (string)null);
                 });
 
             modelBuilder.Entity("Wajba.Models.BranchDomain.Branch", b =>
@@ -1882,7 +1882,7 @@ namespace Wajba.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Branches");
+                    b.ToTable("Branches", (string)null);
                 });
 
             modelBuilder.Entity("Wajba.Models.BranchDomain.DineInTable", b =>
@@ -2282,7 +2282,7 @@ namespace Wajba.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Companies");
+                    b.ToTable("Companies", (string)null);
                 });
 
             modelBuilder.Entity("Wajba.Models.CouponsDomain.Coupon", b =>
@@ -2427,7 +2427,7 @@ namespace Wajba.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Currencies");
+                    b.ToTable("Currencies", (string)null);
                 });
 
             modelBuilder.Entity("Wajba.Models.FaqsDomain.FAQs", b =>
@@ -2476,7 +2476,7 @@ namespace Wajba.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("FAQs");
+                    b.ToTable("FAQs", (string)null);
                 });
 
             modelBuilder.Entity("Wajba.Models.ItemAddonDomain.ItemAddon", b =>
@@ -2879,7 +2879,7 @@ namespace Wajba.Migrations
 
                     b.HasIndex("ItemId");
 
-                    b.ToTable("itemBranches");
+                    b.ToTable("itemBranches", (string)null);
                 });
 
             modelBuilder.Entity("Wajba.Models.LanguageDomain.Language", b =>
@@ -2934,7 +2934,7 @@ namespace Wajba.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Languages");
+                    b.ToTable("Languages", (string)null);
                 });
 
             modelBuilder.Entity("Wajba.Models.NotificationDomain.Notification", b =>
@@ -3004,7 +3004,7 @@ namespace Wajba.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Notifications");
+                    b.ToTable("Notifications", (string)null);
                 });
 
             modelBuilder.Entity("Wajba.Models.OTPDomain.OTP", b =>
@@ -3417,7 +3417,7 @@ namespace Wajba.Migrations
 
                     b.HasIndex("PopularItemId");
 
-                    b.ToTable("PopulartItemBranches");
+                    b.ToTable("PopulartItemBranches", (string)null);
                 });
 
             modelBuilder.Entity("Wajba.Models.SiteDomain.Site", b =>
@@ -3505,7 +3505,7 @@ namespace Wajba.Migrations
 
                     b.HasIndex("LanguageId");
 
-                    b.ToTable("Sites");
+                    b.ToTable("Sites", (string)null);
                 });
 
             modelBuilder.Entity("Wajba.Models.ThemesDomain.Theme", b =>
@@ -3557,7 +3557,7 @@ namespace Wajba.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Themes");
+                    b.ToTable("Themes", (string)null);
                 });
 
             modelBuilder.Entity("Wajba.Models.TimeSlotsDomain.TimeSlot", b =>
@@ -3609,7 +3609,7 @@ namespace Wajba.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TimeSlots");
+                    b.ToTable("TimeSlots", (string)null);
                 });
 
             modelBuilder.Entity("Wajba.Models.UsersDomain.APPUser", b =>
@@ -3803,7 +3803,7 @@ namespace Wajba.Migrations
 
                     b.HasIndex("WajbaUserId");
 
-                    b.ToTable("WajbaUserRoles");
+                    b.ToTable("WajbaUserRoles", (string)null);
                 });
 
             modelBuilder.Entity("WajbaUserAddress", b =>
@@ -3878,7 +3878,7 @@ namespace Wajba.Migrations
 
                     b.HasIndex("WajbaUserId");
 
-                    b.ToTable("WajbaUserAddresses");
+                    b.ToTable("WajbaUserAddresses", (string)null);
                 });
 
             modelBuilder.Entity("WajbaUserBranch", b =>
@@ -3931,7 +3931,7 @@ namespace Wajba.Migrations
 
                     b.HasIndex("WajbaUserId");
 
-                    b.ToTable("WajbaUserBranches");
+                    b.ToTable("WajbaUserBranches", (string)null);
                 });
 
             modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLogAction", b =>

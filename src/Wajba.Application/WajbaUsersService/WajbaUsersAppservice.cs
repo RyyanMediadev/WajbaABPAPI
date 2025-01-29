@@ -98,20 +98,43 @@ namespace Wajba.WajbaUsersService
         //    return user != null ? user : null;
         //}
 
-        public async Task<WajbaUser> IsValidUserAsync(string Phone)
+        public async Task<WajbaUser> IsValidUserAsync(LogInWajbaUserDto request)
         {
-            // Validate inputs
-            if (string.IsNullOrWhiteSpace(Phone) )
+
+            if(request.LogInAPPCode=="EndUSerApp@SpotIdeas")
             {
-                return null;
+                // Validate inputs
+                if (string.IsNullOrWhiteSpace(request.Phone))
+                {
+                    return null;
+                }
+
+                // Find the user based on mobile and encrypted password
+                //var encryptedPassword = EncryptANDDecrypt.EncryptText(password);
+                var user = await _WajbaUserRepository.FirstOrDefaultAsync(
+                    ent => ent.Phone.ToLower() == request.Phone);
+
+                return user;
+
             }
 
-            // Find the user based on mobile and encrypted password
-            //var encryptedPassword = EncryptANDDecrypt.EncryptText(password);
-            var user = await _WajbaUserRepository.FirstOrDefaultAsync(
-                ent => ent.Phone.ToLower() == Phone);
+            if (request.LogInAPPCode == "DashBoardweb@SpotIdeas")
+            {
+                // Validate inputs
+                if (string.IsNullOrWhiteSpace(request.Email) && string.IsNullOrWhiteSpace(request.Password))
+                {
+                    return null;
+                }
 
-            return user;
+                // Find the user based on mobile and encrypted password
+                var encryptedPassword = EncryptANDDecrypt.EncryptText(request.Password);
+                var user = await _WajbaUserRepository.FirstOrDefaultAsync(
+                    ent => ent.Email.ToLower() == request.Email &&ent.Password==encryptedPassword);
+
+                return user;
+
+            }
+            return null;
         }
 
         public async Task<WajbaUser> ValidateOtpUser(string Phone)
@@ -129,6 +152,8 @@ namespace Wajba.WajbaUsersService
 
             return user;
         }
+
+
         public bool SendOTP(string MobileNum, int userId, string Email)
         {
             if (MobileNum != null && userId != 0)
@@ -266,7 +291,9 @@ namespace Wajba.WajbaUsersService
         {
 
             //token = string.Empty;
-            var user = await IsValidUserAsync(request.Phone);
+
+
+            var user = await IsValidUserAsync(request);
 
             //if (user != null)
             //{

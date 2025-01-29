@@ -1,6 +1,6 @@
 ﻿namespace Wajba.Models.OrdersDomain;
 
-public class OrderItem 
+public class OrderItem :FullAuditedEntity<int>
 {
     public int OrderId { get; set; } // Foreign Key to Order
     public int ItemId { get; set; } // Foreign Key to Item

@@ -71,6 +71,24 @@ public class CartController : WajbaController
             });
         }
     }
+    [HttpGet("GetCarforcustomer")]
+    public async Task<IActionResult> GetCart()
+    {
+        string token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+        if (string.IsNullOrEmpty(token))
+        {
+            return Ok(new { success = false, message = "Token is required" });
+        }
+        WajbaUser customer = await _wajbaUsers.Decodetoken(token);
+        if (customer == null)
+        {
+            return Ok(new { success = false, message = "Invalid token or customer not found" });
+        }
+
+
+
+        return null;
+    }
     //    [HttpPost("Ordernow")]
     //[Authorize]
     //public async Task<ActionResult> Ordernow(int id)

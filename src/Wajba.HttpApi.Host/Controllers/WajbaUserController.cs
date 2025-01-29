@@ -97,7 +97,7 @@ namespace Wajba.Controllers
                 if (!ModelState.IsValid)
                 { return BadRequest(ModelState); }
 
-
+              
                 var user = await _WajbaUsersAppService.AuthenticateUser(LogInDto);
 
 
@@ -121,31 +121,72 @@ namespace Wajba.Controllers
                 //	});
 
                 //}
-
-                var ExistUSer = await _WajbaUsersAppService.ValidateOtpUser(LogInDto.Phone);
-                if (ExistUSer != null)
+                if (LogInDto.LogInAPPCode  == "EndUSerApp@SpotIdeas" &&LogInDto.Phone !=null)
                 {
-                    try
+
+
+                    var ExistUSer = await _WajbaUsersAppService.ValidateOtpUser(LogInDto.Phone);
+                    if (ExistUSer != null)
                     {
-                        //VerifyCodeHelper verifyCodeHelper = new VerifyCodeHelper(_uow, _SMS, _mailService);
-                        _WajbaUsersAppService.SendOTP(ExistUSer.Phone, ExistUSer.Id, ExistUSer.Email);
-
-
-
-                        return Ok(new ApiResponse<LogInWajbaUserDto>
+                        try
                         {
-                            Success = true,
-                            Message = "Code Sent to your Phone  successfully.",
-                            Data = null
-                        });
+                            //VerifyCodeHelper verifyCodeHelper = new VerifyCodeHelper(_uow, _SMS, _mailService);
+                            _WajbaUsersAppService.SendOTP(ExistUSer.Phone, ExistUSer.Id, ExistUSer.Email);
+
+                            return Ok(new ApiResponse<LogInWajbaUserDto>
+                            {
+                                Success = true,
+                                Message = "Code Sent to your Phone  successfully.",
+                                Data = null
+                            });
+                        }
+                        catch (Exception ex)
+                        {
+
+
+                            return BadRequest(new { erorr = ex });
+
+                        }
                     }
-                    catch (Exception ex)
+
+                }
+
+                if (LogInDto.LogInAPPCode == "DashBoardweb@SpotIdeas" && LogInDto.Email != null)
+                {
+
+
+                    var ExistUSer = await _WajbaUsersAppService.IsValidUserAsync(LogInDto);
+                    if (ExistUSer != null)
                     {
+                        try
+                        {
+                            ////VerifyCodeHelper verifyCodeHelper = new VerifyCodeHelper(_uow, _SMS, _mailService);
+                            //_WajbaUsersAppService.SendOTP(ExistUSer.Phone, ExistUSer.Id, ExistUSer.Email);
+                            var GenerateTokenAsync = _WajbaUsersAppService.GenerateTokenAsync(ExistUSer);
+
+                            //return Ok(new ApiResponse<LogInWajbaUserDto>
+                            //{
+                            //    Success = true,
+                            //    Message = "User Logged in succesfully ..",
+                            //    Data = ExistUSer
+                            //});
+
+                            return Ok(new
+                            {
+                                WajbaUser = user,
+
+                                GenerateToken = GenerateTokenAsync
+                            });
+                        }
+                        catch (Exception ex)
+                        {
 
 
-                        return BadRequest(new { erorr = ex });
+                            return BadRequest(new { erorr = ex });
 
+                        }
                     }
+
                 }
 
                 return BadRequest("User Details Not Found ,,Wrong Data !");
@@ -167,9 +208,9 @@ namespace Wajba.Controllers
 
         [AllowAnonymous]
         [HttpPost, Route("VerifyOTPCode")]
-        public async Task<IActionResult> VerifyOTPCode(int VerifyOTPCode, string Phone)
+        public async Task<IActionResult> VerifyOTPCode(int VerifyOTPCode, LogInWajbaUserDto loginDto)
         {
-            var user = await _WajbaUsersAppService.IsValidUserAsync(Phone);
+            var user = await _WajbaUsersAppService.IsValidUserAsync(loginDto);
 
             var GtResult = _WajbaUsersAppService.ActivateOTP(VerifyOTPCode);
 

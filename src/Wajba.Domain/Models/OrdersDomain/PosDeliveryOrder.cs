@@ -12,7 +12,7 @@ public class PosDeliveryOrder : FullAuditedEntity<int>
     public string AddressLabel { get; set; }
     public int? OrderId { get; set; }
     public virtual Order? Order { get; set; }
-    public PosDeliveryOrder()
+    public PosDeliveryOrder( )
     {
 
     }

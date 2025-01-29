@@ -14,7 +14,7 @@ public class DeliveryOrder : FullAuditedEntity<int>
     public virtual APPUser? DeliveryBoy { get; set; }
     public int? OrderId { get; set; }
     public virtual Order? Order { get; set; }
-    public DeliveryOrder()
+    public DeliveryOrder( )
     {
 
     }

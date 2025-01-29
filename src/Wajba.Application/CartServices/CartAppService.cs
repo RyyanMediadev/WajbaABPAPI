@@ -1,6 +1,5 @@
 ﻿global using Wajba.Models.Carts;
 global using Wajba.Models.Orders;
-using Volo.Abp.Domain.Repositories;
 using Wajba.Dtos.CartContract;
 using Wajba.Models.CartsDomain;
 using Wajba.Models.ItemVariationDomain;
@@ -15,71 +14,71 @@ public class CartAppService : ApplicationService
     private readonly IRepository<ItemExtra, int> _itemextrarepo;
     private readonly IRepository<ItemVariation, int> _itemvariationrepo;
     private readonly IRepository<CartItem, int> _cartitemrepo;
-    //  string customerId = " 6b29fc40-ca47-1067-b31d-00dd010662da";
-    public CartAppService(IRepository<CartItem, int> CartItemRepository,
+    public CartAppService(
         IRepository<Cart, int> cartRepository,
         IRepository<Item, int> itemrepo,
         IRepository<ItemAddon,int> itemaddonrepo,
-        IRepository<ItemExtra,int> itemextrarepo,
-        IRepository<ItemVariation,int> itemvariationrepo,
-        IRepository<CartItem, int> cartitemrepo)
+        IRepository<ItemExtra, int> itemextrarepo,
+        IRepository<ItemVariation, int> itemvariationrepo,
+        IRepository<CartItem, int> cartitemrepo
+        )
     {
         _CartRepository = cartRepository;
         _itemrepo = itemrepo;
        _itemaddonrepo = itemaddonrepo;
-       _itemextrarepo = itemextrarepo;
-        _itemvariationrepo = itemvariationrepo;
-        _cartitemrepo = cartitemrepo;
+       //_itemextrarepo = itemextrarepo;
+       // _itemvariationrepo = itemvariationrepo;
+        //_cartitemrepo = cartitemrepo;
     }
     //CartServices
-    public async Task<Cart> GetCartByCustomeridAsync(int customerId)
-    {
-        return await _CartRepository.FirstOrDefaultAsync(p => p.CustomerId == customerId);
-    }
-    public async Task<Cart> GetCartByUseridAsync(int UserId)
-    {
-        // return await _CartRepository.FirstOrDefaultAsync(c => c.userId == UserId);
-        return await _CartRepository.FirstOrDefaultAsync(/*c => c.userId == UserId*/);
-    }
-    public async Task<Cart> GetCartByCustomerIdAsync(int customerId)
-    {
-        var cart = await _CartRepository
-       .FirstOrDefaultAsync(c => c.CustomerId == customerId);
-        if (cart == null || !cart.CartItems.Any())
-        {
-            return null;
-        }
-        return cart;
-    }
-    public async Task<Cart> GetCartByEmployeeIdAsync(int userId)
-    {
-        var cart = await _CartRepository
-       //.Include(c => c.CartItems)
-       //      .ThenInclude(i => i.SelectedVariations)
-       //.Include(c => c.CartItems)
-       //      .ThenInclude(i => i.SelectedAddons)
-       //.Include(c => c.CartItems)
-       //      .ThenInclude(i => i.SelectedExtras)
-       .FirstOrDefaultAsync(/*c => c.userId == userId*/);
-        if (cart == null || !cart.CartItems.Any())
-        {
-            return null;
-        }
-        return cart;
-    }
-    public async Task UpdateCartAsync(Cart cart)
-    {
-        _CartRepository.UpdateAsync(cart);
-        // await _CartRepository.sav();
-    }
-    public async Task<CartItem> GetCartItemByCustomerAndItemIdAsync(int customerId, int cartItemId)
-    {
-        CartItem CartItem = await _cartitemrepo
-            .FirstOrDefaultAsync(ci => ci.cart.CustomerId == customerId && ci.Id == cartItemId);
-        if (CartItem == null)
-            throw new Exception("Not Found");
-        return CartItem;
-    }
+    //public async Task<Cart> GetCartByCustomeridAsync(int customerId)
+    //{
+    //    return await _CartRepository.FirstOrDefaultAsync(p => p.CustomerId == customerId);
+    //}
+    //public async Task<Cart> GetCartByUseridAsync(int UserId)
+    //{
+    //    // return await _CartRepository.FirstOrDefaultAsync(c => c.userId == UserId);
+    //    return await _CartRepository.FirstOrDefaultAsync(/*c => c.userId == UserId*/);
+    //}
+    //public async Task<Cart> GetCartByCustomerIdAsync(int customerId)
+    //{
+    //    var cart = await _CartRepository
+    //   .FirstOrDefaultAsync(c => c.CustomerId == customerId);
+    //    if (cart == null || !cart.CartItems.Any())
+    //    {
+    //        return null;
+    //    }
+    //    return cart;
+    //}
+    //public async Task<Cart> GetCartByEmployeeIdAsync(int userId)
+    //{
+    //    var cart = await _CartRepository
+    //   //.Include(c => c.CartItems)
+    //   //      .ThenInclude(i => i.SelectedVariations)
+    //   //.Include(c => c.CartItems)
+    //   //      .ThenInclude(i => i.SelectedAddons)
+    //   //.Include(c => c.CartItems)
+    //   //      .ThenInclude(i => i.SelectedExtras)
+    //   .FirstOrDefaultAsync(/*c => c.userId == userId*/);
+    //    if (cart == null || !cart.CartItems.Any())
+    //    {
+    //        return null;
+    //    }
+    //    return cart;
+    //}
+    //public async Task UpdateCartAsync(Cart cart)
+    //{
+    //    _CartRepository.UpdateAsync(cart);
+    //    // await _CartRepository.sav();
+    //}
+    //public async Task<CartItem> GetCartItemByCustomerAndItemIdAsync(int customerId, int cartItemId)
+    //{
+    //    CartItem CartItem = await _cartitemrepo
+    //        .FirstOrDefaultAsync(ci => ci.cart.CustomerId == customerId && ci.Id == cartItemId);
+    //    if (CartItem == null)
+    //        throw new Exception("Not Found");
+    //    return CartItem;
+    //}
     public async Task CreateAsync(int customerid, List<CartItemDto> cartItemDtos)
     {
         Cart cart = await _CartRepository.FirstOrDefaultAsync(p => p.CustomerId == customerid);
@@ -88,11 +87,11 @@ public class CartAppService : ApplicationService
             {
                 CustomerId = customerid,
                 TotalAmount = 0,
-                SubTotal=0,
-                DeliveryFee=0,
-                DiscountAmount=0,
-                Note="",
-                ServiceFee=0,
+                SubTotal = 0,
+                DeliveryFee = 0,
+                DiscountAmount = 0,
+                Note = "",
+                ServiceFee = 0,
                 CartItems = new List<CartItem>(),
             };
         foreach (var i in cartItemDtos)
@@ -163,41 +162,40 @@ public class CartAppService : ApplicationService
         cart.SubTotal += cart.CartItems.Sum(p => p.Quantity * p.price);
         cart.TotalAmount = cart.SubTotal + cart.ServiceFee + cart.DeliveryFee + cart.DiscountAmount;
         await _CartRepository.InsertAsync(cart, true);
-
     }
-    public async Task<IEnumerable<CartItem>> GetCartItemsByCustomerIdAsync(int customerId)
-    {
-        var carts = await _CartRepository.WithDetailsAsync(p => p.CartItems);
-
-        return await _cartitemrepo.GetListAsync();           //.Include(ci => ci.cart)
-    }
-    //public async Task<CartItem> GetCartItemByCustomerAndItemIdAsync(int customerId, int cartItemId)
-    //{
-    //    return await _CartItemRepository
-    //        //.Include(ci => ci.cart)  
-    //        .FirstOrDefaultAsync(ci => ci.cart.userId == customerId && ci.Id == cartItemId */);
-    //}
-
     //public async Task<IEnumerable<CartItem>> GetCartItemsByCustomerIdAsync(int customerId)
     //{
-    //    return await _CartItemRepository.GetListAsync(/*ci => ci.cart.userId == customerId);
-        //.Include(ci => ci.cart)  
-        //    .Where(ci => ci.cart.userId == customerId)  
-        //                   .ToListAsync();
+    //    var carts = await _CartRepository.WithDetailsAsync(p => p.CartItems);
+
+    //    return await _cartitemrepo.GetListAsync();           //.Include(ci => ci.cart)
+    //}
+    ////public async Task<CartItem> GetCartItemByCustomerAndItemIdAsync(int customerId, int cartItemId)
+    ////{
+    ////    return await _CartItemRepository
+    ////        //.Include(ci => ci.cart)  
+    ////        .FirstOrDefaultAsync(ci => ci.cart.userId == customerId && ci.Id == cartItemId */);
+    ////}
+
+    ////public async Task<IEnumerable<CartItem>> GetCartItemsByCustomerIdAsync(int customerId)
+    ////{
+    ////    return await _CartItemRepository.GetListAsync(/*ci => ci.cart.userId == customerId);
+    //    //.Include(ci => ci.cart)  
+    //    //    .Where(ci => ci.cart.userId == customerId)  
+    //    //                   .ToListAsync();
+    ////}
+
+    //public async Task RemoveAsync(CartItem cartItem)
+    //{
+    //    throw new NotImplementedException();
     //}
 
-    public async Task RemoveAsync(CartItem cartItem)
-    {
-        throw new NotImplementedException();
-    }
+    //public async Task RemoveAsync(Cart cart)
+    //{
+    //    throw new NotImplementedException();
+    //}
 
-    public async Task RemoveAsync(Cart cart)
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task<Order> GetOrderByIdAsync(int id)
-    {
-        throw new NotImplementedException();
-    }
+    //public async Task<Order> GetOrderByIdAsync(int id)
+    //{
+    //    throw new NotImplementedException();
+    //}
 }

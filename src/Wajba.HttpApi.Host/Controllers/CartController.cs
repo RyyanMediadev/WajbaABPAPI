@@ -8,29 +8,14 @@ namespace Wajba.Controllers;
 public class CartController : WajbaController
 {
     private readonly CartAppService _CartAppService;
-    private readonly ItemAppServices _ItemAppServices;
-    private readonly PopularItemAppservice _PopularItemAppservice;
-    private readonly OrderSetupAppService _orderSetupAppService;
-    private readonly CouponAppService _couponAppService;
     private readonly WajbaUsersAppservice _wajbaUsers;
-    string customerId = " 6b29fc40-ca47-1067-b31d-00dd010662da";
-
-
-
-
 
     public CartController(CartAppService CartAppService,
-        ItemAppServices ItemAppServices, PopularItemAppservice PopularItemAppservice, 
-        OrderSetupAppService orderSetupAppService
-        , CouponAppService couponAppService,
    WajbaUsersAppservice wajbaUsers
         )
     {
         _CartAppService = CartAppService;
-        _ItemAppServices = ItemAppServices;
-        _PopularItemAppservice = PopularItemAppservice;
-        _orderSetupAppService = orderSetupAppService;
-        _couponAppService = couponAppService;
+
         _wajbaUsers = wajbaUsers;
     }
 

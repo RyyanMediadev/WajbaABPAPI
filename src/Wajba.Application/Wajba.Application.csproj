@@ -9,12 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Wajba.Domain\Wajba.Domain.csproj" />
-    <ProjectReference Include="..\Wajba.Application.Contracts\Wajba.Application.Contracts.csproj" />
-    <ProjectReference Include="..\Wajba.EntityFrameworkCore\Wajba.EntityFrameworkCore.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="EntityFramework" Version="6.5.1" />
     <PackageReference Include="MailKit" Version="4.9.0" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.0.4" />
@@ -28,6 +22,11 @@
     <PackageReference Include="Volo.Abp.FeatureManagement.Application" Version="9.0.0" />
     <PackageReference Include="Volo.Abp.SettingManagement.Application" Version="9.0.0" />
     <PackageReference Include="ZXing.Net" Version="0.16.9" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Wajba.Application.Contracts\Wajba.Application.Contracts.csproj" />
+    <ProjectReference Include="..\Wajba.Domain\Wajba.Domain.csproj" />
   </ItemGroup>
 
 </Project>

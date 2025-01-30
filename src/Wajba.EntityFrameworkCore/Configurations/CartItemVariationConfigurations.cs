@@ -5,6 +5,7 @@ public class CartItemVariationConfigurations : IEntityTypeConfiguration<CartItem
     public void Configure(EntityTypeBuilder<CartItemVariation> builder)
     {
         builder.ConfigureByConvention();
+
         builder.Property(e => e.AdditionalPrice)
             .HasColumnType("decimal(18, 2)");
         builder.ToTable("CartItemVariations");

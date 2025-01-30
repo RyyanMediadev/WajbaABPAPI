@@ -126,4 +126,9 @@ public class POSOrderAPPService : ApplicationService
         throw new NotImplementedException();
         return null;
     }
+
+    public async Task AddOrder(object input)
+    {
+        throw new NotImplementedException();
+    }
 }

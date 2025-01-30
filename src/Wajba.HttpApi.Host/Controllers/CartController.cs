@@ -26,6 +26,7 @@ public class CartController : WajbaController
         {
             return Ok(new { success = false, message = ModelState });
         }
+
         //string token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
         //if (string.IsNullOrEmpty(token))
         //{

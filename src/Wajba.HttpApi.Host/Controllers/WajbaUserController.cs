@@ -505,12 +505,12 @@ namespace Wajba.Controllers
             return Ok(result);
         }
 
-        //// 5. Delete User
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> DeleteWajbaUser(int id)
-        //{
-        //    await _WajbaUsersAppService.DeleteUserAsync(id);
-        //    return Ok();
-        //}
+        // 5. Delete User
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteWajbaUser(int id)
+        {
+            await _WajbaUsersAppService.DeleteUserAsync(id);
+            return Ok();
+        }
     }
 }

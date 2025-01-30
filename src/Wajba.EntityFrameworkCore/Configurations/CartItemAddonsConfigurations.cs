@@ -6,6 +6,7 @@ public class CartItemAddonsConfigurations : IEntityTypeConfiguration<CartItemAdd
 {
     public void Configure(EntityTypeBuilder<CartItemAddon> builder)
     {
+
         builder.ConfigureByConvention();
         builder.Property(e => e.AdditionalPrice)
             .HasColumnType("decimal(18, 2)");

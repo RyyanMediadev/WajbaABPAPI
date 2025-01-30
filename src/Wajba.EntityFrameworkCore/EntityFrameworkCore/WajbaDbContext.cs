@@ -83,6 +83,9 @@ AbpDbContext<WajbaDbContext>
 
     public DbSet<Cart> Carts { get; set; }
     public DbSet<CartItem> CartItems { get; set; }
+    public DbSet<CartItemAddon> CartItemAddons { get; set; }
+    public DbSet<CartItemExtra> CartItemExtras { get; set; }
+    public DbSet<CartItemVariation> CartItemVariations { get; set; }
     public DbSet<PosOrder> PosOrders { get; set; }
     public DbSet<PosDeliveryOrder> PosDeliveryOrders { get; set; }
     public DbSet<Order> Order { get; set; }

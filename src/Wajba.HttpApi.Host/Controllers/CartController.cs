@@ -27,16 +27,16 @@ public class CartController : WajbaController
             return Ok(new { success = false, message = ModelState });
         }
 
-        //string token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-        //if (string.IsNullOrEmpty(token))
-        //{
-        //    return Ok(new { success = false, message = "Token is required" });
-        //}
-        //WajbaUser customer = await _wajbaUsers.Decodetoken(token);
-        //if (customer == null)
-        //{
-        //    return Ok(new { success = false, message = "Invalid token or customer not found" });
-        //}
+        string token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+        if (string.IsNullOrEmpty(token))
+        {
+            return Ok(new { success = false, message = "Token is required" });
+        }
+        WajbaUser customer = await _wajbaUsers.Decodetoken(token);
+        if (customer == null)
+        {
+            return Ok(new { success = false, message = "Invalid token or customer not found" });
+        }
         try
         {
             await _CartAppService.CreateAsync(10, cartItemDto);

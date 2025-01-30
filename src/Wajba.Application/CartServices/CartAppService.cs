@@ -156,6 +156,7 @@ public class CartAppService : ApplicationService
                     {
                         VariationName = itemVariation.Name,
                         //Id = itemVariation.Id,
+                       
                         AdditionalPrice = itemVariation.AdditionalPrice,
                         Attributename = itemVariation.Name
                     });

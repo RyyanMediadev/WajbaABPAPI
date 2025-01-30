@@ -157,6 +157,7 @@ public class PosOrderController : WajbaController
     [HttpPost]
     public async Task<IActionResult> AddOrder(OrderDTO orderDto)
     {
+
         if (!ModelState.IsValid)
         {
             return Ok(new { success = false, message = ModelState });
@@ -187,9 +188,9 @@ public class PosOrderController : WajbaController
         }
         var order = new Order()
         {
-            Status = orderDto.Status,
-            Ordertype = orderDto.Ordertype,
-            paymentMethod = orderDto.paymentMethod,
+            Status = (OrderStatus)orderDto.Status,
+            Ordertype = (OrderType)orderDto.Ordertype,
+            paymentMethod = (PaymentMethod)orderDto.paymentMethod,
             BranchId = orderDto.BranchId,
             userId = employee.Id,
            // Discount = existingCart.DiscountAmount,

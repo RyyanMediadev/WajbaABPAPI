@@ -3,9 +3,9 @@
 
 public class OrderDTO
     {
-        public OrderStatus Status { get; set; }
-        public OrderType Ordertype { get; set; }
-        public PaymentMethod paymentMethod { get; set; }
+        public int Status { get; set; }
+        public int Ordertype { get; set; }
+        public int paymentMethod { get; set; }
 
         public int BranchId { get; set; }
 

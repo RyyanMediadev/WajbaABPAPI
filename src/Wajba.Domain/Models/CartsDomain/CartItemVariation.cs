@@ -2,7 +2,7 @@
 
 public class CartItemVariation
 {
-    //[Key,DatabaseGenerated(DatabaseGeneratedOption.None)]
+    [Key]
     public int Id { get; set; }
     public string VariationName { get; set; }
     public string Attributename { get; set; }

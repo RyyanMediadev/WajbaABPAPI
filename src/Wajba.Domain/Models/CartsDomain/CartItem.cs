@@ -22,7 +22,7 @@ public class CartItem : FullAuditedEntity<int>
     public ICollection<CartItemVariation> SelectedVariations { get; set; } = new List<CartItemVariation>();// Variations chosen by the user
     public ICollection<CartItemAddon> SelectedAddons { get; set; } = new List<CartItemAddon>();// Addons chosen by the user
     public ICollection<CartItemExtra> SelectedExtras { get; set; } = new List<CartItemExtra>();
-  
+
 
     public CartItem()
     {

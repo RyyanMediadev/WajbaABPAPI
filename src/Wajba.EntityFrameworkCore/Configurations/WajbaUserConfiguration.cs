@@ -2,8 +2,6 @@
 global using Microsoft.EntityFrameworkCore.Metadata.Builders;
 global using Volo.Abp.EntityFrameworkCore.Modeling;
 global using Wajba.Models.CategoriesDomain;
-using Wajba.Models.UsersDomain;
-using Wajba.Models.WajbaUserDomain;
 
 namespace Wajba.Configurations;
 

@@ -13,9 +13,9 @@ public class OrderItemAddon
     public OrderItemAddon()
     {
     }
-    public OrderItemAddon(CartItemAddon a)
-    {
-        AddonName = a.AddonName;
-        AdditionalPrice = a.AdditionalPrice;
-    }
+    //public OrderItemAddon(CartItemAddon a)
+    //{
+    //    AddonName = a.AddonName;
+    //    AdditionalPrice = a.AdditionalPrice;
+    //}
 }

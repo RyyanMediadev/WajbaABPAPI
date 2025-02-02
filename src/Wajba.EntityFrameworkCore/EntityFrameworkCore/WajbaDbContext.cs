@@ -121,7 +121,8 @@ AbpDbContext<WajbaDbContext>
         builder.Entity<PopulartItemBranches>()
             .HasKey(p => new { p.BranchId, p.PopularItemId });
         builder.Entity<WajbaUserRoles>()
-            .HasKey(p => new { p.RoleId, p.WajbaUserId });
+            .HasKey(p => new { p.RoleId, p.WajbaUserId }
+            );
         /* Configure your own tables/entities inside here */
 
         builder.ApplyConfigurationsFromAssembly(typeof(WajbaDbContext).Assembly);

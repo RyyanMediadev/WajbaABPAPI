@@ -1,6 +1,6 @@
 ﻿namespace Wajba.Models.OrdersDomain;
 
-public class DriveThruOrder
+public class DriveThruOrder:FullAuditedEntity<int>
 {
     public int Id { get; set; } // Primary key
     public DateTime? Time { get; set; }

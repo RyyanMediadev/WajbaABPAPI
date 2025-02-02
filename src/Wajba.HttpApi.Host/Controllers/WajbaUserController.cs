@@ -466,12 +466,25 @@ namespace Wajba.Controllers
 
                     var result = await _WajbaUsersAppService.AccountInfoGetByWajbaUserId(id);
 
-                    return Ok(new ApiResponse<GetUserDto>
+                    if (result != null)
                     {
-                        Success = true,
-                        Message = "User Retrived successfully.",
-                        Data = result
-                    });
+                        return Ok(new ApiResponse<GetUserDto>
+                        {
+                            Success = true,
+                            Message = "User Retrived successfully.",
+                            Data = result
+                        });
+
+                    }
+                    else
+                    {
+                        return Ok(new ApiResponse<GetUserDto>
+                        {
+                            Success = true,
+                            Message = "User  Not Found",
+                            Data = result
+                        });
+                    }
 
                 }
                 catch (Exception ex)

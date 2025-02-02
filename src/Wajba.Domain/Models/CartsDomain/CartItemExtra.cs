@@ -5,7 +5,8 @@ public class CartItemExtra
     {
 
     }
-    [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
+    [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int Id { get; set; }
     public int ExtraId { get; set; }
     public string ExtraName { get; set; }
     public decimal AdditionalPrice { get; set; }

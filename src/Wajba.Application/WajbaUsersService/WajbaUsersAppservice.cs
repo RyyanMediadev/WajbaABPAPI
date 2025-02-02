@@ -346,6 +346,7 @@ namespace Wajba.WajbaUsersService
                     SigningCredentials = credentials,
                     Issuer=_tokenManagement.Issuer,
                     Audience=_tokenManagement.Audience,
+                    
                 };
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var tokenObj = tokenHandler.CreateToken(tokenDiscriptor);
@@ -355,16 +356,51 @@ namespace Wajba.WajbaUsersService
             return null;
 
         }
-        public async Task<WajbaUser> Decodetoken(string token)
+        public  ClaimsPrincipal Decodetoken(string token)
         {
             var tokenhandler = new JwtSecurityTokenHandler();
-            var jwttoken = tokenhandler.ReadJwtToken(token);
-            if (jwttoken == null)
-                throw new Exception("Invalid token");
-            var usercliam = jwttoken.Claims.FirstOrDefault(p => p.Type == ClaimTypes.NameIdentifier);
-            return await _WajbaUserRepository.FirstOrDefaultAsync(p => p.Id == int.Parse(usercliam.Value));
-        }
+            var validateparams = new TokenValidationParameters()
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_tokenManagement.Secret)),
+                ValidateAudience = true,
+                ValidateIssuer=true,
+                ValidIssuer=_tokenManagement.Issuer,
+                ValidAudience = _tokenManagement.Audience,
+                ValidateLifetime = true
+            };
+            try
+            {
+                var principle = tokenhandler.ValidateToken(token, validateparams, out var validatedToken);
+                return principle;
+            }
+            catch(Exception ex)
+            {
+                return null;
+            }
+            //var expireDate = DateTime.Now.AddMinutes(_tokenManagement.AccessExpiration);
 
+            //return tokenhandler.ValidateToken(token, new TokenValidationParameters()
+            //{
+            //});
+
+            //var jwttoken = tokenhandler.ReadJwtToken(token);
+            //if (jwttoken == null)
+            //    throw new Exception("Invalid token");
+            //var usercliam = jwttoken.Claims.FirstOrDefault(p => p.Type == ClaimTypes.NameIdentifier);
+            //return await _WajbaUserRepository.FirstOrDefaultAsync(p => p.Id == int.Parse(usercliam.Value));
+        }
+        public async Task<WajbaUser> GetWajbaUserbytoken(string token)
+        {
+            ClaimsPrincipal claims = Decodetoken(token);
+            if (claims == null)
+                return null;
+            var userid = claims.FindFirst(ClaimTypes.NameIdentifier);
+            if (userid == null)
+                return null;
+            var id = userid.Value;
+            return await _WajbaUserRepository.FirstOrDefaultAsync(p => p.Id == int.Parse(id));
+        }
         public int? getUserId(string Phone, string Email)
 
         {

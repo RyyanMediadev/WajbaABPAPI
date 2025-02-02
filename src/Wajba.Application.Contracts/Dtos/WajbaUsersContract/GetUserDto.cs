@@ -20,5 +20,6 @@ namespace Wajba.Dtos.WajbaUsersContract
 
 
 
+
     }
 }

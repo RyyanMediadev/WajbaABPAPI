@@ -73,7 +73,9 @@ public class CartAppService : ApplicationService
     //}
     public async Task<CartDto> GetCartItemByCustomerAsync(int customerId)
     {
-        Cart cart = await _CartRepository.FirstOrDefaultAsync(p => p.CustomerId == customerId);
+        var cart1 =  _CartRepository.WithDetailsAsync(p => p.CartItems).Result.Include(p => p.CartItems).ThenInclude(p => p.SelectedAddons)
+            .Include(p => p.CartItems).ThenInclude(p => p.SelectedExtras).Include(p => p.CartItems).ThenInclude(p => p.SelectedVariations) ;
+        Cart cart = await cart1.FirstOrDefaultAsync(p => p.CustomerId == customerId);
         if (cart == null)
             throw new EntityNotFoundException("Cart Not Found");
         return toCartDto(cart);
@@ -93,32 +95,38 @@ public class CartAppService : ApplicationService
                 Notes = p.Notes,
                 ItemId = p.ItemId,
                 Quantity = p.Quantity,
-                //Addons = p.SelectedAddons.Select(l => new CartItemAddonDto()
-                //{
-                //    Id = l.AddonId,
-                //    Name = l.AddonName,
-                //    Price = l.AdditionalPrice
-                //}).ToList(),
-                //Extras = p.SelectedExtras.Select(m => new ExtraDto()
-                //{
-                //    AdditionalPrice = m.AdditionalPrice,
-                //    Id = m.ExtraId,
-                //    Name = m.ExtraName,
+                Addons = p.SelectedAddons.Select(l => new CartItemAddonDto()
+                {
+                    Id = l.AddonId,
+                    Name = l.AddonName,
+                    Price = l.AdditionalPrice
+                }).ToList(),
+                Extras = p.SelectedExtras.Select(m => new ExtraDto()
+                {
+                    AdditionalPrice = m.AdditionalPrice,
+                    Id = m.ExtraId,
+                    Name = m.ExtraName,
 
-                //}).ToList(),
-                //Variations = p.SelectedVariations.Select(d => new CartItemVariationDto()
-                //{
-                //    Name = d.Attributename,
-                //    AdditionalPrice = d.AdditionalPrice,
-                //    AttributeName = d.Attributename,
-                //    Id = d.Id
-                //}).ToList()
+                }).ToList(),
+                Variations = p.SelectedVariations.Select(d => new CartItemVariationDto()
+                {
+                    Name = d.Attributename,
+                    AdditionalPrice = d.AdditionalPrice,
+                    AttributeName = d.Attributename,
+                    Id = d.Id
+                }).ToList()
             }).ToList()
         };
     }
     public async Task<CartDto> CreateAsync(int customerid, List<CartItemDto> cartItemDtos)
     {
         Cart cart = await _CartRepository.FirstOrDefaultAsync(p => p.CustomerId == customerid);
+        if (cart != null)
+            foreach (var i in cart.CartItems)
+                await _cartitemrepo.HardDeleteAsync(i, true);
+        foreach (var i in await _cartitemrepo.ToListAsync())
+            if (i.CartId == cart.Id)
+                await _cartitemrepo.HardDeleteAsync(i, true); 
         if (cart == null)
         {
             cart = new Cart()

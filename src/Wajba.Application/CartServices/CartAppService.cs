@@ -65,8 +65,8 @@ public class CartAppService : ApplicationService
     {
         Cart cart = await _CartRepository.FirstOrDefaultAsync(p => p.CustomerId == customerid);
         //if (cart != null)
-            //foreach (var i in cart.CartItems)
-            //    await _cartitemrepo.HardDeleteAsync(i, true);
+        //foreach (var i in cart.CartItems)
+        //    await _cartitemrepo.HardDeleteAsync(i, true);
         //foreach (var i in await _cartitemrepo.ToListAsync())
         //    if (i.CartId == cart.Id)
         //        await _cartitemrepo.HardDeleteAsync(i, true);
@@ -95,9 +95,8 @@ public class CartAppService : ApplicationService
             cart.Note = "";
             cart.DiscountAmount = 0;
             cart.voucherCode = 0;
-            await _CartRepository.UpdateAsync(cart,true);
+            await _CartRepository.UpdateAsync(cart, true);
         };
-
         bool isfound = true;
         cart.CartItems = new List<CartItem>();
         foreach (var i in cartItemDtos)

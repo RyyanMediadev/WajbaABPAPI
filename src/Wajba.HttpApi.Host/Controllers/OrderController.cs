@@ -724,106 +724,105 @@ public class OrderController : WajbaController
 
 
 
-        return Ok(new
-        {
-            success = response.Success,
-            message = response.Message
-        });
-
-        //}
-
-
-
-        //[HttpDelete("delete-order/{orderId}")]
-        //[Authorize]
-        //public async Task<IActionResult> DeleteOrder(int orderId)
+        //return Ok(new
         //{
-        //    // Get token from headers
-        //    var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-        //    if (string.IsNullOrEmpty(token))
-        //    {
-        //        return Ok(new { success = false, message = "Token is required" });
-        //    }
-
-        //    // Validate token and get customer
-        //    var customer = await ValidateTokenAndGetUser(token);
-        //    if (customer == null)
-        //    {
-        //        return Ok(new { success = false, message = "Invalid token or customer not found" });
-        //    }
-
-        //    // Fetch the order to check if it belongs to the customer
-        //    var order = await _unitOfWork.Orders.GetByIdAsync(orderId);
-        //    if (order == null)
-        //    {
-        //        return Ok(new { success = false, message = "Order not found." });
-        //    }
-
-        //    // Check if the order belongs to the customer
-        //    if (order.CustomerId != customer.Id)
-        //    {
-        //        return Ok(new { success = false, message = "You do not have permission to delete this order." });
-        //    }
-
-        //    // Delete the order
-        //    //await _orderRepository.RemoveAsync(order); 
-        //    await _unitOfWork.Orders.RemoveAsync(order);
-        //    await _unitOfWork.CompleteAsync();
-        //    return Ok(new { success = true, message = "Order deleted successfully." });
-        //}
-
-        //[HttpDelete("delete-order/{orderId}")]
-        ////[Authorize]
-        //public async Task<IActionResult> DeleteOrder(int orderId)
-        //{
-        //    var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-
-        //    var response = await _POSOrderAPPService.DeleteOrderAsync(orderId, token);
-
-        //    return Ok(new
-        //    {
-        //        success = response.Success,
-        //        message = response.Message
-        //    });
-        //}
-
-        //private async Task<ApplicationUser> ValidateTokenAndGetUser(string token)
-        //{
-        //    var principal = GetPrincipalFromToken(token);
-        //    if (principal == null)
-        //    {
-        //        return null;
-        //    }
-        //    var userIdClaim = principal.FindFirst("Id");
-        //    if (userIdClaim == null || principal.FindFirst("UserType").Value != "Customer")
-        //    {
-        //        return null;
-        //    }
-        //    var userId = userIdClaim.Value;
-        //    return await _userManager.FindByIdAsync(userId);
-        //}
-        //private ClaimsPrincipal GetPrincipalFromToken(string token)
-        //{
-        //    var tokenHandler = new JwtSecurityTokenHandler();
-        //    var key = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]);
-        //    try
-        //    {
-        //        return tokenHandler.ValidateToken(token, new TokenValidationParameters
-        //        {
-        //            ValidateIssuer = true,
-        //            ValidateAudience = true,
-        //            ValidateLifetime = true,
-        //            ValidateIssuerSigningKey = true,
-        //            ValidIssuer = _configuration["Jwt:Issuer"],
-        //            ValidAudience = _configuration["Jwt:Audience"],
-        //            IssuerSigningKey = new SymmetricSecurityKey(key)
-        //        }, out SecurityToken validatedToken);
-        //    }
-        //    catch
-        //    {
-        //        return null;
-        //    }
-        //}
+        //    success = response.Success,
+        //    message = response.Message
+        //});
 
     }
+
+
+
+    //[HttpDelete("delete-order/{orderId}")]
+    //[Authorize]
+    //public async Task<IActionResult> DeleteOrder(int orderId)
+    //{
+    //    // Get token from headers
+    //    var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+    //    if (string.IsNullOrEmpty(token))
+    //    {
+    //        return Ok(new { success = false, message = "Token is required" });
+    //    }
+
+    //    // Validate token and get customer
+    //    var customer = await ValidateTokenAndGetUser(token);
+    //    if (customer == null)
+    //    {
+    //        return Ok(new { success = false, message = "Invalid token or customer not found" });
+    //    }
+
+    //    // Fetch the order to check if it belongs to the customer
+    //    var order = await _unitOfWork.Orders.GetByIdAsync(orderId);
+    //    if (order == null)
+    //    {
+    //        return Ok(new { success = false, message = "Order not found." });
+    //    }
+
+    //    // Check if the order belongs to the customer
+    //    if (order.CustomerId != customer.Id)
+    //    {
+    //        return Ok(new { success = false, message = "You do not have permission to delete this order." });
+    //    }
+
+    //    // Delete the order
+    //    //await _orderRepository.RemoveAsync(order); 
+    //    await _unitOfWork.Orders.RemoveAsync(order);
+    //    await _unitOfWork.CompleteAsync();
+    //    return Ok(new { success = true, message = "Order deleted successfully." });
+    //}
+
+    //[HttpDelete("delete-order/{orderId}")]
+    ////[Authorize]
+    //public async Task<IActionResult> DeleteOrder(int orderId)
+    //{
+    //    var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+
+    //    var response = await _POSOrderAPPService.DeleteOrderAsync(orderId, token);
+
+    //    return Ok(new
+    //    {
+    //        success = response.Success,
+    //        message = response.Message
+    //    });
+    //}
+
+    //private async Task<ApplicationUser> ValidateTokenAndGetUser(string token)
+    //{
+    //    var principal = GetPrincipalFromToken(token);
+    //    if (principal == null)
+    //    {
+    //        return null;
+    //    }
+    //    var userIdClaim = principal.FindFirst("Id");
+    //    if (userIdClaim == null || principal.FindFirst("UserType").Value != "Customer")
+    //    {
+    //        return null;
+    //    }
+    //    var userId = userIdClaim.Value;
+    //    return await _userManager.FindByIdAsync(userId);
+    //}
+    //private ClaimsPrincipal GetPrincipalFromToken(string token)
+    //{
+    //    var tokenHandler = new JwtSecurityTokenHandler();
+    //    var key = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]);
+    //    try
+    //    {
+    //        return tokenHandler.ValidateToken(token, new TokenValidationParameters
+    //        {
+    //            ValidateIssuer = true,
+    //            ValidateAudience = true,
+    //            ValidateLifetime = true,
+    //            ValidateIssuerSigningKey = true,
+    //            ValidIssuer = _configuration["Jwt:Issuer"],
+    //            ValidAudience = _configuration["Jwt:Audience"],
+    //            IssuerSigningKey = new SymmetricSecurityKey(key)
+    //        }, out SecurityToken validatedToken);
+    //    }
+    //    catch
+    //    {
+    //        return null;
+    //    }
+    //}
+
 }

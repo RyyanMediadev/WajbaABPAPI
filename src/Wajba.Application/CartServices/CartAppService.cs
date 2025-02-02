@@ -174,7 +174,6 @@ public class CartAppService : ApplicationService
                 });
                 cart.SubTotal += itemVariation.AdditionalPrice;
             }
-
             if (!isfound)
                 await _cartitemrepo.InsertAsync(cartItem, true);
             else await _cartitemrepo.UpdateAsync(cartItem, true);

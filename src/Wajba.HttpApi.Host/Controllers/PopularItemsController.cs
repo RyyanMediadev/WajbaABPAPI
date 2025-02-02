@@ -137,6 +137,7 @@ public class PopularItemsController : WajbaController
             });
         }
     }
+   
     [HttpDelete]
     public async Task<IActionResult> DeleteAsync(int id)
     {

@@ -62,11 +62,18 @@ public class ItemAppServices : ApplicationService
             x => x.ItemBranches,
             x => x.ItemAddons,
             x => x.ItemExtras,
-            x => x.ItemVariations
+            x => x.ItemVariations,
+            x=>x.Category
         );
+        items = items.Where(p => p.ItemBranches.Any(p => p.BranchId == branchId));
+        IList<ItemDto> itemDtos = new List<ItemDto>();
+        foreach (var i in items)
+            itemDtos.Add(toitemdto(i));
+        return (List<ItemDto>)itemDtos;
         var result = items.Where(item => item.ItemBranches.Any(ib => ib.BranchId == branchId))
                           .Select(item => ObjectMapper.Map<Item, ItemDto>(item))
                           .ToList();
+
         return result;
     }
 

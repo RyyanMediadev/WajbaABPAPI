@@ -39,6 +39,7 @@ namespace Wajba.Controllers
         ///private readonly IMailService _mailService;
         //Confirm Uploads
 
+
         public WajbaUserController(WajbaUsersAppservice wajbaAppService)
         {
             _WajbaUsersAppService = wajbaAppService;
@@ -205,7 +206,31 @@ namespace Wajba.Controllers
             }
         }
 
+        [HttpPut, Route("UpdateProfilePhoto")]
+        public async Task<IActionResult> UpdateProfilePhoto(UpdateWajbaUserProfile input)
+        {
+            try
+            {
+                var updatedcategory = await _WajbaUsersAppService.UpdateProfile(input.Id, input);
+                return Ok(new ApiResponse<WajbaUserDto>
+                {
+                    Success = true,
+                    Message = "UserProfile updated successfully.",
+                    Data = updatedcategory
+                });
+            }
+            catch (EntityNotFoundException)
+            {
+                // If the category is not found, return a 404 Not Found response
+                return NotFound(new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = "User not found.",
+                    Data = null
+                });
+            }
 
+        }
 
 
 

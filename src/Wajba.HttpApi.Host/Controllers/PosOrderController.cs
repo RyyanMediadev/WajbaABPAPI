@@ -84,18 +84,10 @@ public class PosOrderController : WajbaController
     //}
 
     [HttpGet("All-POS-Orders/{branchId}")]
-    public async Task<IActionResult> GetAllOrders(
-   int branchId,
-   [FromQuery] DateTime? startDate = null,
-   [FromQuery] int? orderid = null,
-   [FromQuery] OrderType? orderType = null,
-   [FromQuery] DateTime? endDate = null,
-   [FromQuery] DateTime? dateorder = null,
-   [FromQuery] int? status = null,
-   [FromQuery] int? fromprice = null,
-   [FromQuery] int? toprice = null,
-   [FromQuery] int? pageNumber = null,
-   [FromQuery] int? pageSize = null)
+    public async Task<IActionResult> GetAllOrders(   int branchId,   [FromQuery] DateTime? startDate = null,   [FromQuery] int? orderid = null,
+   [FromQuery] OrderType? orderType = null,   [FromQuery] DateTime? endDate = null,   [FromQuery] DateTime? dateorder = null,
+   [FromQuery] int? status = null,   [FromQuery] int? fromprice = null,   [FromQuery] int? toprice = null,
+   [FromQuery] int? pageNumber = null,   [FromQuery] int? pageSize = null)
     {
         try
         {

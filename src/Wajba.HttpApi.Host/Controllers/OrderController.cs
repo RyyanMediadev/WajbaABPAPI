@@ -121,35 +121,40 @@ public class OrderController : WajbaController
     //}
 
 
-    //[HttpGet("daily-sales")]
-    //public async Task<IActionResult> GetDailySales(int branchid, [FromQuery] int numberOfDays)
-    //{
-    //    if (numberOfDays <= 0)
-    //    {
-    //        return Ok(new { success = false, message = "The number of days should be greater than zero." });
-    //    }
-    //    var dailySales = await _unitOfWork.orderRepo.GetDailySalesAsync(numberOfDays, branchid);
-    //    if (!dailySales.Any())
-    //    {
-    //        return Ok(new { success = false, message = "No sales data found for the specified period." });
-    //    }
-    //    var totalSalesSum = dailySales.Sum(x => x.TotalSales);
-    //    var averageSales = dailySales.Average(x => x.TotalSales);
+    [HttpGet("daily-sales")]
+    public async Task<IActionResult> GetDailySales(int branchid, [FromQuery] int numberOfDays)
+    {
+        if (numberOfDays <= 0)
+        {
+            return Ok(new { success = false, message = "The number of days should be greater than zero." });
+        }
+        //var dailySales = await _unitOfWork.orderRepo.GetDailySalesAsync(numberOfDays, branchid);
+        var dailySales = await _POSOrderAPPService.GetDailySalesAsync(numberOfDays, branchid);
 
-    //    var response =
-    //         dailySales.Select(d => new
-    //         {
-    //             d.Date,
-    //             TotalSales = d.TotalSales
-    //         });
-    //    return Ok(new
-    //    {
-    //        success = true,
-    //        data = response,
-    //        TotalSalesSum = totalSalesSum,
-    //        TotalAverageSales = averageSales
-    //    });
-    //}
+        if (!dailySales.Any())
+        {
+            return Ok(new { success = false, message = "No sales data found for the specified period." });
+        }
+        //var totalSalesSum = dailySales.Sum(x => x.TotalSales);
+        //var averageSales = dailySales.Average(x => x.TotalSales);
+
+        //var response =
+        //     dailySales.Select(d => new
+        //     {
+        //         d.Date,
+        //         TotalSales = d.TotalSales
+        //     });
+        return Ok(new
+        {
+            success = true,
+            //data = response,
+            //TotalSalesSum = totalSalesSum,
+            //TotalAverageSales = averageSales
+        });
+    }
+
+ 
+
     //[HttpGet("daily-sales")]
     //public async Task<IActionResult> GetDailySales(int branchId, [FromQuery] int numberOfDays)
     //{
@@ -207,76 +212,76 @@ public class OrderController : WajbaController
     //    {
     //        return StatusCode(500, $"Internal server error: {ex}");
     //    }
-    //}
+   // }
 
-    //[HttpGet("SalesReport")]
-    //public async Task<ActionResult> SalesReport(
-    //    int branchId,
-    //  [FromQuery] DateTime? startDate = null,
-    //  [FromQuery] DateTime? endDate = null,
-    //  [FromQuery] DateTime? dateorder = null,
-    //  [FromQuery] int? status = null,
-    //  [FromQuery] OrderType? ordertype = null,
-    //  [FromQuery] int? orderId = null,
-    //  [FromQuery] int? fromprice = null,
-    //  [FromQuery] int? toprice = null,
-    //  [FromQuery] string? paidstatus = null,
-    //  [FromQuery] int? pageNumber = null,
-    //  [FromQuery] int? pageSize = null)
-    //{
-    //    var orderSpec = new OnlineOrderSpecification(branchId, orderId, dateorder, startDate, endDate, status, ordertype, fromprice, toprice);
-    //    var orders = await _unitOfWork.orderRepo.GetAllOnlineOrdersAsync(orderSpec);
-    //    var totalCount = await _unitOfWork.orderRepo.CountOnlineOrdersAsync(orderSpec);
-    //    var orderSpec_ = new POSOrderSpecification(branchId, orderId, dateorder, ordertype, startDate, endDate, status, fromprice, toprice);
-    //    var orders_ = await _unitOfWork.posOrders.GetAllPOSOrdersAsync(orderSpec_);
-    //    var totalCount_ = await _unitOfWork.posOrders.CountPOSOrdersAsync(orderSpec_);
-    //    int totalcountt = totalCount + totalCount_;
-    //    var orderDtos = orders.Select(order => new DashboardOrderDto(order)
-    //    {
-    //        paymentstatus = (PaymentStatus)1,
-    //        Items = order.OrderItems?.Select(oi => new DashboardOrderItemDto(oi)
-    //        {
-    //        }).ToList()
-    //    }).ToList();
-    //    orderDtos.AddRange(orders_.Select(p => new DashboardOrderDto(p)
-    //    {
-    //        Items = p.OrderItems.Select(l => new DashboardOrderItemDto(l)
-    //        {
+    [HttpGet("SalesReport")]
+    public async Task<ActionResult> SalesReport(
+        int branchId,
+      [FromQuery] DateTime? startDate = null,
+      [FromQuery] DateTime? endDate = null,
+      [FromQuery] DateTime? dateorder = null,
+      [FromQuery] int? status = null,
+      [FromQuery] OrderType? ordertype = null,
+      [FromQuery] int? orderId = null,
+      [FromQuery] int? fromprice = null,
+      [FromQuery] int? toprice = null,
+      [FromQuery] string? paidstatus = null,
+      [FromQuery] int? pageNumber = null,
+      [FromQuery] int? pageSize = null)
+    {
+        //var orderSpec = new OnlineOrderSpecification(branchId, orderId, dateorder, startDate, endDate, status, ordertype, fromprice, toprice);
+        //var orders = await _unitOfWork.orderRepo.GetAllOnlineOrdersAsync(orderSpec);
+        //var totalCount = await _unitOfWork.orderRepo.CountOnlineOrdersAsync(orderSpec);
+        //var orderSpec_ = new POSOrderSpecification(branchId, orderId, dateorder, ordertype, startDate, endDate, status, fromprice, toprice);
+        //var orders_ = await _unitOfWork.posOrders.GetAllPOSOrdersAsync(orderSpec_);
+        //var totalCount_ = await _unitOfWork.posOrders.CountPOSOrdersAsync(orderSpec_);
+        //int totalcountt = totalCount + totalCount_;
+        //var orderDtos = orders.Select(order => new DashboardOrderDto(order)
+        //{
+        //    paymentstatus = (PaymentStatus)1,
+        //    Items = order.OrderItems?.Select(oi => new DashboardOrderItemDto(oi)
+        //    {
+        //    }).ToList()
+        //}).ToList();
+        //orderDtos.AddRange(orders_.Select(p => new DashboardOrderDto(p)
+        //{
+        //    Items = p.OrderItems.Select(l => new DashboardOrderItemDto(l)
+        //    {
 
-    //        }).ToList()
-    //    }).ToList());
-    //    if (!pageNumber.HasValue)
-    //    {
-    //        return Ok(new
-    //        {
-    //            Success = true,
-    //            Data = orderDtos,
-    //            countofonlinorder = totalCount,
-    //            countofposorder = totalCount_,
-    //            TotalCount = totalcountt,
-    //            PageNumber = 1,
-    //            PageSize = totalcountt,
-    //            TotalPages = 1,
-    //        });
-    //    }
-    //    else
-    //    {
-    //        pageSize = 10;
-    //        var orderDtoss = orderDtos.Skip((pageNumber.Value - 1) * pageSize.Value).Take(pageSize.Value);
-    //        int totalPages = (int)Math.Ceiling((double)totalcountt / pageSize.Value);
-    //        return Ok(new
-    //        {
-    //            Success = true,
-    //            Data = orderDtoss,
-    //            countofonlinorder = totalCount,
-    //            countofposorder = totalCount_,
-    //            TotalCount = totalcountt,
-    //            PageNumber = pageNumber,
-    //            PageSize = orderDtoss.Count(),
-    //            TotalPages = totalPages,
-    //        });
-    //    }
-    //}
+        //    }).ToList()
+        //}).ToList());
+        if (!pageNumber.HasValue)
+        {
+            return Ok(new
+            {
+                Success = true,
+                //Data = orderDtos,
+                //countofonlinorder = totalCount,
+                //countofposorder = totalCount_,
+                //TotalCount = totalcountt,
+                PageNumber = 1,
+                //PageSize = totalcountt,
+                TotalPages = 1,
+            });
+        }
+        else
+        {
+            pageSize = 10;
+            //var orderDtoss = orderDtos.Skip((pageNumber.Value - 1) * pageSize.Value).Take(pageSize.Value);
+            //int totalPages = (int)Math.Ceiling((double)totalcountt / pageSize.Value);
+            return Ok(new
+            {
+                Success = true,
+                //Data = orderDtoss,
+                //countofonlinorder = totalCount,
+                //countofposorder = totalCount_,
+                //TotalCount = totalcountt,
+                PageNumber = pageNumber,
+                //PageSize = orderDtoss.Count(),
+                //TotalPages = totalPages,
+            });
+        }
+    }
 
 
 

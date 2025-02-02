@@ -455,18 +455,18 @@ public class POSOrderAPPService : ApplicationService
 
     public async Task<List<Order>> GetOrdersByCustomerIdAsync(int customerId)
     {
-        if (customerId ==0)
+        if (customerId == 0)
         {
             return new List<Order>(); // Return empty list if customerId is invalid
         }
-         var items = await _OrderRepository.WithDetailsAsync(
-           x => x.Branch,
-           x => x.DineInOrder,
-           x => x.PickUpOrder,
-           x => x.PosDeliveryOrder,
-           x => x.PosOrder,
-           x => x.OrderItems,
-               x => x.PosOrder);
+        var items = await _OrderRepository.WithDetailsAsync(
+          x => x.Branch,
+          x => x.DineInOrder,
+          x => x.PickUpOrder,
+          x => x.PosDeliveryOrder,
+          x => x.PosOrder,
+          x => x.OrderItems,
+              x => x.PosOrder);
         return (List<Order>)items;
         //return await _context.Orders
         //    .Where(o => o.CustomerId == customerId)
@@ -595,7 +595,7 @@ public class POSOrderAPPService : ApplicationService
 
             //Category category = await _categoryRepository.GetAsync(id);
             //if (category == null)
-                //throw new Exception("Not found");
+            //throw new Exception("Not found");
             //var order = await _unitOfWork.Orders.GetByIdAsync(orderId);
             Order order = await _OrderRepository.GetAsync(orderId);
 
@@ -680,6 +680,44 @@ public class POSOrderAPPService : ApplicationService
             return new ServiceResponse(false, $"An error occurred: {ex.Message}");
         }
     }
+
+    public async Task<IEnumerable<object>> GetDailySalesAsync(int numberOfDays, int branchid)
+    {
+
+        var startDate = DateTime.UtcNow.Date.AddDays(-numberOfDays);
+        var endDate = DateTime.UtcNow.Date;
+        var allDates = Enumerable.Range(0, numberOfDays + 1)
+            .Select(offset => startDate.AddDays(offset))
+            .ToList();
+        //var salesData = await _OrderRepository.WithDetailsAsync()
+        //                .Where(o => o.CreatedAt >= startDate && o.CreatedAt <= endDate)
+        //                .Where(p => p.BranchId == branchid)
+        //                .GroupBy(o => o.CreatedAt.Date)
+        //                .Select(g => new
+        //                {
+        //                    Date = g.Key,
+        //                    TotalSales = g.Sum(o => o.TotalAmount ?? 0)
+        //                })
+        //                .ToListAsync();
+        //var dailySales = allDates
+        //                .GroupJoin(
+        //                    salesData,
+        //                    date => date,
+        //                    sales => sales.Date,
+        //                    (date, sales) => new
+        //                    {
+        //                        Date = date,
+        //                        TotalSales = sales.FirstOrDefault()?.TotalSales ?? 0
+        //                    })
+        //                .OrderBy(x => x.Date)
+        //                .Select(x => (x.Date, x.TotalSales));
+        return null;
+
+
+    }
+
+
+
 
     //public async Task<ServiceResponse> GetDailySalesAsync(int numberOfDays, int branchId)
     //{

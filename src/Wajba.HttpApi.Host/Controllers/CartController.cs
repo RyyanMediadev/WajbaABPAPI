@@ -39,7 +39,7 @@ public class CartController : WajbaController
         }
         try
         {
-            await _CartAppService.CreateAsync(29, cartItemDto);
+            await _CartAppService.CreateAsync(customer.Id, cartItemDto);
             return Ok(new ApiResponse<object>
             {
                 Success = true,

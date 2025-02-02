@@ -61,7 +61,7 @@ public class CartAppService : ApplicationService
             throw new EntityNotFoundException("Cart Not Found");
         return toCartDto(cart);
     }
-  public async Task<CartDto> CreateAsync(int customerid, List<CartItemDto> cartItemDtos)
+  public async Task<CartDto> CreateAsync(int customerid, List<CreateCartItemDto> cartItemDtos)
     {
         Cart cart = await _CartRepository.FirstOrDefaultAsync(p => p.CustomerId == customerid);
         if (cart != null)

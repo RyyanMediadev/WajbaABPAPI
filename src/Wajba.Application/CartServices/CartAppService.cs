@@ -1,8 +1,9 @@
 ﻿global using Wajba.Models.Carts;
 global using Wajba.Models.Orders;
-using Wajba.Dtos.CartContract;
-using Wajba.Models.CartsDomain;
-using Wajba.Models.ItemVariationDomain;
+global using Wajba.Dtos.CartContract;
+global using Wajba.Models.CartsDomain;
+global using Wajba.Models.ItemVariationDomain;
+
 namespace Wajba.CartService;
 
 [RemoteService(false)]
@@ -30,26 +31,6 @@ public class CartAppService : ApplicationService
         _itemvariationrepo = itemvariationrepo;
         _cartitemrepo = cartitemrepo;
     }
-    //CartServices
-    //public async Task<Cart> GetCartByCustomeridAsync(int customerId)
-    //{
-    //    return await _CartRepository.FirstOrDefaultAsync(p => p.CustomerId == customerId);
-    //}
-    //public async Task<Cart> GetCartByUseridAsync(int UserId)
-    //{
-    //    // return await _CartRepository.FirstOrDefaultAsync(c => c.userId == UserId);
-    //    return await _CartRepository.FirstOrDefaultAsync(/*c => c.userId == UserId*/);
-    //}
-    //public async Task<Cart> GetCartByCustomerIdAsync(int customerId)
-    //{
-    //    var cart = await _CartRepository
-    //   .FirstOrDefaultAsync(c => c.CustomerId == customerId);
-    //    if (cart == null || !cart.CartItems.Any())
-    //    {
-    //        return null;
-    //    }
-    //    return cart;
-    //}
     //public async Task<Cart> GetCartByEmployeeIdAsync(int userId)
     //{
     //    var cart = await _CartRepository
@@ -80,48 +61,7 @@ public class CartAppService : ApplicationService
             throw new EntityNotFoundException("Cart Not Found");
         return toCartDto(cart);
     }
-    private static CartDto toCartDto(Cart cart)
-    {
-        return new CartDto()
-        {
-            CustomerId = (int)cart.CustomerId,
-            DeliveryFee = cart.DeliveryFee,
-            TotalAmount = cart.TotalAmount,
-            DiscountAmount = cart.DiscountAmount,
-            ServiceFee = cart.ServiceFee,
-            Note = cart.Note,
-            SubTotal=cart.SubTotal,
-            Items = cart.CartItems.Select(p => new CartItemDto()
-            {
-                Notes = p.Notes,
-                ItemId = p.ItemId,
-                ItemName=p.ItemName,
-                price=p.price,
-                Quantity = p.Quantity,
-                Addons = p.SelectedAddons.Select(l => new CartItemAddonDto()
-                {
-                    Id = l.AddonId,
-                    Name = l.AddonName,
-                    Price = l.AdditionalPrice
-                }).ToList(),
-                Extras = p.SelectedExtras.Select(m => new ExtraDto()
-                {
-                    AdditionalPrice = m.AdditionalPrice,
-                    Id = m.ExtraId,
-                    Name = m.ExtraName,
-
-                }).ToList(),
-                Variations = p.SelectedVariations.Select(d => new CartItemVariationDto()
-                {
-                    Name = d.Attributename,
-                    AdditionalPrice = d.AdditionalPrice,
-                    AttributeName = d.Attributename,
-                    Id = d.Id
-                }).ToList()
-            }).ToList()
-        };
-    }
-    public async Task<CartDto> CreateAsync(int customerid, List<CartItemDto> cartItemDtos)
+  public async Task<CartDto> CreateAsync(int customerid, List<CartItemDto> cartItemDtos)
     {
         Cart cart = await _CartRepository.FirstOrDefaultAsync(p => p.CustomerId == customerid);
         //if (cart != null)
@@ -280,4 +220,46 @@ public class CartAppService : ApplicationService
     //{
     //    throw new NotImplementedException();
     //}
+    private static CartDto toCartDto(Cart cart)
+    {
+        return new CartDto()
+        {
+            CustomerId = (int)cart.CustomerId,
+            DeliveryFee = cart.DeliveryFee,
+            TotalAmount = cart.TotalAmount,
+            DiscountAmount = cart.DiscountAmount,
+            ServiceFee = cart.ServiceFee,
+            Note = cart.Note,
+            SubTotal = cart.SubTotal,
+            Items = cart.CartItems.Select(p => new CartItemDto()
+            {
+                Notes = p.Notes,
+                ItemId = p.ItemId,
+                ItemName = p.ItemName,
+                price = p.price,
+                Quantity = p.Quantity,
+                Addons = p.SelectedAddons.Select(l => new CartItemAddonDto()
+                {
+                    Id = l.AddonId,
+                    Name = l.AddonName,
+                    Price = l.AdditionalPrice
+                }).ToList(),
+                Extras = p.SelectedExtras.Select(m => new ExtraDto()
+                {
+                    AdditionalPrice = m.AdditionalPrice,
+                    Id = m.ExtraId,
+                    Name = m.ExtraName,
+
+                }).ToList(),
+                Variations = p.SelectedVariations.Select(d => new CartItemVariationDto()
+                {
+                    Name = d.Attributename,
+                    AdditionalPrice = d.AdditionalPrice,
+                    AttributeName = d.Attributename,
+                    Id = d.Id
+                }).ToList()
+            }).ToList()
+        };
+    }
+
 }

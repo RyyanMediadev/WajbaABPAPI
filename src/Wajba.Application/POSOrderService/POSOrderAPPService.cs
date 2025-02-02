@@ -154,10 +154,10 @@ public class POSOrderAPPService : ApplicationService
             return new ServiceResponse(false, "Order details are required.");
         }
 
-        if (string.IsNullOrEmpty(token))
-        {
-            return new ServiceResponse(false, "Token is required.");
-        }
+        //if (string.IsNullOrEmpty(token))
+        //{
+        //    return new ServiceResponse(false, "Token is required.");
+        //}
 
         //var employee = await ValidateTokenAndGetUser(token);
         //if (employee == null)

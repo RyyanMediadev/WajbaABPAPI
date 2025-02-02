@@ -109,7 +109,6 @@ public class UserAddressController : WajbaController
         }
     }
 
-    //public async Task<IActionResult>
     [HttpGet("{id}")]
     public async Task<IActionResult> GetByIdAsync(int id)
     {

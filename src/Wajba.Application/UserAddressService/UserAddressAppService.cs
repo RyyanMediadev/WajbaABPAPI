@@ -3,6 +3,7 @@
 using Wajba.Dtos.UserAddressContract;
 using Wajba.Models.AddressDomain;
 using Wajba.Models.CompanyDomain;
+using Wajba.Models.Items;
 
 namespace Wajba.UserAddressService;
 
@@ -95,7 +96,17 @@ public class WajbaUserAddressAppService : ApplicationService
                 AddressType = (int)userAddress.AddressType
             }).ToList();
 
-            return userAddressDtos;
+
+        //List<UserAddressDto> itemDtos = new List<UserAddressDto>();
+        //foreach (var i in items)
+        //    itemDtos.Add(toitemdto(i));
+        //var result = items.Select(item => ObjectMapper.Map<Item, ItemDto>(item))
+        //                  .ToList();
+
+
+
+
+        return userAddressDtos;
         }
 
         public async Task<UserAddressDto> GetByIdAsync(int id)

@@ -13,6 +13,7 @@ using Wajba.Enums;
 using Wajba.Models.Orders;
 using Wajba.Models.OrdersDomain;
 using Wajba.Models.WajbaUserDomain;
+using Wajba.OTPService;
 using Wajba.Settings;
 using Wajba.WajbaUsersService;
 
@@ -30,11 +31,12 @@ public class PosOrderController : WajbaController
     private readonly POSOrderAPPService _POSOrderAPPService;
     private readonly IConfiguration _configuration;
     public PosOrderController(
-        WajbaUsersAppservice _userManager, IConfiguration configuration, WajbaDbContext context)
+        WajbaUsersAppservice _userManager, IConfiguration configuration, WajbaDbContext context, POSOrderAPPService POSOrderAPPService)
     {
         //_unitOfWork = unitOfWork;
         //userManager = _userManager;
         //_configuration = configuration
+        _POSOrderAPPService = POSOrderAPPService;
         _context = context;
 
     }
@@ -171,6 +173,10 @@ public class PosOrderController : WajbaController
     {
         var response = await _POSOrderAPPService.GetOrderByIdAsync(id);
         return Ok(new { success = response.Success, message = response.Message, data = response.Data });
+
+
+
+
     }
 
 

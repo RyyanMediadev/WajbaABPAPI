@@ -15,10 +15,11 @@ public class CartAppService : ApplicationService
     private readonly IRepository<ItemExtra, int> _itemextrarepo;
     private readonly IRepository<ItemVariation, int> _itemvariationrepo;
     private readonly IRepository<CartItem, int> _cartitemrepo;
+
     public CartAppService(
         IRepository<Cart, int> cartRepository,
         IRepository<Item, int> itemrepo,
-        IRepository<ItemAddon,int> itemaddonrepo,
+        IRepository<ItemAddon, int> itemaddonrepo,
         IRepository<ItemExtra, int> itemextrarepo,
         IRepository<ItemVariation, int> itemvariationrepo,
         IRepository<CartItem, int> cartitemrepo
@@ -26,32 +27,12 @@ public class CartAppService : ApplicationService
     {
         _CartRepository = cartRepository;
         _itemrepo = itemrepo;
-       _itemaddonrepo = itemaddonrepo;
+        _itemaddonrepo = itemaddonrepo;
         _itemextrarepo = itemextrarepo;
         _itemvariationrepo = itemvariationrepo;
         _cartitemrepo = cartitemrepo;
     }
-    //public async Task<Cart> GetCartByEmployeeIdAsync(int userId)
-    //{
-    //    var cart = await _CartRepository
-    //   //.Include(c => c.CartItems)
-    //   //      .ThenInclude(i => i.SelectedVariations)
-    //   //.Include(c => c.CartItems)
-    //   //      .ThenInclude(i => i.SelectedAddons)
-    //   //.Include(c => c.CartItems)
-    //   //      .ThenInclude(i => i.SelectedExtras)
-    //   .FirstOrDefaultAsync(/*c => c.userId == userId*/);
-    //    if (cart == null || !cart.CartItems.Any())
-    //    {
-    //        return null;
-    //    }
-    //    return cart;
-    //}
-    //public async Task UpdateCartAsync(Cart cart)
-    //{
-    //    _CartRepository.UpdateAsync(cart);
-    //    // await _CartRepository.sav();
-    //}
+
     public async Task<CartDto> GetCartItemByCustomerAsync(int customerId)
     {
         var cart1 =  _CartRepository.WithDetailsAsync(p => p.CartItems).Result.Include(p => p.CartItems).ThenInclude(p => p.SelectedAddons)
@@ -64,12 +45,12 @@ public class CartAppService : ApplicationService
   public async Task<CartDto> CreateAsync(int customerid, List<CreateCartItemDto> cartItemDtos)
     {
         Cart cart = await _CartRepository.FirstOrDefaultAsync(p => p.CustomerId == customerid);
-        if (cart != null)
-            foreach (var i in cart.CartItems)
-                await _cartitemrepo.HardDeleteAsync(i, true);
-        foreach (var i in await _cartitemrepo.ToListAsync())
-            if (i.CartId == cart.Id)
-                await _cartitemrepo.HardDeleteAsync(i, true);
+        //if (cart != null)
+        //    foreach (var i in cart.CartItems)
+        //        await _cartitemrepo.HardDeleteAsync(i, true);
+        //foreach (var i in await _cartitemrepo.ToListAsync())
+        //    if (i.CartId == cart.Id)
+        //        await _cartitemrepo.HardDeleteAsync(i, true);
         if (cart == null)
         {
             cart = new Cart()
@@ -136,6 +117,7 @@ public class CartAppService : ApplicationService
             foreach (var j in i.Addons)
             {
                 ItemAddon itemAddon = await _itemaddonrepo.FirstOrDefaultAsync(p => p.Id == j.Id && p.ItemId == item.Id);
+               
                 if (itemAddon == null)
                     throw new Exception("Invalid data");
                 cartItem.SelectedAddons.Add(new CartItemAddon()
@@ -184,41 +166,10 @@ public class CartAppService : ApplicationService
         await _CartRepository.UpdateAsync(cart, true);
         return toCartDto(cart);
     }
-    //public async Task<IEnumerable<CartItem>> GetCartItemsByCustomerIdAsync(int customerId)
-    //{
-    //    var carts = await _CartRepository.WithDetailsAsync(p => p.CartItems);
-
-    //    return await _cartitemrepo.GetListAsync();           //.Include(ci => ci.cart)
-    //}
-    ////public async Task<CartItem> GetCartItemByCustomerAndItemIdAsync(int customerId, int cartItemId)
-    ////{
-    ////    return await _CartItemRepository
-    ////        //.Include(ci => ci.cart)  
-    ////        .FirstOrDefaultAsync(ci => ci.cart.userId == customerId && ci.Id == cartItemId */);
-    ////}
-
-    ////public async Task<IEnumerable<CartItem>> GetCartItemsByCustomerIdAsync(int customerId)
-    ////{
-    ////    return await _CartItemRepository.GetListAsync(/*ci => ci.cart.userId == customerId);
-    //    //.Include(ci => ci.cart)  
-    //    //    .Where(ci => ci.cart.userId == customerId)  
-    //    //                   .ToListAsync();
-    ////}
-
-    //public async Task RemoveAsync(CartItem cartItem)
-    //{
-    //    throw new NotImplementedException();
-    //}
-
-    //public async Task RemoveAsync(Cart cart)
-    //{
-    //    throw new NotImplementedException();
-    //}
-
-    //public async Task<Order> GetOrderByIdAsync(int id)
-    //{
-    //    throw new NotImplementedException();
-    //}
+    public async Task<CartDto> OrdeNow(int customerid)
+    {
+        return null;
+    }
     private static CartDto toCartDto(Cart cart)
     {
         return new CartDto()
@@ -255,7 +206,7 @@ public class CartAppService : ApplicationService
                     Name = d.Attributename,
                     AdditionalPrice = d.AdditionalPrice,
                     AttributeName = d.Attributename,
-                    Id = d.Id
+                    Id = d.VariationId
                 }).ToList()
             }).ToList()
         };

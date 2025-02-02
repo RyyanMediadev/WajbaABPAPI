@@ -61,11 +61,11 @@ public class PopularItemAppservice : ApplicationService
     public async Task<PagedResultDto<Popularitemdto>> Getbyname(string name)
     {
         IQueryable<PopularItem> populatitems = await _popularitemrepo.WithDetailsAsync(p => p.PopulartItemBranches);
-        //var populatitemsd = await populatitems.Where(p => p.Name.ToLower() == name.ToLower()).ToListAsync();
+         populatitems =  populatitems.Where(p => p.Name.ToLower() == name.ToLower());
         List<Popularitemdto> popularitemdtos = new List<Popularitemdto>();
-        //var op = await populatitems.ToListAsync();
+        var op = await populatitems.ToListAsync();
 
-        foreach (var i in  populatitems)
+        foreach (var i in await populatitems.ToListAsync())
             popularitemdtos.Add(topopularitemdto(i));
         return new PagedResultDto<Popularitemdto>()
         {

@@ -4,6 +4,7 @@ global using Wajba.Dtos.ItemsDtos.ItemDependencies;
 global using Wajba.Dtos.ItemVariationContract;
 global using Wajba.Enums;
 global using Wajba.Models.Items;
+using Volo.Abp.Application.Dtos;
 
 
 namespace Wajba.ItemServices;
@@ -56,7 +57,7 @@ public class ItemAppServices : ApplicationService
         };
     }
 
-    public async Task<List<ItemDto>> GetItemsByBranchAsync(int branchId)
+    public async Task<PagedResultDto<ItemDto>> GetItemsByBranchAsync(int branchId)
     {
         var items = await _repository.WithDetailsAsync(
             x => x.ItemBranches,
@@ -69,12 +70,11 @@ public class ItemAppServices : ApplicationService
         IList<ItemDto> itemDtos = new List<ItemDto>();
         foreach (var i in items)
             itemDtos.Add(toitemdto(i));
-        return (List<ItemDto>)itemDtos;
-        var result = items.Where(item => item.ItemBranches.Any(ib => ib.BranchId == branchId))
-                          .Select(item => ObjectMapper.Map<Item, ItemDto>(item))
-                          .ToList();
-
-        return result;
+        return new PagedResultDto<ItemDto>()
+        {
+            Items = (IReadOnlyList<ItemDto>)itemDtos,
+            TotalCount = itemDtos.Count
+        };
     }
 
     public async Task<ItemDto> GetItemWithDetailsAsync(int id)

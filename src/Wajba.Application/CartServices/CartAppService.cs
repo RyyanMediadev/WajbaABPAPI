@@ -139,12 +139,12 @@ public class CartAppService : ApplicationService
             Item item = await _itemrepo.FirstOrDefaultAsync(p => p.Id == i.ItemId);
             if (item == null)
                 throw new Exception("Invalid data");
-            CartItem cartItem = await _cartitemrepo.FirstOrDefaultAsync(p => p.ItemId == i.ItemId  && p.CartId==cart.Id);
+            CartItem cartItem = await _cartitemrepo.FirstOrDefaultAsync(p => p.ItemId == i.ItemId && p.CartId == cart.Id);
             if (cartItem == null)
             {
                 cartItem = new CartItem()
                 {
-                    CartId=cart.Id,
+                    CartId = cart.Id,
                     ItemId = i.ItemId,
                     ItemName = item.Name,
                     price = item.Price,
@@ -166,7 +166,6 @@ public class CartAppService : ApplicationService
                         AdditionalPrice = itemAddon.AdditionalPrice,
                         AddonId = itemAddon.Id,
                         AddonName = itemAddon.AddonName,
-
                     });
                     cart.SubTotal += itemAddon.AdditionalPrice;
                 }

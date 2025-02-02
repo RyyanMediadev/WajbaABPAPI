@@ -64,12 +64,12 @@ public class CartAppService : ApplicationService
   public async Task<CartDto> CreateAsync(int customerid, List<CartItemDto> cartItemDtos)
     {
         Cart cart = await _CartRepository.FirstOrDefaultAsync(p => p.CustomerId == customerid);
-        //if (cart != null)
-        //foreach (var i in cart.CartItems)
-        //    await _cartitemrepo.HardDeleteAsync(i, true);
-        //foreach (var i in await _cartitemrepo.ToListAsync())
-        //    if (i.CartId == cart.Id)
-        //        await _cartitemrepo.HardDeleteAsync(i, true);
+        if (cart != null)
+            foreach (var i in cart.CartItems)
+                await _cartitemrepo.HardDeleteAsync(i, true);
+        foreach (var i in await _cartitemrepo.ToListAsync())
+            if (i.CartId == cart.Id)
+                await _cartitemrepo.HardDeleteAsync(i, true);
         if (cart == null)
         {
             cart = new Cart()

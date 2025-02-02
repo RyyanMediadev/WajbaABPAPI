@@ -13,9 +13,9 @@ public class OrderItemExtra
     {
 
     }
-    public OrderItemExtra(CartItemExtra e)
-    {
-        ExtraName = e.ExtraName;
-        AdditionalPrice = e.AdditionalPrice;
-    }
+    //public OrderItemExtra(CartItemExtra e)
+    //{
+    //    ExtraName = e.ExtraName;
+    //    AdditionalPrice = e.AdditionalPrice;
+    //}
 }

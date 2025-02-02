@@ -127,9 +127,9 @@ public class CartAppService : ApplicationService
                     cartItem.SelectedAddons.Add(new CartItemAddon()
                     {
                         AdditionalPrice = itemAddon.AdditionalPrice,
-                        //AddonId = itemAddon.Id,
+                        AddonId = itemAddon.Id,
                         AddonName = itemAddon.AddonName,
-                        
+
                     });
                     cart.SubTotal += itemAddon.AdditionalPrice;
                 }
@@ -142,8 +142,8 @@ public class CartAppService : ApplicationService
                     {
                         AdditionalPrice = itemExtra.AdditionalPrice,
                         ExtraName = itemExtra.Name,
-                        //ExtraId = itemExtra.Id,
-                       
+                        ExtraId = itemExtra.Id,
+
                     });
                     cart.SubTotal += itemExtra.AdditionalPrice;
                 }
@@ -155,8 +155,8 @@ public class CartAppService : ApplicationService
                     cartItem.SelectedVariations.Add(new CartItemVariation()
                     {
                         VariationName = itemVariation.Name,
-                        //Id = itemVariation.Id,
-                       
+                        Id = itemVariation.Id,
+
                         AdditionalPrice = itemVariation.AdditionalPrice,
                         Attributename = itemVariation.Name
                     });
@@ -168,7 +168,7 @@ public class CartAppService : ApplicationService
         }
         cart.SubTotal += cart.CartItems.Sum(p => p.Quantity * p.price);
         cart.TotalAmount = cart.SubTotal + cart.ServiceFee + cart.DeliveryFee + cart.DiscountAmount;
-        await _CartRepository.InsertAsync(cart, true);
+        await _CartRepository.UpdateAsync(cart, true);
     }
     //public async Task<IEnumerable<CartItem>> GetCartItemsByCustomerIdAsync(int customerId)
     //{

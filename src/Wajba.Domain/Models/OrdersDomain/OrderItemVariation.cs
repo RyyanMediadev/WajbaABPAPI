@@ -16,10 +16,10 @@ public class OrderItemVariation
     public OrderItemVariation()
     {
     }
-    public OrderItemVariation(CartItemVariation v)
-    {
-        VariationName = v.VariationName;
-        Attributename = v.Attributename;
-        AdditionalPrice = v.AdditionalPrice;
-    }
+    //public OrderItemVariation(CartItemVariation v)
+    //{
+    //    VariationName = v.VariationName;
+    //    Attributename = v.Attributename;
+    //    AdditionalPrice = v.AdditionalPrice;
+    //}
 }

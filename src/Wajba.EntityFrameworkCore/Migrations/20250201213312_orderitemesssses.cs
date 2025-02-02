@@ -6,11 +6,113 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Wajba.Migrations
 {
     /// <inheritdoc />
-    public partial class addrolesuds : Migration
+    public partial class orderitemesssses : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Cart_APPUser_CustomerId1",
+                table: "Cart");
+
+            //migrationBuilder.DropTable(
+            //    name: "CartItemAddon");
+
+            //migrationBuilder.DropTable(
+            //    name: "CartItemExtra");
+
+            //migrationBuilder.DropTable(
+            //    name: "CartItemVariations");
+
+            //migrationBuilder.DropTable(
+            //    name: "WajbaUserRoles");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Cart_CustomerId1",
+                table: "Cart");
+
+            migrationBuilder.DropColumn(
+                name: "CustomerId1",
+                table: "Cart");
+
+            //migrationBuilder.AddColumn<int>(
+            //    name: "CustomerRole",
+            //    table: "WajbaUsers",
+            //    type: "int",
+            //    nullable: true);
+
+            migrationBuilder.AddColumn<int>(
+                name: "GenderType",
+                table: "WajbaUsers",
+                type: "int",
+                nullable: false,
+                defaultValue: 0);
+
+            migrationBuilder.AddColumn<int>(
+                name: "UserRoleId",
+                table: "WajbaUsers",
+                type: "int",
+                nullable: true);
+
+            migrationBuilder.AddColumn<int>(
+                name: "WajbaUserId",
+                table: "coupons",
+                type: "int",
+                nullable: true);
+
+            migrationBuilder.AddColumn<DateTime>(
+                name: "CreationTime",
+                table: "CartItems",
+                type: "datetime2",
+                nullable: false,
+                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
+
+            migrationBuilder.AddColumn<Guid>(
+                name: "CreatorId",
+                table: "CartItems",
+                type: "uniqueidentifier",
+                nullable: true);
+
+            migrationBuilder.AddColumn<Guid>(
+                name: "DeleterId",
+                table: "CartItems",
+                type: "uniqueidentifier",
+                nullable: true);
+
+            migrationBuilder.AddColumn<DateTime>(
+                name: "DeletionTime",
+                table: "CartItems",
+                type: "datetime2",
+                nullable: true);
+
+            migrationBuilder.AddColumn<bool>(
+                name: "IsDeleted",
+                table: "CartItems",
+                type: "bit",
+                nullable: false,
+                defaultValue: false);
+
+            migrationBuilder.AddColumn<DateTime>(
+                name: "LastModificationTime",
+                table: "CartItems",
+                type: "datetime2",
+                nullable: true);
+
+            migrationBuilder.AddColumn<Guid>(
+                name: "LastModifierId",
+                table: "CartItems",
+                type: "uniqueidentifier",
+                nullable: true);
+
+            migrationBuilder.AlterColumn<int>(
+                name: "CustomerId",
+                table: "Cart",
+                type: "int",
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(max)",
+                oldNullable: true);
+
             migrationBuilder.CreateTable(
                 name: "Order",
                 columns: table => new
@@ -48,6 +150,90 @@ namespace Wajba.Migrations
                     table.ForeignKey(
                         name: "FK_Order_WajbaUsers_CustomerId1",
                         column: x => x.CustomerId1,
+                        principalTable: "WajbaUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PushNotifications",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    WajbaUserId = table.Column<int>(type: "int", nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    DeleterId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PushNotifications", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PushNotifications_WajbaUsers_WajbaUserId",
+                        column: x => x.WajbaUserId,
+                        principalTable: "WajbaUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserRoles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RoleName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    DeleterId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserRoles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "WajbaUserAddresses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Longitude = table.Column<double>(type: "float", nullable: true),
+                    Latitude = table.Column<double>(type: "float", nullable: true),
+                    WajbaUserId = table.Column<int>(type: "int", nullable: true),
+                    BuildingName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Street = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ApartmentNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Floor = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AddressLabel = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AddressType = table.Column<int>(type: "int", nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    DeleterId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WajbaUserAddresses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_WajbaUserAddresses_WajbaUsers_WajbaUserId",
+                        column: x => x.WajbaUserId,
                         principalTable: "WajbaUsers",
                         principalColumn: "Id");
                 });
@@ -312,6 +498,21 @@ namespace Wajba.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_WajbaUsers_UserRoleId",
+                table: "WajbaUsers",
+                column: "UserRoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_coupons_WajbaUserId",
+                table: "coupons",
+                column: "WajbaUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Cart_CustomerId",
+                table: "Cart",
+                column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Deliveries_DeliveryBoyId1",
                 table: "Deliveries",
                 column: "DeliveryBoyId1");
@@ -392,11 +593,54 @@ namespace Wajba.Migrations
                 column: "OrderId",
                 unique: true,
                 filter: "[OrderId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PushNotifications_WajbaUserId",
+                table: "PushNotifications",
+                column: "WajbaUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WajbaUserAddresses_WajbaUserId",
+                table: "WajbaUserAddresses",
+                column: "WajbaUserId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Cart_WajbaUsers_CustomerId",
+                table: "Cart",
+                column: "CustomerId",
+                principalTable: "WajbaUsers",
+                principalColumn: "Id");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_coupons_WajbaUsers_WajbaUserId",
+                table: "coupons",
+                column: "WajbaUserId",
+                principalTable: "WajbaUsers",
+                principalColumn: "Id");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_WajbaUsers_UserRoles_UserRoleId",
+                table: "WajbaUsers",
+                column: "UserRoleId",
+                principalTable: "UserRoles",
+                principalColumn: "Id");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Cart_WajbaUsers_CustomerId",
+                table: "Cart");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_coupons_WajbaUsers_WajbaUserId",
+                table: "coupons");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_WajbaUsers_UserRoles_UserRoleId",
+                table: "WajbaUsers");
+
             migrationBuilder.DropTable(
                 name: "Deliveries");
 
@@ -425,10 +669,213 @@ namespace Wajba.Migrations
                 name: "PosOrders");
 
             migrationBuilder.DropTable(
+                name: "PushNotifications");
+
+            migrationBuilder.DropTable(
+                name: "UserRoles");
+
+            migrationBuilder.DropTable(
+                name: "WajbaUserAddresses");
+
+            migrationBuilder.DropTable(
                 name: "OrderItem");
 
             migrationBuilder.DropTable(
                 name: "Order");
+
+            migrationBuilder.DropIndex(
+                name: "IX_WajbaUsers_UserRoleId",
+                table: "WajbaUsers");
+
+            migrationBuilder.DropIndex(
+                name: "IX_coupons_WajbaUserId",
+                table: "coupons");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Cart_CustomerId",
+                table: "Cart");
+
+            migrationBuilder.DropColumn(
+                name: "CustomerRole",
+                table: "WajbaUsers");
+
+            migrationBuilder.DropColumn(
+                name: "GenderType",
+                table: "WajbaUsers");
+
+            migrationBuilder.DropColumn(
+                name: "UserRoleId",
+                table: "WajbaUsers");
+
+            migrationBuilder.DropColumn(
+                name: "WajbaUserId",
+                table: "coupons");
+
+            migrationBuilder.DropColumn(
+                name: "CreationTime",
+                table: "CartItems");
+
+            migrationBuilder.DropColumn(
+                name: "CreatorId",
+                table: "CartItems");
+
+            migrationBuilder.DropColumn(
+                name: "DeleterId",
+                table: "CartItems");
+
+            migrationBuilder.DropColumn(
+                name: "DeletionTime",
+                table: "CartItems");
+
+            migrationBuilder.DropColumn(
+                name: "IsDeleted",
+                table: "CartItems");
+
+            migrationBuilder.DropColumn(
+                name: "LastModificationTime",
+                table: "CartItems");
+
+            migrationBuilder.DropColumn(
+                name: "LastModifierId",
+                table: "CartItems");
+
+            migrationBuilder.AlterColumn<string>(
+                name: "CustomerId",
+                table: "Cart",
+                type: "nvarchar(max)",
+                nullable: true,
+                oldClrType: typeof(int),
+                oldType: "int",
+                oldNullable: true);
+
+            migrationBuilder.AddColumn<Guid>(
+                name: "CustomerId1",
+                table: "Cart",
+                type: "uniqueidentifier",
+                nullable: true);
+
+            migrationBuilder.CreateTable(
+                name: "CartItemAddon",
+                columns: table => new
+                {
+                    AddonId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CartItemId = table.Column<int>(type: "int", nullable: false),
+                    AdditionalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    AddonName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CartItemAddon", x => x.AddonId);
+                    table.ForeignKey(
+                        name: "FK_CartItemAddon_CartItems_CartItemId",
+                        column: x => x.CartItemId,
+                        principalTable: "CartItems",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CartItemExtra",
+                columns: table => new
+                {
+                    ExtraId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CartItemId = table.Column<int>(type: "int", nullable: false),
+                    AdditionalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    ExtraName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CartItemExtra", x => x.ExtraId);
+                    table.ForeignKey(
+                        name: "FK_CartItemExtra_CartItems_CartItemId",
+                        column: x => x.CartItemId,
+                        principalTable: "CartItems",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CartItemVariations",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CartItemId = table.Column<int>(type: "int", nullable: false),
+                    AdditionalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Attributename = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    VariationName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CartItemVariations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CartItemVariations_CartItems_CartItemId",
+                        column: x => x.CartItemId,
+                        principalTable: "CartItems",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "WajbaUserRoles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    WajbaUserId = table.Column<int>(type: "int", nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    DeleterId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    RoleId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WajbaUserRoles", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_WajbaUserRoles_WajbaUsers_WajbaUserId",
+                        column: x => x.WajbaUserId,
+                        principalTable: "WajbaUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Cart_CustomerId1",
+                table: "Cart",
+                column: "CustomerId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CartItemAddon_CartItemId",
+                table: "CartItemAddon",
+                column: "CartItemId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CartItemExtra_CartItemId",
+                table: "CartItemExtra",
+                column: "CartItemId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CartItemVariations_CartItemId",
+                table: "CartItemVariations",
+                column: "CartItemId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WajbaUserRoles_WajbaUserId",
+                table: "WajbaUserRoles",
+                column: "WajbaUserId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Cart_APPUser_CustomerId1",
+                table: "Cart",
+                column: "CustomerId1",
+                principalTable: "APPUser",
+                principalColumn: "Id");
         }
     }
 }

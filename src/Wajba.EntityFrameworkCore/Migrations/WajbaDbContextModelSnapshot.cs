@@ -2085,10 +2085,7 @@ namespace Wajba.Migrations
             modelBuilder.Entity("Wajba.Models.CartsDomain.CartItemAddon", b =>
                 {
                     b.Property<int>("AddonId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AddonId"));
 
                     b.Property<decimal>("AdditionalPrice")
                         .HasColumnType("decimal(18, 2)");
@@ -2109,10 +2106,7 @@ namespace Wajba.Migrations
             modelBuilder.Entity("Wajba.Models.CartsDomain.CartItemExtra", b =>
                 {
                     b.Property<int>("ExtraId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ExtraId"));
 
                     b.Property<decimal>("AdditionalPrice")
                         .HasColumnType("decimal(18, 2)");
@@ -2133,10 +2127,7 @@ namespace Wajba.Migrations
             modelBuilder.Entity("Wajba.Models.CartsDomain.CartItemVariation", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("AdditionalPrice")
                         .HasColumnType("decimal(18, 2)");

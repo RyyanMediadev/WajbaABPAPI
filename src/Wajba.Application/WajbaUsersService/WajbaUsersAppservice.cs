@@ -15,8 +15,10 @@ using System.Text;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Uow;
 using Wajba.CustomIdentity;
+using Wajba.Dtos.CustomerContract;
 using Wajba.Dtos.UserDTO;
 using Wajba.Dtos.WajbaUsersContract;
+using Wajba.Models.CategoriesDomain;
 using Wajba.Models.FaqsDomain;
 using Wajba.Models.UsersDomain;
 using Wajba.Models.WajbaUserDomain;
@@ -37,6 +39,8 @@ namespace Wajba.WajbaUsersService
     {
         private readonly IRepository<WajbaUser, int> _WajbaUserRepository;
         private readonly TokenManagement _tokenManagement;
+        private readonly IImageService _imageService;
+
         //private readonly VerifyCodeHelper _VerifyCodeHelper;
         //private readonly IPasswordHasher<WajbaUser> _passwordHasher;
         //private readonly IObjectMapper _objectMapper;
@@ -50,19 +54,55 @@ namespace Wajba.WajbaUsersService
         //private readonly IMailService _mailService;
         public WajbaUsersAppservice(/*IObjectMapper objectMapper,  */
             IRepository<WajbaUser, int> WajbaUserRepository
-            , IOptions<TokenManagement> tokenManagement)
+            , IOptions<TokenManagement> tokenManagement
+            ,
+IImageService imageService)
         {
             //_passwordHasher = (IPasswordHasher<WajbaUser>?)passwordHasher;
             //_objectMapper = objectMapper;
 
             _WajbaUserRepository = WajbaUserRepository;
             _tokenManagement = tokenManagement.Value;
+            _imageService = imageService;
             //_VerifyCodeHelper = VerifyCodeHelper;
 
             //_checkUniq = checkUniqes;
         }
-       
 
+        public async Task<WajbaUserDto> UpdateProfile(int id, UpdateWajbaUserProfile input)
+        {
+            //WajbaUser WajbaUser = await _WajbaUserRepository.GetAsync(id);
+          
+
+            var user = await _WajbaUserRepository.FirstOrDefaultAsync(u => u.Id == input.Id);
+            if (user == null)
+                throw new Exception("Not found");
+            if (input.ProfilePhoto == null)
+                throw new Exception("Image is required");
+            var imagebytes = Convert.FromBase64String(input.ProfilePhoto.Base64Content);
+            using var ms = new MemoryStream(imagebytes);
+            user.ProfilePhoto = await _imageService.UploadAsync(ms, input.ProfilePhoto.FileName);
+
+            user.FullName = user.FullName;
+            user.Email = user.Email;
+            user.Phone = user.Phone;
+            user.status =user.status;
+            user.Type = user.Type;
+            user.GenderType = (GenderType)user.GenderType;
+            user.Password = user.Password;
+            user.GenderType = user.GenderType;
+
+
+
+            WajbaUser ws = await _WajbaUserRepository.UpdateAsync(user, true); ;
+            ws.Password = null;
+
+            return ObjectMapper.Map<WajbaUser, WajbaUserDto>(ws);
+
+
+
+            //return ObjectMapper.Map<Category, CategoryDto>(updatedcategory);
+        }
         public List<string> CheckUniqeValue(UniqeDTO request)
         {
 

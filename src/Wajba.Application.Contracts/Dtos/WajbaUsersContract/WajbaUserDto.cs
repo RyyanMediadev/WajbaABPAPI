@@ -17,6 +17,8 @@ namespace Wajba.Dtos.WajbaUsersContract
         public int Status { get; set; }
         public int? Role { get; set; }
 
+        public string? ProfilePhoto { get; set; }
+
         public int? GenderType { get; set; }
 
         public List<BranchDto> BranchList { get; set; } = new List<BranchDto>();

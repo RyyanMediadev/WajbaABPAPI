@@ -14,7 +14,7 @@ namespace Wajba.Dtos.WajbaUsersContract
         public string Phone { get; set; }
         public int Type { get; set; }
         //public string? Password { get; set; }
-
+        public Base64ImageModel? ProfilePhoto { get; set; }
         public int Status { get; set; }
         public int? Role { get; set; }
         public int? GenderType { get; set; }

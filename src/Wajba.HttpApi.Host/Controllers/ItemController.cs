@@ -38,9 +38,28 @@ public class ItemController : WajbaController
     }
 
     [HttpGet("by-branch/{branchId}")]
-    public async Task<List<ItemDto>> GetItemsByBranch(int branchId)
+    public async Task<ActionResult<ApiResponse<PagedResultDto<ItemDto>>>> GetItemsByBranch(int branchId)
     {
-        return await _itemAppServices.GetItemsByBranchAsync(branchId);
+        try
+        {
+            var itemDto = await _itemAppServices.GetItemsByBranchAsync(branchId);
+            return Ok(new ApiResponse<PagedResultDto<ItemDto>>
+            {
+                Success = true,
+                Message = "Item retrived successfully.",
+                Data = itemDto
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ApiResponse<object>
+            {
+                Success = false,
+                Message = $"Error retrived item: {ex.Message}",
+                Data = null
+            });
+        }
+
     }
 
     [HttpGet("{id}/details")]

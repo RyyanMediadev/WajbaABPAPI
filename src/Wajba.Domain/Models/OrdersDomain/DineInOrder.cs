@@ -2,7 +2,7 @@
 
 namespace Wajba.Models.OrdersDomain;
 
-public class DineInOrder
+public class DineInOrder : FullAuditedEntity<int>
 {
     public int Id { get; set; } // Primary key
     public DateTime? Time { get; set; }

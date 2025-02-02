@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Wajba.Dtos.OffersContract;
 
-namespace Wajba.Hubs
+namespace Wajba.Hubs;
+
+public class OfferHub:Hub
 {
-    public class OfferHub:Hub
+    public async Task SendOffer(OfferDto offer)
     {
-        public async Task SendOffer(OfferDto offer)
-        {
-            await Clients.All.SendAsync("ReceiveOffer", offer);
-        }
+        await Clients.All.SendAsync("ReceiveOffer", offer);
     }
 }

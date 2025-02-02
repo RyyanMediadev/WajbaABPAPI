@@ -1,7 +1,7 @@
 ﻿namespace Wajba.Models.OrdersDomain;
 
 
-public class PickUpOrder
+public class PickUpOrder:FullAuditedEntity<int>
 {
     public int Id { get; set; } // Primary key
     public DateTime? Time { get; set; }

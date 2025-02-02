@@ -85,29 +85,29 @@ public class UserAddressController : WajbaController
         }
     }
 
-    //[HttpGet("customer/{customerId}")]
-    //public async Task<IActionResult> GetAllByWajbaUserAsync(int WajbaUserId)
-    //{
-    //    try
-    //    {
-    //        var result = await _userAddressAppService.GetAllByWajbaUserAsync(WajbaUserId);
-    //        return Ok(new ApiResponse<List<UserAddressDto>>
-    //        {
-    //            Success = true,
-    //            Message = "User addresses retrieved successfully.",
-    //            Data = result
-    //        });
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        return BadRequest(new ApiResponse<List<UserAddressDto>>
-    //        {
-    //            Success = false,
-    //            Message = $"Error retrieving user addresses: {ex.Message}",
-    //            Data = null
-    //        });
-    //    }
-    //}
+    [HttpGet]
+    public async Task<IActionResult> GetAllByWajbaUserAsync(int WajbaUserId)
+    {
+        try
+        {
+            var result = await _userAddressAppService.GetAllByWajbaUserAsync(WajbaUserId);
+            return Ok(new ApiResponse<List<UserAddressDto>>
+            {
+                Success = true,
+                Message = "User addresses retrieved successfully.",
+                Data = result
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ApiResponse<List<UserAddressDto>>
+            {
+                Success = false,
+                Message = $"Error retrieving user addresses: {ex.Message}",
+                Data = null
+            });
+        }
+    }
 
     //public async Task<IActionResult>
     [HttpGet("{id}")]

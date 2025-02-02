@@ -23,7 +23,7 @@ public class ApplyDiscountDto
 }
 public class CartDto
 {
-    public string CustomerId { get; set; }
+    public int CustomerId { get; set; }
     public List<CartItemDto> Items { get; set; } = new List<CartItemDto>();
     public decimal? TotalAmount { get; set; }
     public decimal? ServiceFee { get; set; }

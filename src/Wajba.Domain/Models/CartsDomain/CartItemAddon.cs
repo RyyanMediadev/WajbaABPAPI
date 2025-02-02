@@ -7,7 +7,8 @@ public class CartItemAddon
     {
 
     }
-    [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
+    [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int Id { get; set; }
     public int AddonId { get; set; }
     public string AddonName { get; set; }
     public decimal AdditionalPrice { get; set; }

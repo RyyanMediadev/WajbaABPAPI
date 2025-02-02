@@ -26,13 +26,12 @@ public class CartController : WajbaController
         {
             return Ok(new { success = false, message = ModelState });
         }
-
         string token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
         if (string.IsNullOrEmpty(token))
         {
             return Ok(new { success = false, message = "Token is required" });
         }
-        WajbaUser customer = await _wajbaUsers.Decodetoken(token);
+        WajbaUser customer = await _wajbaUsers.GetWajbaUserbytoken(token);
         if (customer == null)
         {
             return Ok(new { success = false, message = "Invalid token or customer not found" });
@@ -58,22 +57,46 @@ public class CartController : WajbaController
         }
     }
     [HttpGet("GetCarforcustomer")]
-    public async Task<IActionResult> GetCart()
+    public async Task<ActionResult<ApiResponse<CartDto>>> GetCart()
     {
         string token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
         if (string.IsNullOrEmpty(token))
         {
             return Ok(new { success = false, message = "Token is required" });
         }
-        WajbaUser customer = await _wajbaUsers.Decodetoken(token);
+        WajbaUser customer = await _wajbaUsers.GetWajbaUserbytoken(token);
         if (customer == null)
         {
             return Ok(new { success = false, message = "Invalid token or customer not found" });
         }
-
-
-
-        return null;
+        try
+        {
+            var cart = await _CartAppService.GetCartItemByCustomerAsync(customer.Id);
+            return Ok(new ApiResponse<CartDto>
+            {
+                Success = true,
+                Message = "Cart created successfully.",
+                Data = cart
+            });
+        }
+        catch (EntityNotFoundException e)
+        {
+            return BadRequest(new ApiResponse<object>
+            {
+                Data = null,
+                Message = "Cart Not Found",
+                Success = false
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ApiResponse<object>
+            {
+                Success = false,
+                Message = $"Error creating cart: {ex.Message}",
+                Data = null
+            });
+        }
     }
     //    [HttpPost("Ordernow")]
     //[Authorize]

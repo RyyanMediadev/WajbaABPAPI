@@ -71,15 +71,52 @@ public class CartAppService : ApplicationService
     //    _CartRepository.UpdateAsync(cart);
     //    // await _CartRepository.sav();
     //}
-    //public async Task<CartItem> GetCartItemByCustomerAndItemIdAsync(int customerId, int cartItemId)
-    //{
-    //    CartItem CartItem = await _cartitemrepo
-    //        .FirstOrDefaultAsync(ci => ci.cart.CustomerId == customerId && ci.Id == cartItemId);
-    //    if (CartItem == null)
-    //        throw new Exception("Not Found");
-    //    return CartItem;
-    //}
-    public async Task CreateAsync(int customerid, List<CartItemDto> cartItemDtos)
+    public async Task<CartDto> GetCartItemByCustomerAsync(int customerId)
+    {
+        Cart cart = await _CartRepository.FirstOrDefaultAsync(p => p.CustomerId == customerId);
+        if (cart == null)
+            throw new EntityNotFoundException("Cart Not Found");
+        return toCartDto(cart);
+    }
+    private static CartDto toCartDto(Cart cart)
+    {
+        return new CartDto()
+        {
+            CustomerId = (int)cart.CustomerId,
+            DeliveryFee = cart.DeliveryFee,
+            TotalAmount = cart.TotalAmount,
+            DiscountAmount = cart.DiscountAmount,
+            ServiceFee = cart.ServiceFee,
+            Note = cart.Note,
+            Items = cart.CartItems.Select(p => new CartItemDto()
+            {
+                Notes = p.Notes,
+                ItemId = p.ItemId,
+                Quantity = p.Quantity,
+                //Addons = p.SelectedAddons.Select(l => new CartItemAddonDto()
+                //{
+                //    Id = l.AddonId,
+                //    Name = l.AddonName,
+                //    Price = l.AdditionalPrice
+                //}).ToList(),
+                //Extras = p.SelectedExtras.Select(m => new ExtraDto()
+                //{
+                //    AdditionalPrice = m.AdditionalPrice,
+                //    Id = m.ExtraId,
+                //    Name = m.ExtraName,
+
+                //}).ToList(),
+                //Variations = p.SelectedVariations.Select(d => new CartItemVariationDto()
+                //{
+                //    Name = d.Attributename,
+                //    AdditionalPrice = d.AdditionalPrice,
+                //    AttributeName = d.Attributename,
+                //    Id = d.Id
+                //}).ToList()
+            }).ToList()
+        };
+    }
+    public async Task<CartDto> CreateAsync(int customerid, List<CartItemDto> cartItemDtos)
     {
         Cart cart = await _CartRepository.FirstOrDefaultAsync(p => p.CustomerId == customerid);
         if (cart == null)
@@ -102,7 +139,7 @@ public class CartAppService : ApplicationService
             Item item = await _itemrepo.FirstOrDefaultAsync(p => p.Id == i.ItemId);
             if (item == null)
                 throw new Exception("Invalid data");
-            CartItem cartItem = await _cartitemrepo.FirstOrDefaultAsync(p => p.ItemId == i.ItemId);
+            CartItem cartItem = await _cartitemrepo.FirstOrDefaultAsync(p => p.ItemId == i.ItemId  && p.CartId==cart.Id);
             if (cartItem == null)
             {
                 cartItem = new CartItem()
@@ -149,16 +186,15 @@ public class CartAppService : ApplicationService
                 }
                 foreach (var j in i.Variations)
                 {
-                    ItemVariation itemVariation = await _itemvariationrepo.FirstOrDefaultAsync(p => p.Id == j.Id && p.ItemId == item.Id);
+                    ItemVariation itemVariation = await _itemvariationrepo.WithDetailsAsync(p => p.ItemAttributes).Result.FirstOrDefaultAsync(p => p.Id == j.Id && p.ItemId == item.Id);
                     if (itemVariation == null)
                         throw new Exception("Invalid data");
                     cartItem.SelectedVariations.Add(new CartItemVariation()
                     {
                         VariationName = itemVariation.Name,
-                        Id = itemVariation.Id,
-
+                        VariationId = itemVariation.Id,
                         AdditionalPrice = itemVariation.AdditionalPrice,
-                        Attributename = itemVariation.Name
+                        Attributename = itemVariation.ItemAttributes.Name
                     });
                     cart.SubTotal += itemVariation.AdditionalPrice;
                 }
@@ -169,6 +205,7 @@ public class CartAppService : ApplicationService
         cart.SubTotal += cart.CartItems.Sum(p => p.Quantity * p.price);
         cart.TotalAmount = cart.SubTotal + cart.ServiceFee + cart.DeliveryFee + cart.DiscountAmount;
         await _CartRepository.UpdateAsync(cart, true);
+        return toCartDto(cart);
     }
     //public async Task<IEnumerable<CartItem>> GetCartItemsByCustomerIdAsync(int customerId)
     //{

@@ -1,5 +1,4 @@
 ﻿global using Wajba.Models.PopularItemsDomain;
-using System.Data.Entity;
 
 namespace Wajba.PopularItemServices;
 
@@ -61,12 +60,12 @@ public class PopularItemAppservice : ApplicationService
     }
     public async Task<PagedResultDto<Popularitemdto>> Getbyname(string name)
     {
-        var populatitems = await _popularitemrepo.WithDetailsAsync(p => p.PopulartItemBranches);
-        populatitems = populatitems.Where(p => p.Name.ToLower() == name.ToLower());
-        IList<Popularitemdto> popularitemdtos = new List<Popularitemdto>();
-        var  op =await populatitems.ToListAsync();
+        IQueryable<PopularItem> populatitems = await _popularitemrepo.WithDetailsAsync(p => p.PopulartItemBranches);
+        //var populatitemsd = await populatitems.Where(p => p.Name.ToLower() == name.ToLower()).ToListAsync();
+        List<Popularitemdto> popularitemdtos = new List<Popularitemdto>();
+        //var op = await populatitems.ToListAsync();
 
-        foreach (var i in await populatitems.ToListAsync())
+        foreach (var i in  populatitems)
             popularitemdtos.Add(topopularitemdto(i));
         return new PagedResultDto<Popularitemdto>()
         {

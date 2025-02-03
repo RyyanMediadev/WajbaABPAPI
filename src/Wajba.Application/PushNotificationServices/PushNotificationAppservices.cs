@@ -67,6 +67,13 @@ public class PushNotificationAppservices : ApplicationService
             pushNotificationDtos.Add(topushNotificationDto(i));
         return new PagedResultDto<PushNotificationDto>(pushNotificationDtos.Count(), pushNotificationDtos);
     }
+    public async Task<PushNotificationDto> Getbyid(int id)
+    {
+        PushNotification pushNotification = await _pushnotificationrepo.FirstOrDefaultAsync(p => p.Id == id);
+        if (pushNotification == null)
+            throw new EntityNotFoundException("Not found");
+        return topushNotificationDto(pushNotification);
+    }
     public async Task Delete(int id)
     {
         PushNotification push = await _pushnotificationrepo.FindAsync(id);

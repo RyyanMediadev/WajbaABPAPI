@@ -20,6 +20,7 @@ using Wajba.Dtos.WajbaUsersContract;
 using Wajba.Models.FaqsDomain;
 using Wajba.Models.UsersDomain;
 using Wajba.Models.WajbaUserDomain;
+using Wajba.Models.WajbaUserRoleDomain;
 using Wajba.Services.ImageService;
 using Wajba.SharedTokenManagement;
 using Wajba.UserAppService;
@@ -36,7 +37,9 @@ namespace Wajba.WajbaUsersService
     public class WajbaUsersAppservice : ApplicationService
     {
         private readonly IRepository<WajbaUser, int> _WajbaUserRepository;
+        private readonly IRepository<UserRole, int> _rolerepo;
         private readonly TokenManagement _tokenManagement;
+
         //private readonly VerifyCodeHelper _VerifyCodeHelper;
         //private readonly IPasswordHasher<WajbaUser> _passwordHasher;
         //private readonly IObjectMapper _objectMapper;
@@ -49,13 +52,15 @@ namespace Wajba.WajbaUsersService
         //private readonly IUserManagementService _UserManagementService;
         //private readonly IMailService _mailService;
         public WajbaUsersAppservice(/*IObjectMapper objectMapper,  */
-            IRepository<WajbaUser, int> WajbaUserRepository
+            IRepository<WajbaUser, int> WajbaUserRepository,
+            IRepository<UserRole, int> rolerepo
             , IOptions<TokenManagement> tokenManagement)
         {
             //_passwordHasher = (IPasswordHasher<WajbaUser>?)passwordHasher;
             //_objectMapper = objectMapper;
 
             _WajbaUserRepository = WajbaUserRepository;
+            _rolerepo = rolerepo;
             _tokenManagement = tokenManagement.Value;
             //_VerifyCodeHelper = VerifyCodeHelper;
 
@@ -419,7 +424,9 @@ namespace Wajba.WajbaUsersService
 
             //}
 
-
+            UserRole userRole = await _rolerepo.FirstOrDefaultAsync(p => p.Id == createuserdto.Role);
+            if (userRole == null)
+                throw new EntityNotFoundException("Invalid data");
             if (createuserdto.Password != createuserdto.ConfirmPassword)
             {
                 throw new UserFriendlyException("Passwords do not match.");
@@ -432,10 +439,10 @@ namespace Wajba.WajbaUsersService
                 Type = (UserTypes)createuserdto.Type,
                 status = Status.Active,
                 GenderType = (GenderType)createuserdto.GenderType,
-
+                
                 Password = EncryptANDDecrypt.EncryptText(createuserdto.Password),
             };
-
+            wajbaUser.WajbaUserRoles.Add(new WajbaUserRoles() { UserRole = userRole });
 
             WajbaUser WajbaUser = await _WajbaUserRepository.InsertAsync(wajbaUser, true);
 
@@ -597,16 +604,24 @@ namespace Wajba.WajbaUsersService
 
         public async Task<AccountInfoEditByWajbaUserId> AccountInfoEdit(AccountInfoEditByWajbaUserId AccountInfoEditByWajbaUserId)
         {
-
+            UserRole userRole = await _rolerepo.FirstOrDefaultAsync(p => p.Id == AccountInfoEditByWajbaUserId.Id);
+            if (userRole == null)
+                throw new EntityNotFoundException("Invalid data");
             var user = await _WajbaUserRepository.FirstOrDefaultAsync(u => u.Id == AccountInfoEditByWajbaUserId.Id);
+           if(user==null)
+                throw new EntityNotFoundException("Invalid data");
+
             user.FullName = AccountInfoEditByWajbaUserId.FullName;
             user.Email = AccountInfoEditByWajbaUserId.Email;
             user.Phone = AccountInfoEditByWajbaUserId.Phone;
             user.status = (Status)AccountInfoEditByWajbaUserId.Status;
             user.Type = (UserTypes)AccountInfoEditByWajbaUserId.Type;
             user.GenderType = (GenderType)AccountInfoEditByWajbaUserId.GenderType;
+            user.WajbaUserRoles.Clear();
+            await _WajbaUserRepository.UpdateAsync(user);
+            user.WajbaUserRoles.Add(new WajbaUserRoles() { UserRole = userRole });
             //user.Password = user.Password;
-
+            user.LastModificationTime = DateTime.UtcNow;
 
             WajbaUser ws = await _WajbaUserRepository.UpdateAsync(user);
             //ws.Password = null;

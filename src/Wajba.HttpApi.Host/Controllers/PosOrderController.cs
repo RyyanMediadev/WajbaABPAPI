@@ -24,6 +24,8 @@ public class PosOrderController : WajbaController
 {
 
     private readonly WajbaDbContext _context;
+    private readonly WajbaUsersAppservice _WajbaUsersAppservice;
+
 
 
     //private readonly IUnitOfWork _unitOfWork;
@@ -43,10 +45,26 @@ public class PosOrderController : WajbaController
 
     [HttpGet("employee-orders")]
     public async Task<IActionResult> GetAllOrdersForEmployee()
-    {
-        var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
 
-        var response = await _POSOrderAPPService.GetAllOrdersForEmployeeAsync(token);
+    {
+        if (!ModelState.IsValid)
+        {
+            return Ok(new { success = false, message = ModelState });
+        }
+        string token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+        if (string.IsNullOrEmpty(token))
+        {
+            return Ok(new { success = false, message = "Token is required" });
+        }
+        WajbaUser customer = await _WajbaUsersAppservice.GetWajbaUserbytoken(token);
+        if (customer == null)
+        {
+            return Ok(new { success = false, message = "Invalid token or customer not found" });
+        }
+
+        //var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+
+        var response = await _POSOrderAPPService.GetAllOrdersForEmployeeAsync(customer.Id);
 
         return Ok(new
         {
@@ -91,6 +109,24 @@ public class PosOrderController : WajbaController
     {
         try
         {
+
+
+            if (!ModelState.IsValid)
+            {
+                return Ok(new { success = false, message = ModelState });
+            }
+            string token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            if (string.IsNullOrEmpty(token))
+            {
+                return Ok(new { success = false, message = "Token is required" });
+            }
+            WajbaUser customer = await _WajbaUsersAppservice.GetWajbaUserbytoken(token);
+            if (customer == null)
+            {
+                return Ok(new { success = false, message = "Invalid token or customer not found" });
+            }
+
+
             var orderSpec = new POSOrderSpecification(branchId, orderid, dateorder, orderType, startDate, endDate, status, fromprice, toprice, pageNumber, pageSize);
 
 
@@ -142,8 +178,25 @@ public class PosOrderController : WajbaController
     [HttpPost]
     public async Task<IActionResult> AddOrder(OrderDTO orderDto)
     {
-        var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-        var response = await _POSOrderAPPService.AddOrderAsync(orderDto, token);
+        //var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+
+
+        if (!ModelState.IsValid)
+        {
+            return Ok(new { success = false, message = ModelState });
+        }
+        string token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+        if (string.IsNullOrEmpty(token))
+        {
+            return Ok(new { success = false, message = "Token is required" });
+        }
+        WajbaUser Employee = await _WajbaUsersAppservice.GetWajbaUserbytoken(token);
+        if (Employee == null)
+        {
+            return Ok(new { success = false, message = "Invalid token or customer not found" });
+        }
+
+        var response = await _POSOrderAPPService.AddOrderAsync(orderDto, Employee.Id);
 
 
 
@@ -154,8 +207,24 @@ public class PosOrderController : WajbaController
     [HttpDelete("delete-order/{orderId}")]
     public async Task<IActionResult> DeleteOrder(int orderId)
     {
-        var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-        var response = await _POSOrderAPPService.DeleteOrderAsync(orderId, token);
+        //var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+
+
+        if (!ModelState.IsValid)
+        {
+            return Ok(new { success = false, message = ModelState });
+        }
+        string token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+        if (string.IsNullOrEmpty(token))
+        {
+            return Ok(new { success = false, message = "Token is required" });
+        }
+        WajbaUser Employee = await _WajbaUsersAppservice.GetWajbaUserbytoken(token);
+        if (Employee == null)
+        {
+            return Ok(new { success = false, message = "Invalid token or customer not found" });
+        }
+        var response = await _POSOrderAPPService.DeleteOrderAsync(orderId, Employee.Id);
 
         return Ok(new { success = response.Success, message = response.Message });
     }

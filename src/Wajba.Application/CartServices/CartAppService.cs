@@ -56,26 +56,15 @@ public class CartAppService : ApplicationService
             cart = new Cart()
             {
                 CustomerId = customerid,
-                TotalAmount = 0,
-                SubTotal = 0,
-                DeliveryFee = 0,
-                DiscountAmount = 0,
-                Note = "",
-                ServiceFee = 0,
                 CartItems = new List<CartItem>(),
             };
             cart = await _CartRepository.InsertAsync(cart, true);
         }
         else
         {
-            cart.TotalAmount = 0;
-            cart.SubTotal = 0;
-            cart.DeliveryFee = 0;
-            cart.ServiceFee = 0;
+            cart.TotalAmount = cart.SubTotal = cart.DeliveryFee = cart.ServiceFee = cart.DiscountAmount = 0;
             cart.CartItems = new List<CartItem>();
             cart.Note = "";
-            cart.DiscountAmount = 0;
-            cart.voucherCode = 0;
             await _CartRepository.UpdateAsync(cart, true);
         };
         bool isfound = true;
@@ -117,7 +106,6 @@ public class CartAppService : ApplicationService
             foreach (var j in i.Addons)
             {
                 ItemAddon itemAddon = await _itemaddonrepo.FirstOrDefaultAsync(p => p.Id == j.Id && p.ItemId == item.Id);
-               
                 if (itemAddon == null)
                     throw new Exception("Invalid data");
                 cartItem.SelectedAddons.Add(new CartItemAddon()
@@ -138,7 +126,6 @@ public class CartAppService : ApplicationService
                     AdditionalPrice = itemExtra.AdditionalPrice,
                     ExtraName = itemExtra.Name,
                     ExtraId = itemExtra.Id,
-
                 });
                 cart.SubTotal += itemExtra.AdditionalPrice;
             }
@@ -166,6 +153,7 @@ public class CartAppService : ApplicationService
         await _CartRepository.UpdateAsync(cart, true);
         return toCartDto(cart);
     }
+
     public async Task<CartDto> OrdeNow(int customerid)
     {
         return null;

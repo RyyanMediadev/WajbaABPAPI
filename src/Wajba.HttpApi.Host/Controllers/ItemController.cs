@@ -38,7 +38,7 @@ public class ItemController : WajbaController
         }
     }
     [HttpGet("nameAndcategoryname")]
-    public async Task<ActionResult<ApiResponse<PagedResultDto<ItemDto>>>> GetItemsByCategoryName(int branchid,string itemname,string categoryname)
+    public async Task<ActionResult<ApiResponse<PagedResultDto<ItemDto>>>> GetItemsByCategoryName(int branchid,string? itemname,string? categoryname)
     {
         try
         {

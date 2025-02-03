@@ -20,7 +20,7 @@ public class CartController : WajbaController
     }
 
     [HttpPost("add-item-to-cart")]
-    public async Task<IActionResult> AddCartItem(List<CartItemDto> cartItemDto)
+    public async Task<IActionResult> AddCartItem(List<CreateCartItemDto> cartItemDto)
     {
         if (!ModelState.IsValid)
         {

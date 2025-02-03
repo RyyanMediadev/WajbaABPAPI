@@ -58,6 +58,21 @@ public class PopularItemAppservice : ApplicationService
         popularitem = await _popularitemrepo.InsertAsync(popularitem, autoSave: true);
         return topopularitemdto(popularitem);
     }
+    public async Task<PagedResultDto<Popularitemdto>> Getbyname(string name)
+    {
+        IQueryable<PopularItem> populatitems = await _popularitemrepo.WithDetailsAsync(p => p.PopulartItemBranches);
+         populatitems =  populatitems.Where(p => p.Name.ToLower() == name.ToLower());
+        List<Popularitemdto> popularitemdtos = new List<Popularitemdto>();
+        var op = await populatitems.ToListAsync();
+
+        foreach (var i in await populatitems.ToListAsync())
+            popularitemdtos.Add(topopularitemdto(i));
+        return new PagedResultDto<Popularitemdto>()
+        {
+            Items = (IReadOnlyList<Popularitemdto>)popularitemdtos,
+            TotalCount = popularitemdtos.Count
+        };
+    }
     public async Task<PagedResultDto<Popularitemdto>> GetPopularItems(GetPopulariteminput input)
     {
         var popularitems = await _popularitemrepo.WithDetailsAsync(p => p.PopulartItemBranches);

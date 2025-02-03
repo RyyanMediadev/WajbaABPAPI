@@ -6,6 +6,8 @@ public class CartItemDto
 
     [Range(1, int.MaxValue, ErrorMessage = "Quantity must be at least 1")]
     public int Quantity { get; set; }
+    public string ItemName { get; set; } // For quick access in the cart
+    public decimal price { get; set; }
     public string Notes { get; set; }
     //public decimal VoucherCode { get; set; }
     public List<CartItemVariationDto> Variations { get; set; } = new List<CartItemVariationDto>();
@@ -26,6 +28,7 @@ public class CartDto
     public int CustomerId { get; set; }
     public List<CartItemDto> Items { get; set; } = new List<CartItemDto>();
     public decimal? TotalAmount { get; set; }
+    public decimal? SubTotal { get; set; }
     public decimal? ServiceFee { get; set; }
     public decimal? DeliveryFee { get; set; }
     public decimal? voucherCode { get; set; }

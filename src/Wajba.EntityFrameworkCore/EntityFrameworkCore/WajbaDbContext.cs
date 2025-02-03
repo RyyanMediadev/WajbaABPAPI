@@ -48,7 +48,7 @@ AbpDbContext<WajbaDbContext>
     public DbSet<Item> Items { get; set; }
     //public DbSet<address> addresses { get; set; }
     public DbSet<ItemVariation> ItemVariations { get; set; }
-  public DbSet<PopularItem> PopularItems { get; set; }
+    public DbSet<PopularItem> PopularItems { get; set; }
     public DbSet<PopulartItemBranches> PopulartItemBranches { get; set; }
     public DbSet<ItemAddon> ItemAddons { get; set; }
     public DbSet<ItemExtra> ItemExtras { get; set; }

@@ -58,6 +58,30 @@ public class PopularItemsController : WajbaController
             });
         }
     }
+    [HttpGet("byname")]
+    public async Task<ActionResult<ApiResponse<PagedResultDto< Popularitemdto>>>> GetbyName(string name)
+    {
+        try
+        {
+            var popularItem = await _popularItemAppservice.Getbyname(name);
+            return Ok(new ApiResponse<object>
+            {
+                Success = true,
+                Message = "Popular Item retrieved successfully.",
+                Data = popularItem
+            });
+        }
+        catch (EntityNotFoundException)
+        {
+            return NotFound(new ApiResponse<object>
+            {
+                Success = false,
+                Message = "Popular Item not found.",
+                Data = null
+            });
+        }
+
+    }
     [HttpGet("{id}")]
     public async Task<ActionResult<ApiResponse<Popularitemdto>>> GetByIdAsync(int id)
     {

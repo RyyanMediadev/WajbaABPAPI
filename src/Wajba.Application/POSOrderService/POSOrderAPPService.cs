@@ -76,12 +76,12 @@ public class POSOrderAPPService : ApplicationService
 
 
     }
-    public async Task<ServiceResponse> GetAllOrdersForEmployeeAsync(string token)
+    public async Task<ServiceResponse> GetAllOrdersForEmployeeAsync(int Id)
     {
-        if (string.IsNullOrEmpty(token))
-        {
-            return new ServiceResponse(false, "Token is required.");
-        }
+        //if (string.IsNullOrEmpty(token))
+        //{
+        //    return new ServiceResponse(false, "Token is required.");
+        //}
 
         //var employee = await ValidateTokenAndGetUser(token);
         //if (employee == null)
@@ -89,8 +89,8 @@ public class POSOrderAPPService : ApplicationService
         //    return new ServiceResponse(false, "Invalid token or employee not found.");
         //}
 
-        string employeeId = "4";
-        var orders = await GetOrdersByEmployeeIdAsync(employeeId);
+        //string employeeId = "4";
+        var orders = await GetOrdersByEmployeeIdAsync(Id);
 
         if (orders == null || !orders.Any())
         {
@@ -106,7 +106,7 @@ public class POSOrderAPPService : ApplicationService
     }
 
 
-    public async Task<List<Order>> GetOrdersByEmployeeIdAsync(string employeeId)
+    public async Task<List<Order>> GetOrdersByEmployeeIdAsync(int employeeId)
     {
         return await _OrderRepository
             //.WhereIf(o => o. == employeeId)
@@ -147,7 +147,7 @@ public class POSOrderAPPService : ApplicationService
     }
 
 
-    public async Task<ServiceResponse> AddOrderAsync(OrderDTO orderDto, string token)
+    public async Task<ServiceResponse> AddOrderAsync(OrderDTO orderDto, int  EmployeeId)
     {
         if (orderDto == null)
         {
@@ -164,8 +164,8 @@ public class POSOrderAPPService : ApplicationService
         //{
         //    return new ServiceResponse(false, "Invalid token or employee not found.");
         //}
-        int employeeId = 4;
-        var existingCart = await GetCartByEmployeeIdAsync(employeeId);
+        //int employeeId = 4;
+        var existingCart = await GetCartByEmployeeIdAsync(EmployeeId);
         if (existingCart == null || existingCart.CartItems.Count == 0)
         {
             return new ServiceResponse(false, "Employee cart is empty.");
@@ -343,12 +343,12 @@ public class POSOrderAPPService : ApplicationService
     //        return null;
     //    }
     //}
-    public async Task<ServiceResponse> DeleteOrderAsync(int orderId, string token)
+    public async Task<ServiceResponse> DeleteOrderAsync(int orderId, int EmployeeId)
     {
-        if (string.IsNullOrEmpty(token))
-        {
-            return new ServiceResponse(false, "Token is required.");
-        }
+        //if (string.IsNullOrEmpty(token))
+        //{
+        //    return new ServiceResponse(false, "Token is required.");
+        //}
 
         // Validate token and get employee
         //var employee = await ValidateTokenAndGetUser(token);

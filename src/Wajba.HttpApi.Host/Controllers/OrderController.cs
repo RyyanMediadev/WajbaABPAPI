@@ -11,6 +11,7 @@ using Wajba.Hubs;
 using Wajba.Models.BranchDomain;
 using Wajba.Models.Orders;
 using Wajba.Models.OrdersDomain;
+using Wajba.Models.WajbaUserDomain;
 using Wajba.OTPService;
 using Wajba.Settings;
 
@@ -24,6 +25,7 @@ public class OrderController : WajbaController
     private readonly IConfiguration _configuration;
     private readonly POSOrderAPPService _POSOrderAPPService;
     //private readonly ITokenService _tokenService;
+    private readonly WajbaUsersAppservice _WajbaUsersAppservice;
 
     public OrderController(
         //IUnitOfWork unitOfWork,
@@ -68,19 +70,22 @@ public class OrderController : WajbaController
     [HttpGet("Kitchen-customer-orders")]
     public async Task<IActionResult> GetAllOrdersForCustomer(int branchId, int? pageSize = null, int? pageNumber = null)
     {
-        var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+        if (!ModelState.IsValid)
+        {
+            return Ok(new { success = false, message = ModelState });
+        }
+        string token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
         if (string.IsNullOrEmpty(token))
         {
             return Ok(new { success = false, message = "Token is required" });
         }
-
-        //var customer = await ValidateTokenAndGetUser(token);
-        //if (customer == null)
-        //{
-        //    return Ok(new { success = false, message = "Invalid token or customer not found" });
-        //}
-        int customerId = 4;
-        var response = await _POSOrderAPPService.GetAllOrdersForCustomerAsync(customerId, branchId, pageSize, pageNumber);
+        WajbaUser customer = await _WajbaUsersAppservice.GetWajbaUserbytoken(token);
+        if (customer == null)
+        {
+            return Ok(new { success = false, message = "Invalid token or customer not found" });
+        }
+        //int customerId = 4;
+        var response = await _POSOrderAPPService.GetAllOrdersForCustomerAsync(customer.Id, branchId, pageSize, pageNumber);
 
         return Ok(new
         {

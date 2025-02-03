@@ -1,6 +1,7 @@
 ﻿global using Wajba.Dtos.ItemsDtos;
 global using Wajba.ItemServices;
 global using Wajba.Dtos.ItemsDtos.ItemDependencies;
+using Wajba.Models.CategoriesDomain;
 
 namespace Wajba.Controllers;
 
@@ -22,7 +23,7 @@ public class ItemController : WajbaController
             return Ok(new ApiResponse<PagedResultDto<ItemDto>>
             {
                 Success = true,
-                Message = "Item created successfully.",
+                Message = "Items retrived successfully.",
                 Data = itemDto
             });
         }
@@ -31,12 +32,36 @@ public class ItemController : WajbaController
             return BadRequest(new ApiResponse<object>
             {
                 Success = false,
-                Message = $"Error creating item: {ex.Message}",
+                Message = $"Error retrived items: {ex.Message}",
                 Data = null
             });
         }
     }
+    [HttpGet("nameAndcategoryname")]
+    public async Task<ActionResult<ApiResponse<PagedResultDto<ItemDto>>>> GetItemsByCategoryName(int branchid,string itemname,string categoryname)
+    {
+        try
+        {
+            var itemDto = await _itemAppServices.GetItemsByCategoryNameAsync(branchid,itemname, categoryname);
+            return Ok(new ApiResponse<PagedResultDto<ItemDto>>
+            {
+                Success = true,
+                Message = "Items retrived successfully.",
+                Data = itemDto
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new ApiResponse<object>
+            {
+                Success = false,
+                Message = $"Error retrived items: {ex.Message}",
+                Data = null
+            });
+        }
 
+
+    }
     [HttpGet("by-branch/{branchId}")]
     public async Task<ActionResult<ApiResponse<PagedResultDto<ItemDto>>>> GetItemsByBranch(int branchId)
     {

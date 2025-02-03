@@ -65,6 +65,7 @@ public class CartController : WajbaController
             return Ok(new { success = false, message = "Token is required" });
         }
         WajbaUser customer = await _wajbaUsers.GetWajbaUserbytoken(token);
+       
         if (customer == null)
         {
             return Ok(new { success = false, message = "Invalid token or customer not found" });

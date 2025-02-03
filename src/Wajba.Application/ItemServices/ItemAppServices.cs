@@ -4,7 +4,7 @@ global using Wajba.Dtos.ItemsDtos.ItemDependencies;
 global using Wajba.Dtos.ItemVariationContract;
 global using Wajba.Enums;
 global using Wajba.Models.Items;
-using Volo.Abp.Application.Dtos;
+//using System.Data.Entity;
 
 
 namespace Wajba.ItemServices;
@@ -56,7 +56,31 @@ public class ItemAppServices : ApplicationService
             TotalCount = result.Count
         };
     }
+    public async Task<PagedResultDto<ItemDto>> GetItemsByCategoryNameAsync(int branchid,string itemname, string categoryname)
+    {
 
+        var items = await _repository.WithDetailsAsync(
+         x => x.ItemAddons,
+         x => x.ItemExtras,
+         x => x.ItemVariations,
+         x => x.ItemBranches,
+         x => x.Category
+     );
+        items = items.Where(p => p.ItemBranches.Any(l => l.BranchId == branchid));
+        if (!string.IsNullOrEmpty(categoryname))
+            items = items.Where(p => p.Category.Name.ToLower().Contains(categoryname.ToLower()));
+        if (!string.IsNullOrEmpty(itemname))
+            items = items.Where(p => p.Name.ToLower().Contains(itemname.ToLower()));
+
+        IList<ItemDto> CategoryItemsDto = new List<ItemDto>();
+        foreach (var i in await items.ToListAsync())
+            CategoryItemsDto.Add(toitemdto(i));
+        return new PagedResultDto<ItemDto>()
+        {
+            Items = (IReadOnlyList<ItemDto>)CategoryItemsDto,
+            TotalCount = CategoryItemsDto.Count
+        };
+    }
     public async Task<PagedResultDto<ItemDto>> GetItemsByBranchAsync(int branchId)
     {
         var items = await _repository.WithDetailsAsync(
@@ -187,8 +211,8 @@ public class ItemAppServices : ApplicationService
         );
 
         // Explicitly include nested navigation properties
-        queryable = queryable.Include(x => x.ItemVariations)
-                             .ThenInclude(v => v.ItemAttributes);
+        //queryable = queryable.Include(x => x.ItemVariations)
+        //                     .ThenInclude(v => v.ItemAttributes);
 
         // Fetch the item
         var item = await queryable.FirstOrDefaultAsync(x => x.Id == id);

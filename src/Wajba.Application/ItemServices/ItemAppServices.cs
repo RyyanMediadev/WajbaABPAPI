@@ -339,9 +339,8 @@ public class ItemAppServices : ApplicationService
             items = items.Where(p => p.Name.ToLower() == input.Name.ToLower());
         items = items.OrderBy(input.Sorting ?? nameof(Item.Name));
         List<Item> items1 =await items.ToListAsync();
-        var itemss = ObjectMapper.Map<List<Item>, List<ItemDto>>(items1);
         List<ItemDto> itemDtos = new List<ItemDto>();
-        foreach (var i in items)
+        foreach (var i in await items.ToListAsync())
         {
             ItemDto itemDto = new ItemDto()
             {
@@ -446,7 +445,7 @@ public class ItemAppServices : ApplicationService
         //}).ToList();
 
         return new PagedResultDto<ItemDto>(
-            itemss.Count,
+            itemDtos.Count,
             itemDtos
         );
     }

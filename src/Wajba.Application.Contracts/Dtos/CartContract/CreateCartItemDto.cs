@@ -10,5 +10,5 @@ public class CreateCartItemDto
     //public decimal VoucherCode { get; set; }
     public List<CartItemVariationDto> Variations { get; set; } = new List<CartItemVariationDto>();
     public List<CartItemAddonDto> Addons { get; set; } = new List<CartItemAddonDto>();
-    public List<ExtraDto> Extras { get; set; } = new List<ExtraDto>();
+    public List<CarItemExtraDto> Extras { get; set; } = new List<CarItemExtraDto>();
 }

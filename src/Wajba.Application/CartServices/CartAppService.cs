@@ -169,6 +169,8 @@ public class CartAppService : ApplicationService
             ServiceFee = cart.ServiceFee,
             Note = cart.Note,
             SubTotal = cart.SubTotal,
+            voucherCode=0,
+           
             Items = cart.CartItems.Select(p => new CartItemDto()
             {
                 Notes = p.Notes,
@@ -176,20 +178,22 @@ public class CartAppService : ApplicationService
                 ItemName = p.ItemName,
                 price = p.price,
                 Quantity = p.Quantity,
-                Addons = p.SelectedAddons.Select(l => new CartItemAddonDto()
+                ImgUrl=p.ImgUrl,
+                CartItemId=p.Id,
+                Addons = p.SelectedAddons.Select(l => new ReturnCartItemAddonDto()
                 {
                     Id = l.AddonId,
                     Name = l.AddonName,
                     Price = l.AdditionalPrice
                 }).ToList(),
-                Extras = p.SelectedExtras.Select(m => new ExtraDto()
+                Extras = p.SelectedExtras.Select(m => new ReturnCartItemExtraDto()
                 {
                     AdditionalPrice = m.AdditionalPrice,
                     Id = m.ExtraId,
                     Name = m.ExtraName,
 
                 }).ToList(),
-                Variations = p.SelectedVariations.Select(d => new CartItemVariationDto()
+                Variations = p.SelectedVariations.Select(d => new ReturnCartItemVariationDto()
                 {
                     Name = d.Attributename,
                     AdditionalPrice = d.AdditionalPrice,
